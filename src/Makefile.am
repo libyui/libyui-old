@@ -80,16 +80,13 @@ noinst_HEADERS =				\
 
 
 INCLUDES =					\
-	-I/usr/include/YaST2			\
-	-I/usr/include/YaST2/yui		\
-	-I/usr/include/YaST2/ycp		\
-	-I/usr/include/YaST2/y2			\
-	${Y2UTIL_CFLAGS}
+	-I$(includedir)				\
+	-I$(includedir)/yui
 
 libpy2UI_la_LDFLAGS = -version-info 2:0 -Wl,--no-undefined
 
-libpy2UI_la_LIBADD =
-	-lpthread -lyui -lycp -lycpvalues -ly2 -ly2util
+libpy2UI_la_LIBADD =				\
+	-lpthread -lyui -ly2 -lycp -lycpvalues -ly2util
 
 # "foo bar: baz" is wrong
 # see "info '(automake)Multiple Outputs'"

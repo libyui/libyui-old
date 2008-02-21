@@ -33,13 +33,16 @@ using std::string;
  **/
 class YUIComponentCreator : public Y2ComponentCreator
 {
-    
 public:
+    
     /**
      * Constructor.
      **/
     YUIComponentCreator();
 
+    /**
+     * This class creates server components
+     **/
     virtual bool isServerCreator () const { return true; }
 
     /**
@@ -58,7 +61,7 @@ public:
      * For all other names, 0 is returned, so the Y2ComponentBroker will keep
      * on trying with other available creators. 
      **/
-    virtual  Y2Component * create( const char * name ) const;
+    virtual Y2Component * create( const char * name ) const;
 
     /**
      * Creation function for non-built-in components.
