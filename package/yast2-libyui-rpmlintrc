@@ -1,0 +1,1 @@
+addFilter("libyui.* shlib-policy-name-error")
