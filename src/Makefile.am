@@ -80,9 +80,10 @@ noinst_HEADERS =				\
 
 
 INCLUDES =					\
-	-I/usr/include/yui			\
-	-I/usr/include/ycp			\
-	-I/usr/include/y2			\
+	-I/usr/include/YaST2			\
+	-I/usr/include/YaST2/yui		\
+	-I/usr/include/YaST2/ycp		\
+	-I/usr/include/YaST2/y2			\
 	${Y2UTIL_CFLAGS}
 
 libpy2UI_la_LDFLAGS = -version-info 2:0 -Wl,--no-undefined
