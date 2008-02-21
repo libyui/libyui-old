@@ -2,7 +2,7 @@
 # Makefile.am for core/libyui/doc
 #
 
-SUBDIRS = events examples FAQs
+SUBDIRS = events FAQs
 
 htmldir = $(docdir)/libyui
 builtin	= $(srcdir)/../src/ycp-ui/YCP_UI.cc $(srcdir)/../src/ycp-ui/YCPDialogParser.cc
