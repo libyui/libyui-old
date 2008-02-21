@@ -1,0 +1,8 @@
+Makefile
+Makefile.in
+*.o
+*.lo
+*.la
+.libs
+.deps
+YUI_widgets.loT

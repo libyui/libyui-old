@@ -1,0 +1,518 @@
+* Parameter YRadioButtonGroup now obsolete:
+
+  YRadioButtons traverse the YWidget hierarchy upwards to find
+  their parent YRadioButtonGroup. There is no more need to pass
+  the YRadioButtonGroup as a parameter through all kinds of
+  calls.
+
+  This had cluttered the API for a long time.
+
+
+* Got rid of all YCP data types in all widget classes:
+
+    * YCPString		-> std::string
+    * YCPInteger	-> int
+    * YCPBoolean	-> bool
+
+
+* In function parameters, std::string is generally passed as const std::string & .
+
+
+* All widgets: No longer implementing changeWidget() / queryWidget() directly,
+  now using setProperty() / getProperty().
+  Reason: No more YCP depencency in YWidget derived classes.
+  See YRadioButton or YTextEntry for examples.
+
+
+* All widgets: widgetClass() now returns const char *, no longer char *
+  (gcc had already complained in abuild about this)
+  auto-replace this with:
+
+	perl -p -i -e 's/virtual char \*widgetClass/virtual const char *widgetClass/' *.h
+
+* All widgets: nicesize() was replaced by preferredWidth() and preferredHeight().
+ Both return an int, not a long like nicesize() did: int is plenty for pixel
+ coordinates, and it's a LOT less hassle.
+
+ The rationale for splitting up nicesize() (and giving it an English name, no
+ longer German_en) was that in 95% of all cases the first thing an
+ implementation does is something like
+
+     if ( dim == YD_HORIZ )
+         // calculate width
+     else
+        // calculate height
+
+  If you must (though this is discouraged), you can still reimplement
+
+      int YWidget::preferredSize( YUIDimension dim )
+
+  which now by default calls preferredWidth() and preferredHeight().
+
+  Use the perl scripts from ~sh/Export/ for easier transition:
+  (but by all means do "svn ci" immediately before so you can easily revert):
+
+      mod-ui-change-nicesize-header *.h
+      mod-ui-change-nicesize-src *.cc
+
+  This doesn't do the work completely, but it's a good starting point.
+
+
+* All widgets: The parameters of YWidget::setSize() are now int, no longer long.
+  The reasoning is the same as with long nicesize() vs. int preferredWidth().
+
+  Use the perl scripts from ~sh/Export/ for easier transition:
+  (but by all means do "svn ci" immediately before so you can easily revert):
+
+      mod-ui-change-setSize-header *.h
+      mod-ui-change-setSize-src *.cc
+
+  This should do the trick, but make sure to double-check what it did.
+
+* All widgets:
+
+  Most 'long' function parameters and return values are now 'int',
+  including (but not restricted to):
+
+    * widget sizes
+    * widget positions
+    * layout weights
+
+  gcc should complain about missing places. Also remember to check for '%ld' in
+  y2debug() etc. calls and replace most of them with '%d'.
+
+
+* Factories:
+    * Derived UIs now are required to implement:
+        * YWidgetFactory * createWidgetFactory()
+        * YOptionalWidgetFactory * createOptionalWidgetFactory()
+    * Moved widget creation methods to factories
+
+* New header file YTypes.h for simple types to reduce header file interdependencies:
+  Now it's often no longer necessary to #include YAlignment.h or YWidget.h
+
+* YUI:
+
+    * YUI::currentDialog() is now moved to static YDialog::currentDialog()
+
+* New: YApplication
+  The idea of this class is to bundle all the "misc UI functionality" methods.
+  See YApplication.h for details.
+
+
+* YDialog:
+
+    * YUI::currentDialog() is now moved to YDialog::currentDialog()
+    * YDialog::currentDialog() now throws exceptions by default (unless bool param == true),
+      i.e. there is no more need to check for a 0 pointer after currentDialog()
+      (but exceptions need to be caught somewhere)
+
+
+* YSplit:
+
+   * renamed to YLayoutBox
+
+
+* YRadioButton:
+
+    * Made all memeber variables private.
+      Access via access functions only from now on.
+
+    * value is now bool		, no longer YCPBoolean
+    * label is now std::string	, no longer YCPString
+
+    * YCPString getLabel()			-> std::string label()
+    * void setLabel( YCPString )		-> setLabel( std::string )
+    * virtual YCPBoolean getValue()		-> virtual bool value()
+    * virtual void setValue( YCPBoolean )	-> virtual void setValue( bool )
+
+    * new method: useBoldFont()  (instead of YWidgetOpt::boldFont() )
+    * new method: boldFont()
+
+
+* YTextEntry:
+
+    * Made all memeber variables private.
+      Access via access functions only from now on.
+
+    * label is now std::string	, no longer YCPString
+    * passwordMode is now passed directly in the constructor, not only via YWidgetOpt
+    * passwordMode is now a member, no longer avaliable only from YWidgetOpt
+
+    * Renamed getText()	-> value(),
+    * Renamed setText()	-> setValue()
+    * virtual YCPString getText()		-> virtual std::string value()
+    * virtual void setText( YCPString )		-> virtual void setValue( std::string )
+    * getLabel() -> label()
+    * virtual setValidChars( YCPStrng )		-> virtual setValidChars( std::string )
+    * virtual setInputMaxLength( YCPInteger )	-> virtual setInputMaxLength( int )
+
+    * overloaded virtual setInputMaxLength( int ) is now required to call
+      YTextEntry::setInputMaxLength() at its end
+
+
+* YPushButton:
+
+    * Made all memeber variables private.
+      Access via access functions only from now on.
+
+    * label is now std::string	, no longer YCPString
+
+* YReplacePoint:
+
+    * now derived from YSingleChildContainerWidget
+    * removed YWidget::isReplacePoint() / YReplacePoint::isReplacePoint()
+    * no more YContainerWidget::childAdded(),
+      reimplement YReplacePoint::showChild() instead.
+
+* YRadioButtonGroup:
+
+  * no more std::vector<YRadioButton *> buttons,
+    use iterators with buttonsBegin() and buttonsEnd() instead
+
+
+* YWidgetFactory:
+  * createHeading()	is no longer virtual - remove from derived factory
+  * createOutputField() is no longer virtual - remove from derived factory
+
+
+2007-06-21 22:00 sh@suse.de
+
+* Dropped YColoredLabel
+
+* Moved widget term parsing stuff to separate class YCPDialogParser
+
+* YUI::widgetWithId() is now YCPDialogParser::findWidgetWithId()
+  !!! the default for throwing exceptions is now reverted: It now throws by default!
+  ->  YUI::widgetWithId( someId, true )  -> YCPDialogParser::findWidgetWithId( someId )
+  ->  YUI::widgetWithId( someId )        -> YCPDialogParser::findWidgetWithId( someId, false )
+  ->  YUI::widgetWithId( someId, false ) -> YCPDialogParser::findWidgetWithId( someId, false )
+
+
+
+2007-06-22 16:20 sh@suse.de
+
+* added pure virtual YWidgetFactory::createSpacing()
+
+  Removed from derived factories:
+
+  - YWidgetFactory::createHStretch() is no longer virtual and now returns a YSpacing
+  - YWidgetFactory::createVStretch() is no longer virtual and now returns a YSpacing
+  - YWidgetFactory::createHSpacing() is no longer virtual and now returns a YSpacing
+  - YWidgetFactory::createVSpacing() is no longer virtual and now returns a YSpacing
+
+* Droppped HVStretch widget
+
+
+2007-06-25 15:00 sh@suse.de
+
+* changed nicesize() to preferredWidth() and preferredHeight(), both returning int, not long
+  see longer explanations on top
+
+* virtual YWidget::setSize() now has int params, no longer long
+  see longer explanations on top
+
+
+2007-06-25 18:00 sh@suse.de
+
+* Renamed YTextEntry -> YInputField
+
+  For YCP, TextEntry is (and will remain) still a valid widget name.
+  `InputField is the new default name, though.
+
+
+2007-06-26 12:00 sh@suse.de
+
+* Renamed YWidget::getNotify() -> YWidget::notify()
+  Replace with:
+
+  perl -p -i -e 's/getNotify/notify/g' *.cc pkg/*.c
+
+
+* Added function key methods for NCurses F-key support:
+
+  - YWidget::functionKey()
+  - YWidget::hasFunctionKey()
+  - virtual YWidget::setFunctionKey
+
+  Since YWidgetOpt is no longer passed to constructors, NCurses should use
+  those new functions instead.
+  YWidget::setFunctionKey() is called from YCPDialogParser after the widget is
+  created, so either use the new function in the keyboard handlers or overwrite
+  YWidget::setFunctionKey().
+
+* YCheckBox:
+  - getValue() -> value()
+  - no longer just boolean values, now using YCheckBoxState enum: _on, _off, _dont_care
+  - YCheckBox constructor doesn't accept an initiallyChecked value any more
+    (but derived classes should so the widgetFactory can pass it on easily)
+
+
+2007-06-21 12:30 sh@suse.de
+
+* YRichText:
+
+  virtual setText() -> virtual setValue()
+  virtual getText() -> virtual value()
+
+  setText() is still there, but no longer virtual - implement setValue() instead!
+
+  new (instead of YWidgetOpt() ):
+
+  - bool plainTextMode() const;
+  - virtual void setPlainTextMode( bool on = true );
+  - bool autoScrollDown() const;
+  - virtual void setAutoScrollDown( bool on = true );
+  - bool shrinkable() const;
+  - void setShrinkable( bool shrinkable = true );
+
+
+2007-06-27 14:45 sh@suse.de
+
+* YImage:
+
+  * Dropped support for creating an image from a YCPByteblock
+  * Dropped support for fallback label (was never used in NCurses anyway)
+  * Dropped support for `opt(`tiled)
+  * Moved YWidgetOpt stuff to YImage methods
+
+
+2007-06-27 18:00 sh@suse.de
+
+* YPackageSelector:
+
+  * added modeFlags parameter (summarizing all the YWidgetOpts)
+  * added mode checking functions:
+    - bool testMode()
+    - bool onlineUpdateMode()
+    - bool updateMode()
+    - ...
+  * Dropped long-obsolete floppyDevice parameter
+
+* YPackageSelectorPlugin:
+   * added modeFlags parameter
+
+* Factories:
+   * added modeFlags parameter for PackageSelector etc.
+   * now calling the YPackagePlugin from the factory create...() functions
+
+
+2007-06-29 12:00 sh@suse.de
+
+* Added YSelectionBox::immediateMode() and setImmediateMode()
+  as a replacement for YWidgetOpt.immediateMode
+
+* Added YSelectionBox::shrinkable() and setShrinkable()
+  as a replacement for YWidgetOpt.shrinkable
+
+
+2007-07-02 18:30 sh@suse.de
+
+* Ported simple YSelectionWidgets (major rewrite):
+  - YSelectionBox
+  - YComboBox
+  - YMultiSelectionBox
+
+  Most (almost all?) of the selection handling went to the YSelectionWidget
+  base class. The concrete UI implementations have to implement 2 pure virtual
+  functions each - see the respective header files. See the YQ sample
+  implementations for more details.
+
+* YComboBox now also supports icons.
+
+
+2007-07-03 16:30 sh@suse.de
+
+* Ported YMultiLineEdit
+  - renamed text()    -> value()
+  - renamed setText() -> setValue()
+  - new: YMultiLineEdit::defaultVisibleLines() (use this in preferredHeight() )
+
+* Ported YProgressBar
+  - renamed setProgress() -> setValue()
+
+
+2007-07-06 18:30 sh@suse.de
+
+* Ported YTree
+
+2007-07-13 19:20 sh@suse.de
+
+* Ported MultiProgressMeter
+  - now using float values internally to safeguard against huge numbers
+
+
+2007-10-05 18:00 sh@suse.de
+
+* Ported Table
+  - now based on SelectionWidget
+  - much streamlined with the other selection widgets
+  - QueryWidget can now return the complete item term
+    as well as individual cells
+
+  Look at YQTable for a sample implementation.
+
+
+2007-10-08 17:00 sh@suse.de
+
+* Added support for QueryWidget(`id(...), `Items ) for SelectionWidgets:
+  - SelectionBox
+  - ComboBox
+  - MultiSelectionBox
+  - Tree
+  - Table
+
+* Ported IntField
+
+
+2007-10-09 17:00 sh@suse.de
+
+* Ported LogView
+
+
+2007-10-10 22:00 sh@suse.de
+
+* Ported MenuButton
+  - Now derived from YSelectionWidget
+  - Added support for replacing (all!) items
+  - QueryWidget can now return the complete item term
+  - Added support for icons in menu entries
+  - Added YMenuEvent( YMenuEntry * ) constructor
+
+  - Derived classes can use YMenuItem::index() as a unique ID
+    or use YMenuItem::data() and YMenuItem::setData() to store
+    a custom pointer to some other class.
+
+  Look at YQMenuButton for a sample implementation.
+
+
+2007-10-25 17:00 sh@suse.de
+
+* Changed YTable header handling (bubli's request):
+  - Constructor now gets YTableHeader object
+  - no more setHeader() and setAlignment functions - get rid of them
+  - use columns(), header(), alignment() in the constructor to set up columns
+
+
+2007-10-29 14:30 sh@suse.de
+
+* Moved opaque 'data' void pointer from YTreeItem / YTableItem
+  to YItem base class
+
+
+2007-10-31 sh@suse.de
+
+* Renamed YTime -> YTimeField
+* Renamed YDate -> YDateField
+
+* Ported YTimeField
+* Ported YDateField
+
+
+2007-11-06 sh@suse.de
+
+* Ported default function key handling
+
+
+2007-11-09 sh@suse.de
+
+* Ported YBarGraph
+* Ported YPartitionSplitter
+
+
+2007-11-12 sh@suse.de
+
+* Enforced creating YWidget and derived classes with new (on the heap)
+* Ported YDownloadProgress
+
+
+2007-11-14 sh@suse.de
+
+* Migrated YDumbTab
+* YDumbTab now inherits YSelectionWidget
+
+
+2007-11-27 sh@suse.de
+
+* Migrated YWizard
+  * Moved WizardCommand parsing out to YCPWizardCommandParser
+  * Added lots of pure virtual functions to YWizard
+  * All YCPValue and other YCP related code can now be removed from
+    YWizard-derived classes
+
+
+2007-11-30 sh@suse.de
+
+* Migrated YDialog
+* Removed YContainerWidget for good
+* Removed legacy YWidget::queryWidget() and YWidget::changeWidget() methods
+* Dropped support for outdated property handling with old
+  YWidget::queryWidget() and YWidget::changeWidget() methods
+* Dropped support for outdated YWidget( YWidgetOpt ) constructors
+* Removed unneeded YWidgetOpt fields
+* Added basic default button handling to YDialog and YPushButton
+
+
+2007-12-10 sh@suse.de
+
+* Moved file and directory dialogs from YUI to YApplication:
+  - askForExistingDirectory()
+  - askForExistingFile()
+  - askForSaveFile()
+* Parameters and return values now all std::string
+* Now return empty string upon user cancel
+
+
+
+2008-01-20 sh@suse.de
+
+* Moved glyph handling from YUI to YApplication,
+  now using std::string instead of YCPString and YCPSymbol;
+  forget YMyUI::glyph(), implement YMyApplication::glyph()
+
+
+2008-01-25 sh@suse.de
+
+* UI::OpenDialog() now opens error dialog in case of exception
+  (using the new mod-ui calls, works for all UIs)
+
+* UI::UserInput() now opens error dialog in case of exception
+  (using the new mod-ui calls, works for all UIs)
+
+
+2008-01-29 sh@suse.de
+
+* Moved YCP part out of YEvent to new class YCPEvent
+* YUI::runPkgSelection() now returns YEvent * and is pure virtual
+
+
+2008-01-31 sh@suse.de
+
+* Moved dialog handling from YUI to YDialog:
+  - removed YUI::showDialog()
+  - removed YUI::closeDialog()
+  - Now using YDialog::open() and YDialog::destroy()
+  - Derived classes now have to implement:
+    - YDialog::openInternal()
+    - YDialog::activate()
+
+
+2008-02-01 sh@suse.de
+
+* Moved event handling from YUI to YDialog:
+  - removed YUI::userInput()
+  - removed YUI::pollInput()
+  - Derived classes now have to implement:
+    - YDialog::waitForEventInternal()
+    - YDialog::pollEventInternal()
+
+
+2008-02-06 sh@suse.de
+
+* Macro recording and playing ins now unified and moved out of the YUI class.
+  Use the static functions in the new YMacro class instead now:
+  - YMacro::record()
+  - YMacro::play()
+  ...
+
+* Moved productName() and setProductName() from YUI to YApplication

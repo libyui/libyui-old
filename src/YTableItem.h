@@ -1,0 +1,310 @@
+/*---------------------------------------------------------------------\
+|                                                                      |
+|                      __   __    ____ _____ ____                      |
+|                      \ \ / /_ _/ ___|_   _|___ \                     |
+|                       \ V / _` \___ \ | |   __) |                    |
+|                        | | (_| |___) || |  / __/                     |
+|                        |_|\__,_|____/ |_| |_____|                    |
+|                                                                      |
+|                               core system                            |
+|                                                        (C) SuSE GmbH |
+\----------------------------------------------------------------------/
+
+  File:         YTableItem.h
+
+  Author:       Stefan Hundhammer <sh@suse.de>
+
+/-*/
+
+#ifndef YTableItem_h
+#define YTableItem_h
+
+#include "YItem.h"
+
+using std::string;
+using std::vector;
+
+class YTableCell;
+
+typedef vector<YTableCell *>                    YTableCellCollection;
+typedef YTableCellCollection::iterator          YTableCellIterator;
+typedef YTableCellCollection::const_iterator    YTableCellConstIterator;
+
+
+/**
+ * Item class for YTable items. Each YTableItem corresponds to one row in a
+ * YTable.
+ *
+ * A YTableItem might have any number of cells (columns within this row),
+ * including none. The YTable widget is free to ignore any excess cells if
+ * there are more than the YTable widget has columns. The YTable widget is to
+ * treat nonexistent cells like empty ones.
+ *
+ * Note that while YTable items and their cells can be manipulated through
+ * pointers, their visual representation on screen might be updated only upon
+ * calling certain methods of the YTable widget. See the YTable reference for
+ * details.
+ **/
+class YTableItem: public YItem
+{
+public:
+
+    /**
+     * Default constructor. Use addCell() to give it any content.
+     **/
+    YTableItem();
+
+    /**
+     * Convenience constructor for table items without any icons.
+     *
+     * This will create up to 10 (0..9) cells. Empty cells for empty labels at
+     * the end of the labels are not created, but empty cells in between are.
+     *
+     *     new YTableItem( "one", "two", "", "", "five" );
+     *
+     * will create an item with 5 cells:
+     *
+     *     cell[0] ==> "one"
+     *     cell[1] ==> "two"
+     *     cell[2] ==> ""
+     *     cell[3] ==> ""
+     *     cell[4] ==> "five"
+     **/
+    YTableItem( const string & label_0,
+                const string & label_1 = string(),
+                const string & label_2 = string(),
+                const string & label_3 = string(),
+                const string & label_4 = string(),
+                const string & label_5 = string(),
+                const string & label_6 = string(),
+                const string & label_7 = string(),
+                const string & label_8 = string(),
+                const string & label_9 = string() );
+
+    /**
+     * Destructor.
+     *
+     * This will delete all cells.
+     **/
+    virtual ~YTableItem();
+
+    /**
+     * Add a cell. This item will assume ownership over the cell and delete it
+     * when appropriate (when the table is destroyed or when table items are
+     * replaced), at which time the pointer will become invalid.
+     *
+     * Cells can still be changed after they (and the item they belong to) are
+     * added, but in that case, YTable::cellChanged() needs to be called to
+     * update the table display accordingly.
+     **/
+    void addCell( YTableCell * cell );
+
+    /**
+     * Create a new cell and add it (even if both 'label' and
+     * 'iconName' are empty).
+     **/
+    void addCell( const string & label, const string & iconName = string() );
+
+    /**
+     * Delete all cells.
+     **/
+    void deleteCells();
+
+    /**
+     * Return an iterator that points to the first cell of this item.
+     **/
+    YTableCellIterator          cellsBegin()            { return _cells.begin(); }
+    YTableCellConstIterator     cellsBegin() const      { return _cells.begin(); }
+
+    /**
+     * Return an iterator that points after the last cell of this item.
+     **/
+    YTableCellIterator          cellsEnd()              { return _cells.end(); }
+    YTableCellConstIterator     cellsEnd() const        { return _cells.end(); }
+
+    /**
+     * Return the cell at the specified index (counting from 0 on)
+     * or 0 if there is none.
+     **/
+    const YTableCell * cell( int index ) const;
+    YTableCell * cell( int index );
+
+    /**
+     * Return the number of cells this item has.
+     **/
+    int cellCount() const { return _cells.size(); }
+
+    /**
+     * Return 'true' if this item has a cell with the specified index
+     * (counting from 0 on), 'false' otherwise.
+     **/
+    bool hasCell( int index ) const;
+
+    /**
+     * Return the label of cell no. 'index' (counting from 0 on) or an empty
+     * string if there is no cell with that index.
+     **/
+    string label( int index ) const;
+
+    /**
+     * Return the icon name of cell no. 'index' (counting from 0 on) or an empty
+     * string if there is no cell with that index.
+     **/
+    string iconName( int index ) const;
+
+    /**
+     * Return 'true' if there is a cell with the specified index that has an
+     * icon name.
+     **/
+    bool hasIconName( int index ) const;
+
+    /**
+     * Just for debugging.
+     **/
+    string label() const { return label(0); }
+    
+private:
+
+    // Disable unwanted base class methods. They don't make sense in this
+    // context since there is not just one single label or icon name, but one
+    // for each cell.
+
+    string      iconName()      const                           { return ""; }
+    bool        hasIconName()   const                           { return false; }
+    void        setLabel        ( const string & )              {}
+    void        setIconName     ( const string & )              {}
+
+
+    //
+    // Data members
+    //
+
+    YTableCellCollection _cells;
+};
+
+
+
+/**
+ * One cell (one column in one row) of a YTableItem. Each cell has a label (a
+ * user visible text) and optionally an icon (*).
+ *
+ * Note that cells don't have individual IDs; they have just an index.
+ * The first cell in an item is cell(0). In an ideal world, each YTableItem
+ * would have exactly as many cells as there are columns in the YTable, but
+ * these classes make no such assumptions. A YTableItem might have any number
+ * of cells, including none.
+ *
+ * The YTable widget is free to ignore any excess cells if there are more than
+ * the YTable widget has columns. If there are less cells than the table has
+ * columns, the nonexistent cells will be treated as empty.
+ *
+ *
+ * (*) Not all UIs can handle icons. UIs that can't handle them will simply
+ * ignore any icons specified for YTableCells. Thus, applications should either
+ * check the UI capabilities if it can handle icons or use icons only as an
+ * additional visual cue that still has a text counterpart (so the user can
+ * still make sense of the table content when no icons are visible).
+ **/
+class YTableCell
+{
+public:
+    /**
+     * Constructor with label and optional icon name for cells that don't have
+     * a parent item yet (that will be added to a parent later with
+     * setParent()). 
+     **/
+    YTableCell( const string & label, const string & iconName = "" )
+        : _label( label )
+        , _iconName( iconName )
+	, _parent( 0 )
+	, _column ( -1 )
+        {}
+
+    /**
+     * Constructor with parent, column no., label and optional icon name for
+     * cells that are created with a parent.
+     **/
+    YTableCell( YTableItem * 	parent,
+		int 		column,
+		const string &	label,
+		const string &	iconName = "" )
+        : _label( label )
+        , _iconName( iconName )
+	, _parent( parent )
+	, _column ( column )
+        {}
+
+    // No virtual destructor. This saves a vtable for this class since there
+    // are no other virtual methods either.
+
+    /**
+     * Return this cells's label. This is what the user sees in a dialog, so
+     * this will usually be a translated text.
+     **/
+    string label() const { return _label; }
+
+    /**
+     * Set this cell's label.
+     *
+     * If this is called after the corresponding table item (table row) is
+     * added to the table widget, call YTable::cellChanged() to notify the
+     * table widget about the fact. Only then will the display be updated.
+     **/
+    void setLabel( const string & newLabel ) { _label = newLabel; }
+
+    /**
+     * Return this cell's icon name.
+     **/
+    string iconName() const { return _iconName; }
+
+    /**
+     * Return 'true' if this cell has an icon name.
+     **/
+    bool hasIconName() const { return ! _iconName.empty(); }
+
+    /**
+     * Set this cell's icon name.
+     *
+     * If this is called after the corresponding table item (table row) is
+     * added to the table widget, call YTable::cellChanged() to notify the
+     * table widget about the fact. Only then will the display be updated.
+     **/
+    void setIconName( const string & newIconName ) { _iconName = newIconName; }
+
+    /**
+     * Return this cell's parent item or 0 if it doesn't have one yet.
+     **/
+    YTableItem * parent() const { return _parent; }
+
+    /**
+     * Return this cell's column no. (counting from 0on) or -1 if it doesn't
+     * have a parent yet. 
+     **/ 
+    int column() const { return _column; }
+
+    /**
+     * Convenience function: Return this cell's parent item's index within its
+     * table widget or -1 if there is no parent item or no parent table.
+     **/
+    int itemIndex() const { return _parent ? _parent->index() : -1; }
+
+    /**
+     * Set this cell's parent item and column no. if it doesn't have a parent
+     * yet.
+     *
+     * This method will throw an exception if the cell already has a parent.
+     **/
+    void reparent( YTableItem * parent, int column );
+
+
+private:
+
+    string 		_label;
+    string		_iconName;
+    YTableItem *	_parent;
+    int			_column;
+};
+
+
+
+ #endif // YTableItem_h
