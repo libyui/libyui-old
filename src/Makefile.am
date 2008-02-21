@@ -1,5 +1,5 @@
 #
-# Makefile.am for core/libyui/src
+# Makefile.am for ycp-ui-bindings/src
 #
 
 AM_CXXFLAGS = -DY2LOG=\"libycp\"		\
