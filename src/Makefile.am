@@ -3,7 +3,6 @@
 #
 
 # The leading . makes automake process this dir first, then the subdir
-SUBDIRS= . ycp-ui
 
 AM_CXXFLAGS =					\
 	-DTHEMEDIR=\"${themedir}/current\"	\
