@@ -1,8 +1,8 @@
 #
-# Makefile.am for core/libyui/doc/FAQs
+# Makefile.am for ycp-ui-bindings/doc
 #
 
-faqdir = $(docdir)/libyui/FAQs
+faqdir = $(docdir)/FAQs
 
 faq_DATA =						\
 	notify-events.txt				\

@@ -1,14 +1,14 @@
 #
-# Makefile.am for core/libyui/doc
+# Makefile.am for ycp-ui-bindings/doc
 #
 
 SUBDIRS = events FAQs
 
-htmldir = $(docdir)/libyui
+htmldir = $(docdir)/reference
 
-builtin	=						\
-	$(top_srcdir)/src/ycp-ui/YCP_UI.cc		\
-	$(top_srcdir)/src/ycp-ui/YCPDialogParser.cc
+builtin	=					\
+	$(top_srcdir)/src/YCP_UI.cc		\
+	$(top_srcdir)/src/YCPDialogParser.cc
 
 builtinxml := $(builtin:%.cc=%.xml)
 xmlfiles   := $(foreach xml,$(builtinxml),$(notdir $(xml)))
@@ -32,7 +32,7 @@ EXTRA_DIST =
 
 
 $(xmlfiles) : $(builtin)
-	`pkg-config --variable=ybindir yast2-devtools`/ydoc2 -o $@.tmp $(top_srcdir)/src/ycp-ui/$(subst xml,cc,$@)
+	`pkg-config --variable=ybindir yast2-devtools`/ydoc2 -o $@.tmp $(top_srcdir)/src/$(subst xml,cc,$@)
 	$(XSLTPROC) $(XSLTPROC_FLAGS) @STYLESHEET_YDOC@ $@.tmp > $@
 	`pkg-config --variable=ybindir yast2-devtools`/replace_entities $@
 	rm $@.tmp
