@@ -15,6 +15,9 @@ BuildRequires:	sgml-skel
 Requires:	yast2-core
 BuildRequires:	yast2-core-devel
 
+# libycp includes crypto built-ins
+BuildRequires:  libxcrypt-devel
+
 Requires:	yast2-libyui
 BuildRequires:	yast2-libyui-devel
 
@@ -36,6 +39,7 @@ Requires:	libstdc++-devel
 Requires:	boost-devel
 Requires:	yast2-libyui-devel
 Requires:	yast2-core-devel
+Requires:	libxcrypt-devel
 Requires:	yast2-devtools
 
 %description devel
