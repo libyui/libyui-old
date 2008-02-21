@@ -21,7 +21,7 @@
 #include <string>
 
 #define y2log_component "ui"
-#include <ycp/y2log.h>
+#include <y2util/y2log.h>
 
 #include <y2/Y2Component.h>
 #include "YUIComponentCreator.h"
