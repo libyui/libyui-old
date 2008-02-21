@@ -61,12 +61,6 @@ mkdir -p "$RPM_BUILD_ROOT"@logdir@
 %defattr(-,root,root)
 
 %dir %{_libdir}/YaST2
-%if "%_lib" == "lib64"
-%dir /usr/lib/YaST2
-%endif
-%dir /usr/share/YaST2
-
-%dir %attr(0700,root,root) @logdir@
 %dir @plugindir@
 
 @plugindir@/lib*.so.*
