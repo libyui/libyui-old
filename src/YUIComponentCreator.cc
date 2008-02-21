@@ -81,8 +81,8 @@ YUIComponentCreator::provideNamespace( const char * cname )
 Y2Component *
 YUIComponentCreator::create( const char * name ) const
 {
-    createInternal( name,
-		    false ); // isNamespace
+    return createInternal( name,
+			   false ); // isNamespace
 }
 
 
