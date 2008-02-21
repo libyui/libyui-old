@@ -80,23 +80,21 @@ noinst_HEADERS =				\
 
 
 INCLUDES =					\
-	-I$(top_srcdir)/libycp/src/include	\
-	-I$(top_srcdir)/liby2/src/include	\
-	-I$(top_srcdir)/libyui/src/		\
+	-I/usr/include/yui			\
+	-I/usr/include/ycp			\
+	-I/usr/include/y2			\
 	${Y2UTIL_CFLAGS}
 
 libpy2UI_la_LDFLAGS = -version-info 2:0 -Wl,--no-undefined
-libpy2UI_la_LIBADD = -lpthread \
-	$(top_builddir)/libyui/src/libyui.la \
-	$(top_builddir)/libycp/src/libycp.la \
-	$(top_builddir)/liby2/src/liby2.la \
-	$(top_builddir)/libycp/src/libycpvalues.la \
-	$(top_builddir)/liby2util-r/src/liby2util.la
+
+libpy2UI_la_LIBADD =
+	-lpthread -lyui -lycp -lycpvalues -ly2 -ly2util
 
 # "foo bar: baz" is wrong
 # see "info '(automake)Multiple Outputs'"
+DEVTOOLSBINDIR=/usr/share/YaST2/data/devtools/bin
 %BuiltinCalls.h %BuiltinTable.h : Y%Namespace.h
-	${top_srcdir}/base/tools/devtools/generateYCPWrappers $< $*BuiltinCalls.h $*BuiltinTable.h
+	$(DEVTOOLSBINDIR)/generateYCPWrappers $< $*BuiltinCalls.h $*BuiltinTable.h
 
 BUILT_SOURCES = UIBuiltinTable.h UIBuiltinCalls.h
 
