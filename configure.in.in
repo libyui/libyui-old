@@ -1,0 +1,17 @@
+## libyui configure.in.in
+
+## initialize
+@YAST2-INIT-COMMON@
+AC_SYS_LARGEFILE
+
+@YAST2-INIT-PROGRAM@
+
+
+AX_CHECK_DOCBOOK
+CREATE_PKGCONFIG=true
+
+## some common checks
+@YAST2-CHECKS-COMMON@
+@YAST2-CHECKS-PROGRAM@
+
+@YAST2-OUTPUT@

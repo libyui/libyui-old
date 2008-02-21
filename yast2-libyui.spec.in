@@ -1,0 +1,79 @@
+@HEADER-COMMENT@
+
+
+@HEADER@
+# obviously
+BuildRequires:	gcc-c++
+# we have a parser
+BuildRequires:	yast2-devtools
+# autodocs
+BuildRequires:	doxygen
+# docbook docs
+BuildRequires:	docbook-xsl-stylesheets libxslt 
+# catalog: convert URIs to local filenames
+BuildRequires:	sgml-skel
+# libyui ImplPtr
+BuildRequires:	boost-devel
+
+Summary:	-
+Provides:	liby2util = 2.16.1
+Obsoletes:	liby2util < 2.16.1
+
+%description
+-
+
+@HEADER-DEVEL@
+Summary:	-
+Provides:	liby2util-devel = 2.16.1
+Requires:	glibc-devel libstdc++-devel boost-devel  pcre-devel 
+
+
+%description devel
+-
+
+@PREP@
+
+@BUILD@
+
+@INSTALL@
+mkdir -p "$RPM_BUILD_ROOT"@logdir@
+%perl_process_packlist
+
+@CLEAN@
+
+%post
+%run_ldconfig
+
+%postun
+%run_ldconfig
+
+%files
+%defattr(-,root,root)
+
+%dir %{_libdir}/YaST2
+%if "%_lib" == "lib64"
+%dir /usr/lib/YaST2
+%endif
+%dir /usr/share/YaST2
+
+%dir %attr(0700,root,root) @logdir@
+%dir @ybindir@
+%dir @plugindir@
+%dir @execcompdir@/servers
+%dir @execcompdir@/servers_non_y2
+
+/usr/bin/ycpc
+%{_libdir}/lib*.so.*
+@plugindir@/lib*.so.*
+@scrconfdir@/*.scr
+
+%files devel
+%defattr(-,root,root)
+%{_libdir}/lib*.so
+%{_libdir}/lib*.la
+@plugindir@/lib*.so
+@plugindir@/lib*.la
+@includedir@
+@pkgconfigdir@/@RPMNAME@.pc
+%doc @docdir@
+@ydatadir@/devtools/bin/generateYCPWrappers
