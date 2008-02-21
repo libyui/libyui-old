@@ -1,0 +1,18 @@
+Run the examples by typing:
+
+   y2base ./<test>.ycp qt
+
+to use the graphical YaST2 user interface  (the Qt UI)
+or for the text based YaST2 user interface (the NCurses UI):
+
+   y2base ./<test>.ycp ncurses
+
+Depending on your system setup, you might have to specify the absolute
+path for the "y2base" command. At the time of this writing, this should be
+   /usr/lib/YaST2/bin/y2base
+
+
+Example:
+
+   y2base ./ProgressBar1.ycp qt
+

@@ -1,0 +1,23 @@
+// Simple example for SimplePatchSelector
+{
+    if ( ! UI::HasSpecialWidget(`SimplePatchSelector ) )
+    {
+        UI::OpenDialog(
+		   `VBox( 
+			 `Label("Error: This UI doesn't support the SimplePatchSelector widget!"),
+			 `PushButton(`opt(`default), "&OK")
+			 )
+		   );
+        UI::UserInput();
+        UI::CloseDialog();
+	
+	return;
+    }
+    
+
+    UI::OpenDialog(`opt(`defaultsize), `SimplePatchSelector(`id(`selector) ) );
+    any input = UI::RunPkgSelection(`id(`selector) );
+    UI::CloseDialog();
+
+    y2milestone( "Input: %1", input );
+}

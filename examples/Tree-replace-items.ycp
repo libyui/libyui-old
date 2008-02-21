@@ -1,0 +1,88 @@
+// Example showing how to replace Tree items
+{
+
+    list pizza_list =
+	[
+	 "Pizza Napoli",
+	 "Pizza Funghi",
+	 "Pizza Salami",
+	 "Pizza Hawaii"
+	 ];
+
+    list pasta_list =
+	[
+	 "Spaghetti",
+	 "Rigatoni",
+	 "Tortellini"
+	 ];
+
+    list veggie_toppings =
+	[
+	 "Cheese",
+	 "Mushrooms",
+	 "Pepperoni",
+	 "Rucola",
+	 "Tomatoes"
+	 ];
+
+    list meat_toppings =
+	[
+	 "Ham",
+	 "Salami",
+	 "Tuna"
+	 ];
+
+    list menu =	[
+	`item( `id ( `pizza_branch ), "Pizza", true,
+	       pizza_list ),
+	`item( `id ( `pasta_branch ), "Pasta", true,
+	       pasta_list)
+	];
+
+    list toppings = [
+	`item( `id ( `meat_branch ), "Meat", true,
+	       meat_toppings ),
+	`item( `id ( `veggie_branch ), "Veggie", true,
+	       veggie_toppings)
+	];
+		
+
+    UI::OpenDialog( `VBox(
+			  `Tree(`id(`listing), "Daily &Specials:", menu
+			      ),
+			  `HBox(
+				`PushButton(`id(`menu), "&Menu" ),
+				`PushButton(`id(`toppings), "&Toppings" )
+				),
+			  `PushButton(`id(`ok), "&OK" )
+			  )
+		    );
+
+    symbol button = nil;
+
+    do
+    {
+	button = (symbol) UI::UserInput();
+
+	if ( button == `menu )      UI::ChangeWidget(`listing, `Items, menu);
+	if ( button == `toppings )  UI::ChangeWidget(`listing, `Items, toppings );
+	
+	
+    } while ( button != `ok );
+
+    string order = (string) UI::QueryWidget(`listing, `CurrentItem );
+    UI::CloseDialog();
+
+
+    //
+    // Show the result
+    //
+    
+    UI::OpenDialog(`VBox(
+			 `Label( sformat( "Your order: %1", order ) ),
+			 `PushButton(`opt(`default), "&OK" )
+			 )
+		   );
+    UI::UserInput();
+    UI::CloseDialog();
+}

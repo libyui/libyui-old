@@ -1,0 +1,2 @@
+#!/bin/sh
+y2base Glyphs.ycp qt -font '-gnu-unifont-medium-r-normal--16-160-75-75-p-80-iso10646-1'

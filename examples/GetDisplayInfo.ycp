@@ -1,0 +1,31 @@
+/**
+ * Simple demo for the UI::GetDisplayInfo() UI bultin:
+ *
+ * Open a RichText widget with all the info map's contents and format them as HTML
+ **/
+
+
+{
+    map info_map = UI::GetDisplayInfo();
+    string info_text = "<ul>";
+
+    foreach ( `capability, `value, info_map, ``{
+	info_text = info_text + sformat( "<li>%1: %2</li>", capability, value );
+    });
+
+    info_text = info_text + "<ul>";
+    
+    UI::OpenDialog(
+	       `VBox(
+		     `HSpacing( 40 ),	// force width
+		     `Left( `Heading("Display capabilities:" ) ),
+		     `HBox(
+			   `RichText( info_text ),
+			   `VSpacing( 15 )	// force height
+			   ),
+		     `PushButton(`opt(`default), "&OK")
+		     )
+	       );
+    UI::UserInput();
+    UI::CloseDialog();
+}

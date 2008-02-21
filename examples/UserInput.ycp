@@ -1,0 +1,77 @@
+// UserInput.ycp
+//
+// Example for common usage of UI::UserInput()
+
+{
+    // Build dialog with two input fields and three buttons.
+    //
+    // Output goes to the log file: ~/.y2log for normal users
+    // or /var/log/YaST2/y2log for root.
+    
+    string name = "Tux";
+    string addr = "Antarctica";
+    
+    UI::OpenDialog(
+		   `VBox(
+			 `InputField(`id(`name), "&Name:",    name ),
+			 `InputField(`id(`addr), "&Address:", addr ),
+			 `HBox(
+			       `PushButton(`id(`ok     ), "&OK" ),
+			       `PushButton(`id(`cancel ), "&Cancel" ),
+			       `PushButton(`id(`help   ), "&Help"   )
+			       )
+			 )
+		   );
+
+    any widget_id = nil;
+
+    // Event loop
+    
+    repeat
+    {
+	widget_id = UI::UserInput();
+
+	if ( widget_id == `ok )
+	{
+	    // process "OK" button
+	    
+	    y2milestone( "OK button activated" );
+
+	    
+	    // Retrieve widget contents
+	    
+	    name = (string) UI::QueryWidget(`id(`name ), `Value );
+	    addr = (string) UI::QueryWidget(`id(`addr ), `Value );
+	}
+	else if ( widget_id == `cancel )
+	{
+	    // process "Cancel" buttton
+	    // or window manager close button (this also returns `cancel)
+	    
+	    y2milestone( "Cancel button activated" );
+	}
+	else if ( widget_id == `help )
+	{
+	    // process "Help" button
+	    
+	    y2milestone( "Help button activated" );
+	}
+
+	// No other "else" branch necessary: None of the InputField widget has
+	// the `notify option set, so none of them can make UI::UserInput() return.
+	
+    } until ( widget_id == `ok || widget_id == `cancel );
+
+
+	
+    // Close the dialog - but only after retrieving all information that may
+    // still be stored only in its widgets: UI::QueryWidget() works only for
+    // widgets that are still on the screen!
+	
+    UI::CloseDialog();
+
+    
+    // Dump the values entered into the log file
+    
+    y2milestone( "Name: %1 Address: %2", name, addr );
+}

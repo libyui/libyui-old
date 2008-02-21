@@ -1,0 +1,262 @@
+// NCurses SlideShow demo: No Wizard or MultiProgressMeter widget available,
+// thus using simpler layout
+
+{
+    import "Wizard";
+
+    list<integer> initialRpms = [ 600, 150, 30, 100 ];
+    list<integer> rpms = initialRpms;
+    integer totalToInstall = 0;
+    boolean useTimeout = false;
+    integer currentCd = 1;
+    integer megaBytesPerSecond	= 2;
+
+
+    define string mediaName( integer mediaNo )
+    {
+	return sformat( "SuSE Linux Professional CD %1", mediaNo );
+    }
+
+
+    define void mediaChange( integer cdNo )
+    {
+	if ( UI::WidgetExists( `nextMedia ) )
+	    UI::ChangeWidget(`nextMedia, `Value, "" );
+	
+	UI::OpenDialog( `VBox(
+			      `Label( sformat( "Please insert \n%1", mediaName( cdNo ) ) ),
+			      `PushButton( `opt(`default), "&OK" )
+			      )
+			);
+	// UI::TimeoutUserInput( 5 * 1000 );
+	UI::UserInput();
+	UI::CloseDialog();
+	currentCd = cdNo;
+    }
+
+
+    define integer listSum( list<integer> valueList )
+    {
+	integer sum = 0;
+
+	foreach ( integer val, valueList, ``{
+	    sum = sum + val;
+	} );
+	
+	return sum;    
+    }
+
+
+    define list<integer> install( list<integer> valueList, integer delta )
+    {
+	boolean subtracted = false;
+	list<integer> newList = [];
+	integer cdNo = 1;
+	integer newCd = -1;
+	integer totalRemaining = 0;
+
+	foreach ( integer val, valueList, ``{
+	    cdNo = cdNo + 1;
+	    totalRemaining = totalRemaining + val;
+
+	    if ( val > 0 && ! subtracted )
+	    {
+		val = val - delta;
+		subtracted = true;
+
+		if ( val <= 0 )
+		{
+		    val = 0;
+		    newCd = cdNo;
+		}
+	    }
+
+	    newList = add( newList, val );
+	});
+
+	UI::ChangeWidget(`progressTotal, `Value, totalToInstall - totalRemaining );
+
+	if ( newCd > 0 && newCd <= size( valueList ) )
+	    mediaChange( newCd );
+
+	if ( totalRemaining <= 0 )
+	{
+	    useTimeout = false;
+	    Wizard::SetNextButton(`startStop, "&Start" );
+	    newList = initialRpms;
+	    currentCd = -1;
+	    y2milestone( "Resetting to %1", rpms );
+	}
+
+	return newList;
+    }
+
+
+    define string twoDigits( integer n )
+    {
+	return n < 10 ? sformat( "0%1", n ) : sformat( "%1", n );
+    }
+
+
+    define string formatTime( integer seconds )
+    {
+	integer hours = seconds / 3600;
+	integer minutes = seconds / 60;
+	seconds = seconds % 60;
+	return sformat( "%1:%2:%3", hours, twoDigits( minutes), twoDigits( seconds ) );
+    }
+
+
+    define string nextMedia()
+    {
+	string remaining = "";
+	string mediaType = "CD";
+
+	if ( currentCd > 0 && size( rpms ) > currentCd )
+	{
+	    integer seconds = rpms[ currentCd-1 ]:0 * megaBytesPerSecond;
+	    remaining = sformat( "Next %1: %2  --  %3",
+				 mediaType,
+				 mediaName( currentCd+1 ),
+				 formatTime( seconds ) );
+	}
+
+	return remaining;
+    }
+
+
+    define string pkgInfo( string pkgName, string pkgVersion, float pkgSizeMB, string pkgSummary )
+    {
+	string info = sformat( "%1-%2 (%3 MB)", pkgName, pkgVersion, pkgSizeMB );
+
+	if ( size( pkgSummary ) > 0 )
+	    info = info + " - " + pkgSummary;
+
+	return info;
+    }
+
+
+
+    //
+    // ----------------------------- main() ----------------------------------
+    //
+
+
+
+    string help_text = "<p>Please wait while packages are being installed.</p>";
+    string slide_text = "								\
+<table cellspacing=\"10\" cellpadding=\"5\">						\
+<tr>											\
+<td width =\"*\">									\
+<img src=\"/opt/kde3/share/icons/crystalsvg/128x128/apps/kscd.png\"  width=\"100\"	\
+align=\"left\">										\
+</td>											\
+											\
+<td width=\"*\">									\
+<p><font color=\"#00007f\"><b>XMMS and JuK - Powerful Jukeboxes</b></font></p>		\
+<p>XMMS is an excellent sound player for Linux. It is easy to use and supports		\
+various formats, including audio CDs. Test the many visualization plug-ins or		\
+download your favorite XMMS skins from the web.</p>					\
+<p>New in KDE: JuK, which classifies your MP3s and organizes your music			\
+collection.</p>										\
+<p><b>Want More?</b></p>								\
+<p>The SUSE distribution features a wide range of applications for playing		\
+your CDs and MP3 songs. For example, KsCD is a user-friendly CD player. The		\
+track information for most CDs is available on the Internet. Simply activate		\
+the respective function to display the list.</p>					\
+											\
+</td>											\
+</tr>											\
+</table>";
+
+
+    term cdTable =
+	`Table(
+	       `id(`cdTable), `opt(`keepSorting),
+	       `header( "Media", "Size", "Packages", "Time" ),
+	       [
+		`item(`id("total"), "Total", "638.1 MB", "485", "23:31" ),
+		`item(`id("1-1"), "SLES-9 Base CD", "620.7 MB", "480", "20:23" ),
+		`item(`id("1-1"), "SLES-9 CD 1", "620.7 MB", "480", "20:23" ),
+		`item(`id("1-2"), "SLES-9 CD 2",  "17.4 MB",   "5",  "3:08" ),
+		`item(`id("1-3"), "SLES-9 CD 3",  "--", "--", "--:--" ),
+		`item(`id("1-4"), "SLES-9 CD 4",  "--", "--", "--:--" ),
+		`item(`id("1-5"), "SLES-9 CD 5",  "--", "--", "--:--" ),
+		`item(`id("2-1"), "SLES-9 SP 1 CD 1",  "--", "--", "--:--" ),
+		`item(`id("2-2"), "SLES-9 SP 1 CD 2",  "--", "--", "--:--" ),
+		`item(`id("3-1"), "SLES-9 SP 2 CD 1",  "--", "--", "--:--" )
+		]
+	       );
+
+    totalToInstall = listSum( initialRpms );
+
+    term detailsPage =
+	`VBox(`id(`detailsPage ),
+	      `VWeight( 1, cdTable ),
+	      `VWeight( 1, `LogView(`id(`pkgLog ),  "", 6, 100 ) ),
+	      `ProgressBar(`id(`progressCurrentPackage), "hypercool-1.3.7 (143.3 MB)", 100, 42 ),
+	      `ProgressBar(`id(`progressTotal ), "Total", totalToInstall, 0 )
+	      //, `VSpacing( 0.3 ),
+	      // `Label(`id(`nextMedia ), `opt( `hstretch), "" ) // Reserve space
+	      );
+
+
+    term contents =
+	`VBox(
+	      `VSpacing( 0.4 ),
+	      `VWeight( 1,	// lower layout priority
+			`HBox(
+			      `HSpacing( 1 ),
+			      detailsPage,
+			      `HSpacing( 0.5 )
+			      )
+			),
+	      `VSpacing( 0.4 )
+	      );
+    
+    Wizard::OpenNextBackDialog();
+    Wizard::SetContents( "Package Installation", contents, help_text, true, true );
+    Wizard::SetNextButton(`startStop, useTimeout ? "&Stop" : "&Start" );
+    Wizard::SetBackButton(`step, "S&tep" );
+
+    //	UI::ChangeWidget(`nextMedia, `Value, nextMedia() + "      " ); // Reserve space
+    //	UI::RecalcLayout();
+    //	UI::ChangeWidget(`nextMedia, `Value, "" );	//
+    //	// Intentionally omitting UI::RecalcLayout() so the reserved space remains
+
+
+    while( true )
+    {
+	symbol button = useTimeout ? (symbol) UI::TimeoutUserInput( 100 ) : (symbol) UI::UserInput();
+
+	if ( button == `abort )
+	    break;
+
+	integer delta = 0;
+	if ( button == `startStop )
+	{
+	    useTimeout = ! useTimeout;
+	    Wizard::SetNextButton(`startStop, useTimeout ? "&Stop" : "&Start" );
+	    UI::RecalcLayout();
+	    
+	    if ( currentCd < 0 )
+		currentCd = 1;
+	}
+	if      ( button == `step 	)	delta = 10;
+	else if ( button == `timeout	)	delta = 100;
+
+	if ( delta > 0 )
+	{
+	    rpms = install( rpms, 10 );
+
+	    if ( UI::WidgetExists( `nextMedia ) )
+	    {
+		UI::ChangeWidget(`nextMedia, `Value, nextMedia() );
+		UI::RecalcLayout();
+	    }
+	}
+    }
+
+    UI::CloseDialog();
+
+}

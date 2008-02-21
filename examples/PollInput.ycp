@@ -1,0 +1,40 @@
+// PollInput.ycp
+//
+// Example for common usage of UI::PollInput()
+
+{
+    // Build dialog with two labels and a "stop" button.
+
+    integer count     = 0;
+    integer count_max = 10000;
+
+    UI::OpenDialog(
+		   `VBox(
+			 `Label( "Calculating..." ),
+			 `Label(`id(`count ), sformat( "%1 of %2", count, count_max ) ),
+			 `PushButton(`id(`stop), "&Stop" )
+			 )
+		   );
+
+    any widget_id = nil;
+
+    // Event loop
+
+    repeat
+    {
+	widget_id = UI::PollInput();
+
+
+	// Simulate heavy calculation
+
+	sleep(200); // milliseconds
+
+	// Update screen to show that the program is really busy
+	count = count + 1;
+	UI::ChangeWidget(`id(`count), `Value, sformat( "%1 of %2", count, count_max ) );
+	UI::RecalcLayout(); // Might be necessary when the label becomes wider
+
+    } until ( widget_id == `stop || count >= count_max );
+
+    UI::CloseDialog();
+}

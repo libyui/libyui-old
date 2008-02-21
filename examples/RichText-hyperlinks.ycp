@@ -1,0 +1,44 @@
+// Example for a RichText widget with hyperlinks
+{
+    UI::OpenDialog( `opt(`defaultsize),
+		`VBox(
+		      `RichText( "<h3>RichText example</h3>"
+				 + "<p>RichText may contain <a href=\"hyper\">hyperlinks</a>,"
+				 + "very much like HTML.</p>"
+				 + "<p>Clicking on a <a href=\"link\">link</a> will make "
+				 + "<a href=\"user_input\">UI::UserInput()</a> return "
+				 + "with the <i>href</i> part of the hyperlink "
+				 + "as a (string) return value.</p>"
+				 + "<h3>Known (HTML-like) entities</h3>"
+				 + "<ul>"
+				 + "<li><b>&amp;product;</b> for the product name (<b>&product;</b>)"
+				 + "<li><b>&amp;amp;</b> for <b>&amp;</b>"
+				 + "<li><b>&amp;lt;</b> for <b>&lt;</b>"
+				 + "<li><b>&amp;gt;</b> for <b>&gt;</b>"
+				 + "</ul>"
+				 ),
+		      `HBox(
+			    `Label( "You clicked: " ),
+			    `Label(`id(`val), `opt(`outputField, `hstretch), "" )
+			    ),
+		      `PushButton(`id(`close), `opt(`default), "&Close")
+		      )
+		);
+
+
+    any ret = nil;
+
+    repeat
+    {
+	ret = UI::UserInput();
+
+	if ( ret != nil )
+	{
+	    string val = sformat( "%1", ret );
+	    UI::ChangeWidget(`id(`val), `Value, val );
+	}
+	
+    } until ( ret == `close );
+    
+    UI::CloseDialog();
+}

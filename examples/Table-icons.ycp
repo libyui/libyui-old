@@ -1,0 +1,69 @@
+// Advanced table example: Icon browser
+{
+    /**
+     * Read a directory with icons.
+     **/
+    list<string> readIconDir( string dir )
+    {
+	list<string> iconList = (list<string>) SCR::Read(.target.dir, dir );
+	y2debug( "Dir %1: %2  entries", dir, size( iconList ) );
+	iconList = sort( filter( string entry, iconList,
+				 ``( regexpmatch( entry, "^.*\.(png|jpg|PNG|JPG)$" ) )
+				 ) );
+
+	return iconList;
+    }
+
+
+
+    string iconBasePath = "/usr/share/YaST2/theme/current/icons";
+
+    UI::OpenDialog(
+		   `VBox(
+			 `Heading( "Icons" ),
+			 `MinSize( 60, 40,
+				   `Table(`id(`iconTable),
+					  `header( "Name", "22x22", "32x32", "48x48" )
+					  )
+				   ),
+			 `HBox(
+			       `Label(`opt(`outputField, `hstretch), iconBasePath),
+			       `PushButton(`id(`cancel), "&Close" )
+			       )
+			 )
+		   );
+
+    UI::OpenDialog( `Label( "Reading icon directories..." ) );
+
+
+    list<string> iconList =                    readIconDir( iconBasePath + "/22x22/apps" );
+    iconList = (list<string>) union( iconList, readIconDir( iconBasePath + "/32x32/apps" ) );
+    iconList = (list<string>) union( iconList, readIconDir( iconBasePath + "/48x48/apps" ) );
+
+    list<term> itemList = [];
+
+    foreach ( string iconName, iconList, ``{
+	term item = `item(`id( iconName ),
+			  iconName,
+			  `cell( `icon( "22x22/apps/" + iconName ) ),
+			  `cell( `icon( "32x32/apps/" + iconName ) ),
+			  `cell( `icon( "48x48/apps/" + iconName ) )
+			  );
+	// y2debug( "Item: %1", item );
+	itemList = add( itemList, item );
+    });
+
+    UI::CloseDialog(); // Close busy dialog
+
+    UI::ChangeWidget(`iconTable, `IconPath, iconBasePath );
+    UI::ChangeWidget(`iconTable, `Items, itemList );
+
+    any widgetID = nil;
+
+    repeat
+    {
+	widgetID = UI::UserInput();
+    } until ( widgetID == `cancel );
+
+    UI::CloseDialog();
+}

@@ -1,0 +1,16 @@
+// Package Selector example
+{
+    boolean use_installed_system = true;
+    
+    Pkg::SourceCreate( "file:/mounts/dist/full/full-10.2-i386/", "" );
+
+
+    if ( use_installed_system )
+	Pkg::TargetInit( "/", false );
+    
+    UI::OpenDialog(`opt(`defaultsize), `PackageSelector(`id(`selector), "/dev/fd0" ) );
+    any button = UI::RunPkgSelection(`id(`selector) );
+    UI::CloseDialog();
+
+    y2milestone( "Button: %1", button );
+}

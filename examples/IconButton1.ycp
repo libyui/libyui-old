@@ -1,0 +1,12 @@
+{
+    // Build a dialog with one icon button.
+    // Wait until that button is clicked,
+    // then close the dialog and terminate.
+
+    UI::OpenDialog(
+		   `IconButton( "icons/22x22/apps/yast-users.png", "&OK" )
+		   );
+
+    UI::UserInput();
+    UI::CloseDialog();
+}

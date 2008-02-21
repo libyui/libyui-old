@@ -1,0 +1,46 @@
+{
+    UI::OpenDialog(
+		   `VBox(
+			 `Heading("Today's menu"),
+			 `MinSize( 25, 7,
+				   `Table(`id(`table),
+					  `header("Name", "Price"),
+					  [
+					   `item(`id(1), "Chili",	    6),
+					   `item(`id(2), "Salami Baguette", nil),
+					   `item(`id(3), "Spaghetti",	    8),
+					   `item(`id(4), "Steak Sandwich",  12)
+					   ]
+					  )
+				   ),
+			 `Right(`HBox(
+				      `PushButton("&Lookup"),
+				      `PushButton(`id(`cancel), "&Close" )
+				      )
+				)
+			 )
+		   );
+
+    while (UI::UserInput() != `cancel)
+    {
+	any id = UI::QueryWidget(`id(`table), `CurrentItem);
+	if (is(id, integer))
+	{
+	    string text = sformat("Line: %1", UI::QueryWidget(`id(`table), `Item(id)));
+	    UI::OpenDialog(
+			   `MarginBox( 1, 0.2,
+				       `VBox(
+					     `Left( `Label( "Current Table Item" ) ),
+					     `Label(`opt(`outputField), text),
+					     `PushButton("&OK")
+					     )
+				       )
+			   );
+	    UI::UserInput();
+	    UI::CloseDialog();
+	}
+    }
+
+    UI::CloseDialog();
+}
+

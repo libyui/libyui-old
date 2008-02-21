@@ -1,0 +1,22 @@
+{
+    UI::OpenDialog(
+	       `VBox(
+		     `Label("ÖßemsflkÄÄ"),
+		     `MinSize( 25, 7,
+			       `Table(
+				      `header("Änerheß", "Äßööäääää"),
+				      [
+				       `item(`id(1), "ěščřžýáíˇ",	6),
+				       `item(`id(2), "ěšřž",		nil),
+				       `item(`id(3), "Änderßßß",	8),
+				       `item(`id(4), "完時",		12)
+				       ]
+				      )
+			       ),
+		     `PushButton("&OK")
+		     )
+	       );
+    UI::UserInput();
+    UI::CloseDialog();
+}
+

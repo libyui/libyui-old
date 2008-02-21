@@ -1,0 +1,123 @@
+{
+    // Build a dialog with a tree for directory selection, three
+    // buttons with common values and a label that directly echoes any
+    // selected directory.
+    //
+    // The tree in this example uses the `notify option that makes
+    // UI::UserInput() return immediately as soon as the user selects a
+    // tree item rather than the default behaviour which waits for the
+    // user to activate a button.
+    
+    UI::OpenDialog(
+		   `MinWidth( 50,
+			      `VBox(
+				    `Tree(`id(`dest_dir),
+					  `opt(`notify),
+					  "Select destination directory:",
+					  [
+					   `item( "/" , true,
+						  [
+						   `item( "etc",
+							  [
+							   `item("opt"),
+							   `item("SuSEconfig"),
+							   `item("X11")
+							   ]
+							  ),
+						   `item( "usr", false, 
+							  [
+							   "bin",
+							   "lib",
+							   `item("share",
+								 [
+								  "man",
+								  "info",
+								  "emacs"
+								  ]
+								 ),
+							   `item( "local" ),
+							   `item("X11R6",
+								 [
+								  "bin",
+								  "lib",
+								  "share",
+								  "man",
+								  "etc"
+								  ]
+								 )
+							   ]
+							  ),
+						   `item( "opt", true,
+							  [
+							   "kde",
+							   "netscape",
+							   "Office51"
+							   ]
+							  ),
+						   `item("home"),
+						   "work",
+						   `item( "<other>")
+						   ]
+						  )
+					   ] ),
+				    `HBox(
+					  `PushButton(`id(`sel_opt),		`opt(`hstretch), "/&opt" ),
+					  `PushButton(`id(`sel_usr),		`opt(`hstretch), "/&usr" ),
+					  `PushButton(`id(`sel_usr_local),	`opt(`hstretch), "/usr/&local" )
+					  ),
+				    `HBox(
+					  `HWeight( 2, `Label("Current Item:") ),
+					  `HWeight( 5, `Label(`id(`echoItem), `opt(`outputField, `hstretch), "") )
+					  ),
+				    `HBox(
+					  `HWeight( 2, `Label("Current Branch:") ),
+					  `HWeight( 5, `Label(`id(`echoBranch), `opt(`outputField, `hstretch), "") )
+					  ),
+				    `HBox(
+					  `HWeight( 2, `Label("Current Path:") ),
+					  `HWeight( 5, `Label(`id(`echoPath), `opt(`outputField, `hstretch), "") )
+					  ),
+				    `PushButton(`id(`ok), `opt(`default), "&OK")
+				    )
+			      )
+		   );
+
+    any id = nil;
+
+    repeat
+	{
+	    id = UI::UserInput();
+
+	    if      ( id == `sel_usr)		UI::ChangeWidget( `id( `dest_dir ), `CurrentItem, "usr"  );
+	    else if ( id == `sel_usr_local)	UI::ChangeWidget( `id( `dest_dir ), `CurrentItem, "local" );
+	    else if ( id == `sel_opt) 		UI::ChangeWidget( `id( `dest_dir ), `CurrentItem, "opt" );
+	    else if ( id == `dest_dir)
+	    {
+		any current_dir = UI::QueryWidget(`dest_dir, `CurrentItem );
+
+		if ( current_dir != nil )
+		    UI::ChangeWidget( `id( `echoItem ), `Value, sformat( "%1", current_dir ) );
+
+		list<string> current_branch = (list<string>) UI::QueryWidget(`dest_dir, `CurrentBranch );
+
+		if ( current_branch != nil )
+		{
+		    UI::ChangeWidget(`echoBranch, `Value, sformat( "%1", current_branch) );
+
+		    string current_path = mergestring( current_branch, "/" );
+		    if ( size( current_path ) > 2 )
+			// Remove duplicate "/" at start
+			current_path = substring( current_path, 1, size( current_path )-1 );
+		    
+		    UI::ChangeWidget(`echoPath, `Value, sformat( "%1", current_path ) );
+		}
+	    }
+	    
+	} until ( id == `ok );
+
+
+    // Close the dialog.
+    // Remember to read values from the dialog's widgets BEFORE closing it!
+    UI::CloseDialog();
+
+}

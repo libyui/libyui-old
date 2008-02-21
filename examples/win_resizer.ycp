@@ -1,0 +1,87 @@
+// Advanced Slider + BarGraph example:
+//
+// Windows partition splitter.
+
+
+{
+    // Check for availability of required widgets
+
+    if ( ! UI::HasSpecialWidget(`Slider) ||
+	 ! UI::HasSpecialWidget(`BarGraph ) )
+    {
+	UI::OpenDialog(
+		   `VBox(
+			 `Label("Error: This UI doesn't support the required special widgets!"),
+			 `PushButton(`opt(`default), "&OK")
+			 )
+		   );
+	UI::UserInput();
+	UI::CloseDialog();
+
+	return;
+    }
+
+
+    // Initialize values
+
+    string  unit	= "MB";
+    integer win_used	= 350;
+    integer total_free	= 1500;
+    integer min_free	= 50;
+    integer linux_min	= 300;
+    integer linux_size	= 800;
+    integer win_free	= total_free - linux_size;
+
+
+    // Create the dialog
+
+    UI::OpenDialog(
+	       `VSquash(
+			`VBox(
+			      `HSpacing(50),		// force width
+			      `Left( `Label( "Now:" ) ),
+			      `BarGraph( `opt(`vstretch),
+					 [ win_used, total_free ],
+					 [
+					  "Windows\nused\n%1 " + unit,
+					  "Windows\nfree\n%1 " + unit
+					 ]
+					 ),
+			      `VSpacing(2),
+
+			      `Left( `Label( "After installation:") ),
+			      `BarGraph( `id(`graph), `opt(`vstretch),
+					 [ win_used, win_free, linux_size ],
+					 [
+					  "Windows\nused\n%1 " + unit,
+					  "Windows\nfree\n%1 " + unit,
+					  "Linux\n%1 " + unit
+					 ]
+					 ),
+			      `Slider( `id(`linux_size),   `opt(`notify),
+				       "Linux (" + unit + ")",
+				       linux_min, total_free - min_free, linux_size ),
+			      `PushButton(`id(`close), `opt(`default), "&Close")
+			      )
+			)
+	       );
+
+    // Event processing loop - left only via the "close" button
+    // or the window manager close button / function.
+
+    any widget = nil;
+
+    do
+    {
+	widget = UI::UserInput();
+
+	if ( widget == `linux_size )
+	{
+	    linux_size = (integer) UI::QueryWidget(`id(`linux_size),   `Value );
+	    win_free = total_free - linux_size;
+	    UI::ChangeWidget(`id(`graph), `Values, [ win_used, win_free, linux_size ] );
+	}
+    } while ( widget != `close && widget != `cancel );
+
+    UI::CloseDialog();
+}

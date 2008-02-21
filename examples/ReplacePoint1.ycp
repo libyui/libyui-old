@@ -1,0 +1,14 @@
+{
+    UI::OpenDialog(
+	       `VBox(
+		     `ReplacePoint(`id(`rp), `Label("This is a label")),
+		     `PushButton(`id(`change), "Change")));
+    UI::UserInput();
+    UI::ReplaceWidget(`id(`rp), `PushButton("This is a PushButton"));
+    UI::UserInput();
+    UI::ReplaceWidget(`id(`rp), `CheckBox("This is a CheckBox"));
+    UI::UserInput();
+    UI::ReplaceWidget(`id(`rp), `HBox(`PushButton("Button1"), `PushButton("Button2")));
+    UI::UserInput();
+    UI::CloseDialog();
+}

@@ -1,0 +1,16 @@
+// Animated image example
+{
+    
+    UI::OpenDialog(
+	       `VBox(
+		     `MinSize( 30, 10, 
+			       `Image(`opt(`scaleToFit ),
+				      "/usr/share/wallpapers/alta-badia.jpg", "fallback text" )
+			       ),
+		     `PushButton(`opt(`default), "&OK")
+		     )
+	       );
+
+    UI::UserInput();
+    UI::CloseDialog();
+}

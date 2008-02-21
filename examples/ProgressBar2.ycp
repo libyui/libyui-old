@@ -1,0 +1,36 @@
+// ProgressBar example
+{
+    UI::OpenDialog(
+		   `VBox(
+			 `Heading("Adjust the volume"),
+			 `ProgressBar(`id(`vol), "Volume", 100, 50),
+			 `HBox(
+			       `PushButton(`id(`down), "<<"),
+			       `PushButton(`id(`up  ), ">>"),
+			       `HStretch(),
+			       `HSpacing(3),
+			       `PushButton(`id(`cancel), "&Close" )
+			       )
+			 )
+		   );
+    
+    while (true)
+    {
+	symbol button = (symbol) UI::UserInput();
+	
+	if (button == `cancel)
+	    break;
+	else if ( button == `down || button == `up )
+	{
+	    integer volume = (integer) UI::QueryWidget(`id(`vol), `Value);
+
+	    if ( button == `down )	volume = volume - 5;
+	    if ( button == `up	 )	volume = volume + 5;
+	   
+	    y2milestone( "Volume: %1", volume );
+	    UI::ChangeWidget(`id(`vol), `Value, volume );
+	}
+    }
+    
+    UI::CloseDialog();
+}

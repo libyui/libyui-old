@@ -1,0 +1,10 @@
+{
+    UI::OpenDialog(
+	       `VBox( 
+		     `Heading("This Is a Heading."),
+		     `PushButton("&OK")
+		     )
+	       );
+    UI::UserInput();
+    UI::CloseDialog();
+}

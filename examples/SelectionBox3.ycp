@@ -1,0 +1,67 @@
+{
+    // Create a selection box with three entries.
+    // All entries have IDs to identify them independent of locale
+    // (The texts might have to be translated!).
+    // Entry "Funghi" will be selected by default.
+    //
+    // There are two buttons to select a "Today's special" and a
+    // "veggie" pizza to demonstrate how to select list entries
+    // programmatically.
+    UI::OpenDialog(
+	       `VBox(
+		     `SelectionBox(`id(`pizza),
+				   "Select your Pizza:",
+				   [
+				    `item(`id(`nap), "Napoli"       ),
+				    `item(`id(`fun), "Funghi", true ),
+				    `item(`id(`sal), "Salami"       )
+				   ] ),
+		     `HBox(
+			   `PushButton(`id(`todays_special), `opt(`hstretch), "&Today's special" ),
+			   `PushButton(`id(`veggie),         `opt(`hstretch), "&Veggie" )
+			   ),
+		     `PushButton(`id(`ok), `opt(`default), "&OK")
+		     )
+	       );
+
+    any id = nil;
+    
+    repeat
+	{
+	    id = UI::UserInput();
+
+	    if      ( id == `todays_special ) UI::ChangeWidget( `id( `pizza ), `CurrentItem, `nap );
+	    else if ( id == `veggie         ) UI::ChangeWidget( `id( `pizza ), `CurrentItem, `fun );
+	} until ( id == `ok );
+
+    // Get the input from the selection box.
+    //
+    // Notice: The return value of UI::UserInput() does NOT return this value!
+    // Rather, it returns the ID of the widget (normally the PushButton)
+    // that caused UI::UserInput() to return.
+    any pizza = UI::QueryWidget(`id(`pizza), `CurrentItem);
+    
+    // Close the dialog.
+    // Remember to read values from the dialog's widgets BEFORE closing it!
+    UI::CloseDialog();
+
+    // Evaluate selection
+
+    string toppings = "nothing";
+
+    if      ( pizza == `nap )	toppings = "Tomatoes, Cheese";
+    else if ( pizza == `fun )	toppings = "Tomatoes, Cheese, Mushrooms";
+    else if ( pizza == `sal )	toppings = "Tomatoes, Cheese, Sausage";
+    
+    // Pop up a new dialog to echo the selection.
+    UI::OpenDialog(
+	       `VBox(
+		     `Label("You will get a pizza with:"),
+		     `Label(toppings),
+		     `PushButton(`opt(`default), "&OK")
+		     )
+	       );
+    UI::UserInput();
+    
+    UI::CloseDialog();
+}

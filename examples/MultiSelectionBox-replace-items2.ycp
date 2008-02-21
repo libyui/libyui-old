@@ -1,0 +1,67 @@
+// Example showing how to replace SelectionBox items
+{
+
+    list all_toppings =
+	[
+	 `item(`id( "Cheese"	), "Cheese",	true ),
+	 `item(`id( "Tomatoes"	), "Tomatoes",	true ),
+	 `item(`id( "Ham"	), "Ham"	),
+	 `item(`id( "Mushrooms"	), "Mushrooms"	),
+	 `item(`id( "Pepperoni"	), "Pepperoni"	),
+	 `item(`id( "Rucola"	), "Rucola"	),
+	 `item(`id( "Salami"	), "Salami"	),
+	 `item(`id( "Tuna"	), "Tuna"	)
+	 ];
+
+    list veggie_toppings =
+	[
+	 `item(`id( "Cheese"	), "Cheese",	true ),
+	 `item(`id( "Tomatoes"	), "Tomatoes",	true ),
+	 `item(`id( "Mushrooms"	), "Mushrooms"	),
+	 `item(`id( "Pepperoni"	), "Pepperoni"	),
+	 `item(`id( "Rucola"	), "Rucola"	)
+	 ];
+
+    UI::OpenDialog(`HBox(`VSpacing(15),	// layout trick: force minimum height
+			 `VBox(
+			       `HSpacing(25),	// force minimum width
+			       `MultiSelectionBox(`id(`toppings), "Toppings:", all_toppings ),
+			       `Left( `CheckBox(`id(`veggie), `opt(`notify), "&Vegetarian" ) ),
+			       `PushButton(`id(`ok), "&OK" )
+			       )
+			 )
+		   );
+
+    symbol button = nil;
+
+    do
+    {
+	button = (symbol) UI::UserInput();
+
+	if ( button == `veggie )
+	{
+	    boolean vegetarian = (boolean) UI::QueryWidget(`veggie, `Value );
+
+	    if ( vegetarian )	UI::ChangeWidget(`toppings, `Items, veggie_toppings );
+	    else		UI::ChangeWidget(`toppings, `Items, all_toppings );
+	}
+	
+    } while ( button != `ok );
+
+    list<string> order = (list<string>) UI::QueryWidget(`toppings, `SelectedItems );
+    UI::CloseDialog();
+
+
+    //
+    // Show the result
+    //
+
+    
+    UI::OpenDialog(`VBox(
+			 `Label( sformat( "Your order: %1", mergestring( order, ", " ) ) ),
+			 `PushButton(`opt(`default), "&OK" )
+			 )
+		   );
+    UI::UserInput();
+    UI::CloseDialog();
+}

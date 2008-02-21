@@ -1,0 +1,12 @@
+{
+    UI::OpenDialog(
+	       `VBox( 
+		     `ComboBox( "Select your Pizza:",
+				        [ "" ]
+                       ),
+		     `PushButton("&OK")
+		     )
+	       );
+    UI::UserInput();
+    UI::CloseDialog();
+}

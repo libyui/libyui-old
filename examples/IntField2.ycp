@@ -1,0 +1,23 @@
+// Simple IntField example
+{
+    UI::OpenDialog(
+	       `VBox(
+		     `IntField( `id(`perc), "Percentage:", 0, 100, 50),
+		     `PushButton(`opt(`default), "&OK")
+		     )
+	       );
+    UI::ChangeWidget(`perc, `Value, 42 );
+    UI::UserInput();
+    
+    integer percentage = (integer) UI::QueryWidget(`perc, `Value);
+    UI::CloseDialog();
+    
+    UI::OpenDialog(
+	       `VBox(
+		     `Label( sformat( "You entered: %1%%", percentage) ),
+		     `PushButton(`opt(`default), "&OK")
+		     )
+	       );
+    UI::UserInput();
+    UI::CloseDialog();
+}

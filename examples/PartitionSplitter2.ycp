@@ -1,0 +1,50 @@
+{
+    if ( ! UI::HasSpecialWidget(`Slider) ||
+	 ! UI::HasSpecialWidget(`BarGraph ) )
+    {
+	UI::OpenDialog(
+		   `VBox( 
+			 `Label("Error: This UI doesn't support the required special widgets!"),
+			 `PushButton(`opt(`default), "&OK")
+			 )
+		   );
+	UI::UserInput();
+	UI::CloseDialog();
+	
+	return;
+    }
+    
+    string  unit	= "MB";
+    integer win_used	= 350;
+    integer total_free	= 1500;
+    integer min_free	= 50;
+    integer linux_min	= 300;
+    integer linux_size	= 800;
+    
+    UI::OpenDialog(
+	       `VBox(
+		     `HSpacing( 60 ),	// wider default size
+		     `Left( `Label( "Now:") ),
+		     `BarGraph( `opt(`vstretch),
+				[ win_used, total_free ],
+				[
+				 "Windows\nused\n%1 " + unit,
+				 "Windows\nfree\n%1 " + unit
+				]
+				),
+		     `VSpacing(1),
+		     `Left( `Label( "After installation:" ) ),
+		     `PartitionSplitter( win_used, total_free,
+					 linux_size, linux_min, min_free,
+					 "Windows\nused\n%1 "	+ unit,
+					 "Windows\nfree\n%1 " 	+ unit,
+					 "Linux\n%1 " 		+ unit,
+					 "Windows free (" + unit + ")",
+					 "Linux (" + unit + ")"
+					 ),
+		     `PushButton(`opt(`default), "&OK")
+		     )
+	       );
+    UI::UserInput();
+    UI::CloseDialog();
+}

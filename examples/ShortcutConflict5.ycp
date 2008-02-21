@@ -1,0 +1,55 @@
+// Shortcut conflict resolution in a (really badly designed) wizard dialog.
+//
+// Notice how wizard buttons have overall priority and how buttons
+// have priority over other widgets of the same length.
+//
+// Note: YCP applications are discouraged from using the Wizard widget directly.
+// Use the Wizard module instead.
+
+{
+    UI::OpenDialog(`opt(`defaultsize),
+		   `Wizard( `back,  "&Back",
+			    `abort, "&Abort",
+			    `next,  "&Next" ) );
+
+    term fields =
+	`HBox(
+	      `HWeight(1, `InputField( "&Back"  ) ),
+	      `HWeight(1, `InputField( "&Abort" ) ),
+	      `HWeight(1, `InputField( "&Next"  ) )
+	      );
+
+    term buttons =
+	`HBox(
+	      `HWeight(1, `PushButton( "&Back"  ) ),
+	      `HWeight(1, `PushButton( "&Abort" ) ),
+	      `HWeight(1, `PushButton( "&Next"  ) )
+	      );
+
+    UI::ReplaceWidget(`id(`contents),
+		      `VBox(
+			   fields,
+			   fields,
+			   buttons
+			   )
+		      );
+
+    string help_text =
+	"Notice how the wizard buttons keep their preferred shortcuts " +
+	"and how buttons have priority over other widgets.";
+
+    UI::WizardCommand(`SetHelpText( help_text ) );
+
+    while( true )
+    {
+	map event = UI::WaitForEvent();
+
+	y2milestone( "Got event: %1", event );
+
+	if ( event[ "ID" ]:nil == `abort )
+	    break;
+    }
+
+    UI::CloseDialog();
+
+}

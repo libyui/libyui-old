@@ -1,0 +1,10 @@
+{
+    UI::OpenDialog(
+	       `VBox( 
+		     `MultiLineEdit("Problem &description:"),
+		     `PushButton("&OK")
+		     )
+	       );
+    UI::UserInput();
+    UI::CloseDialog();
+}

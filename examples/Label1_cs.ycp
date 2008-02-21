@@ -1,0 +1,10 @@
+{
+    UI::OpenDialog(
+	       `VBox( 
+		     `Label("ěščřžýáíˇ"),
+		     `PushButton("&OKěš")
+		     )
+	       );
+    UI::UserInput();
+    UI::CloseDialog();
+}

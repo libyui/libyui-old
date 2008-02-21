@@ -1,0 +1,87 @@
+{
+    // Set default function keys.
+    //
+    // Those examples are taken from the YaST2 style guide.
+    // Real applications should of course use the predefined
+    // button labels from the Label module.
+
+    // define void UI::SetFunctionKeys( map fkeys ) ``{};
+
+    UI::SetFunctionKeys(
+		    $[
+		      "Help"		: 1,
+		      "Info"		: 2,
+		      "Show Details"	: 2,
+		      "Add"		: 3,
+		      "Edit"		: 4,
+		      "Delete"		: 5,
+		      "Test"		: 6,
+		      "Expert..."	: 7,
+		      "Advanced..."	: 7,
+		      "Back"		: 8,
+
+		      "Abort"		: 9,
+		      "Cancel"		: 9,
+		      "No"		: 9,
+
+		      "Next"		: 10,
+		      "OK"		: 10,
+		      "Accept"		: 10,
+		      "Finish"		: 10,
+		      "Yes"		: 10,
+		      "Apply"		: 10,
+
+		      "Undo"		: 11,
+		      "Reset"		: 11,
+		      "Defaults"	: 12,
+		      "Restore Defaults": 12
+		      ]
+		    );
+
+    string help =
+	"Use this with the NCurses UI.\n" +
+	"Press [F1] there to show function key bindings.";
+
+    UI::OpenDialog(
+	       `VBox(
+		     `VSpacing(),
+		     `Label( help ),
+		     `VSpacing(2),
+		     `HBox(
+			   `Label("Last Button: "),
+			   `Label(`id(`feedback), `opt(`outputField, `hstretch), "" )
+			   ),
+		     `VSpacing(2),
+		     `HBox(
+			   `HWeight( 1, `PushButton(`id("Add"), 	"&Add"		) ),
+			   `HWeight( 1, `PushButton(`id("Edit"), 	"&Edit"		) ),
+			   `HWeight( 1, `PushButton(`id("Delete"),	"&Delete"	) ),
+			   `HWeight( 1, `Empty() ),
+			   `HWeight( 1, `PushButton(`id("Info"),	"&Info"		) )
+			   ),
+		     `VSpacing(),
+		     `HBox(
+			   `HWeight( 1, `PushButton(`id("Back"),	"&Back" 	) ),
+			   `HWeight( 1, `Empty() ),
+			   `HWeight( 1, `PushButton(`id("Abort"),	"Ab&ort" 	) ),
+			   `HWeight( 1, `Empty() ),
+			   `HWeight( 1, `PushButton(`id("Next"),	"&Next"		) )
+			   ),
+		     `VSpacing(3),
+		     `Right( `PushButton(`id("Close"), "&Close") )
+		     )
+	       );
+
+    // Using string widget IDs for the buttons so they can easily be printed
+    // into the feedback field.
+    any button = "";
+
+    do
+    {
+	button = UI::UserInput();
+	y2milestone( "Input: %1", button );
+	UI::ChangeWidget(`id(`feedback), `Value, button );
+    } while ( button != "Close" );
+
+    UI::CloseDialog();
+}

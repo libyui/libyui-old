@@ -1,0 +1,100 @@
+// Simple tree example
+{
+    UI::OpenDialog(
+	       `VBox(
+		     `Tree(`id(`dest_dir),
+				   "Select destination directory:",
+				   [
+				    `item(`id(`root), "/" , true,
+					  [
+					   `item(`id(`etc), "etc",
+						 [
+						  `item("opt"),
+						  `item("SuSEconfig"),
+						  `item("X11")
+						 ]
+						 ),
+					   `item("usr", false, 
+						 [
+						  "bin",
+						  "lib",
+						  `item("share",
+						       [
+							"man",
+							"info",
+							"emacs"
+							]
+						       ),
+						  `item(`id(`usr_local),"local"),
+						  `item("X11R6",
+							[
+							 "bin",
+							 "lib",
+							 "share",
+							 "man",
+							 "etc"
+							 ]
+							)
+						  ]
+						 ),
+					   `item(`id(`opt), "opt", true,
+						 [
+						  "kde",
+						  "netscape",
+						  "Office51"
+						  ]
+						 ),
+					   `item("home"),
+					   "work",
+					   `item(`id(`other), "<other>")
+					   ]
+					  )
+				   ] ),
+		     `HBox(
+			   `PushButton(`id(`sel_opt),		`opt(`hstretch), "/&opt" ),
+			   `PushButton(`id(`sel_usr),		`opt(`hstretch), "/&usr" ),
+			   `PushButton(`id(`sel_usr_local),	`opt(`hstretch), "/usr/&local" )
+			   ),
+		     `PushButton(`id(`ok), `opt(`default), "&OK")
+		     )
+	       );
+
+    any id = nil;
+
+    repeat
+	{
+	    id = UI::UserInput();
+
+	    if      ( id == `sel_usr)		UI::ChangeWidget(`dest_dir, `CurrentItem, "usr"  );
+	    else if ( id == `sel_usr_local)	UI::ChangeWidget(`dest_dir, `CurrentItem, `usr_local );
+	    else if ( id == `sel_opt) 		UI::ChangeWidget(`dest_dir, `CurrentItem, `opt );
+	} until ( id == `ok );
+
+    // Get the input from the tree.
+    //
+    // Notice: The return value of UI::UserInput() does NOT return this value!
+    // Rather, it returns the ID of the widget (normally the PushButton)
+    // that caused UI::UserInput() to return.
+    any dest_dir = UI::QueryWidget(`dest_dir, `CurrentItem);
+    y2debug( "Selected: %1", dest_dir );
+
+
+    if ( dest_dir == nil )
+	dest_dir = "";
+
+    // Close the dialog.
+    // Remember to read values from the dialog's widgets BEFORE closing it!
+    UI::CloseDialog();
+
+
+    // Pop up a new dialog to echo the selection.
+    UI::OpenDialog(
+	       `VBox(
+		     `Label( sformat( "Selected destination directory: %1", dest_dir ) ),
+		     `PushButton(`opt(`default), "&OK")
+		     )
+	       );
+    UI::UserInput();
+
+    UI::CloseDialog();
+}

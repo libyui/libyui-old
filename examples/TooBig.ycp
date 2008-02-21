@@ -1,0 +1,48 @@
+// Look into ~/.y2log. For widgets that don't get their
+// minsizes, warnings appear.
+{
+    UI::OpenDialog(
+               `opt(`defaultsize),
+               `VBox(
+                     `PushButton(`id(1), "This"),
+                     `PushButton(`id(2), "is some"),
+                     `PushButton(`id(3), "very long label"),
+                     `PushButton(`id(4), "that is supposed to"),
+                     `PushButton(`id(5), "make this dialog to darn huge that"),
+                     `PushButton(`id(6), "not all widgets get their minsize"),
+                     `PushButton(`id(11), "This"),
+                     `PushButton(`id(12), "is some"),
+                     `PushButton(`id(13), "very long label"),
+                     `PushButton(`id(14), "that is supposed to"),
+                     `PushButton(`id(15), "make this dialog to darn huge that"),
+                     `PushButton(`id(16), "not all widgets get their minsize"),
+                     `PushButton(`id(21), "This"),
+                     `PushButton(`id(22), "is some"),
+                     `PushButton(`id(23), "very long label"),
+                     `PushButton(`id(24), "that is supposed to"),
+                     `PushButton(`id(25), "make this dialog to darn huge that"),
+                     `PushButton(`id(26), "not all widgets get their minsize"),
+                     `PushButton(`id(31), "This"),
+                     `PushButton(`id(32), "is some"),
+                     `PushButton(`id(33), "very long label"),
+                     `PushButton(`id(34), "that is supposed to"),
+                     `PushButton(`id(35), "make this dialog to darn huge that"),
+                     `PushButton(`id(36), "not all widgets get their minsize"),
+                     `PushButton(`id(41), "This"),
+                     `PushButton(`id(42), "is some"),
+                     `PushButton(`id(43), "very long label"),
+                     `PushButton(`id(44), "that is supposed to"),
+                     `PushButton(`id(45), "make this dialog to darn huge that"),
+                     `PushButton(`id(46), "not all widgets get their minsize"),
+                     `PushButton(`id(51), "This"),
+                     `PushButton(`id(52), "is some"),
+                     `PushButton(`id(53), "very long label"),
+                     `PushButton(`id(54), "that is supposed to"),
+                     `PushButton(`id(55), "make this dialog to darn huge that"),
+                     `PushButton(`id(56), "not all widgets get their minsize")
+                     )
+               );
+    UI::UserInput();
+    UI::CloseDialog();
+}
+

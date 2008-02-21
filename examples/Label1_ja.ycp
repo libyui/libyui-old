@@ -1,0 +1,10 @@
+{
+    UI::OpenDialog(
+	       `VBox( 
+		     `Label("完時"),
+		     `PushButton("&OK完時")
+		     )
+	       );
+    UI::UserInput();
+    UI::CloseDialog();
+}

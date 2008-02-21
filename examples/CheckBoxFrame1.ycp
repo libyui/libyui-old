@@ -1,0 +1,25 @@
+// Trivial example for CheckBoxFrame
+{
+    UI::OpenDialog(
+		   `VBox(
+			 `MarginBox( 1, 0.5,
+				     `CheckBoxFrame ( "E&xpert Settings", true,
+						      `VBox(
+							    `HBox(
+								  `InputField( "&Server" ),
+								  `ComboBox ( "&Mode",
+									      [ "Automatic",
+										"Manual",
+										"Debug" ] )
+								  ),
+							    `Left( `CheckBox( "&Logging" ) ),
+							    `InputField( "&Connections" )
+							    )
+						      )
+				     ),
+			 `PushButton("&OK")
+			 )
+		   );
+    UI::UserInput();
+    UI::CloseDialog();
+}

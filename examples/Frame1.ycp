@@ -1,0 +1,12 @@
+{
+    UI::OpenDialog(
+	       `VBox(
+		     `Frame ( "Hey! I&mportant!",
+			      `Label("Hello, World!")
+			      ),
+		     `PushButton("&OK")
+		     )
+	       );
+    UI::UserInput();
+    UI::CloseDialog();
+}

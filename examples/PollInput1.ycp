@@ -1,0 +1,23 @@
+{
+    UI::OpenDialog(
+	       `VBox(
+		     `Label(`id(`lab), "Money: 800 Euro"),
+		     `PushButton(`id(`cancel), `opt(`hstretch), "Cancel"),
+		     `PushButton(`id(`add), `opt(`hstretch), "Add 50")
+		     )
+	       );
+    integer num = 800;
+    UI::NormalCursor();
+    
+    while (num > 0)
+    {
+	any ret = UI::PollInput();
+        y2milestone("%1", ret);
+	if (ret == `cancel) break;
+	else if (ret == `add) num = num + 50;
+	UI::ChangeWidget(`id(`lab), `Value, "Money: " + num + " Euro");
+	sleep(500);
+	num = num - 1;
+    }
+    UI::CloseDialog();
+}

@@ -1,0 +1,29 @@
+// Demo for shortcut checking:
+// Deliberately generate a shortcut conflict.
+//
+// This kind of conflict cannot be resolved.
+// Only one of the Widgets with "&A" will get a shortcut at all.
+{
+    
+    
+    UI::OpenDialog(
+	       `VBox(
+		     `PushButton( `id(1), "&A" ),
+		     `PushButton( `id(2), "&A" ),
+		     `PushButton( `id(3), "&A" ),
+		     `PushButton( `id(`quit ), "&Quit" )
+		     )
+	       );
+
+
+    any button = nil;
+    
+    do
+    {
+	button = UI::UserInput();
+    } while ( button != `quit );
+
+	
+    UI::CloseDialog();
+}
+

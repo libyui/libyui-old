@@ -1,0 +1,7 @@
+{
+    UI::OpenDialog(
+	       `CheckBox("A &checked check box\nwith multi-line", true)
+	       );
+    UI::UserInput();
+    UI::CloseDialog();
+}

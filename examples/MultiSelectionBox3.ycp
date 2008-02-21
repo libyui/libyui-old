@@ -1,0 +1,54 @@
+// Advanced MultiSelectionBox example:
+//
+// Retrieve the list of selected items and output it.
+{
+    
+    UI::OpenDialog(
+	       `VBox( 
+		     `MultiSelectionBox( `id(`toppings), "Select pizza toppings:",
+					 [
+					  `item( `id(`cheese   	), "Cheese"	, true  ),
+					  `item( `id(`tomatoes 	), "Tomatoes"	, true  ),
+					  `item( `id(`mush     	), "Mushrooms"	, false ),
+					  `item( `id(`onions	), "Onions" 	),
+					  `item( `id(`sausage	), "Salami" 	),
+					  `item( `id(`pork	), "Ham"	)
+					 ] ),
+		     `PushButton( `opt(`default), "&OK")
+		     )
+	       );
+    UI::ChangeWidget(`toppings, `SelectedItems, [`sausage, `onions] );
+    
+    UI::UserInput();
+    list selected_items = (list) UI::QueryWidget( `id(`toppings), `SelectedItems );
+
+    y2debug( "Selected items: %1", selected_items );
+    
+    // Remember to retrieve the widget's data _before_ the dialog is closed,
+    // i.e. before it is destroyed!
+    
+    UI::CloseDialog();
+
+    
+    
+    // Concatenate the list of selected toppings to one multi-line string.
+    
+    string pizza_description = "";
+
+    foreach ( `topping, selected_items, ``{
+	pizza_description = sformat( "%1\n%2", pizza_description, topping );
+    } );
+
+
+    // Open a new dialog to echo the selection.
+    
+    UI::OpenDialog(
+	       `VBox(
+		     `Label( "Your pizza will come with:\n" ),
+		     `Label( pizza_description ),
+		     `PushButton( `opt(`default), "&OK" )
+		     )
+	       );
+    UI::UserInput();
+    UI::CloseDialog();
+}

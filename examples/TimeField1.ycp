@@ -1,0 +1,11 @@
+// Simple example for TimeField
+{
+    UI::OpenDialog(
+		   `VBox( 
+			 `TimeField(`id(`time), "Time:", "13:15:00"),
+			 `PushButton("&OK")
+			 )
+		   );
+    UI::UserInput();
+    UI::CloseDialog();
+}

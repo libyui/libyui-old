@@ -1,0 +1,36 @@
+{
+    UI::OpenDialog(
+		   `VBox(
+			 `Heading("Today's menu"),
+			 `MinSize( 30, 7,
+				   `Table(
+					  `id(`table), `opt(`keepSorting),
+					  `header("Name", `Right("Price"), `Center("Rating")),
+					  [
+					   `item(`id(0), "Steak Sandwich",	12,  "+++"),
+					   `item(`id(1), "Salami Baguette",	nil, "-"  ),
+					   `item(`id(2), "Chili",		6,   "--" ),
+					   `item(`id(3), "Spaghetti",		8,   "+"  )
+					   ]
+					  )
+				   ),
+			 `Right(
+				`HBox(
+				      `PushButton(`id(`next), "&Next"),
+				      `PushButton(`id(`cancel), "&Close")
+				      )
+				)
+			 )
+		   );
+
+    UI::ChangeWidget(`id(`table), `CurrentItem, 2);
+    
+    while (UI::UserInput() != `cancel)
+    {
+	UI::ChangeWidget(`id(`table), `CurrentItem, 
+		     ((integer) UI::QueryWidget(`id(`table), `CurrentItem) + 1) % 4);
+    }
+    
+    UI::CloseDialog();
+}
+

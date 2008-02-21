@@ -1,0 +1,25 @@
+// Tree with icons
+{
+    UI::OpenDialog(
+               `VBox(
+                     `Heading( "YaST2 Mini Control Center" ),
+                     `Tree(`id(`mod),
+			   "Modules",
+			   [
+			    `item(`id( "country" ), `icon( "yast-yast-language.png" ), "Localization", true,
+				  [
+				   `item(`id( "keyboard"   ), `icon( "yast-keyboard.png"   ), "Keyboard"   ),
+				   `item(`id( "timezone"   ), `icon( "yast-timezone.png"   ), "Time zone"  )
+				   ]
+				  ),
+			    `item(`id( "mouse"      ), `icon( "yast-mouse.png"      ), "Mouse"      ),
+			    `item(`id( "lan"        ), `icon( "yast-lan.png"        ), "Network"    ),
+			    `item(`id( "sw_single"  ), `icon( "yast-software.png"   ), "Software"   )
+			    ] ),
+                     `PushButton(`id(`ok), `opt(`default), "&OK")
+                     )
+               );
+
+    UI::UserInput();
+    UI::CloseDialog();
+}

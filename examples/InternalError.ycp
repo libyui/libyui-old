@@ -1,0 +1,12 @@
+{
+    /*
+     * This will cause an internal error since UI::UserInput() is called without
+     * any dialog being opened.
+     */
+    
+    while( true )
+    {
+	any ret = UI::UserInput();
+	y2milestone( "UI::UserInput() returned %1", ret );
+    }
+}

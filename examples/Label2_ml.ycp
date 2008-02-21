@@ -1,0 +1,10 @@
+{
+    UI::OpenDialog(
+	       `VBox( 
+		     `Label("ßööööööÜÜÜÜÜößßßßäÄÄÄÄ\něščřžýáíˇ\nmultiple lines." ),
+		     `PushButton("&OK")
+		     )
+	       );
+    UI::UserInput();
+    UI::CloseDialog();
+}

@@ -1,0 +1,86 @@
+{
+    // Check for availability of special widgets required for this example
+    
+    if ( ! UI::HasSpecialWidget(`DownloadProgress) )
+    {
+	UI::OpenDialog(
+		   `VBox( 
+			 `Label("Error: This UI doesn't support the DownloadProgress widget!"),
+			 `PushButton(`opt(`default), "&OK")
+			 )
+		   );
+	UI::UserInput();
+	UI::CloseDialog();
+	
+	return;
+    }
+
+
+    // Initialize some (pretty random) demo values
+    
+    string  logfile_name = "/suse/sh/.y2log";
+    // string  logfile_name = "/var/log/y2log";
+    integer logfile_expected_size = 20 * 1024;
+
+
+    // Build a dialog with a download progress bar
+    // and a row of some buttons below.
+    //
+    // The weights for will make the buttons the same size - except the last
+    // one, "Close", which is deliberately set apart from the others with some
+    // empty space.
+    
+    UI::OpenDialog(
+	       `VBox(
+		     `DownloadProgress(`id(`progress), "YaST2 log file", logfile_name, logfile_expected_size ),
+		     `HBox(
+			   `HWeight(1, `PushButton(`id(`y2log), "YaST2 Log &File"	) ),
+			   `HWeight(1, `PushButton(`id(`null),  "&No File"		) ),
+			   `HWeight(1, `PushButton(`id(`blurb), `opt(`default), "&Log Something" ) ),
+			   `HSpacing(`opt(`hstretch), 2),
+			   `PushButton(`id(`close), "&Close")
+			   )
+		     )
+	       );
+
+    // Input loop
+    
+    any button = nil;
+    
+    do
+    {
+	button = UI::UserInput();
+
+	if ( button == `y2log )
+	{
+	    // Watch the Y2 log file
+	    
+	    UI::ChangeWidget(`id(`progress), `Filename, 	logfile_name		);
+	    UI::ChangeWidget(`id(`progress), `ExpectedSize,	logfile_expected_size	);
+	}
+	else if ( button == `null )
+	{
+	    // Watch no file - i.e. reset the progress bar
+	    
+	    UI::ChangeWidget(`id(`progress), `Filename, 	"" );
+	    UI::ChangeWidget(`id(`progress), `ExpectedSize,	1024 );
+	}
+	else if ( button == `blurb )
+	{
+	    // log something so the log file grows
+	    
+	    integer i = 0;
+
+	    while ( i < 100 )
+	    {
+		y2milestone( "Blurb - %1", i );
+		i = i + 1;
+	    }
+	}
+    } while ( button != `close );
+
+
+    // Clean up
+    
+    UI::CloseDialog();
+}

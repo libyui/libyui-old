@@ -1,0 +1,15 @@
+{
+    UI::OpenDialog(
+	       `VBox( 
+		     `SelectionBox( "Select your Pizza:",
+				    [
+				       "Napoli",
+				       "Funghi",
+				       "Salami"
+				     ] ),
+		     `PushButton("&OK")
+		     )
+	       );
+    UI::UserInput();
+    UI::CloseDialog();
+}

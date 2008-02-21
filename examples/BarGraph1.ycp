@@ -1,0 +1,25 @@
+{
+    if ( ! UI::HasSpecialWidget(`BarGraph) )
+    {
+        UI::OpenDialog(
+		   `VBox( 
+			 `Label("Error: This UI doesn't support the BarGraph widget!"),
+			 `PushButton(`opt(`default), "&OK")
+			 )
+		   );
+        UI::UserInput();
+        UI::CloseDialog();
+	
+	return;
+    }
+    
+    UI::OpenDialog(
+	       `VBox(
+		     `HSpacing( 60 ),	// wider default size
+		     `BarGraph( [450, 100, 700] ),
+		     `PushButton(`opt(`default), "&OK")
+		     )
+	       );
+    UI::UserInput();
+    UI::CloseDialog();
+}

@@ -1,0 +1,23 @@
+{
+    UI::OpenDialog( `opt( `infocolor ),
+		`VBox( 
+		      `Heading("This is an info dialog."),
+		      `RichText("This should even work with multi line rich texts. "
+				+ "Even with <b>bold face</b> or <i>italic</i> or "
+				+ "<b><i>bold italic</i></b>." ),
+		      `PushButton("&OK")
+		      )
+		);
+    UI::UserInput();
+    
+    UI::OpenDialog( `opt( `infocolor, `decorated ),
+		`VBox( 
+		      `Heading("This is a decorated warning dialog."),
+		      `PushButton("&OK")
+		      )
+		);
+    UI::UserInput();
+    
+    UI::CloseDialog();
+    UI::CloseDialog();
+}

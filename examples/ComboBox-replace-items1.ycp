@@ -1,0 +1,55 @@
+// Example showing how to replace SelectionBox items
+{
+
+    list pizza_list =
+	[
+	 "Pizza Napoli",
+	 "Pizza Funghi",
+	 "Pizza Salami",
+	 "Pizza Hawaii"
+	 ];
+
+    list pasta_list =
+	[
+	 "Spaghetti",
+	 "Rigatoni",
+	 "Tortellini"
+	 ];
+
+    UI::OpenDialog( `VBox(
+			  `ComboBox(`id(`menu), "Daily &Specials:", pizza_list ),
+			  `HBox(
+				`PushButton(`id(`pizza), "Pi&zza" ),
+				`PushButton(`id(`pasta), "&Pasta" )
+				),
+			  `PushButton(`id(`ok), "&OK" )
+			  )
+		    );
+
+    symbol button = nil;
+
+    do
+    {
+	button = (symbol) UI::UserInput();
+
+	if ( button == `pizza )		UI::ChangeWidget(`menu, `Items, pizza_list );
+	if ( button == `pasta )		UI::ChangeWidget(`menu, `Items, pasta_list );
+	
+    } while ( button != `ok );
+
+    string order = (string) UI::QueryWidget(`menu, `Value );
+    UI::CloseDialog();
+
+
+    //
+    // Show the result
+    //
+    
+    UI::OpenDialog(`VBox(
+			 `Label( sformat( "Your order: %1", order ) ),
+			 `PushButton(`opt(`default), "&OK" )
+			 )
+		   );
+    UI::UserInput();
+    UI::CloseDialog();
+}

@@ -1,0 +1,62 @@
+// Example for the file selection builtins
+{
+    UI::OpenDialog( `opt(`defaultsize),
+		    `VBox(
+			  `Heading( "YaST2 File Selector Demo" ),
+			  `VStretch(),
+
+			  `HBox(
+				`HStretch(),
+				`HWeight( 1,
+					  `VBox(
+						`PushButton(`id(`askDir), `opt(`hstretch), "Select &Directory..." ),
+						`PushButton(`id(`load ),  `opt(`hstretch), "&Load File..." ),
+						`PushButton(`id(`saveAs), `opt(`hstretch), "Save &As..." )
+						)
+					  ),
+				`HSpacing( 2 )
+				),
+			  `VSpacing(),
+			  `HBox(
+				`Label( "Selected: " ),
+				`Label(`id(`name), `opt(`outputField, `hstretch), "<nothing selected>" )
+				),
+			  `VSpacing(),
+			  `Right( `PushButton(`id(`close), "&Close" ) )
+			  )
+		    );
+
+    any button = nil;
+    string name = "";
+
+    repeat
+    {
+	boolean update = false;
+	button = UI::UserInput();
+
+	if ( button == `askDir )
+	{
+	    name = UI::AskForExistingDirectory( "/tmp", "Select Directory" );
+	}
+	else if ( button == `load )
+	{
+	    name = UI::AskForExistingFile( "/usr/X11R6/share", "*.jpg *.png", "Select an image to load" );
+	}
+	else if ( button == `saveAs )
+	{
+	    name = UI::AskForSaveFileName( "/tmp", "*", "Save as..." );
+	}
+
+	if ( name == nil )
+	    name = "<canceled>";
+
+	if ( name != "" )	// Label update necessary?
+	{
+	    UI::ChangeWidget(`id(`name), `Value, name );
+	    UI::RecalcLayout();
+	    name = "";
+	}
+    } until ( button == `close || button == `cancel );
+
+    UI::CloseDialog();
+}

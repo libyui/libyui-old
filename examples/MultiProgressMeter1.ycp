@@ -1,0 +1,41 @@
+// Simple example for MultiProgressMeter
+{
+    if ( ! UI::HasSpecialWidget(`HMultiProgressMeter ) )
+    {
+        UI::OpenDialog(
+		       `VBox( 
+			     `Label("Error: This UI doesn't support the MultiProgressMeter widget!"),
+			     `PushButton(`opt(`default), "&OK")
+			     )
+		       );
+        UI::UserInput();
+        UI::CloseDialog();
+	
+	return;
+    }
+
+
+    UI::OpenDialog(
+		   `VBox(
+			 `HMultiProgressMeter(`id(`prog), [ 1000, 200, 500, 20, 100 ] ),
+			 `PushButton(`opt(`default), "&Ok" )
+			 )
+		   );
+    
+    UI::ChangeWidget(`prog, `Values, [ 1000, 200, 500, 20, 100 ] );	UI::UserInput();
+    UI::ChangeWidget(`prog, `Values, [  800, 200, 500, 20, 100 ] );	UI::UserInput();
+    UI::ChangeWidget(`prog, `Values, [  500, 200, 500, 20, 100 ] );	UI::UserInput();
+    UI::ChangeWidget(`prog, `Values, [  200, 200, 500, 20, 100 ] );	UI::UserInput();
+    UI::ChangeWidget(`prog, `Values, [    0, 200, 500, 20, 100 ] );	UI::UserInput();
+    
+    UI::ChangeWidget(`prog, `Values, [    0, 100, 500, 20, 100 ] );	UI::UserInput();
+    UI::ChangeWidget(`prog, `Values, [    0,  20, 500, 20, 100 ] );	UI::UserInput();
+    UI::ChangeWidget(`prog, `Values, [    0,   0, 500, 20, 100 ] );	UI::UserInput();
+    
+    UI::ChangeWidget(`prog, `Values, [    0,   0, 400, 20, 100 ] );	UI::UserInput();
+    UI::ChangeWidget(`prog, `Values, [    0,   0, 300, 20, 100 ] );	UI::UserInput();
+    UI::ChangeWidget(`prog, `Values, [    0,   0, 200, 20, 100 ] );	UI::UserInput();
+    UI::ChangeWidget(`prog, `Values, [    0,   0, 100, 20, 100 ] );	UI::UserInput();
+
+    UI::CloseDialog();
+}

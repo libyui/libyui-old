@@ -1,0 +1,11 @@
+{
+    UI::OpenDialog(
+		   `VBox(
+			 `MarginBox(`leftMargin( 10 ), `rightMargin( 20 ), `topMargin( 2 ), `bottomMargin( 3.5 ),
+				    `Label("Hello, World!") ),
+			 `PushButton(`opt(`default), "&OK")
+			 )
+		   );
+    UI::UserInput();
+    UI::CloseDialog();
+}

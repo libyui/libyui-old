@@ -1,0 +1,27 @@
+{
+    UI::OpenDialog(
+	       `VBox(
+		     `HBox(
+			   `HWeight(1, `PushButton(`opt(`hstretch), "Weight 1")),
+			   `HWeight(1, `PushButton(`opt(`hstretch), "Weight 1"))
+			   ),
+		     `HBox(
+			   `HWeight(3, `PushButton(`opt(`hstretch), "Weight 3")),
+			   `HWeight(2, `PushButton(`opt(`hstretch), "Weight 2"))
+			   ),
+		     `HBox(
+			   `HWeight(2, `PushButton(`opt(`hstretch), "Weight 2")),
+			   `HWeight(1, `PushButton(`opt(`hstretch), "Weight 1"))
+			   ),
+		     `HBox(`HWeight(3, `PushButton(`opt(`hstretch), "Weight 3")),
+			   `HWeight(1, `PushButton(`opt(`hstretch), "Weight 1"))
+			   ),
+		     `HBox(
+			   `HWeight(10, `PushButton(`opt(`hstretch), "Weight 10")),
+			   `HWeight(1,  `PushButton(`opt(`hstretch), "Weight 1"))
+			   )
+		     )
+	       );
+    UI::UserInput();
+    UI::CloseDialog();
+}

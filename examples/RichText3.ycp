@@ -1,0 +1,35 @@
+// Example for a RichText widget
+{
+    UI::OpenDialog( `opt(`defaultsize),
+		`VBox(
+		      `RichText( "<h3>RichText example</h3>"
+				 + "<p>This is a <i>RichText</i> widget. The ncurses UI wraps lines automatically - Qt breaks lines and uses a vertical scroll bar.</p>"
+				 + "<p>It's very much like <i>HTML</i>, but not quite as powerful.</p>"
+				 + "<p>Text in <b>pre</b> tags preserves newlines and spaces.</p>"
+				 + "<pre>"
+				 + "     host     ip adress       host     ip adress\n"
+				 + "     sturm    10.10.0.159     sturm    10.10.0.159\n"
+				 + "Lines are not wrapped; in text mode HTML tags are <b>not</b> removed if the pre tag is used.\n"
+				 + "</pre>"
+				 + "<p>After   <b>/pre</b>    the  text is <i>HTML</i> text like before.</p>"
+				 + "<p>Much much more text .............. continous"
+				 + " much much more text .... follows "
+				 + " much much more text .................</p>"
+				 + "<p>"
+				 + "<pre>another    pre      t	t	</pre>"
+				 + "and much more text hopefully now displayed correctly"
+				 + "</p>"
+                                 + "<pre>"
+				 + "     host     ip adress       host     ip adress\n"
+				 + "     sturm    10.10.0.159     sturm    10.10.0.159\n"
+				 + "Lines are not wrapped; in text mode HTML tags are <b>not</b> removed if the pre tag is used.\n"
+				 + "</pre>"
+				 + "<p>and even much more text but now not wrapped at old place but with new layout of the pad widget which is underlying the richtext widget</p>"
+				 + "<p><pre>And   another  short  pre</pre></p>"
+				 ),
+		      `PushButton(`opt(`default), "&OK")
+		      )
+	     );
+  UI::UserInput();
+  UI::CloseDialog();
+}

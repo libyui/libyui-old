@@ -1,0 +1,97 @@
+// WaitForEvent.ycp
+//
+// Example for common usage of UI::WaitForEvent()
+
+{
+    // Build dialog with a selection box and some buttons.
+    //
+    // Output goes to the log file: ~/.y2log for normal users
+    // or /var/log/YaST2/y2log for root.
+    
+    integer timeout_millisec = 20 * 1000;
+    
+    UI::OpenDialog(
+		   `VBox(
+			 `SelectionBox(`id(`pizza ), `opt(`notify, `immediate ),
+				       "Select your Pi&zza:",
+					[
+					 `item(`id(`napoli 	), "Napoli"      	),
+					 `item(`id(`funghi 	), "Funghi"		),
+					 `item(`id(`salami 	), "Salami"       	),
+					 `item(`id(`prociutto	), "Prosciutto"		),
+					 `item(`id(`stagioni	), "Quattro Stagioni"	),
+					 `item(`id(`chef   	), "A la Chef", true	)
+					 ]
+					),
+			 `HBox(
+			       `PushButton(`id(`ok     ), "&OK" ),
+			       `PushButton(`id(`cancel ), "&Cancel" ),
+			       `HSpacing(),
+			       `PushButton(`id(`details ), "&Details..." )
+			       )
+			 )
+		   );
+
+    map event = $[];
+    any id    = nil;
+
+    // Event loop
+    
+    repeat
+    {
+	event = UI::WaitForEvent( timeout_millisec );
+	id    = event["ID"]:nil; // We'll need this often - cache it
+
+	if ( id == `pizza )
+	{
+	    if ( event["EventReason"]:nil == "Activated" )
+	    {
+		// Handle pizza "activate" (double click or space pressed)
+		
+		y2milestone( "Pizza activated" );
+		id = `details;	// Handle as if "Details" button were clicked
+		
+	    }
+	    else if ( event["EventReason"]:nil == "SelectionChanged" )
+	    {
+		// Handle pizza selection change
+		
+		y2milestone( "Pizza selected" );
+	    }
+	}
+
+	if ( id == `details )
+	{
+	    y2milestone( "Show details" );
+	}
+
+	if ( id == `timeout )
+	{
+	    // Handle timeout
+	    
+	    y2milestone( "Timeout detected by ID" );
+	}
+
+	if ( event["EventType"]:nil == "TimeoutEvent" ) // Equivalent
+	{
+	    // Handle timeout
+	    
+	    y2milestone( "Timeout detected by event type" );
+
+	    // Open a popup dialog
+	    
+	    UI::OpenDialog( `VBox(
+				  `Label( "Not hungry?" ),
+				  `PushButton(`opt(`default ), "&OK" ) 
+				  )
+			    );
+	    UI::TimeoutUserInput( 10 * 1000 ); // Automatically close after 10 seconds
+	    UI::CloseDialog();
+	}
+
+	
+    } until ( id == `ok || id == `cancel );
+
+	
+    UI::CloseDialog();
+}

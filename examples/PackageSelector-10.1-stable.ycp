@@ -1,0 +1,19 @@
+// Package Selector example
+{
+    Pkg::SourceCreate( "file:/mounts/machcd2/CDs/SUSE-Linux-10.1-RC5-DVD-Retail-i386/DVD1", "" );
+
+
+if ( false )
+{
+    Pkg::TargetInit( "/",	// installed system
+		     false ); 	// don't create a new RPM database
+}
+    
+    UI::OpenDialog(`opt(`defaultsize),
+		   `PackageSelector(`id(`selector), "/dev/fd0" ) );
+
+    any input = UI::RunPkgSelection(`id(`selector) );
+    UI::CloseDialog();
+
+    y2milestone( "Input: %1", input );
+}

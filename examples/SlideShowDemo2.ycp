@@ -1,0 +1,342 @@
+// SlideShow demo: Using Wizard and MultiProgressMeter
+//
+// Note: YCP applications are discouraged from using the Wizard widget directly.
+// Use the Wizard module instead.
+
+{
+
+    list<map> base_installation_steps =
+	[
+	  $[ "id": "language",		"label": "Language"			],
+	  $[ "id": "proposal",		"label": "Installation Settings"	],
+	  $[ "id": "do_resize",		"label": "Perform Installation"		],
+	  $[ "id": "prepdisk",		"label": "Perform Installation"		],
+	  $[ "id": "kickoff",		"label": "Perform Installation"		],
+	  $[ "id": "rpmcopy",		"label": "Perform Installation"		],
+	  $[ "id": "finish",		"label": "Perform Installation"		]
+	];
+
+    list<map> config_steps =
+	[
+	  $[ "id": "root",		"label": "Root Password"		],
+	  $[ "id": "proposal_net",	"label": "Network"			],
+          $[ "id": "ask_net_test",	"label": "Network"			],
+	  $[ "id": "do_net_test",	"label": "Network"			],
+	  $[ "id": "you",		"label": "Online Update"		],
+	  $[ "id": "auth",		"label": "Users"			],
+	  $[ "id": "user",		"label": "Users"			],
+	  $[ "id": "suseconfig",	"label": "Clean Up"			],
+	  $[ "id": "release_notes",	"label": "Release Notes"		],
+	  $[ "id": "proposal_hw",	"label": "Device Configuration"		]
+	];
+
+    list<map> steps = flatten( [ base_installation_steps, config_steps ] );
+
+    list<integer> initialRpms = [ 600, 150, 30, 100 ];
+    list<integer> rpms = initialRpms;
+    boolean useTimeout = false;
+    integer currentCd = 1;
+    integer megaBytesPerSecond	= 2;
+
+
+    define string mediaName( integer mediaNo )
+    {
+	return sformat( "SuSE Linux Professional CD %1", mediaNo );
+    }
+
+
+    define void mediaChange( integer cdNo )
+    {
+	UI::ChangeWidget(`nextMedia, `Value, "" );
+	UI::OpenDialog( `VBox(
+			      `Label( sformat( "Please insert \n%1", mediaName( cdNo ) ) ),
+			      `PushButton( `opt(`default), "&OK" )
+			      )
+			);
+	// UI::TimeoutUserInput( 5 * 1000 );
+	UI::UserInput();
+	UI::CloseDialog();
+	currentCd = cdNo;
+    }
+
+
+    define list<integer> subtract( list<integer> valueList, integer delta )
+    {
+	boolean subtracted = false;
+	list<integer> newList = [];
+	integer cdNo = 1;
+	integer newCd = -1;
+	integer total = 0;
+
+	foreach ( integer val, valueList, ``{
+	    cdNo = cdNo + 1;
+	    total = total + val;
+
+	    if ( val > 0 && ! subtracted )
+	    {
+		val = val - delta;
+		subtracted = true;
+
+		if ( val <= 0 )
+		{
+		    val = 0;
+		    newCd = cdNo;
+		}
+	    }
+
+	    newList = add( newList, val );
+	});
+
+	UI::ChangeWidget(`progress, `Values, newList );
+
+	if ( newCd > 0 && newCd <= size( valueList ) )
+	    mediaChange( newCd );
+
+	if ( total <= 0 )
+	{
+	    useTimeout = false;
+	    UI::WizardCommand(`SetNextButtonLabel( "&Start" ) );
+	    newList = initialRpms;
+	    currentCd = -1;
+	    y2milestone( "Resetting to %1", rpms );
+	}
+
+	return newList;
+    }
+
+
+    define string twoDigits( integer n )
+    {
+	return n < 10 ? sformat( "0%1", n ) : sformat( "%1", n );
+    }
+
+
+    define string formatTime( integer seconds )
+    {
+	integer hours = seconds / 3600;
+	integer minutes = seconds / 60;
+	seconds = seconds % 60;
+	return sformat( "%1:%2:%3", hours, twoDigits( minutes), twoDigits( seconds ) );
+    }
+
+
+    define string totalRemainingTime()
+    {
+	integer left = 0;
+
+	foreach ( integer val, rpms, ``{
+	    left = left + val;
+	});
+
+	integer totalSeconds = left * megaBytesPerSecond;
+
+	return sformat( "Remaining:\n%1", formatTime( totalSeconds ) );
+    }
+
+
+    define string nextMedia()
+    {
+	string remaining = "";
+	string mediaType = "CD";
+
+	if ( currentCd > 0 && size( rpms ) > currentCd )
+	{
+	    integer seconds = rpms[ currentCd-1 ]:0 * megaBytesPerSecond;
+	    remaining = sformat( "Next %1: %2  --  %3",
+				 mediaType,
+				 mediaName( currentCd+1 ),
+				 formatTime( seconds ) );
+	}
+
+	return remaining;
+    }
+
+
+    define string pkgInfo( string pkgName, string pkgVersion, float pkgSizeMB, string pkgSummary )
+    {
+	string info = sformat( "%1-%2 (%3 MB)", pkgName, pkgVersion, pkgSizeMB );
+
+	if ( size( pkgSummary ) > 0 )
+	    info = info + " - " + pkgSummary;
+
+	return info;
+    }
+
+
+
+    //
+    // ----------------------------- main() ----------------------------------
+    //
+
+
+    if ( ! UI::HasSpecialWidget(`Wizard) ||
+	 ! UI::HasSpecialWidget(`DumbTab ) )
+    {
+	y2error( "This works only with UIs that provide the Wizard and the DumbTab widget!" );
+	return;
+    }
+
+    string help_text = "<p>Please wait while packages are being installed.</p>";
+    string slide_text = "								\
+<table cellspacing=\"10\" cellpadding=\"5\">						\
+<tr>											\
+<td width =\"*\">									\
+<img src=\"/opt/kde3/share/icons/crystalsvg/128x128/apps/kscd.png\"  width=\"100\"	\
+align=\"left\">										\
+</td>											\
+											\
+<td width=\"*\">									\
+<p><font color=\"#00007f\"><b>XMMS and JuK - Powerful Jukeboxes</b></font></p>		\
+<p>XMMS is an excellent sound player for Linux. It is easy to use and supports		\
+various formats, including audio CDs. Test the many visualization plug-ins or		\
+download your favorite XMMS skins from the web.</p>					\
+<p>New in KDE: JuK, which classifies your MP3s and organizes your music			\
+collection.</p>										\
+<p><b>Want More?</b></p>								\
+<p>The SUSE distribution features a wide range of applications for playing		\
+your CDs and MP3 songs. For example, KsCD is a user-friendly CD player. The		\
+track information for most CDs is available on the Internet. Simply activate		\
+the respective function to display the list.</p>					\
+											\
+</td>											\
+</tr>											\
+</table>";
+
+
+    UI::OpenDialog(`opt(`defaultsize ),
+		   `Wizard(`opt(`stepsEnabled),
+			   `back,  "&Back",
+			   `abort, "Ab&ort",
+			   `next,  "&Next" ) );
+
+    // UI::DumpWidgetTree();
+
+    UI::WizardCommand(`SetDialogIcon( "/usr/share/YaST2/theme/SuSELinux/icons/22x22/apps/user_add.png" ) );
+    UI::WizardCommand(`SetDialogHeading( "Package Installation" ) );
+    UI::WizardCommand(`SetHelpText( help_text ) );
+
+    UI::WizardCommand(`AddStepHeading( "Base Installation" ) );
+
+    foreach ( map step, base_installation_steps, ``{
+	UI::WizardCommand(`AddStep( step["label"]:"", step["id"]:"" ) );
+    });
+
+
+    UI::WizardCommand(`AddStepHeading( "Configuration" ) );
+
+    foreach ( map step, config_steps, ``{
+	UI::WizardCommand(`AddStep( step["label"]:"", step["id"]:"" ) );
+    });
+
+    UI::WizardCommand(`SetCurrentStep( "rpmcopy" ) );
+    UI::WizardCommand(`SetNextButtonLabel( useTimeout ? "&Stop" : "&Start" ) );
+    UI::WizardCommand(`SetBackButtonLabel( "S&tep" ) );
+
+    term slideShowPage = 
+	`RichText(`id(`slideText), slide_text );
+
+
+    term cdTable =
+	`Table(
+	       `id(`cdTable), `opt(`keepSorting),
+	       `header( "Media", "Size", "Packages", "Time" ),
+	       [
+		`item(`id("total"), "Total", "638.1 MB", "485", "23:31" ),
+		`item(`id("1-1"), "SLES-9 Base CD", "620.7 MB", "480", "20:23" ),
+		`item(`id("1-1"), "SLES-9 CD 1", "620.7 MB", "480", "20:23" ),
+		`item(`id("1-2"), "SLES-9 CD 2",  "17.4 MB",   "5",  "3:08" ),
+		`item(`id("1-3"), "SLES-9 CD 3",  "--", "--", "--:--" ),
+		`item(`id("1-4"), "SLES-9 CD 4",  "--", "--", "--:--" ),
+		`item(`id("1-5"), "SLES-9 CD 5",  "--", "--", "--:--" ),
+		`item(`id("2-1"), "SLES-9 SP 1 CD 1",  "--", "--", "--:--" ),
+		`item(`id("2-2"), "SLES-9 SP 1 CD 2",  "--", "--", "--:--" ),
+		`item(`id("3-1"), "SLES-9 SP 2 CD 1",  "--", "--", "--:--" )
+		]
+	       );
+
+    term detailsPage =
+	`VBox(`id(`detailsPage ),
+	      `VBox(
+		    `VWeight( 1, cdTable ),
+		    `VWeight( 1, `LogView(`id(`pkgLog ),  "", 6, 100 ) ),
+		    `ProgressBar(`id(`progressCurrentPackage), "hypercool-1.3.7 (143.3 MB)", 100, 42 )
+		    )
+	      );
+
+
+    UI::ReplaceWidget(`id(`contents),
+		      `VBox(
+			    `VWeight( 1,	// lower layout priority
+				      `HBox(
+					    `DumbTab( [ `item(`id(`showSlideShow), "Slide Sho&w" ),
+							`item(`id(`showDetails  ), "&Details"    ) ],
+						      `VBox(
+							    `VSpacing( 0.4 ),
+							    `VWeight( 1,	// lower layout priority
+								      `HBox(
+									    `HSpacing( 1 ),
+									    `ReplacePoint(`id(`tabContents), slideShowPage ),
+									    `HSpacing( 0.5 )
+									    )
+								      ),
+							    `VSpacing( 0.4 )
+							    )
+						      ),
+					    `HSpacing( 0.5 ),
+					    `VBox(
+						  `Label(`id(`totalRemaining), totalRemainingTime() ),
+						  `VWeight( 1, `VMultiProgressMeter(`id(`progress), rpms ) )
+				      
+						  )
+					    )
+				      ),
+			    `VSpacing( 0.3 ),
+			    `Label(`id(`nextMedia ), `opt( `hstretch), "" )
+			    )
+		      );
+
+    while( true )
+    {
+	symbol button = useTimeout ? (symbol) UI::TimeoutUserInput( 100 ) : (symbol) UI::UserInput();
+
+	if ( button == `abort )
+	    break;
+
+	integer delta = 0;
+	if ( button == `next 	)
+	{
+	    useTimeout = ! useTimeout;
+	    UI::WizardCommand(`SetNextButtonLabel( useTimeout ? "&Stop" : "&Start" ) );
+
+	    if ( currentCd < 0 )
+		currentCd = 1;
+	}
+	if      ( button == `back 	)	delta = 10;
+	else if ( button == `timeout	)	delta = 100;
+	else if ( button == `showSlideShow )	UI::ReplaceWidget(`tabContents, slideShowPage );
+	else if ( button == `showDetails   )
+	{
+	    y2milestone( "detailsPage:\n%1", detailsPage );
+	    UI::ReplaceWidget(`tabContents, detailsPage   );
+
+
+	    UI::ChangeWidget(`pkgLog, `LastLine,
+			     pkgInfo( "ClosedOffice", "0.8.3", 830.7, "The infamouse office suite" )
+			     + "\n" + pkgInfo( "cool-macs", "27.9.1", 250.3, "An editor-like OS" )
+			     + "\n" + pkgInfo( "hypercool", "1.3.7", 147.3, "A hyper cool gizmofier" )
+			     );
+	    UI::RecalcLayout();
+	}
+
+	if ( delta > 0 )
+	{
+	    rpms = subtract( rpms, 10 );
+	    UI::ChangeWidget(`totalRemaining, `Value, totalRemainingTime() );
+	    UI::ChangeWidget(`nextMedia, `Value, nextMedia() );
+	    UI::RecalcLayout();
+	}
+    }
+
+    UI::CloseDialog();
+
+}

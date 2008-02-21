@@ -1,0 +1,52 @@
+// Example for CheckBoxFrame without auto enable:
+// The application has to handle the check box
+{
+    UI::OpenDialog(
+		   `VBox(
+			 `MarginBox( 1, 0.5,
+				     `CheckBoxFrame (`id(`use_suse_server), `opt(`noAutoEnable, `notify),  "&SuSE Server", false,
+						      `VBox(
+							    `HBox(
+								  `InputField(`id(`server), "&Server" ),
+								  `ComboBox (`id(`mode  ), "&Mode",
+									      [ "Automatic",
+										"Manual",
+										"Debug" ] )
+								  ),
+							    `Left(`id(`logging), `CheckBox( "&Logging" ) ),
+							    `InputField(`id(`connections), "&Connections" )
+							    )
+						      )
+				     ),
+			 `PushButton(`id(`ok), "&OK")
+			 )
+		   );
+
+    symbol widget = nil;
+    string old_server = "";
+    
+    repeat
+    {
+	widget = (symbol) UI::UserInput();
+
+	if ( widget == `use_suse_server )
+	{
+	    boolean use_suse_server = (boolean) UI::QueryWidget(`use_suse_server, `Value );
+	    UI::ChangeWidget(`server, `Enabled, ! use_suse_server );
+	    UI::ChangeWidget(`mode  , `Enabled, ! use_suse_server );
+
+	    if ( use_suse_server )
+	    {
+		old_server = (string) UI::QueryWidget(`server, `Value );
+		UI::ChangeWidget(`server, `Value, "ftp://ftp.opensuse.org" );
+	    }
+	    else
+	    {
+		UI::ChangeWidget(`server, `Value, old_server );
+	    }
+	}
+	    
+    } until ( widget == `ok || widget == `cancel );
+    
+    UI::CloseDialog();
+}

@@ -1,0 +1,34 @@
+{
+    UI::OpenDialog( `opt( `decorated ),
+		`VBox( 
+		      `Label("This Dialog is decorated.\n\n"
+			     + "You might not see a difference\n"
+			     + "if you are using a window manager, though."
+			     ),
+		      `PushButton("&OK")
+		      )
+		);
+    UI::UserInput();
+    
+    UI::OpenDialog( `opt( `warncolor ),
+		`VBox( 
+		      `Heading("This is a warning dialog."),
+		      `RichText("This should even work with multi line rich texts. "
+				+ "Even with <b>bold face</b> or <i>italic</i> or "
+				+ "<b><i>bold italic</i></b>." ),
+		      `PushButton("&OK")
+		      )
+		);
+    UI::UserInput();
+    
+    UI::OpenDialog( `opt( `warncolor, `decorated ),
+		`VBox( 
+		      `Heading("This is a decorated warning dialog."),
+		      `PushButton("&OK")
+		      )
+		);
+    UI::UserInput();
+    UI::CloseDialog();
+    UI::CloseDialog();
+    UI::CloseDialog();
+}

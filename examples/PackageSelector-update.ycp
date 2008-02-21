@@ -1,0 +1,9 @@
+{
+    Pkg::TargetInit( "/",	// installed system
+		     false ); 	// don't create a new RPM database
+    UI::OpenDialog(`opt(`defaultsize), `PackageSelector(`id(`selector), `opt(`testMode, `updateMode ) ) );
+    any input = UI::RunPkgSelection(`id(`selector) );
+    UI::CloseDialog();
+
+    y2milestone( "Input: %1", input );
+}

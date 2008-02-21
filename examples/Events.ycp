@@ -1,0 +1,265 @@
+// (Advanced) YCP example for various UI events:
+//
+// Create a dialog with all kinds of widgets that can generate events and
+// display any event nicely formatted in a RichText widget.
+//
+// Most widgets have the `notify option set to demonstrate what events they can
+// send.
+//
+// Use the "Close" button to quit the example.
+{
+    /**
+     * Nicely (HTML-) format an event map.
+
+     * @param	event	The event map to format
+     * @return	html	HTML code for the formatted event
+     **/
+    define string formatEvent( map<string, any> event ) ``{
+	string html = "<h3>Event:</h3><p>";
+y2milestone ("formatEvent(%1)", event);
+	foreach (string key, any value, event, ``{
+	    html = html + "<font color=blue>" + key + "</font>: " + tostring (value) + "<br>";
+	});
+
+	html = html + "</p>";
+
+	return html;
+    };
+
+
+    integer timeout = 20; // seconds
+    string howto = sformat( "Use the \"Close\" button to quit. " 			+
+			    "All other widgets will only show the event.\n" 		+
+			    "After %1 seconds of inactivity a timeout event will occur.",
+			    timeout );
+
+    string event_display = "<i>No event yet - click something (or wait for timeout)</i>";
+
+    string help_text =
+	"<p>Please also have a look at our <a href=\"daily special\">daily special</a>.</p>" +
+	"<p>If you have any comments about our pizza, please contact our " +
+	"chef de cuisine <a href=\"mailto:giuseppe@mafia.it\">Giuseppe</a>.</p>";
+
+
+    term delivery	= `Tree(`id(`delivery_service ), `opt(`notify), "&Delivery Service",
+				[
+				 `item(`id(`europe), "Europe", true,
+				       [
+					`item(`id(`italy ), "Italy",
+					      [
+					       "Napoli",
+					       "Palermo",
+					       "Roma",
+					       "Milano"
+					       ]
+					      ),
+					`item(`id(`germany), "Germany",
+					      [
+					       "Nuernberg",
+					       "Muenchen",
+					       "Berlin"
+					       ]
+					      ),
+					`item(`id(`czech), "Czech Republic",
+					      [
+					       "Praha",
+					       "Brno"
+					       ]
+					      )
+					]
+				       ),
+				 `item(`id(`usa), "USA", false,
+				       [
+					"New York",
+					"Chicago",
+					"San Francisco",
+					"Los Angeles"
+					]
+				       )
+					   
+				 ]
+				);
+			   
+    term pizza		= `SelectionBox(`id(`pizza), `opt(`notify,`immediate), "Pi&zza",
+					[
+					 `item(`id(`napoli 	), "Napoli"      	),
+					 `item(`id(`funghi 	), "Funghi"		),
+					 `item(`id(`salami 	), "Salami"       	),
+					 `item(`id(`prociutto	), "Prosciutto"		),
+					 `item(`id(`stagioni	), "Quattro Stagioni (a pizza devided into 4 parts)"	),
+					 `item(`id(`chef   	), "A la Chef", true	)
+					 ]
+					);
+
+    term toppings	= `MultiSelectionBox(`id(`toppings), `opt(`notify), "To&ppings",
+					     [
+					      `item( `id(`cheese   	), "Cheese"	, true  ),
+					      `item( `id(`tomatoes 	), "Tomatoes"	, true  ),
+					      `item( `id(`mush     	), "Mushrooms"	, false ),
+					      `item( `id(`onions	), "Onions" 	),
+					      `item( `id(`sausage	), "Salami" 	),
+					      `item( `id(`ham	), "Ham"	)
+					      ]
+					     );
+
+    term drink		= `Table(`id(`drink), `opt(`notify, `immediate), `header( "Drink", "Contents" ),
+				 [
+				  `item(`id(`coke),	"Coca Cola",		"Caffeine" 	),
+				  `item(`id(`sprite),	"Sprite",		""		),
+				  `item(`id(`water),	"Mineral Water",	""		),
+				  `item(`id(`beer),	"Beer",			"Alcohol"	),
+				  `item(`id(`beer),	"Wine",			"Alcohol"	),
+				  `item(`id(`coffee),	"Coffee",		"Caffeine"	)
+				  ]
+				 );
+
+    term lists 		= `HBox(
+				`HWeight( 1, delivery	),
+				`HWeight( 1, pizza	),
+				`HWeight( 1, toppings	),
+				`HWeight( 1, drink	),
+				`HWeight( 1, `RichText(`id(`help), help_text ) )
+				);
+
+    term buttons 	= `HBox(
+				`PushButton(`id(`order	), `opt(`key_F2 ), "&Order"		),
+				`PushButton(`id(`info	), `opt(`key_F3 ), "More &Info" 	),
+				`PushButton(`id(`cancel	), `opt(`key_F4 ),"&Cancel Order" 	),
+				`MenuButton(`id(`special), "&Special...",
+					    [
+					     `item(`id(`track_order ), "&Where is my last order?" ),
+					     `menu( "Send complaint",
+						    [
+						     `item(`id(`pizza_cold ), "My pizza was cold when I got it!" ),
+						     `item(`id(`bad_taste  ), "I didn't like the taste of that pizza!" ),
+						     `item(`id(`lost_order ), "My order got lost!" ),
+						     `item(`id(`too_small  ), "My pizza was too small. I am still hungry!" )
+						     ]
+						    ),
+					     `item(`id(`doggie_bag ), "Order doggie bag" ),
+					     `item(`id( "This is a dumb user who will click on everything. Nevermind." ),
+						   "Order dog to eat the leftovers in the doggie bag" ),
+					     `item(`id(`cancel_order), "Cancel order" )
+					     ]
+					    )
+				);
+
+    term fields 	= `VSquash(
+				   `HBox(
+					 `Top( `ComboBox(`id(`salutation), `opt(`notify, `editable), "&To:", 
+							 [ "Mr.", "Mrs.", "Miss", "Dr.", "Don", "King", "His Royal Highness" ] ) ),
+					 `Top( `InputField(`id(`name), `opt(`notify), "&Name:" ) ),
+					 `MultiLineEdit(`id(`address), `opt(`notify), "&Address:" ),
+					 `VSpacing( 4 ) // Force height (don't use MultiLineEdit default height)
+					 )
+				   );
+
+
+    term payment_radio_box = `VBox(
+				   `Left(`RadioButton(`id(`cash    ), `opt(`notify ), "Cas&h on Delivery", true ) ),
+				   `Left(`RadioButton(`id(`plastic ), `opt(`notify ), "C&redit Card"	) ),
+				   `Left(`RadioButton(`id(`bill	   ), `opt(`notify ), "&Bill me Later"	) )
+				   );
+
+    term payment = `VBox(
+			 `Left(
+			       `HVSquash(
+					 `Frame( "Payment",
+						 `RadioButtonGroup( payment_radio_box )
+						 )
+					 )
+			       ),
+			 `VSpacing( 0.5 ),
+			 `Left(`CheckBox(`id(`send_mafioso ), `opt(`notify),
+					 "Send &Giuseppe over if I forget to pay", false ) )
+			 );
+
+    
+    UI::OpenDialog(`opt(`defaultsize),
+		   `VBox(
+			 `Heading( "Event Example" ),
+			 `Label( howto ),
+			 `VSpacing(),
+			 `VWeight( 1,		// Layout trick: Lower layout priority with a weight
+				   lists ),	
+			 `VSpacing( 0.2 ),
+			 `VSquash(
+				  `HBox(
+					`HWeight( 60, `VBox(
+							    fields,
+							    `VSpacing( 0.2 ),
+							    `VStretch(),
+							    `Left( buttons )
+							    )
+						  ),
+					`HSpacing(),
+					`HVSquash( payment )
+					)
+				  ),
+			 `VSpacing( 0.5 ),
+			 `VWeight( 1, 
+				   `RichText(`id(`event_display), event_display )
+				   ),
+			 `Right( `PushButton(`id(`close), "C&lose" ) )
+			 )
+		   );
+
+    //
+    // Event loop
+    //
+
+    map <string, any> event = $[];
+
+    repeat
+    {
+	event = UI::WaitForEvent( timeout * 1000 );
+
+	any widget = event["ID"]:nil;
+	
+	if ( widget != nil && UI::WidgetExists(`id( widget ) ) )
+	{
+	    
+	    y2debug( "Event from %1 \"%2\"",
+		     UI::QueryWidget(`id( widget ), `WidgetClass ),
+		     UI::QueryWidget(`id( widget ), `DebugLabel  ) );
+	}
+
+	if ( event != nil )
+	{
+	    UI::ChangeWidget(`event_display, `Value, formatEvent( event ) );
+	}
+
+	if ( event["ID"]:nil == `bill )
+	{
+	    if ( ! (boolean) UI::QueryWidget(`send_mafioso, `Value ) )
+		UI::ChangeWidget(`send_mafioso, `Value, true );
+	}
+	else if ( event["ID"]:nil == `send_mafioso )
+	{
+	    if ( (boolean) UI::QueryWidget(`bill, `Value ) &&
+		 ! (boolean) UI::QueryWidget(`send_mafioso, `Value ) )
+	    {
+		UI::ChangeWidget(`cash, `Value, true );
+	    }
+	}
+	else if ( event["ID"]:nil == `order )
+	{
+	    UI::ChangeWidget(`send_mafioso, `Value, nil );
+	    UI::DumpWidgetTree();
+	}
+	else if ( event["ID"]:nil == `cancel_order )
+	{
+	    UI::ChangeWidget(`delivery_service,	`Value, nil );
+	    UI::ChangeWidget(`pizza,		`Value, nil );
+	    UI::ChangeWidget(`toppings,		`CurrentItem, nil );
+	    UI::ChangeWidget(`drink,		`Value, nil );
+	}
+    } until ( event["ID"]:nil == `close );
+
+
+    //
+    // Clean up
+    //
+
+    UI::CloseDialog();
+}

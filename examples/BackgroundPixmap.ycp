@@ -1,0 +1,20 @@
+// Simple example how to use background pixmaps in alignments
+{
+    UI::OpenDialog(`opt(`defaultsize),
+		   `VBox(
+			 `HVCenter( `BackgroundPixmap( "wallpapers/welcome.jpg" ),
+				    `MinSize( 20, 7,
+					      `SelectionBox( "",
+							     [
+							      "English",
+							      "Italiano",
+							      "Klingon"
+							      ] )
+					      )
+				    ),
+			 `Right(`PushButton(`opt(`default), "&Close" ) )
+			 )
+		   );
+    UI::UserInput();
+    UI::CloseDialog();
+}

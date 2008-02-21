@@ -1,0 +1,17 @@
+{
+    UI::OpenDialog(`opt(`defaultsize),
+	       `VBox(
+		     `VCenter( // Makes the HSquash stretchable vertically
+			      `HSquash( // Makes the VBox nonstretchable horizontally
+				       `VBox(
+					     `Left(`CheckBox("short")),
+					     `Left(`CheckBox("longer")),
+					     `Left(`CheckBox("even longer")),
+					     `Left(`CheckBox("yet even longer"))))),
+		     `Left(`PushButton("bottom left"))
+		     )
+	       );
+    
+    UI::UserInput();
+    UI::CloseDialog();
+}

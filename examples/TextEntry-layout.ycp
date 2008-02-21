@@ -1,0 +1,30 @@
+// Input field width under different layout constraints
+{
+    UI::OpenDialog(
+		   `VBox(
+			 `TextEntry( "Normal", "normal width" ),
+			 `TextEntry(`opt(`shrinkable), "Sml", "shrinkable" ),
+			 `VBox(
+			       `MarginBox( 1, 0.2,
+					   `Frame( "Useless Frame",
+						   `VBox(
+							 `Heading( "Very Wide and Very Useless Heading" ),
+							 `TextEntry( "Normal 1" ),
+							 `TextEntry( "Normal 2" ),
+							 `TextEntry( "Normal 3" ),
+							 `TextEntry( "Unusually &wide field caption to make it wider" ),
+							 `TextEntry( "Normal 4" ),
+							 `TextEntry(`opt(`hstretch  ), "Stretch", "stretchable" ),
+							 `TextEntry(`opt(`shrinkable), "Sml", "shrinkable" ),
+							 `Left(`TextEntry( "Left", "left aligned" ) ),
+							 `HSquash(`TextEntry( "HSquashed", "hquashed" ) )
+							 )
+						   )
+					   )
+			       ),
+			 `PushButton(`opt(`default), "&OK" )
+			 )
+		   );
+    UI::UserInput();
+    UI::CloseDialog();
+}

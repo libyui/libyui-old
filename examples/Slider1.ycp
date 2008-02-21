@@ -1,0 +1,24 @@
+{
+    if ( ! UI::HasSpecialWidget(`Slider) )
+    {
+	UI::OpenDialog(
+		   `VBox( 
+			 `Label("Error: This UI doesn't support the Slider widget!"),
+			 `PushButton(`opt(`default), "&OK")
+			 )
+		   );
+	UI::UserInput();
+	UI::CloseDialog();
+	
+	return;
+    }
+    
+    UI::OpenDialog(
+	       `VBox(
+		     `Slider( "Percentage", 0, 100, 50),
+		     `PushButton(`opt(`default), "&OK")
+		     )
+	       );
+    UI::UserInput();
+    UI::CloseDialog();
+}

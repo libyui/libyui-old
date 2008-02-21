@@ -1,0 +1,40 @@
+// TimeoutUserInput.ycp
+//
+// Example for common usage of UI::TimeoutUserInput()
+
+{
+    // Build dialog with two labels and an "OK" button.
+
+    integer countdown_sec       = 30;
+    integer interval_millisec   = 200;
+    integer countdown           = countdown_sec * 1000 / interval_millisec;
+
+    UI::OpenDialog(
+                   `VBox(
+                         `Label( "Rebooting Planet Earth..." ),
+                         `Label(`id(`seconds ), sformat( "%1", countdown_sec ) ),
+                         `PushButton(`id(`ok ), `opt(`default ), "&OK" )
+                         )
+                   );
+
+    any id = nil;
+
+    // Event loop
+
+    repeat
+    {
+        id = UI::TimeoutUserInput( interval_millisec );
+
+	if ( id == `timeout )
+	{
+	    // Periodic screen update
+	    
+	    countdown = countdown - 1;
+	    integer seconds_left = countdown * interval_millisec / 1000;
+	    UI::ChangeWidget(`id(`seconds ), `Value, sformat( "%1", seconds_left ) );
+	}
+
+    } until ( id == `ok || countdown <= 0 );
+
+    UI::CloseDialog();
+}

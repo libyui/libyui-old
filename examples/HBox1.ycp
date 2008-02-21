@@ -1,0 +1,11 @@
+{
+    UI::OpenDialog(
+	       `HBox(
+		     `PushButton("First" ),
+		     `PushButton("Second"),
+		     `PushButton("Third" )
+		     )
+	       );
+    UI::UserInput();
+    UI::CloseDialog();
+}

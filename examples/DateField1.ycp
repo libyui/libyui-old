@@ -1,0 +1,16 @@
+// Simple example for DateField
+{
+    UI::OpenDialog(
+		   `VBox( 
+			 `Left( `DateField(`id(`date), `opt(`hstretch), "Date:", "1989-11-09") ),
+			 `Left( `TimeField(`id(`time), `opt(`hstretch), "Time:", "20:15:00"  ) ),
+			 `PushButton("&OK")
+			 )
+		   );
+    UI::UserInput();
+    
+    y2milestone( "Date: %1", UI::QueryWidget(`id(`date), `Value) );
+    y2milestone( "Time: %1", UI::QueryWidget(`id(`time), `Value) );
+    
+    UI::CloseDialog();
+}

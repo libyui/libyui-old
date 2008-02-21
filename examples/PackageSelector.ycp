@@ -1,0 +1,21 @@
+// Package Selector example
+{
+    // Pkg::SourceCreate( "http://dist.suse.de/install/SLP/SUSE-10.1-Beta7/i386/CD1/", "" );
+    // Pkg::SourceCreate( "http://dist.suse.de/install/SLP/SUSE-10.0-RC4/i386/CD1/", "" );
+    // Pkg::SourceCreate( "file:/srv/10.1-i386/CD1/", "" );
+    Pkg::SourceCreate( "file:/srv/10.1-i386/DVD1/", "" );
+    // Pkg::SourceCreate( "file:/srv/sles-10-i386/CD1/", "" );
+
+    if ( true )
+    {
+	Pkg::TargetInit( "/",		// installed system
+			 false ); 	// don't create a new RPM database
+    }
+    
+    UI::OpenDialog(`opt(`defaultsize),
+		   `PackageSelector(`id(`selector), "/dev/fd0" ) );
+    any input = UI::RunPkgSelection(`id(`selector) );
+    UI::CloseDialog();
+
+    y2milestone( "Input: %1", input );
+}

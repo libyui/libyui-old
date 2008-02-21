@@ -1,0 +1,57 @@
+// Minimalistic example for tab widget
+{
+    if ( ! UI::HasSpecialWidget(`DumbTab ) )
+    {
+	UI::OpenDialog(
+		   `VBox( 
+			 `Label("Error: This UI doesn't support the DumbTab widget!"),
+			 `PushButton(`opt(`default), "&OK")
+			 )
+		   );
+	UI::UserInput();
+	UI::CloseDialog();
+	
+	return;
+    }
+
+    
+    UI::OpenDialog(
+		   `VBox(
+			 `DumbTab(`id(`tab),
+				  [ "Page 1", "Page 2", "Page 3" ],
+				  `RichText(`id(`contents), "Contents" )
+				  ),
+			 `Left(
+			       `HBox(
+				     `PushButton(`id(`page1), "Page &1" ),
+				     `PushButton(`id(`page2), "Page &2" ),
+				     `PushButton(`id(`page3), "Page &3" )
+				     )
+			       ),
+			 `Right(`PushButton(`id(`close), "&Close" ) )
+			 )
+		   );
+
+    UI::DumpWidgetTree();
+    
+    any input = nil;
+
+    repeat
+    {
+	input = UI::UserInput();
+
+	if ( is( input, string ) )
+	{
+	    UI::ChangeWidget(`contents, `Value, (string) input );
+	}
+
+	if      ( input == `page1 )	UI::ChangeWidget(`tab, `CurrentItem, "Page 1" );
+	else if ( input == `page2 )	UI::ChangeWidget(`tab, `CurrentItem, "Page 2" );
+	else if ( input == `page3 )	UI::ChangeWidget(`tab, `CurrentItem, "Page 3" );
+
+	y2milestone( "Current tab: %1", UI::QueryWidget(`tab, `CurrentItem ) );
+    } until ( input == `close );
+
+
+    UI::CloseDialog();
+}

@@ -1,0 +1,107 @@
+// Advanced BarGraph example:
+//
+// Create a dialog with a BarGraph with a number of segments
+// and a "+" and a "-" button for each segment.
+
+{
+    // Check for availability of the BarGraph widget - this is necessary since
+    // this is an optional widget that not all UIs need to support.
+    
+    if ( ! UI::HasSpecialWidget(`BarGraph) )
+    {
+	// Pop up error message if the BarGraph widget is not available
+	
+	UI::OpenDialog(
+		   `VBox( 
+			 `Label("Error: This UI doesn't support the BarGraph widget!"),
+			 `PushButton(`opt(`default), "&OK")
+			 )
+		   );
+	UI::UserInput();
+	UI::CloseDialog();
+	
+	return;
+    }
+
+
+
+    // list	values = [ 100, 200, 300, 150, 250, 120, 200, 120 ];
+    list<integer>	values = [ 100, 100, 100, 100, 100, 100, 100, 100 ];
+    integer 	inc = 10;  // increment / decrement for each button press
+    
+    // Create the main dialog:
+    //
+    // One BarGraph at the top, below that two rows of equal sized (thus the
+    // weights) buttons, below that a "close" button.
+    //
+    // The "+" / "-" -buttons use an integer value as their ID which can be
+    // used to point to the index of the value to be changed. If the ID is
+    // negative it means subtract rather than add.
+
+    term plus_buttons =  `HBox();
+    term minus_buttons = `HBox();
+    integer i = 1;
+
+    foreach( `val, values, ``{
+	plus_buttons  = add( plus_buttons,  `HWeight( 1, `PushButton(`id( i), "+" ) ) );
+	minus_buttons = add( minus_buttons, `HWeight( 1, `PushButton(`id(-i), "-" ) ) );
+	i = i+1;
+    });
+    
+    UI::OpenDialog(
+	       `VBox( 
+		     `BarGraph(`id(`bar), values ),
+		     plus_buttons,
+		     minus_buttons,
+		     `PushButton(`id(`close), `opt(`default), "&Close")
+		     )
+	       );
+
+    
+    // Event processing loop - left only via the "close" button
+    // or the window manager close button / function.
+    
+    any button_id = nil;
+    
+    do
+    {
+	button_id = UI::UserInput();	// wait for button click
+
+	if ( button_id != `close && button_id != `cancel )
+	{
+	    integer sign = 1;
+	    
+	    if ( button_id < 0 )
+	    {
+		sign	  = -1;
+		button_id = -(integer)button_id;
+	    }
+
+	    // Loop over the values. Increment the value corresponding to the
+	    // clicked button, decrement all others as to maintain the total
+	    // sum of all values - or vice versa for negative button IDs
+	    // (i.e. "-" buttons).
+	    
+	    list<integer> new_values = [];
+	    integer i = 0;
+
+	    while ( i < size( values ) )
+	    {
+		integer old_val = values[i]:0;
+		
+		if ( i+1 == button_id )
+		    new_values = add( new_values, old_val + (sign*inc) );
+		else
+		    new_values = add( new_values, old_val + (-sign *(inc/( size(values)-1))) );
+
+		i = i+1;
+	    }
+
+	    values = new_values;
+	    UI::ChangeWidget(`id(`bar), `Values, values );
+	}
+	
+    } while ( button_id != `close && button_id != `cancel );
+    
+    UI::CloseDialog();
+}
