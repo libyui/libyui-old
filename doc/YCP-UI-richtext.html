@@ -1,0 +1,106 @@
+YCP UI Reference: RichText
+The RichText widget in the Qt UI currently supports the tags listed
+below. Note that not all of them will make sense for use within YaST2
+(Most notably all those which refer to files)
+
+    <ul><li>&lt;qt&gt;...&lt;/qt&gt; - A Qt rich text document. It understands the
+	following attributes</li>
+	<ul><li>title - the caption of the document. This attribute is easily
+            accessible with [25]QTextView::documentTitle()</li>
+	  </li>
+	  <li>type - The type of the document. The default type is page .
+            It indicates that the document is displayed in a page of its
+            own. Another style is detail. It can be used to explain
+            certain expressions more detailed in a few sentences. The
+            QTextBrowser will then keep the current page and display the
+            new document in a small popup similar to QWhatsThis. Note
+            that links will not work in documents with &lt;qt type=&quot;detail&quot;
+            &gt;...&lt;/qt&gt;
+	  </li>
+	  <li>bgcolor - The background color, for example bgcolor=&quot;yellow&quot;
+            or bgcolor=&quot;#0000FF&quot;
+	  </li>
+	  <li>background - The background pixmap, for example
+            background=&quot;granit.xpm&quot;. The pixmap name will be resolved by
+            a [26]QMimeSourceFactory().
+	  </li>
+	  <li>text - The default text color, for example text=&quot;red&quot;
+	  </li>
+	  <li>link - The link color, for example link=&quot;green&quot;
+	</ul>
+      </li>
+      <li>&lt;a&gt;...&lt;/a&gt; - An anchor or link. The reference target is defined in
+	the href attribute of the tag as in \c&lt;a
+	href=&quot;target.qml&quot;&gt;...&lt;/a&gt;. You can also specify an additional
+	anchor within the specified target document, for example &lt;a
+	href=&quot;target.qml#123&quot;&gt;...&lt;/a&gt;. If a is meant to be an anchor, the
+	reference source is given in the name attribute.
+      </li>
+      <li>&lt;font&gt;...&lt;/font&gt; - Customizes the font size and text color. The
+	tag understands two attributes:
+	<ul></li>
+      <li>color - the text color, for example color=&quot;red&quot; or
+	color=&quot;#FF0000&quot;.
+      </li>
+      <li>size - the logical size of the font. Logical sizes 1 to 7 are
+	supported. The value may either be absolute, for example
+	size=3, or relative. In the latter case, the sizes are simply
+	added.
+      </li></ul>
+      <li>&lt;em&gt;...&lt;/em&gt; - Emphasized. As default, this is the same as
+	&lt;i&gt;...&lt;/i&gt; (Italic)
+      </li>
+      <li>&lt;strong&gt;...&lt;/strong&gt; - Strong. As default, this is the same as
+	&lt;bold&gt;...&lt;/bold&gt; (bold)
+      </li>
+      <li>&lt;big&gt;...&lt;/big&gt; - A larger font size.
+      </li>
+      <li>&lt;small&gt;...&lt;/small&gt; - A smaller font size.
+      </li>
+      <li>&lt;code&gt;...&lt;/code&gt; - Indicates Code. As default, this is the same as
+	&lt;tt&gt;...&lt;/tt&gt; (typewriter)
+      </li>
+      <li>&lt;pre&gt;...&lt;/pre&gt; - For larger junks of code. Whitespaces in the
+	contents are preserved.
+      </li>
+      <li>&lt;large&gt;...&lt;/large&gt; - Large font size.
+      </li>
+      <li>&lt;b&gt;...&lt;/b&gt; - Bold font style.
+      </li>
+      <li>&lt;h1&gt;...&lt;/h1&gt; - A top-level heading.
+      </li>
+      <li>&lt;h2&gt;...&lt;/h2&gt; - A sub-level heading.
+      </li>
+      <li>&lt;h3&gt;...&lt;/h3&gt; - A sub-sub-level heading.
+      </li>
+      <li>&lt;p&gt;...&lt;/p&gt; - A paragraph.
+      </li>
+      <li>&lt;center&gt;...&lt;/center&gt; - A centered paragraph.
+      </li>
+      <li>&lt;blockquote&gt;...&lt;/blockquote&gt; - An indented paragraph, useful for
+	quotes.
+      </li>
+      <li>&lt;multicol cols=n &gt;...&lt;/multicol&gt; - Multicol display with n columns
+      </li>
+      <li>&lt;twocolumn&gt;...&lt;/twocolumn&gt; - Two-column display.
+      </li>
+      <li>&lt;ul&gt;...&lt;/ul&gt; - An un-ordered list. You can also pass a type
+	argument to define the bullet style. The default is type=disc,
+	other types are circle and square.
+      </li>
+      <li>&lt;ol&gt;...&lt;/ol&gt; - An ordered list. You can also pass a type argument
+	to define the enumeration label style. The default is type=&quot;1&quot;,
+	other types are &quot;a&quot; and &quot;A&quot;.
+      </li>
+      <li>&lt;li&gt;...&lt;/li&gt; - A list item.
+      </li>
+      <li>&lt;img&gt; - An image. The image name for the mime source factory is
+	given in the source attribute, for example &lt;img source=&quot;qt.xpm&quot;/&gt;
+	The image tag also understands the attributes width and height
+	that determine the size of the image. If the pixmap does not fit
+	to the specified size, it will be scaled automatically.
+      </li>
+      <li>&lt;br&gt; - A line break
+      </li>
+      <li>&lt;hr&gt; - A horizonal line</li>
+    </ul>

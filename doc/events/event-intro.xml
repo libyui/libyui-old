@@ -1,0 +1,1142 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<section id="UI-Events">
+    <title>UI Events</title>
+    <section id="UI-Event-Intro">
+        <title>Introduction</title>
+        <section>
+            <title>The YaST2 Event Model</title>
+
+            <section id="UI-Event-Intro-classic_gui"><title>Classic GUI Event
+                    Loops</title>
+
+                <para>Classic graphical user interface (GUI) programming is almost
+                    always event-driven: The application initializes, creates its
+                    dialog(s) and then spends most of its time in one central event
+                    loop.</para>
+
+                <para>When the user clicks on a button or enters text in an input
+                    field, he generates <emphasis role="i">events</emphasis>. The underlying GUI toolkit
+                    provides mechanisms so the application can react to those events -
+                    perform an action upon button click, store the characters the user
+                    typed etc.; all this is done from <emphasis role="i">callback</emphasis> functions of one
+                    kind or the other (whatever they may be called in the respective
+                    GUI toolkit).</para>
+
+                <para>In any case, it all comes down to one single event loop in the
+                    application from where small functions (let's call them
+                    <emphasis role="i">callbacks</emphasis> for the sake of simplicity) are called when events
+                    occur. Those callbacks each contain a small amount of the
+                    application's GUI logic to do whatever is to be done when the
+                    respective event occurs. The overall application logic is scattered
+                    among them all.</para>
+
+                <para>This approach is called <emphasis role="i">event-driven</emphasis>. Most GUI toolkits
+                    have adopted it.</para>
+
+                <para>Depending on the primary goal of a GUI application, this
+                    event-driven approach may or may not be appropriate. It is
+                    perfectly suitable for example for word processor applications, for
+                    web browsers or for most other GUI applications that have one
+                    central main window the user works with most of his time: The user
+                    is the driving force behind those kinds of applications; only he
+                    knows what he next wishes to do. The application has no workflow in
+                    itself.</para>
+
+                <para>Thus the event-driven application model fits perfectly here: The
+                    callbacks can easily be self-contained; there is little context
+                    information, and there are limited application-wide data.</para>
+
+            </section>
+            <section id="UI-Event-Intro-y2_approach"><title>The YaST2 Approach</title>
+
+                <para>Applications like YaST2 with all its installation and
+                    configuration workflows, however, are radically different. The
+                    driving force here is the application workflow, the sequence of
+                    dialogs the user is presented with.</para>
+
+                <para>Of course this can be modeled with a traditional event loop, but
+                    doing that considerably adds to the complexity of the application:
+                    Either the application needs a lot more callbacks, or the callbacks
+                    need to keep track of a lot of status information (workflow step
+                    etc.) - or both.</para>
+
+                <para>For the YaST2 UI, a different approach was chosen: Rather than
+                    having one central event loop and lots of callbacks, the flow
+                    control remains in the interpreted YCP code. User input is
+                    requested on demand - very much like in simplistic programming
+                    languages like the first versions of BASIC.</para>
+
+                <para>This of course means that there is no single one central
+                    "waiting point" in the program (like the event loop in the
+                    event-driven model), but rather lots of such waiting points spread
+                    all over the YCP code within each <link
+                        linkend="UI-Event-UserInput">UserInput()</link> or
+                    <link linkend="UI-Event-WaitForEvent">WaitForEvent()</link>
+                    statement.</para>
+
+                <para>Side note: Of course a graphical UI like the
+                    YaST2 Qt UI still has to be prepared to perform screen redraws
+                    whenever the underlying window system requires that - i.e. whenever
+                    X11 sends an <emphasis role="i">Expose</emphasis> (or similar) event. For this purpose the
+                    Qt UI is multi-threaded: One thread takes care of X event handling,
+                    one thread is the actual YCP UI interpreter. This instant screen
+                    redraw is what you lose when you invoke <emphasis role="i">y2base</emphasis> with the
+                    "--nothreads" command line option.</para>
+
+                <para>YCP was meant to be an easy-to-understand programming language
+                    for developers who specialize in a particular aspect of system
+                    configuration or installation, not in GUI programming.</para>
+
+                <para>Practical experience with all the YaST2 modules developed so far
+                    has shown that application developers tend to adopt this concept of
+                    <link linkend="UI-Event-UserInput">UserInput()</link> very
+                    easily. On the other hand it is a widely known fact that
+                    event-driven GUI programming means a steep learning curve because
+                    (as mentioned before) it requires splitting up the application
+                    logic into tiny pieces for all the callbacks.</para>
+
+                <para>Thus, this design decision of YaST2 seems to have proven right
+                    much more often than there are problems with its downsides (which
+                    of course also exist).</para>
+
+            </section>
+            <section id="UI-Event-Intro-simplicity"><title>Simplicity vs. Features</title>
+
+                <para>The basic idea of YaST2 UI programming is to create a dialog
+                    asking the user for some data and then continue with the next such
+                    dialog - meaning that most of those dialogs are basically forms to
+                    be filled in with an "OK" (or "Next") and a "Cancel" (or "Back")
+                    button. The YCP application is usually interested only in those
+                    button presses, not in each individual keystroke the user
+                    performs.</para>
+
+                <para>This is why by default <link linkend="UI-Event-UserInput">UserInput()</link> and related
+                    functions react to little more than button presses - i.e. they
+                    ignore all other events, in particular low-level events the widgets
+                    handle all by themselves like keystrokes (this is the input fields'
+                    job) or selecting items in selection boxes, tables or similar. Most
+                    YCP applications simply don't need or even want to know anything
+                    about that.</para>
+
+                <para>This makes YCP UI programming pretty simple. The basic principle
+                    looks like this:</para>
+
+                <programlisting>
+{
+    UI::OpenDialog(
+            `VBox(
+                ... // Some input fields etc.
+                `HBox(
+                    `PushButton(`id(`back ), "Back" ),
+                    `PushButton(`id(`next ), "Next" )
+                    )
+                )
+            );
+
+    symbol button_id = UI::UserInput();
+
+    if ( button_id == `next )
+    {
+        // Handle "Next" button
+    }
+    else if ( button_id == `back )
+    {
+        // Handle "Back" button
+    }
+
+    UI::CloseDialog();
+}
+                </programlisting>
+
+                <para>Strictly spoken, you don't even require a loop around that -
+                    even though this is very useful and thus strongly advised.</para>
+
+                <para>All that can make <link linkend="UI-Event-UserInput">UserInput()</link> return in this
+                    example are the two buttons. Other widgets like input
+                    fields ( <link linkend="InputField_widget">InputField</link>), selection
+                    boxes etc. by do not do anything that makes <link linkend="UI-Event-UserInput">UserInput()</link> return -
+                    unless explicitly requested.</para>
+
+            </section>
+
+            <section id="UI-Event-Intro-notify"><title>The <emphasis role="i">notify</emphasis> Option</title>
+
+                <para>
+                    If a YCP application is interested in events that occur in a
+                    widget other than a button, the <emphasis
+                        role="i">notify</emphasis> widget option can be used
+                    when creating it with <literal>UI::OpenDialog()</literal>.</para>
+
+                <example><title>The notify option</title>
+
+                    <programlisting>
+UI::OpenDialog(...
+  `SelectionBox(`id(`pizza ), `opt(`notify ), ... ),
+   ...
+  `Table(`id(`toppings), `opt(`notify, `immediate ), ... ),
+  ...
+)
+                    </programlisting>
+
+                    <para>In general, the <emphasis role="i">notify</emphasis> options makes <link linkend="UI-Event-UserInput">UserInput()</link> return when
+                        something "important" happens to that widget. The <emphasis role="i">immediate</emphasis>
+                        option (always in combination with <emphasis role="i">notify</emphasis>!) makes the widget
+                        even more "verbose".</para>
+
+                    <para><emphasis role="b">Note:</emphasis> <link linkend="UI-Event-UserInput">UserInput()</link> always returns
+                        the ID of the widget that caused an event. You cannot tell the
+                        difference when many different types of event could have occured.
+                        This is why there are different levels of verbosity with
+                        <emphasis role="i">`opt(`notify )</emphasis> or
+                        <emphasis role="i">`opt(`notify, `immediate )</emphasis> and the new <link linkend="UI-Event-WaitForEvent">WaitForEvent()</link> UI
+                        builtin function which returns more detailed
+                        information. A <link linkend="Table_widget">Table</link> widget for example
+                        can generate both <link linkend="Activated">Activated</link> and <link linkend="SelectionChanged">SelectionChanged</link>
+                        <link linkend="WidgetEvent">WidgetEvents</link>.</para>
+
+                    <para>Exactly what makes <link linkend="UI-Event-UserInput">UserInput()</link> return for
+                        each widget class is described in full detail in the
+                        <link linkend="Event_Reference">YaST2 event reference</link>.</para>
+
+                </example>
+            </section>
+            <section id="UI-Event-Intro-downsides"><title>Downsides and Discussions</title>
+
+                <para>The YaST2 event handling model has been (and will probably
+                    always remain) a subject of neverending discussions. Each and every
+                    new team member and everybody who casually writes a YaST2 module
+                    (to configure the subsystem that is his real responsibility) feels
+                    compelled to restart this discussion.</para>
+
+                <para>The idea of having a function called <emphasis role="i">UserInput()</emphasis> seems to
+                    conjure up ghastly memories of horrible times that we hoped to have
+                    overcome: The days of home-computer era BASIC programming or
+                    university Pascal lectures (remember Pascal's <emphasis role="i">readln()</emphasis>?) or
+                    even low-tech primitive C programs (<emphasis role="i">gets()</emphasis> or <emphasis role="i">scanf()</emphasis>
+                    are not better, either).</para>
+
+                <para>But it's not quite like that. Even though the function name is
+                    similar, the concept is radically different: It is not just one
+                    single value that is being read, it is a whole dialog full of
+                    whatever widgets you see fit to put there. All the widgets take
+                    care of themselves; they all handle their values automatically. You
+                    just have to ask them (<link linkend="YUI_builtins">UI::QueryWidget()</link>) for the
+                    values when you need them (leave them alone as long as you
+                    don't).</para>
+
+                <para>The similarity with computing stone age remains, however, in
+                    that you have to explicitly call <link linkend="UI-Event-UserInput">UserInput()</link> or related
+                    when you need user input. If you don't, you open your dialog, and a
+                    moment later when you continue in your code it closes again - with
+                    little chance for the user to enter anything.</para>
+
+                <para>Thus, the YaST2 approach has its intrinsic formalisms in that
+                    sequence:</para>
+
+                <programlisting>
+OpenDialog(...);
+
+UserInput();
+QueryWidget(...);
+QueryWidget(...);
+QueryWidget(...);
+...
+
+CloseDialog();
+
+                </programlisting>
+
+                <para>This is the price to pay for this level of simplicity.</para>
+
+            </section>
+            <section id="UI-Event-Intro-design_alternatives"><title>Design Alternatives</title>
+
+                <para>In the course of those <link linkend="UI-Event-Intro-downsides">discussions</link> some
+                    design alternatives began to emerge:</para>
+
+                <orderedlist spacing="compact"><listitem><para>Use the single-event-loop and callback model like most other
+                            toolkits.</para></listitem><listitem><para>Keep multiple event loops (like <link linkend="UI-Event-UserInput">UserInput()</link>), but add
+                            callbacks to individual widget events when needed so the YCP
+                            application can do some more fine-grained control of individual
+                            events.</para></listitem><listitem><para>Keep multiple event loops, but return more information than
+                            this simplistic <link linkend="UI-Event-UserInput">UserInput()</link> that can
+                            return no more than one single ID.</para></listitem></orderedlist>
+
+                <para>Having just a single event loop would not really solve any
+                    problem, but create a lot of new ones: A sequence of <emphasis role="i">wizard</emphasis>
+                    style dialogs would be really hard to program. Switching back and
+                    forth between individual wizard dialogs would have to be moved into
+                    some callbacks, and a lot of status data for them all to share
+                    (which dialog, widget status etc.) would have to be made
+                    global.</para>
+
+                <para>What a mess. We certainly don't want that.</para>
+
+                <para>All the callback-driven models have one thing in common: Most of
+                    the application logic would have to be split up and moved into the
+                    callbacks. The sequence of operations would be pretty much
+                    invisible to the application developer, thus the logical workflow
+                    would be pretty much lost.</para>
+
+                <para>Most who discussed that agreed that we don't want that, too.</para>
+
+                <para>Add to that the formalisms that would be required for having
+                    callbacks: Either add a piece of callback code (at least a function
+                    name) to <emphasis role="i">UI::OpenDialog()</emphasis> for each widget that should get
+                    callbacks or provide a new UI builtin function like, say,
+                    <emphasis role="i">UI::SetCallback()</emphasis> or <emphasis role="i">UI::AddCallback()</emphasis> that gets a
+                    YCP map that specifies at least the widget to add the callback to,
+                    the event to react to and the code (or at least a function name) to
+                    execute and some transparent <emphasis role="i">client data</emphasis> where the
+                    application can pass arbitrary data to the callback to keep the
+                    amount of required global data down.</para>
+                <para><emphasis role="i">UI::RemoveCallback()</emphasis></para>
+                <para>It might look about like this:</para>
+
+                <programlisting>
+define void selectionChanged( any widgetID, map event, any clientData ) {
+   ...
+   // Handle SelectionChanged event
+   ...
+};
+
+define void activated( any widgetID, map event, any clientData ) {
+   ...
+   // Handle Activated event
+   ...
+};
+
+...
+UI::OpenDialog(
+   ...
+   `Table(`id(`devices ), ... ),
+   ...
+);
+...
+UI::AddCallback(`id(`devices ), `SelectionChanged, nil );
+UI::AddCallback(`id(`devices ), `Activated, nil );
+
+                </programlisting>
+
+                <para>If you think "oh, that doesn't look all too bad", think twice.
+                    This example is trivial, yet there are already three separate
+                    places that address similar things:</para>
+
+                <itemizedlist spacing="compact"><listitem><para>The callback definitions. Agreed, you'll need some kind of code
+                            that actually does the application's business somewhere anyway. But
+                            chances are that the callbacks are no more than mere wrappers that
+                            call the functions that actually do the application's operations.
+                            You don't want to mix up all the back engine code with the UI
+                            related stuff.</para></listitem><listitem><para>Widget creation with <emphasis role="i">UI::OpenDialog()</emphasis></para></listitem><listitem><para>Adding callbacks with <emphasis role="i">UI::AddCallback()</emphasis></para></listitem></itemizedlist>
+
+                <para>A lot of GUI toolkits do it very much this way - most Xt based
+                    toolkits for example (OSF/Motif, Athena widgets, ...). But this
+                    used to be a source of constant trouble: Change a few things here
+                    and be sure that revenge will come upon you shortly. It simply adds
+                    to the overall complexity of something that is already complex
+                    enough - way enough.</para>
+
+                <para>Bottom line: Having callbacks is not really an
+                    improvement.
+                </para>
+
+                <para>What remains is to stick to the general model of YaST2 but
+                    return more information - of course while remaining compatible with
+                    existing YCP code. We don't want (neither can we economically
+                    afford to) break all existing YCP code. So the existing UI builtin
+                    functions like <link
+                        linkend="UI-Event-UserInput">UserInput()</link> or <link
+                        linkend="UI-Event-PollInput">PollInput()</link> have to remain
+                    exactly the same. But of course we can easily add a completely new
+                    UI builtin function that does return more information.</para>
+
+                <para>This is what we did. This is how <link linkend="UI-Event-WaitForEvent">WaitForEvent()</link> came
+                    into existence. It behaves like <link linkend="UI-Event-UserInput">UserInput()</link>, but it
+                    returns more information about what really happened - in the form
+                    of an event <emphasis role="i">map</emphasis> rather than just a single ID. That map
+                    contains that ID (of course) plus <link linkend="Eventmaps">additional data</link> depending
+                    on the event that occured.</para>
+
+                <para>One charming advantage of just adding another UI builtin is that
+                    existing code does not need to be touched at all. Only if you want
+                    to take advantage of the additional information returned by <link linkend="UI-Event-WaitForEvent">WaitForEvent()</link> you need
+                    to do anything at all.</para>
+
+                <para>So let's all hope with this approach we found a compromise we
+                    all can live with. While that probably will not prevent
+                    <link linkend="UI-Event-Intro-downsides">those discussions</link> by new team members, maybe
+                    it will calm down the current team members' discussion a bit.
+                    ;-)</para>
+
+
+            </section>
+        </section>
+        <section>
+            <title>Event Delivery</title>
+
+            <section id="UI-Event-Intro-queues"><title>Event Queues vs. One Single
+                    Pending Event</title>
+
+                <para>Since the YaST2 UI doesn't have a single <link
+                        linkend="UI-Event-Intro-classic_gui">event loop</link> where the program spends most of
+                    its time, an indefinite period of time may pass between causing an
+                    event (e.g., the user clicks on a widget) and event <emphasis role="i">delivery</emphasis>
+                    - the time where the (YCP) application actually receives the event
+                    and begins processing it. That time gap depends on exactly when the
+                    YCP code executes the next <link linkend="UI-Event-UserInput">UserInput()</link> etc.
+                    statement.</para>
+
+                <para>This of course means that events that occured in the mean time
+                    need to be stored somewhere for the YCP code to pick them up with
+                    <link linkend="UI-Event-UserInput">UserInput()</link> etc.</para>
+
+                <para>The first approach that automatically comes to mind is "use a
+                    queue and deliver them first-in, first-out". But this brings along
+                    its own problems:</para>
+
+                <para>Events are only useful in the context of the dialog they belong
+                    to. When an event's dialog is closed or when a new dialog is opened
+                    on top of that event's dialog (a popup for example) it doesn't make
+                    any more sense to handle that event. Even worse, it will usually
+                    lead to utter confusion, maybe even damage.</para>
+
+                <para>Imagine this situation: The user opens a YaST2 partitioning
+                    module just to have a look at his current partitioning scheme.</para>
+
+                <para>Side note: This scenario is fictious. The real
+                    YaST2 partitioning module is not like that. Any similarities with
+                    present or past partitioning modules or present or past YaST2
+                    hackers or users is pure coincidence and not intended. Ah yes, and
+                    no animals were harmed in the process of making that scenario.
+                    ;-)</para>
+
+                <itemizedlist spacing="compact"><listitem><para>The main dialog with an "OK" button (with, say, ID `ok)
+                            opens.</para></listitem><listitem><para>It takes some time to initialize data in the background.</para></listitem><listitem><para>The user clicks "OK".</para></listitem><listitem><para>The background initialization takes some more time.</para></listitem><listitem><para>The user becomes impatient and clicks "OK" again.</para></listitem><listitem><para>The background initialization still is not done.</para></listitem><listitem><para>The user clicks "OK" again.</para></listitem><listitem>
+                        <para>The initialization is done. Usually, the YCP code would now
+                            reach <link linkend="UI-Event-UserInput">UserInput()</link> and
+                            ueued events would be delivered (remember, this is only a fictious
+                            scenario - the UI does not really do that). The first "OK" click
+                            from the queue is delivered - i.e. <link linkend="UI-Event-UserInput">UserInput()</link> returns
+                            `ok.
+                        </para>
+                        <para>
+                            But this doesn't happen this time: The initialization code found
+                            out that something might be wrong with the partitioning or file
+                            systems. It might make sense to convert, say, the mounted
+                            <literal>/usr</literal> file system from <emphasis role="i">oldLameFs-3.0</emphasis> to
+                            <emphasis role="i">newCoolFs-0.95Beta</emphasis> - which usually works out allright, but
+                            of course you never know what disaster lies ahead when doing such
+                            things with file systems (and, even worse, with an experimental
+                            beta version).</para>
+                            </listitem><listitem><para>The initialization code opens a popup dialog with some text to
+                            informs the user about that. The user can now click "OK" to do
+                            trigger the file system conversion or "Cancel" to keep everything
+                            as it is.</para></listitem><listitem><para>The handler for that popup dialog calls <link linkend="UI-Event-UserInput">UserInput()</link> - which
+                            happily takes the next event from the queue - the `ok button click
+                            that doesn't really belong to that dialog, but <link linkend="UI-Event-UserInput">UserInput()</link> cannot tell
+                            that. Neither can the caller. It simply gets `ok as if the user had
+                            clicked the "OK" button in the popup.</para></listitem><listitem><para>The program has to assume the user confirmed the request to
+                            convert the file system. The conversion starts.</para></listitem><listitem><para>The experimental beta code in <emphasis role="i">newCoolFs-0.95Beta</emphasis> cannot
+                            handle the existing data in that partition as it should. It asks if
+                            it is allright to delete all data on that partition. Another popup
+                            dialog opens with that question.</para></listitem><listitem><para>The handler for that confirmation popup takes the next event
+                            from the queue which is the third `ok click that should have gone
+                            to the main window. But the handler doesn't know that and takes
+                            that `ok as the confirmation it asked for.</para></listitem><listitem><para><literal>/usr</literal> is completely emptied. Half of the system is gone
+                            (along with most of YaST2's files). The disaster is complete - the
+                            system is wrecked beyond repair.</para></listitem></itemizedlist>
+
+                <para>Argh. What a mess.</para>
+
+                <para>Yes, this example is contrived. But it shows the general
+                    problem: Events belong to one specific dialog. It never makes any
+                    sense to deliver events to other dialogs.</para>
+
+                <para>But this isn't all. Even if the internal UI engine (the
+                    <emphasis role="i">libyui</emphasis>) could make sure that events are only delivered to
+                    the dialog they belong to (maybe with a separate queue for each
+                    dialog), events may never blindly be taken from any queue. If the
+                    user typed (or clicked) a lot ahead, disaster scenarios similar to
+                    the one described above might occur just as well.</para>
+
+                <para>Events are context specific. The dialog they belong to is not
+                    their only context; they also depend on the application logic (i.e.
+                    on YCP code). This is another byproduct of the <link
+                        linkend="UI-Event-Intro-y2_approach">YaST2 event handling approach</link>.</para>
+
+                <para>It has been suggested to use (per-dialog) event queues, but to
+                    flush their contents when the dialog context changes:</para>
+
+                <itemizedlist spacing="compact"><listitem><para>When a new dialog is opened (<emphasis role="i">OpenDialog()</emphasis>)</para></listitem><listitem><para>When the current dialog is closed (<emphasis role="i">CloseDialog()</emphasis>)</para></listitem><listitem><para>When parts of the dialog are replaced
+                            (<emphasis role="i">ReplaceWidget()</emphasis>)</para></listitem><listitem><para>Upon the YCP application's specific request (new UI builtin
+                            <emphasis role="i">FlushEvents()</emphasis>)</para></listitem></itemizedlist>
+
+                <para>Exactly when and how this should happen is unclear. Every
+                    imaginable way has its downsides or some pathologic scenarios. You
+                    just can't do this right. And YCP application developers would have
+                    to know when and how this happens - which is clearly nothing they
+                    should be troubled with.</para>
+
+                <para>This is why <emphasis role="b">all current YaST2 UIs have onle one single
+                        <emphasis role="i">pending event</emphasis> and not a queue of events.</emphasis> When a new
+                    event occurs, it usually overwrites any event that may still be
+                    pending - i.e. events get lost if there are too many of them (more
+                    than the YCP application can and wants to handle).</para>
+
+            </section>
+            <section id="UI-Event-Intro-reliability"><title>Event Reliability</title>
+
+                <para>While it may sound critical to have only one single <emphasis role="i">pending
+                        event</emphasis>, on this works out just as everybody expects:</para>
+
+                <itemizedlist spacing="compact"><listitem><para>When the YCP application is busy and the user clicks wildly
+                            around in the dialog, only the last of his clicks is acted upon.
+                            This is what all impatient users want anyway: "do this, no, do
+                            that, no, do that, no, cancel that all". The "Cancel" is what he
+                            will get, not everything in the sequence he clicked.</para></listitem><listitem><para>The YCP application does not get bogged down by a near-endless
+                            sequence of events from the event queues. If things are so sluggish
+                            that there are more events than the application can handle in the
+                            first place, getting even more to handle will not help any.</para></listitem><listitem><para>YaST2 dialogs are designed like fill-in forms with a few (not
+                            too many) buttons. The input field widgets etc. are
+                            self-sufficient; they do their own event handling (so no typed text
+                            will get lost). No more than one button click in each dialog makes
+                            sense anyway. After that the user has to wait for the next dialog
+                            to answer more questions. It does not make any sense to queue
+                            events here; the context in the next dialog is different
+                            anyway.</para></listitem></itemizedlist>
+
+                <para>As described <link linkend="UI-Event-Intro-queues">above</link>, events can and do get
+                    lost if there are too many of them. This is not a problem for
+                    button clicks (the most common type of event), and it should not be
+                    a problem for any other events if the YCP application is
+                    written <link linkend="UI-Event-Intro-defensive_programming">defensively</link>.</para>
+
+            </section>
+            <section id="UI-Event-Intro-defensive_programming"><title>Defensive Programming</title>
+
+                <para>Don't take anything for granted. Never rely on any specific
+                    event to always occur to make the application work allright.</para>
+
+                <para>In particular, never rely on individual <link linkend="SelectionChanged">SelectionChanged
+                        WidgetEvents</link> to keep several widgets in sync with each other.
+                    If the user clicks faster than the application can handle, don't
+                    simply count those events to find out what to do. Always treat that
+                    as a hint to find out what exactly happened: Ask the widgets about
+                    their current status. They know best. They are what the user sees
+                    on the screen. Don't surprise the user with other values than what
+                    he can see on-screen.</para>
+
+                <para>In the past, some widgets that accepted initially selected items
+                    upon creation had sometimes triggered events for that initial
+                    selection, sometimes not. Even though it is a performance
+                    optimization goal of the UI to suppress such program-generated
+                    events, it cannot be taken for granted if they occur or not. But
+                    it's easy not to rely on that. Instead of writing code like
+                    this:</para>
+
+                <programlisting>
+{
+    // Example how NOT to do things
+
+    UI::OpenDialog(
+                    ...
+                    `SelectionBox(`id(`colors ),
+                        [
+                            `item(`id("FF0000"), "Red" ),
+                            `item(`id("00FF00"), "Blue",true),  // Initially selected
+                            `item(`id("0000FF"), "Green" )
+                        ] 
+                    )
+    );
+
+    // Intentionally NOT setting the initial color:
+    //
+    // Selecting an item in the SelectionBox upon creation will trigger a
+    // SelectionChanged event right upon entering the event loop.
+    // The SelectionChanged handler code will take care of setting the initial color.
+    // THIS IS A STUPID IDEA!
+
+    map event = $[];
+
+    repeat
+    {
+          event = UI::WaitForEvent();
+
+          if ( event["ID"]:nil == `colors )
+          {
+              if ( event["EventReason"]:nil == "SelectionChanged" )
+              {
+                  // Handle color change
+                  setColor( UI::QueryWidget(`id(`colors ), `SelectedItem ) );
+              }
+          }
+          ...
+    } until ( event["ID"]:nil == `close );
+}
+
+                </programlisting>
+
+                <programlisting>
+{
+    // Fixed the broken logic in the example above
+
+    UI::OpenDialog(
+                    ...
+                    `SelectionBox(`id(`colors ),
+                    [
+                    `item(`id("FF0000"), "Red" ),
+                    `item(`id("00FF00"), "Blue",true),  // Initially selected
+                    `item(`id("0000FF"), "Green" )
+                    ] ),
+                    );
+
+    // Set initial color
+    setColor( UI::QueryWidget(`id(`colors ), `SelectedItem ) );
+
+    map event = $[];
+
+    repeat
+    {
+        event = UI::WaitForEvent();
+
+        if ( event["ID"]:nil == `colors )
+        {
+            if ( event["EventReason"]:nil == "SelectionChanged" )
+            {
+                // Handle color change
+                setColor( UI::QueryWidget(`id(`colors ), `SelectedItem ) );
+            }
+        }
+        ...
+    } until ( event["ID"]:nil == `close );
+}
+
+                </programlisting>
+
+                <para>It's that easy. This small change can make code reliable or
+                    subject to failure on minor outside changes - like a version of the
+                    Qt lib that handles things differently and sends another
+                    <emphasis role="i">SelectionChanged</emphasis> Qt signal that might be mapped to a <link linkend="SelectionChanged">SelectionChanged
+                        WidgetEvents</link> - or does not send that signal any more like
+                    previous versions might have done.</para>
+
+                <para>Being sceptical and not believing anything, much less taking
+                    anything for granted is an attitude that most programmers adopt as
+                    they gain more an more programming experience.</para>
+
+                <para>Keep it that way. It's a healthy attitude. It helps to avoid a
+                    lot of problems in the first place that might become hard-to-find
+                    bugs after a while.
+                </para>
+
+
+            </section>
+        </section>
+    </section>
+    <section id="UI-Event-Builtins">
+        <title>Event-related UI Builtin Functions</title>
+        <para>This section describes only those builtin
+            functions of the YaST2 user interface that are relevant for event
+            handling. The YaST2 UI has many more builtin functions that are not
+            mentioned here. Refer to the <link linkend="YUI_builtins">UI builtin reference</link> for details.
+        </para>
+        <para>The Event-related UI Builtin are available in the
+            <link linkend="UI-Event-Builtins-Reference">reference</link></para>
+
+    </section>
+
+<section id="Event_Reference">
+    <title>Event Reference</title>
+
+    <section id="Eventmaps">
+        <title>Event Maps in General</title>
+
+        <para>Use <link linkend="UI-Event-WaitForEvent">WaitForEvent()</link> to get full
+            information about a YaST2 UI event. <link linkend="UI-Event-UserInput">UserInput()</link> only returns a
+            small part of that information, the ID field of the event map.</para>
+
+        <para>The event map returned by <link linkend="UI-Event-WaitForEvent">WaitForEvent()</link> always
+            contains at least the following elements:</para>
+
+        <informaltable>
+            <tgroup cols="4">
+                <thead>
+                    <row>
+                        <entry>Map Key</entry>
+                        <entry>Value Type</entry>
+                        <entry>Valid Values</entry>
+                        <entry>Description</entry>
+                    </row>
+                </thead>
+                <tbody>
+                    <row>
+                        <entry>EventType</entry>
+                        <entry>string</entry>
+                        <entry>
+                            <itemizedlist>
+                                <listitem>
+                                    <link linkend="WidgetEvent">WidgetEvent</link>
+                                </listitem>
+                                <listitem>
+                                    <link linkend="MenuEvent">MenuEvent</link>
+                                </listitem>
+                                <listitem><link
+                                        linkend="TimeoutEvent">TimeoutEvent</link>
+                                </listitem>
+                                <listitem>
+                                    <link linkend="CancelEvent">CancelEvent</link>
+                                </listitem>
+                                <listitem>
+                                    <link linkend="KeyEvent">KeyEvent</link>
+                                </listitem>
+                                <listitem>
+                                    <link linkend="DebugEvent">DebugEvent</link>
+                                </listitem>
+                            </itemizedlist>
+                        </entry>
+                        <entry>
+                            <itemizedlist>
+                                <listitem>
+                                    <para>The type of this event.</para>
+                                </listitem>
+                                <listitem>
+                                    <para>Use this for general event classification.</para>
+                                </listitem>
+                            </itemizedlist>
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>ID</entry>
+                        <entry>any</entry>
+                        <entry/>
+                        <entry>The ID (a widget ID for <link linkend="WidgetEvent">WidgetEvents</link>) that caused the event.
+                            This is what <link linkend="UI-Event-UserInput">UserInput()</link> returns.</entry></row>
+                    <row><entry>EventSerialNo</entry><entry>integer</entry><entry>&gt;= 0</entry><entry>The serial number of this event.
+                            Intended for debugging.
+                    </entry></row>
+                </tbody>
+            </tgroup>
+        </informaltable>
+
+    </section>
+    <section id="EventTypes">
+        <title>Event Types</title>
+
+        <section id="WidgetEvent">
+            <title>WidgetEvent</title>
+
+            <para>All WidgetEvents have these map fields in common:</para>
+
+            <informaltable><tgroup cols="4"><thead><row><entry>Map Key</entry><entry>Value Type</entry><entry>Valid Values</entry><entry>Description</entry></row>
+                        </thead><tbody><row><entry>EventType</entry><entry>string</entry><entry>WidgetEvent</entry><entry>(constant)</entry></row>
+                        <row><entry>EventReason</entry><entry>string</entry><entry>
+                                <itemizedlist>
+                                    <listitem><link
+                                            linkend="Activated">Activated</link></listitem>
+                                    <listitem> <link
+                                    linkend="ValueChanged">ValueChanged</link></listitem>
+                            <listitem>
+                                <link
+                                    linkend="SelectionChanged">SelectionChanged</link></listitem>
+                        </itemizedlist>
+                                </entry><entry>The reason for this event. This is something like an event
+                                sub-type. Use this to find out what the user really did with the
+                                widget.</entry></row>
+                        <row><entry>ID</entry><entry>any</entry><entry/><entry>The ID of the widget that caused the event.
+                                This is what <link linkend="UI-Event-UserInput">UserInput()</link> returns.</entry></row>
+                        <row><entry>WidgetID</entry><entry>any</entry><entry/><entry>The ID of the widget that caused the event. This is nothing but
+                                an alias for "ID", but with this alias you can easily find out if
+                                this is a widget event at the same time as you retrieve the widget
+                                ID: No other events than WidgetEvent have this field.</entry></row>
+                        <row><entry>WidgetClass</entry><entry>string</entry><entry>PushButton
+                                SelectionBox
+                                Table
+                                CheckBox
+                                ...</entry><entry>The class (type) of the widget that caused the event.</entry></row>
+                        <row><entry>WidgetDebugLabel</entry><entry>string</entry><entry/><entry>
+                                <para>The label (more general: the widget's <emphasis role="i">shortcut property</emphasis>)
+                                    of the widget that caused the event - in human readable form
+                                    without any shortcut markers ("&amp;"), maybe abbreviated to a
+                                    reasonable length.</para>
+
+                                <para>This label is translated to the current locale (the current
+                                    user's language).</para>
+
+                                <para>This is intended for debugging so you can easily dump something
+                                    into the log file when you get an event.</para>
+
+                                <para>Wigets that don't have a label don't add this field to the event
+                                    map, so make sure you use a reasonable default when using a map
+                                    lookup for this field: Don't use <emphasis role="i">nil</emphasis>, use "" (the emtpy
+                                    string) instead.</para>
+                        </entry></row>
+            </tbody></tgroup></informaltable>
+
+        </section>
+        <section id="Activated">
+            <title>Activated WidgetEvent</title>
+
+            <informaltable><tgroup cols="4"><thead><row><entry>Map Key</entry><entry>Value Type</entry><entry>Valid Values</entry><entry>Description</entry></row>
+                        </thead><tbody><row><entry>EventReason</entry><entry>string</entry><entry>Activated</entry><entry>(constant)</entry></row>
+            </tbody></tgroup></informaltable>
+
+            <para>An <emphasis role="i">Activated</emphasis> <link linkend="WidgetEvent">WidgetEvent</link> is
+                sent when the user explicitly wishes to activate an action.</para>
+
+            <para>Traditionally, this means clicking on a <link linkend="PushButton_widget">PushButton</link> or activating
+                it with some other means like pressing its shortcut key
+                combination, moving the keyboard focus to it and pressing
+                <emphasis role="i">space</emphasis>.</para>
+
+            <para>Some other widgets (<link linkend="Table_widget">Table</link>, <link
+                    linkend="SelectionBox_widget">SelectionBox</link>, <link linkend="Tree_widget">Tree</link>) can also trigger this kind
+                of event if they have the <link linkend="UI-Event-Intro-notify">notify
+                    option</link> set.</para>
+
+            <para><emphasis role="b">User interface style hint:</emphasis> YCP
+                applications should use this to do the "typical" operation of that
+                item - like editing an entry if the dialog has an "Edit" button.
+                Use this <emphasis role="i">Activated</emphasis> <link linkend="WidgetEvent">WidgetEvent</link>
+                only as a redundant way (for "power users") of invoking an action.
+                Always keep that "Edit" (or similar) button around for novice
+                users; double-clicks are by no way obvious. The user shouldn't need
+                to experiment how to get things done.</para>
+
+
+            <informaltable>
+                <tgroup cols="3">
+                    <thead>
+                        <row>
+                            <entry>Widget Type</entry>
+                            <entry>Widget Options</entry>
+                            <entry>Action to Trigger the Event</entry>
+                        </row>
+                                </thead>
+                                <tbody>
+                                    <row><entry><link linkend="PushButton_widget">PushButton</link></entry>
+                                        <entry><emphasis role="i">(none)</emphasis></entry>
+                                        <entry>
+                                            <itemizedlist spacing="compact">
+                                                <listitem><para>Single click on the button (Qt).</para></listitem>
+                                                <listitem><para>Press <emphasis role="i">space</emphasis> on the button.</para></listitem>
+                                                <listitem><para>Press <emphasis role="i">return</emphasis> anywhere in the dialog. This activates the dialog's <emphasis role="i">default button</emphasis> if it has any and if the respective UI can handle default buttons.</para></listitem>
+                                            </itemizedlist>
+                        </entry></row>
+                        <row><entry><link linkend="Table_widget">Table</link></entry><entry><link
+                                    linkend="UI-Event-Intro-notify">`opt(`notify)</link></entry><entry>
+                                <itemizedlist spacing="compact"><listitem><para>Double click on an item (Qt).</para></listitem><listitem><para>Press <emphasis role="i">space</emphasis> on an item.</para></listitem></itemizedlist>
+                        </entry></row>
+                        <row><entry><link linkend="SelectionBox_widget">SelectionBox</link></entry><entry><link linkend="UI-Event-Intro-notify">`opt(`notify)</link></entry><entry>
+                                <itemizedlist spacing="compact"><listitem><para>Double click on an item (Qt).</para></listitem><listitem><para>Press <emphasis role="i">space</emphasis> on an item.</para></listitem></itemizedlist>
+                        </entry></row>
+                        <row><entry><link linkend="Tree_widget">Tree</link></entry><entry><link linkend="UI-Event-Intro-notify">`opt(`notify)</link></entry><entry>
+                                <itemizedlist spacing="compact"><listitem><para>Double click on an item (Qt). 
+                                        </para><para><emphasis role="b">Note:</emphasis> This will also open or close items that have children!</para>
+                                </listitem><listitem><para>Press <emphasis role="i">space</emphasis> on an item.</para></listitem></itemizedlist>
+                        </entry></row>
+            </tbody></tgroup></informaltable>
+
+            <para>Note that <link linkend="MenuButton_widget">MenuButton</link> and <link linkend="RichText_widget">RichText</link> don't ever send <link linkend="WidgetEvent">WidgetEvents</link>. They send <link linkend="MenuEvent">MenuEvents</link> instead.</para>
+
+            <para/></section><section id="ValueChanged"><title>ValueChanged WidgetEvent</title>
+
+            <informaltable><tgroup cols="4"><thead><row><entry>Map Key</entry><entry>Value Type</entry><entry>Valid Values</entry><entry>Description</entry></row>
+                        </thead><tbody><row><entry>EventReason</entry><entry>string</entry><entry>ValueChanged</entry><entry>(constant)</entry></row>
+            </tbody></tgroup></informaltable>
+
+            <para>A <emphasis role="i">ValueChanged</emphasis> <link linkend="WidgetEvent">WidgetEvent</link> is
+                sent by most interactive widgets that have a value that can be
+                changed by the user. They all require the <link linkend="UI-Event-Intro-notify">notify option</link> to be set to send this
+                event.</para>
+
+            <para>Widgets that have the concept of a "selected item" like <link linkend="SelectionBox_widget">SelectionBox</link>, <link linkend="Table_widget">Table</link>, or <link linkend="Tree_widget">Tree</link> don't send this event -
+                they send a <link linkend="SelectionChanged">SelectionChanged
+                    WidgetEvent</link> instead. One exception to this rule is the <link linkend="MultiSelectionBox_widget">MultiSelectionBox</link>
+                which can send both events, depending on what the user did.</para>
+
+            <informaltable><tgroup cols="3"><thead><row><entry>Widget Type</entry><entry>Widget Options</entry><entry>Action to Trigger the Event</entry></row>
+                                </thead><tbody><row><entry><link linkend="MultiSelectionBox_widget">MultiSelectionBox</link></entry><entry><link linkend="UI-Event-Intro-notify">`opt(`notify)</link></entry><entry>Toggle an item's on/off state: 
+                                <itemizedlist spacing="compact"><listitem><para>Click on an item's checkbox (Qt).</para></listitem><listitem><para>Press <emphasis role="i">space</emphasis> on an item.</para></listitem></itemizedlist>
+                        </entry></row>
+                        <row><entry><link linkend="CheckBox_widget">CheckBox</link></entry><entry><link linkend="UI-Event-Intro-notify">`opt(`notify)</link></entry><entry>Toggle the on/off state: 
+                                <itemizedlist spacing="compact"><listitem><para>Single click the widget (Qt).</para></listitem><listitem><para>Press <emphasis role="i">space</emphasis> on the widget.</para></listitem></itemizedlist>
+                        </entry></row>
+                        <row><entry><link linkend="RadioButton_widget">RadioButton</link></entry><entry><link linkend="UI-Event-Intro-notify">`opt(`notify)</link></entry><entry>Set this RadioButton to <emphasis role="i">on</emphasis>: 
+                                <itemizedlist spacing="compact"><listitem><para>Single click the widget (Qt).</para></listitem><listitem><para>Press <emphasis role="i">space</emphasis> on the widget.</para></listitem></itemizedlist>
+
+                                No event is sent when the button's status is set to <emphasis role="i">off</emphasis>
+                                because another RadioButton of the same <link linkend="RadioButtonGroup_widget">RadioButtonGroup</link> is
+                                set to <emphasis role="i">on</emphasis> to avoid generating a lot of useless events: Only
+                                the <emphasis role="i">on</emphasis> case is relevant for most YCP applications.</entry></row>
+                        <row><entry>
+                                <itemizedlist>
+                                    <listitem><link
+                                            linkend="InputField_widget">InputField</link></listitem>
+                                        <listitem><link
+                                                linkend="MultiLineEdit_widget">MultiLineEdit</link></listitem>
+                                    </itemizedlist>
+                        
+                        </entry><entry><link linkend="UI-Event-Intro-notify">`opt(`notify)</link></entry><entry>Enter text.</entry></row>
+                        <row><entry><link linkend="ComboBox_widget">ComboBox</link></entry><entry><link linkend="UI-Event-Intro-notify">`opt(`notify)</link></entry><entry>
+                                <itemizedlist spacing="compact"><listitem><para>Select another value from the drop-down list: 
+                                            <itemizedlist spacing="compact"><listitem><para>Open the drop-down list and click on one of its items
+                                                        (Qt).</para></listitem><listitem><para>Open the drop-down list, use the cursor keys to move the
+                                                        selection and press <emphasis role="i">space</emphasis> or <emphasis role="i">return</emphasis> to actually
+                                                        accept that item. 
+                                                        </para><para>Simply opening the drop-down list and moving the cursor around
+                                                        in it (i.e. changing its selection) does <emphasis role="b">not</emphasis> trigger this
+                                                        event.</para>
+                                            </listitem></itemizedlist>
+                                </para></listitem><listitem><para>Enter text (with <link linkend="ComboBox_widget">`opt(`editable )</link> ).</para></listitem></itemizedlist>
+                        </entry></row>
+                        <row><entry><link linkend="IntField_widget">IntField</link></entry><entry><link linkend="UI-Event-Intro-notify">`opt(`notify)</link></entry><entry>Change the numeric value: 
+                                <itemizedlist spacing="compact"><listitem><para>Enter a number.</para></listitem><listitem><para>Click on the <emphasis role="i">up</emphasis> button (Qt).</para></listitem><listitem><para>Click on the <emphasis role="i">down</emphasis> button (Qt).</para></listitem><listitem><para>Press <emphasis role="i">cursor up</emphasis> in the widget (NCurses).</para></listitem><listitem><para>Press <emphasis role="i">cursor down</emphasis> in the widget (NCurses).</para></listitem></itemizedlist>
+                        </entry></row>
+                        <row><entry><link linkend="Slider_widget">Slider</link></entry><entry><link linkend="UI-Event-Intro-notify">`opt(`notify)</link></entry><entry>
+                                <itemizedlist spacing="compact"><listitem><para>Move the slider.</para></listitem><listitem><para>Enter a number in the embedded IntField.</para></listitem><listitem><para>Use one of the embedded IntField's <emphasis role="i">up</emphasis> / <emphasis role="i">down</emphasis>
+                                            button.</para></listitem></itemizedlist>
+                        </entry></row>
+                        <row><entry><link linkend="PartitionSplitter_widget">PartitionSplitter</link></entry><entry><link linkend="UI-Event-Intro-notify">`opt(`notify)</link></entry><entry>
+                                <itemizedlist spacing="compact"><listitem><para>Move the slider.</para></listitem><listitem><para>Enter a number in one of the embedded IntFields.</para></listitem><listitem><para>Use one of the embedded IntFields' <emphasis role="i">up</emphasis> / <emphasis role="i">down</emphasis>
+                                            button.</para></listitem></itemizedlist>
+                        </entry></row>
+            </tbody></tgroup></informaltable>
+
+            <para/></section><section id="SelectionChanged"><title>SelectionChanged
+                WidgetEvent</title>
+
+            <informaltable><tgroup cols="4"><thead><row><entry>Map Key</entry><entry>Value Type</entry><entry>Valid Values</entry><entry>Description</entry></row>
+                        </thead><tbody><row><entry>EventReason</entry><entry>string</entry><entry>SelectionChanged</entry><entry>(constant)</entry></row>
+            </tbody></tgroup></informaltable>
+
+            <para>A <emphasis role="i">SelectionChanged</emphasis> <link linkend="SelectionChanged">WidgetEvent</link> is sent by most widgets that
+                have the concept of a "selected item" like <link linkend="SelectionBox_widget">SelectionBox</link>, <link linkend="Table_widget">Table</link>, or <link linkend="Tree_widget">Tree</link> when the selected item
+                changes.</para>
+
+            <para>Note that the <link linkend="MultiSelectionBox_widget">MultiSelectionBox</link>
+                widget can send a <emphasis role="i">SelectionChanged</emphasis> event, but also a <link linkend="ValueChanged">ValueChanged WidgetEvent</link> depending on what
+                the user did. This is one reason to keep <emphasis role="i">SelectionChanged</emphasis>
+                and <link linkend="ValueChanged">ValueChanged</link> two distinct events:
+                Widgets can have both concepts which may be equally important,
+                depending on the YCP application.</para>
+
+            <para>The <link linkend="ComboBox_widget">ComboBox</link>
+                never sends a <emphasis role="i">SelectionChanged</emphasis> event. It only sends <link linkend="ValueChanged">ValueChanged WidgetEvents</link>.</para>
+
+            <para>The rationale behind this is that merely opening the drop-down
+                list without actually accepting one of its items is just a
+                temporary operation in a separate pop-up window (the drop-down
+                list) that should not affect the YCP application or other widgets
+                in the same dialog until the user actually accepts a value - upon
+                which event a <link linkend="ValueChanged">ValueChanged WidgetEvent</link>
+                is sent.</para>
+
+            <informaltable><tgroup cols="3"><thead><row><entry>Widget Type</entry><entry>Widget Options</entry><entry>Action to Trigger the Event</entry></row>
+                                </thead><tbody><row><entry><link linkend="SelectionBox_widget">SelectionBox</link>
+                                </entry><entry>
+                                <informaltable><tgroup cols="2"><tbody><row><entry>Qt:</entry><entry><link linkend="UI-Event-Intro-notify">`opt(`notify)</link></entry></row>
+                                            <row><entry>NCurses:</entry><entry>`opt(<link linkend="UI-Event-Intro-notify">`notify</link>,`immediate)</entry></row>
+                                </tbody></tgroup></informaltable>
+                                </entry><entry>Select another item: 
+                                <itemizedlist spacing="compact"><listitem><para>Click on an item (Qt).</para></listitem><listitem><para>Press <emphasis role="i">cursor up</emphasis> in the widget.</para></listitem><listitem><para>Press <emphasis role="i">cursor down</emphasis> in the widget.</para></listitem></itemizedlist>
+                        </entry></row>
+                        <row><entry>Qt:</entry><entry><link linkend="UI-Event-Intro-notify">`opt(`notify)</link></entry></row>
+                        <row><entry>NCurses:</entry><entry>`opt(<link linkend="UI-Event-Intro-notify">`notify</link>,`immediate)</entry></row>
+                        <row><entry><link linkend="Table_widget">Table</link>
+                                </entry><entry><link linkend="UI-Event-Intro-notify">`opt(`notify,`immediate)</link></entry><entry>Select another item: 
+                                <itemizedlist spacing="compact"><listitem><para>Click on an item (Qt).</para></listitem><listitem><para>Press <emphasis role="i">cursor up</emphasis> in the widget.</para></listitem><listitem><para>Press <emphasis role="i">cursor down</emphasis> in the widget.</para></listitem></itemizedlist>
+                        </entry></row>
+                        <row><entry><link linkend="Tree_widget">Tree</link>
+                                </entry><entry><link linkend="UI-Event-Intro-notify">`opt(`notify)</link></entry><entry>Select another item: 
+                                <itemizedlist spacing="compact"><listitem><para>Click on an item (Qt).</para></listitem><listitem><para>Press <emphasis role="i">cursor up</emphasis> in the widget.</para></listitem><listitem><para>Press <emphasis role="i">cursor down</emphasis> in the widget.</para></listitem></itemizedlist>
+                        </entry></row>
+                        <row><entry><link linkend="MultiSelectionBox_widget">MultiSelectionBox</link></entry><entry><link linkend="UI-Event-Intro-notify">`opt(`notify)</link></entry><entry>Select another item: 
+                                <itemizedlist spacing="compact"><listitem><para>Click on an item's text (not on the checkbox) (Qt).</para></listitem><listitem><para>Press <emphasis role="i">cursor up</emphasis> in the widget.</para></listitem><listitem><para>Press <emphasis role="i">cursor down</emphasis> in the widget.</para></listitem></itemizedlist>
+                        </entry></row>
+            </tbody></tgroup></informaltable>
+
+            <para/></section><section id="MenuEvent"><title>MenuEvent</title>
+
+            <informaltable><tgroup cols="4"><thead><row><entry>Map Key</entry><entry>Value Type</entry><entry>Valid Values</entry><entry>Description</entry></row>
+                        </thead><tbody><row><entry>EventType</entry><entry>string</entry><entry>MenuEvent</entry><entry>(constant)</entry></row>
+                        <row><entry>ID</entry><entry>any</entry><entry/><entry>
+                                <para>The ID of the menu item the user selected or the <emphasis role="i">href</emphasis>
+                                    target (as string) for hyperlinks in <link linkend="RichText_widget">RichText</link> widgets.</para>
+
+                                <para><emphasis role="b">Notice:</emphasis>This is not the widget ID, it is a menu item or
+                                    hyperlink ID <emphasis role="i">inside</emphasis> that <link linkend="MenuButton_widget">MenuButton</link> or <link linkend="RichText_widget">RichText</link> widget!</para>
+                        </entry></row>
+            </tbody></tgroup></informaltable>
+
+            <para>A MenuEvent is sent when the user activates a menu entry in a <link linkend="MenuButton_widget">MenuButton</link> or a
+                hyperlink in a <link linkend="RichText_widget">RichText</link> widget.</para>
+
+            <para>Since the ID of the <link linkend="MenuButton_widget">MenuButton</link> or <link linkend="RichText_widget">RichText</link> widget is
+                irrelevant in either case, this is not another subclass of <link linkend="WidgetEvent">WidgetEvent</link>; the ID field has different
+                semantics - and remember, the ID field is the only thing what <link linkend="UI-Event-UserInput">UserInput()</link> returns so
+                this is particularly important.</para>
+
+            <para>For most YCP applications this difference is purely academic.
+                Simply use the ID and treat it like it were just another button's
+                ID.</para>
+
+            <para>No <link linkend="UI-Event-Intro-notify">notify option</link> is
+                necessary for getting this event. Both <link linkend="MenuButton_widget">MenuButton</link> and <link linkend="RichText_widget">RichText</link> deliver MenuEvents
+                right away.</para>
+
+            <para/></section><section id="TimeoutEvent"><title>TimeoutEvent</title>
+
+            <informaltable><tgroup cols="4"><thead><row><entry>Map Key</entry><entry>Value Type</entry><entry>Valid Values</entry><entry>Description</entry></row>
+                        </thead><tbody><row><entry>EventType</entry><entry>string</entry><entry>TimeoutEvent</entry><entry>(constant)</entry></row>
+                        <row><entry>ID</entry><entry>symbol</entry><entry>`timeout</entry><entry>(constant)</entry></row>
+            </tbody></tgroup></informaltable>
+
+            <para>A TimeoutEvent is sent when the timeout specified at <link
+                    linkend="UI-Event-WaitForEvent">WaitForEvent()</link> or <link
+                    linkend="UI-Event-TimeoutUserInput">TimeoutUserInput()</link> is
+                expired and there is no other event pending (i.e. there is no other
+                user input).</para>
+
+            <para><link linkend="UI-Event-PollInput">PollInput()</link> never
+                returns a TimeoutEvent; it simply returns <emphasis role="i">nil</emphasis> if there is no
+                input.</para>
+
+            <para/></section><section id="CancelEvent"><title>CancelEvent</title>
+
+            <informaltable><tgroup cols="4"><thead><row><entry>Map Key</entry><entry>Value Type</entry><entry>Valid Values</entry><entry>Description</entry></row>
+                        </thead><tbody><row><entry>EventType</entry><entry>string</entry><entry>CancelEvent</entry><entry>(constant)</entry></row>
+                        <row><entry>ID</entry><entry>symbol</entry><entry>`cancel</entry><entry>(constant)</entry></row>
+            </tbody></tgroup></informaltable>
+
+            <para>A CancelEvent is an event that is sent when the user performs a
+                general "cancel" action that is usually not part of the YCP
+                application.</para>
+
+            <para>For the <emphasis role="b">Qt UI</emphasis>, this means he used the window manager
+                close button or a special key combination like Alt-F4 to close the
+                active dialog's window. For the <emphasis role="b">NCurses UI</emphasis>, this means he
+                hit the ESC key.</para>
+
+            <para><emphasis role="b">User interface style hint:</emphasis> It is usually
+                a good idea for each dialog to provide some kind of "safe exit"
+                anyway. Most popup dialogs (at least those that have more than just
+                a simple "OK" button) should provide a "Cancel" button. If you use
+                the widget ID `cancel for that button, CancelEvents integrate
+                seamlessly into your YCP application.
+            </para>
+            <para>
+                "Main window" type dialogs should have an "Abort" button or
+                something similar. If you don't use the widget ID `cancel for that
+                button, don't forget to handle `cancel or "CancelEvent" like that
+                "Abort" button. The user should always have a safe way out of a
+                dialog - preferably one that doesn't change anything. Don't forget
+                to add a confirmation popup before you really exit if there are
+                unsaved data that might get lost!</para>
+
+        </section>
+        <section id="KeyEvent"
+            ><title>KeyEvent</title>
+
+            <para>KeyEvents are specific to the NCurses UI. They are not intended
+                for general usage. The idea is to use them where the default
+                keyboard focus handling is insufficient - for example, when the
+                logical layout of a dialog is known and the keyboard focus should
+                be moved to the logically right widget upon pressing the <emphasis role="i">cursor
+                    right</emphasis> key.</para>
+
+            <para>Widgets deliver KeyEvents if they have <literal>`opt( keyEvent )</literal>
+                set. This is independent of the <link linkend="UI-Event-Intro-notify">notify option</link>.</para>
+
+            <para>It is completely up to the UI what key presses are delivered as
+                key events. Never rely on each and every key press to be
+                delivered.</para>
+
+            <informaltable><tgroup cols="4"><thead><row><entry>Map Key</entry><entry>Value Type</entry><entry>Valid Values</entry><entry>Description</entry></row>
+                        </thead><tbody><row><entry>EventType</entry><entry>string</entry><entry>KeyEvent</entry><entry>(constant)</entry></row>
+                        <row><entry>ID</entry><entry>string</entry>
+                            <entry><literallayout>
+                                    CursorRight
+                                    CursorDown
+                                    F1
+                                    a
+                                    A
+                                    ...
+                                </literallayout></entry><entry>The key symbol of this event in human readable form.
+                                This is what <link linkend="UI-Event-UserInput">UserInput()</link> returns.</entry></row>
+                        <row><entry>KeySymbol</entry><entry>string</entry><entry>
+                                <literallayout>
+                                    CursorRight
+                                    CursorDown
+                                    F1
+                                    a
+                                    A
+                                    ...
+                                </literallayout></entry><entry>The key symbol of this event in human readable form.
+                                This is nothing but an alias for "ID", but with this alias you can
+                                easily find out if this is a key event at the same time as you
+                                retrieve the key symbol: No other events than KeyEvent have this
+                                field.</entry></row>
+                        <row><entry>FocusWidgetID</entry><entry>any</entry><entry/><entry>The ID of the widget that currently has the keyboard focus.
+                                Unlike a <link linkend="WidgetEvent">WidgetEvent</link>, this is
+                                <emphasis role="b">not</emphasis> the same as "ID".</entry></row>
+                        <row><entry>FocusWidgetClass</entry><entry>string</entry><entry>TextEntry
+                                SelectionBox
+                                ...</entry><entry>The class (type) of the widget that has the keyboard
+                                focus.</entry></row>
+                        <row><entry>FocusWidgetDebugLabel</entry><entry>string</entry><entry/><entry>
+                                <para>The label (more general: the widget's <emphasis role="i">shortcut property</emphasis>)
+                                    of the focus widget - in human readable form without any shortcut
+                                    markers ("&amp;"), maybe abbreviated to a reasonable length.</para>
+
+                                <para>This label is translated to the current locale (the current
+                                    user's language).</para>
+
+                                <para>This is intended for debugging so you can easily dump something
+                                    into the log file when you get an event.</para>
+
+                                <para>Wigets that don't have a label don't add this field to the event
+                                    map, so make sure you use a reasonable default when using a map
+                                    lookup for this field: Don't use <emphasis role="i">nil</emphasis>, use "" (the emtpy
+                                    string) instead.</para>
+                        </entry></row>
+            </tbody></tgroup></informaltable>
+
+            <para>Even though at first glance the KeyEvent map looks very much
+                like the <link linkend="WidgetEvent">WidgetEvent</link>'s map, it is
+                different in how the "ID" field is used: A KeyEvent uses it to
+                return the key symbol, while a <link linkend="WidgetEvent">WidgetEvent</link> returns the widget ID. This is
+                intended to integrate more seamlessly with common usage of <link linkend="UI-Event-UserInput">UserInput()</link>: A YCP application
+                can simply use <link linkend="UI-Event-UserInput">UserInput()</link> and check for a
+                return value "CursorRight" etc. - which should not cause any
+                trouble unless somebody uses this as a (badly chosen) widget
+                ID.</para>
+
+        </section>
+
+        <section id="DebugEvent"><title>DebugEvent</title>
+
+            <informaltable><tgroup cols="4"><thead><row><entry>Map Key</entry><entry>Value Type</entry><entry>Valid Values</entry><entry>Description</entry></row>
+                        </thead><tbody><row><entry>EventType</entry><entry>string</entry><entry>DebugEvent</entry><entry>(constant)</entry></row>
+                        <row><entry>ID</entry><entry>symbol</entry><entry>`debugHotkey</entry><entry>(constant)</entry></row>
+            </tbody></tgroup></informaltable>
+
+            <para>A DebugEvent is an event type especially intended for debugging
+                YCP code. It is sent when the user presses a special key
+                combination.</para>
+
+            <para>For the <emphasis role="b">Qt UI</emphasis>, this event is sent upon pressing
+                Alt-Ctrl-Shift-D. There is currently no such key combination in the
+                <emphasis role="b">NCurses UI</emphasis>.</para>
+
+            <para>Use DebugEvents event to dump additional data
+                to the log file or to open special debugging popup dialogs - but
+                <emphasis role="b">never</emphasis> do anything with it that might turn out to be a
+                security hazard. Remember, even though the key combination is
+                really awkward, sooner or later some users will get to know it, and
+                they will experiment.</para>
+
+        </section>
+    </section>
+</section>
+
+</section>

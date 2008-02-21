@@ -1,0 +1,527 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<reference id="UI-Event-Builtins-Reference">
+        <title>Event-related UI Builtin Functions</title>
+
+
+
+
+
+<refentry id="UI-Event-UserInput">
+    <refmeta>
+        <refentrytitle>UI::UserInput</refentrytitle>
+        <manvolnum>1</manvolnum>
+    </refmeta>
+    <refnamediv>
+        <refname>UI::UserInput</refname>
+        <refpurpose>Waits for user input and returns a widget ID.</refpurpose>
+    </refnamediv>
+    <refsect1>
+        <title>Description</title>
+<para>UI::UserInput() waits for the user to do some input. Normally
+this means it waits until the user clicks on a push button.</para>
+
+<para>Widgets that have the <link linkend="UI-Event-Intro-notify">notify
+option</link> set can also cause UserInput() to return - i.e. to
+resume the control flow in the YCP code with the next statement
+after UserInput().</para>
+
+<para>As long as the user does not do any such action, UserInput()
+waits, i.e. execution of the YCP code stops in UserInput(). In
+particular, entering text in input fields (TextEntry widgets) or
+selecting an entry in a list (SelectionBox widget) does not make
+UserInput() continue unless the respective widget has the <link
+    linkend="UI-Event-Intro-notify">notify option</link> set.</para>
+
+<para>UserInput() returns the ID of the widget that caused it to
+return. This is usually a button ID. It does <emphasis role="b">not</emphasis> return any
+text entered etc.; use UI::QueryWidget() to retrieve the contents
+of the dialog's widgets.</para>
+
+<para>Such a widget ID can be of any valid YCP type, but using simple
+types like <emphasis role="i">symbol</emphasis>, <emphasis role="i">string</emphasis> or maybe <emphasis role="i">integer</emphasis> is
+strongly recommended.</para>
+
+<para>Although it is technically still possible, using complex data
+types like <emphasis role="i">map</emphasis>, <emphasis role="i">list</emphasis> or even <emphasis role="i">term</emphasis> (which might
+even contain YCP code to be executed with <emphasis role="i">eval()</emphasis>) is
+discouraged. Support for this may be dropped without notice in
+future versions.</para>
+
+<para>Since it depends on exactly what types the YCP application
+developer choses for his widgets, UserInput()'s return type is
+<emphasis role="i">any</emphasis>. You may safely use a variable of the actual type you
+are using (usually <emphasis role="i">symbol</emphasis> or <emphasis role="i">string</emphasis>).</para>
+</refsect1>
+<refsect1>
+    <title>Usage:</title>
+
+<programlisting>
+any widget_id = <emphasis role="b">UI::UserInput()</emphasis>;
+
+</programlisting>
+
+</refsect1>
+
+<refsect1><title>Example:</title>
+
+<programlisting>
+// UserInput.ycp
+//
+// Example for common usage of UI::UserInput()
+
+{
+    // Build dialog with two input fields and three buttons.
+    //
+    // Output goes to the log file: ~/.y2log for normal users
+    // or /var/log/YaST2/y2log for root.
+
+    string name = "Tux";
+    string addr = "Antarctica";
+
+    <emphasis role="b">UI::OpenDialog</emphasis>(
+                   `VBox(
+                         `TextEntry(`id(`name), "&amp;Name:",    name ),
+                         `TextEntry(`id(`addr), "&amp;Address:", addr ),
+                         `HBox(
+                               `PushButton(`id(`ok     ), "&amp;OK" ),
+                               `PushButton(`id(`cancel ), "&amp;Cancel" ),
+                               `PushButton(`id(`help   ), "&amp;Help"   )
+                               )
+                         )
+                   );
+
+    <emphasis role="b">symbol</emphasis> widget_id = nil; // All widget IDs used here are symbols
+
+    // Event loop
+
+    repeat
+    {
+        widget_id = <emphasis role="em">UI::UserInput()</emphasis>;
+
+        if ( widget_id == `ok )
+        {
+            // process "OK" button
+
+            y2milestone( "OK button activated" );
+
+
+            // Retrieve widget contents
+
+            name = <emphasis role="b">UI::QueryWidget</emphasis>(`id(`name ), `Value );
+            addr = <emphasis role="b">UI::QueryWidget</emphasis>(`id(`addr ), `Value );
+        }
+        else if ( widget_id == `cancel )
+        {
+            // process "Cancel" buttton
+            // or window manager close button (this also returns `cancel)
+
+            y2milestone( "Cancel button activated" );
+        }
+        else if ( widget_id == `help )
+        {
+            // process "Help" button
+
+            y2milestone( "Help button activated" );
+        }
+
+        // No other "else" branch necessary: None of the TextEntry widget has
+        // the `notify option set, so none of them can make UserInput() return.
+
+    } until ( widget_id == `ok || widget_id == `cancel );
+
+
+
+    // Close the dialog - but only after retrieving all information that may
+    // still be stored only in its widgets: QueryWidget() works only for
+    // widgets that are still on the screen!
+
+    <emphasis role="b">UI::CloseDialog()</emphasis>;
+
+
+    // Dump the values entered into the log file
+
+    y2milestone( "Name: %1 Address: %2", name, addr );
+}
+
+</programlisting>
+
+</refsect1>
+</refentry>
+
+<refentry id="UI-Event-PollInput">
+
+    <refmeta>
+    <refentrytitle>UI::PollInput</refentrytitle>
+    <manvolnum>1</manvolnum>
+</refmeta>
+
+<refnamediv>
+    <refname>UI::PollInput</refname>
+    <refpurpose>Checks for pending user input. Does not wait. Returns a widget
+            ID or <emphasis role="i">nil</emphasis> if no input is
+            available.</refpurpose>
+</refnamediv>
+
+<refsect1>
+    <title>Description</title>
+
+<para>PollInput() is very much like <link linkend="UI-Event-UserInput">UserInput()</link>, but it doesn't wait. It only checks
+if there is a user event pending - the user may have clicked on a
+button since the last call to PollInput() or <link linkend="UI-Event-UserInput">UserInput()</link>.</para>
+
+<para>If there is one, the ID of the widget (usually a button unless
+other widgets have the <link linkend="UI-Event-Intro-notify">notify
+option</link> set) is returned. If there is none, <emphasis role="i">nil</emphasis> (the YCP
+value for "nothing", "invalid") is returned.</para>
+
+<para>Use PollInput() to check if the user wishes to abort operations
+of long duration that are performed in a loop. Notice that
+PollInput() will result in a "busy wait", so don't simply use it
+everywhere instead of <link linkend="UI-Event-UserInput">UserInput()</link>.</para>
+
+<para>Notice there is also <link linkend="UI-Event-TimeoutUserInput">TimeoutUserInput()</link> and <link linkend="UI-Event-WaitForEvent">WaitForEvent()</link> that both accept a millisecond
+timeout argument.</para>
+
+</refsect1>
+<refsect1>
+    <title>Usage:</title>
+
+<programlisting>
+any widget_id = <emphasis role="b">UI::PollInput()</emphasis>;
+
+</programlisting>
+
+</refsect1>
+
+<refsect1><title>Example:</title>
+
+<programlisting>
+// PollInput.ycp
+//
+// Example for common usage of UI::PollInput()
+
+{
+    // Build dialog with two labels and a "stop" button.
+
+    integer count     = 0;
+    integer count_max = 10000;
+
+    <emphasis role="b">UI::OpenDialog</emphasis>(
+                   `VBox(
+                         `Label( "Calculating..." ),
+                         `Label(`id(`count ), sformat( "%1 of %2", count, count_max ) ),
+                         `PushButton(`id(`stop), "&amp;Stop" )
+                         )
+                   );
+
+    any widget_id = nil;
+
+    // Event loop
+
+    repeat
+    {
+        widget_id = <emphasis role="em">UI::PollInput()</emphasis>;
+
+
+        // Simulate heavy calculation
+
+        sleep(200); // milliseconds
+
+        // Update screen to show that the program is really busy
+        count = count + 1;
+        <emphasis role="b">UI::ChangeWidget</emphasis>(`id(`count), `Value, sformat( "%1 of %2", count, count_max ) );
+        <emphasis role="b">UI::RecalcLayout()</emphasis>; // Might be necessary when the label becomes wider
+
+    } until ( widget_id == `stop || count &gt;= count_max );
+
+    <emphasis role="b">UI::CloseDialog()</emphasis>;
+}
+
+</programlisting>
+
+</refsect1>
+
+</refentry>
+
+<refentry id="UI-Event-TimeoutUserInput">
+    
+    <refmeta>
+    <refentrytitle>UI::TimeoutUserInput</refentrytitle>
+    <manvolnum>3</manvolnum>
+</refmeta>
+
+<refnamediv>
+    <refname>UI::TimeoutUserInput</refname>
+    <refpurpose>Waits for user input and returns a widget ID. Returns ID
+        <emphasis role="i">`timeout</emphasis> if no input is available for
+        <emphasis role="i">timeout</emphasis>
+    milliseconds.</refpurpose>
+</refnamediv>
+
+<refsect1><title>Description</title>
+
+<para>TimeoutUserInput() is very much like <link linkend="UI-Event-UserInput">UserInput()</link>, but it returns a predefined ID
+<emphasis role="i">`timeout</emphasis> if no user input is available within the specified
+(millisecond) timeout.</para>
+
+<para>This is useful if there is a reasonable default action that
+should be done in case of a timeout - for example, for popup
+messages that are not important enough to completely halt a longer
+operation forever.</para>
+
+<para><emphasis role="b">User interface style hint:</emphasis> Use this with
+caution. It is perfectly OK to use timeouts for informational
+messages that are not critical in any way ("<emphasis role="i">Settings are
+written</emphasis>", "<emphasis role="i">Rebooting the newly installed kernel</emphasis>"), but
+definitely not if there are several alternatives the user can
+choose from. As a general rule of thumb, if a dialog contains just
+an "OK" button and nothing else, TimeoutUserInput() is appropriate.
+If there are more buttons, chances are that the default action will
+cause disaster for some users.</para>
+<para>
+Remember, timeouts are nearly always a desperate means. They are
+always both too short and too long at the same time: Too short for
+users who know what message will come and too long for users who
+left to get some coffee while the machine is busy.</para>
+
+<para>Another possible use of TimeoutUserInput() would be to
+periodically update the screen with data that keep changing (time
+etc.) while waiting for user input.</para>
+
+</refsect1>
+<refsect1>
+    <title>Usage:</title>
+
+<programlisting>
+any widget_id = <emphasis role="b">UI::TimeoutUserInput</emphasis>( integer timeout_millisec );
+
+</programlisting>
+
+</refsect1>
+
+<refsect1>
+    <title>Example</title>
+
+<programlisting>
+// TimeoutUserInput.ycp
+//
+// Example for common usage of UI::TimeoutUserInput()
+
+{
+    // Build dialog with two labels and an "OK" button.
+
+    integer countdown_sec       = 30;
+    integer interval_millisec   = 200;
+    integer countdown           = countdown_sec * 1000 / interval_millisec;
+
+    <emphasis role="b">UI::OpenDialog</emphasis>(
+                   `VBox(
+                         `Label( "Rebooting Planet Earth..." ),
+                         `Label(`id(`seconds ), sformat( "%1", countdown_sec ) ),
+                         `PushButton(`id(`ok ), `opt(`default ), "&amp;OK" )
+                         )
+                   );
+
+    any id = nil;
+
+    // Event loop
+
+    repeat
+    {
+        id = <emphasis role="em">UI::TimeoutUserInput</emphasis>( interval_millisec );
+
+        if ( id == <emphasis role="b">`timeout</emphasis> )
+        {
+            // Periodic screen update
+
+            countdown = countdown - 1;
+            integer seconds_left = countdown * interval_millisec / 1000;
+            <emphasis role="b">UI::ChangeWidget</emphasis>(`id(`seconds ), `Value, sformat( "%1", seconds_left ) );
+        }
+
+    } until ( id == `ok || countdown &lt;= 0 );
+
+    <emphasis role="b">UI::CloseDialog()</emphasis>;
+}
+
+</programlisting>
+
+</refsect1>
+</refentry>
+
+<refentry id="UI-Event-WaitForEvent">
+    
+    <refmeta>
+        <refentrytitle>UI::WaitForEvent</refentrytitle>
+        <manvolnum>1</manvolnum>
+    </refmeta>
+
+    <refnamediv>
+        <refname>UI::WaitForEvent</refname>
+        <refpurpose>Waits for user input and returns an event map. Returns ID
+            <emphasis role="i">`timeout</emphasis> if
+            no input is available for <emphasis role="i">timeout</emphasis>
+            milliseconds.</refpurpose>
+    </refnamediv>
+
+    <refsect1><title>Description</title>
+
+<para>WaitForEvent() is an extended combination of <link linkend="UI-Event-UserInput">UserInput()</link> and <link linkend="UI-Event-TimeoutUserInput">TimeoutUserInput()</link>: It waits until user
+input is available or until the (millisecond) timeout is expired.
+It returns an <link linkend="Eventmaps">event map</link> rather
+than just a simple ID.</para>
+
+<para>In the case of timeout, it returns a map with a <link linkend="TimeoutEvent">timeout event</link>.</para>
+
+<para>The timeout argument is optional. If it isn't specified,
+WaitForEvent() (like <link linkend="UI-Event-UserInput">UserInput()</link>) keeps
+waiting until user input is available.</para>
+
+<para>Use WaitForEvent() for more fine-grained control of events. It
+is useful primarily to tell the difference between different types
+of events of the same widget - for example, if different actions
+should be performed upon selecting an item in a <link
+    linkend="SelectionBox_widget">SelectionBox</link> or a <link linkend="Table_widget">Table</link> widget. Notice that
+you still need the <link linkend="UI-Event-Intro-notify">notify option</link> to get those events in the first place.</para>
+
+<para>On the downside, using WaitForEvent() means accessing the ID
+that caused an event requires a map lookup.</para>
+
+<para>Notice that you still need UI::QueryWidget() to get the contents
+of the widget that caused the event. In the general case you'll
+need to QueryWidget most widgets on-screen anyway so delivering
+that one value along with the event wouldn't help too much.</para>
+
+<para><emphasis role="b">Important:</emphasis> Don't blindly rely on getting
+each and every individual event that you think should come. The UI
+keeps track of only one pending event (which is usually the last
+one that occured). If many events occur between individual
+WaitForEvent() calls, all but the last will be lost. Read <link
+    linkend="UI-Event-Intro-queues">the introduction</link> for the answer why. It is relatively easy to
+programm defensively in a way that losing individual events doesn't
+matter: Also use QueryWidget() to get the status of all your
+widgets. Don't keep redundant information about widget status in
+your code. Ask them. Always.</para>
+
+</refsect1>
+<refsect1><title>Usage</title>
+
+<programlisting>
+map event = <emphasis role="b">UI::WaitForEvent()</emphasis>;
+
+</programlisting>
+
+<programlisting>
+map event = <emphasis role="b">UI::WaitForEvent</emphasis>( integer timeout_millisec );
+
+</programlisting>
+
+</refsect1>
+
+<refsect1><title>Example</title>
+
+<programlisting>
+// WaitForEvent.ycp
+//
+// Example for common usage of UI::WaitForEvent()
+
+{
+    // Build dialog with a selection box and some buttons.
+    //
+    // Output goes to the log file: ~/.y2log for normal users
+    // or /var/log/YaST2/y2log for root.
+
+    integer timeout_millisec = 20 * 1000;
+
+    <emphasis role="b">UI::OpenDialog</emphasis>(
+                   `VBox(
+                         `SelectionBox(`id(`pizza ), `opt(`notify, `immediate ),
+                                       "Select your Pi&amp;zza:",
+                                        [
+                                         `item(`id(`napoli      ), "Napoli"             ),
+                                         `item(`id(`funghi      ), "Funghi"             ),
+                                         `item(`id(`salami      ), "Salami"             ),
+                                         `item(`id(`prociutto   ), "Prosciutto"         ),
+                                         `item(`id(`stagioni    ), "Quattro Stagioni"   ),
+                                         `item(`id(`chef        ), "A la Chef", true    )
+                                         ]
+                                        ),
+                         `HBox(
+                               `PushButton(`id(`ok     ), "&amp;OK" ),
+                               `PushButton(`id(`cancel ), "&amp;Cancel" ),
+                               `HSpacing(),
+                               `PushButton(`id(`details ), "&amp;Details..." )
+                               )
+                         )
+                   );
+
+    <emphasis role="b">map</emphasis> event = $[];
+    any id    = nil;
+
+    // Event loop
+
+    repeat
+    {
+        event = <emphasis role="em">UI::WaitForEvent</emphasis>( timeout_millisec );
+        id    = <emphasis role="b">event["ID"]</emphasis>:nil; // We'll need this often - cache it
+
+        if ( id == `pizza )
+        {
+            if ( <emphasis role="b">event["EventReason"]</emphasis>:nil == "Activated" )
+            {
+                // Handle pizza "activate" (double click or space pressed)
+
+                y2milestone( "Pizza activated" );
+                id = `details;  // Handle as if "Details" button were clicked
+
+            }
+            else if ( <emphasis role="b">event["EventReason"]</emphasis>:nil == "SelectionChanged" )
+            {
+                // Handle pizza selection change
+
+                y2milestone( "Pizza selected" );
+            }
+        }
+
+        if ( id == `details )
+        {
+            y2milestone( "Show details" );
+        }
+
+        if ( id == <emphasis role="b">`timeout</emphasis> )
+        {
+            // Handle timeout
+
+            y2milestone( "Timeout detected by ID" );
+        }
+
+        if ( <emphasis role="b">event["EventType"]</emphasis>:nil == "TimeoutEvent" ) // Equivalent
+        {
+            // Handle timeout
+
+            y2milestone( "Timeout detected by event type" );
+
+            // Open a popup dialog
+
+            <emphasis role="b">UI::OpenDialog</emphasis>( `VBox(
+                                  `Label( "Not hungry?" ),
+                                  `PushButton(`opt(`default ), "&amp;OK" )
+                                  )
+                            );
+            <emphasis role="b">UI::TimeoutUserInput</emphasis>( 10 * 1000 ); // Automatically close after 10 seconds
+            <emphasis role="b">UI::CloseDialog()</emphasis>;
+        }
+
+
+    } until ( id == `ok || id == `cancel );
+
+
+    <emphasis role="b">UI::CloseDialog()</emphasis>;
+}
+
+</programlisting>
+</refsect1>
+
+</refentry>
+
+</reference>

@@ -1,0 +1,60 @@
+This is how to convert YaST2 modules from YCP Version 1.0.0 to Version 1.1.0:
+
+	o `Pushbutton  -> `PushButton
+
+	o `Textentry   -> `TextEntry
+
+	o `Checkbox    -> `CheckBox
+
+	o  `Id(..)     -> `id(..)
+
+	o The return value of UserInput is not longer a term `id(widid),
+	  but directly with widget id without id. You never get `id as return
+	  value
+
+ 	o The return value for the close-window-button is `cancel
+
+	o Paths for ids are deprecated. Instead of .next use `next.
+
+	o QueryWidget and ChangeWidget now take also over the functionality
+	  of ControlWidget. Each widget has a set of properties you can Change
+	  and Query. Most widgets have a property `Value. Replace
+	  QueryWidget(`id(wid))  with QueryWidget(`id(wid), `Value). You cannot
+	  and need not specify a dialog id. Always the topmost dialog is
+	  queried.
+
+        o OpenDialog({`opt(...), } term widget) creates a dialog.
+	  Dialogs have no ids. There are arranged as stack. Each OpenDialog
+	  shadows all other dialogs lying below. All commands apply to the
+ 	  topmost Dialog. CloseDialog() closes the topmost dialog. No arguments
+	  to UserInput(), PollInput(), CloseDialog() neccessary and available.
+	  The only option available to put into `opt() is `defaultsize.
+
+	o SelectionBoxes have changed slightly. The items are given in an
+	  optional list as second non-`id parameter. An item can either
+	  be `item({`id(any), } string label {, boolean enabling})
+	  or a simple string. Currently now columns and rows specification
+	  is allowed. Instead of `item(...) a string can be given, in which
+	  case you have a string item without an explicite id.
+	  Instead of QueryWidget(dlg, `id(...)), you now write
+	  QueryWidget(`id(...), `CurrentItem)
+
+	o .default is now written `opt(`default), after the `id(...)
+
+	o  PushButtons have option `stretch. If set, they are stretchable horiz.
+
+	o .cancel option for buttons not available nor neccessary.
+	  Choose `cancel as button id.
+
+        o Images: SuSEImage() -> `Image(`suseheader, "some fallback text")
+	  Other image  `Image(byteblock b, string defaulttext)
+
+	o Stretches: Now there are HStretch() and VStretch(). But try to
+	  avoid using stretches. Use Left(..), Right(..), Top(..), Bottom(..),
+	  HCenter(..), VCenter(..), HVCenter(..).
+
+	o Weight: You can use the new Weight() construct in order to control
+	  Split proportions in layout boxes.
+
+	o `Header() -> `Heading(). Use `Left(`Heading("...")) if you want it to
+	   be Left justified.

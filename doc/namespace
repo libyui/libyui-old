@@ -1,0 +1,40 @@
+Converting the UI functions from builtins to a namespace
+
+Why?
+----
+
+So that they can be called from yast2-perl-bindings (and python and ruby,
+coming soon).
+
+Usage
+-----
+
+TODO add the example
+
+How?
+----
+Makefiles: use -lpy2UI instead of -lyui. that should get wrapped properly in
+yast2-core.pc 
+Remove references to the UI class.
+
+* liby2
+implement "import" also in Y2PluginComponent because the abstract UI becomes
+one.
+
+genericfrontend: because the abstract UI is now instantiable, register a
+namespace override to the server specified in argv
+
+
+* libyui
+
+Y2CCUI, YUIComponent : make the base UI instantiable so that ycpc can work
+without a real one. Implement the import method.
+
+Y2UINamespace: created, copying code from YUI_bindings.
+- FIXME overloading
+- FIXME macro player: should work now, test
+
+Removed UI.h that served to register the builtins. (TODO: the docs is still
+done in builtin style. Take it as inspiration.)
+
+TODO: test that threads work

@@ -1,0 +1,898 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+
+<head>
+    <title>YaST2 UI Event Handling - Event Reference</title>
+    <link rel="stylesheet" type="text/css" href="events.css">
+</head>
+
+<body>
+
+
+<h1 class="doc-title">Event Handling in the YaST2 UI</h1>
+
+<p align=center>
+Author: Stefan Hundhammer
+&lt;<a href="mailto:sh@suse.de?subject=YaST2 Event Handling">sh@suse.de</a>&gt;
+</p>
+
+<h1>Event Reference</h1>
+
+<table class="navigation-bar" width=100%>
+    <tr>
+	<td width="33%" align="left">Prev: <a href="event-builtins.html">Event-related UI builtins</a></td>
+	<td width="33%" align="center">Top: <a href="index.html">Event Handling Index</a></td>
+	<td width="33%" align="right">Next: (none)</a></td>
+    </tr>
+</table>
+
+
+
+
+<h2><a name="contents">Contents</a></h2>
+
+<ul>
+<li><a href="#event_map">Event Maps in General</a>
+<li><a href="#event_types">Event Types</a>
+    <ul>
+    <li><a href="#WidgetEvent">WidgetEvent</a>
+        <ul>
+        <li><a href="#Activated">Activated</a>
+        <li><a href="#ValueChanged">ValueChanged</a>
+        <li><a href="#SelectionChanged">SelectionChanged</a>
+        </ul>
+    <li><a href="#MenuEvent">MenuEvent</a>
+    <li><a href="#TimeoutEvent">TimeoutEvent</a>
+    <li><a href="#CancelEvent">CancelEvent</a>
+    <li><a href="#KeyEvent">KeyEvent</a>
+    <li><a href="#DebugEvent">DebugEvent</a>
+    </ul>
+</ul>
+
+
+<h1><a name="event_map">Event Maps in General</h1>
+
+<p>
+Use <a href="event-builtins.html#WaitForEvent">WaitForEvent()</a> to get
+full information about a YaST2 UI event.
+<a href="event-builtins.html#UserInput">UserInput()</a> only returns a
+small part of that information, the ID field of the event map.
+<p>
+The event map returned by
+<a href="event-builtins.html#WaitForEvent">WaitForEvent()</a> always contains
+at least the following elements:
+
+<table border="1">
+    <thead>
+	<th>Map Key</th>
+	<th>Value Type</th>
+	<th>Valid Values</th>
+	<th>Description</th>
+    </thead>
+    <tr>
+	<td class="map-key">EventType</tt></td>
+	<td class="map-type">string</td>
+	<td class="map-value">
+	    <a href="#WidgetEvent">WidgetEvent</a><br>
+	    <a href="#MenuEvent">MenuEvent</a><br>
+	    <a href="#TimeoutEvent">TimeoutEvent</a><br>
+	    <a href="#CancelEvent">CancelEvent</a><br>
+	    <a href="#KeyEvent">KeyEvent</a><br>
+	    <a href="#DebugEvent">DebugEvent</a>
+	</td>
+	<td>
+	    <p>The type of this event.
+	    <p>Use this for general event classification.
+	</td>
+    </tr>
+    <tr>
+	<td class="map-key">ID</td>
+	<td class="map-type">any</td>
+	<td></td>
+	<td>
+	The ID (a widget ID for <a href="#WidgetEvent">WidgetEvents</a>)
+	that caused the event.<br>
+	This is what
+	<a href="event-builtins.html#UserInput">UserInput()</a> returns.
+    </tr>
+    <tr>
+	<td class="map-key">EventSerialNo</td>
+	<td class="map-type">integer</td>
+	<td>&gt;= 0</td>
+	<td>
+	    The serial number of this event.<br>
+	    Intended for debugging.
+    </tr>
+</table>
+
+
+<h1><a name="event_types">Event Types</h1>
+
+<h2><a name="WidgetEvent">WidgetEvent</h2>
+
+<p>All WidgetEvents have these map fields in common:
+
+<table border="1">
+    <thead>
+	<th>Map Key</th>
+	<th>Value Type</th>
+	<th>Valid Values</th>
+	<th>Description</th>
+    </thead>
+    <tr>
+	<td class="map-key">EventType</tt></td>
+	<td class="map-type">string</td>
+	<td class="map-value">WidgetEvent</td>
+	<td>(constant)</td>
+    </tr>
+    <tr>
+	<td class="map-key">EventReason</tt></td>
+	<td class="map-type">string</td>
+	<td class="map-value">
+	    <a href="#Activated">Activated</a><br>
+	    <a href="#ValueChanged">ValueChanged</a><br>
+	    <a href="#SelectionChanged">SelectionChanged</a>
+	</td>
+	<td>
+	The reason for this event.
+	This is something like an event sub-type.
+	Use this to find out what the user really did with the widget.
+	</td>
+    </tr>
+    <tr>
+	<td class="map-key">ID</td>
+	<td class="map-type">any</td>
+	<td></td>
+	<td>
+	The ID of the widget that caused the event.<br>
+	This is what
+	<a href="event-builtins.html#UserInput">UserInput()</a> returns.
+    </tr>
+    <tr>
+	<td class="map-key">WidgetID</td>
+	<td class="map-type">any</td>
+	<td></td>
+	<td>
+	The ID of the widget that caused the event.
+	This is nothing but an alias for "ID", but with this alias you can
+	easily find out if this is a widget event at the same time as you
+	retrieve the widget ID: No other events than WidgetEvent have this
+	field.
+    </tr>
+    <tr>
+	<td class="map-key">WidgetClass</td>
+	<td class="map-type">string</td>
+	<td class="map-value">
+	PushButton<br>
+	SelectionBox<br>
+	Table<br>
+	CheckBox<br>
+	...
+	</td>
+	<td>The class (type)  of the widget that caused the event.</td>
+    </tr>
+    <tr>
+	<td class="map-key">WidgetDebugLabel</td>
+	<td class="map-type">string</td>
+	<td class="map-value"></td>
+	<td>
+	<p>
+	The label (more general: the widget's <i>shortcut property</i>) of the
+	widget that caused the event - in human readable form without any
+	shortcut markers ("&amp;"), maybe abbreviated to a reasonable length.
+	<p>
+	This label is translated to the current locale (the current user's language).
+	<p>
+	This is intended for debugging so you can easily dump something into
+	the log file when you get an event.
+	<p>
+	Wigets that don't have a label don't add this field to the event map,
+	so make sure you use a reasonable default when using a map lookup for
+	this field: Don't use <i>nil</i>, use "" (the emtpy string) instead.
+	</td>
+    </tr>
+</table>
+
+
+
+<h2><a name="Activated">Activated WidgetEvent</h2>
+
+<table border="1">
+    <thead>
+	<th>Map Key</th>
+	<th>Value Type</th>
+	<th>Valid Values</th>
+	<th>Description</th>
+    </thead>
+    <tr>
+	<td class="map-key">EventReason</tt></td>
+	<td class="map-type">string</td>
+	<td class="map-value">Activated</td>
+	<td>(constant)</td>
+    </tr>
+</table>
+
+<p>
+An <i>Activated</i>
+<a href="#WidgetEvent">WidgetEvent</a>
+is sent when the user explicitly wishes to activate an action.
+<p>
+Traditionally, this means clicking on a
+<a href="../widgets/YPushButton-widget.html">PushButton</a> or activating it
+with some other means like pressing its shortcut key combination, moving the
+keyboard focus to it and pressing <i>space</i>.
+<p>
+Some other widgets
+(<a href="../widgets/YTable-widget.html">Table</a>,
+<a href="../widgets/YSelectionBox-widget.html">SelectionBox</a>,
+<a href="../widgets/YTree-widget.html">Tree</a>)
+can also trigger this kind of event if they have the
+<a href="event-intro.html#notify">notify option</a>
+set.
+<p class="info-box">
+<b>User interface style hint:</b>
+YCP applications should use this to do the "typical" operation of that item -
+like editing an entry if the dialog has an "Edit" button. Use this
+<i>Activated</i>
+<a href="#WidgetEvent">WidgetEvent</a>
+only as a redundant way (for "power users") of invoking an action.
+Always keep that "Edit" (or similar) button around for novice users;
+double-clicks are by no way obvious. The user shouldn't need to experiment how
+to get things done.
+</p>
+<br>
+
+<table border="1">
+    <thead>
+        <th>Widget Type</th>
+	<th>Widget Options</t>
+	<th>Action to Trigger the Event</th>
+    </thead>
+    <tr>
+	<td><a href="../widgets/YPushButton-widget.html">PushButton</a></td>
+	<td><i>(none)</i></td>
+	<td>
+	    <ul>
+	    <li>Single click on the button (Qt).
+	    <li>Press <i>space</i> on the button.
+	    <li>
+	    Press <i>return</i> anywhere in the dialog.
+	    This activates the dialog's <i>default button</i> if it has any
+	    and if the respective UI can handle default buttons.
+	    </ul>
+	</td>
+    </tr>
+    <tr>
+	<td><a href="../widgets/YTable-widget.html">Table</a></td>
+	<td><a href="event-intro.html#notify">`opt(`notify&nbsp;)</a></td>
+	<td>
+	    <ul>
+	    <li>Double click on an item (Qt).
+	    <li>Press <i>space</i> on an item.
+	    </ul>
+	</td>
+    </tr>
+    <tr>
+	<td><a href="../widgets/YSelectionBox-widget.html">SelectionBox</a></td>
+	<td><a href="event-intro.html#notify">`opt(`notify&nbsp;)</a></td>
+	<td>
+	    <ul>
+	    <li>Double click on an item (Qt).
+	    <li>Press <i>space</i> on an item.
+	    </ul>
+	</td>
+    </tr>
+    <tr>
+	<td><a href="../widgets/YTree-widget.html">Tree</a></td>
+	<td><a href="event-intro.html#notify">`opt(`notify&nbsp;)</a></td>
+	<td>
+	    <ul>
+	    <li>Double click on an item (Qt).
+	    <p><b>Note:</b> This will also open or close items that have children!
+	    <li>Press <i>space</i> on an item.
+	    </ul>
+	</td>
+    </tr>
+</table>
+
+<p>
+Note that
+<a href="../widgets/YMenuButton-widget.html">MenuButton</a> and
+<a href="../widgets/YRichText-widget.html">RichText</a> don't ever send
+<a href="#WidgetEvent">WidgetEvents</a>. They send
+<a href="#MenuEvent">MenuEvents</a> instead.
+
+
+<h2><a name="ValueChanged">ValueChanged WidgetEvent</h2>
+
+<table border="1">
+    <thead>
+	<th>Map Key</th>
+	<th>Value Type</th>
+	<th>Valid Values</th>
+	<th>Description</th>
+    </thead>
+    <tr>
+	<td class="map-key">EventReason</tt></td>
+	<td class="map-type">string</td>
+	<td class="map-value">ValueChanged</td>
+	<td>(constant)</td>
+    </tr>
+</table>
+
+<p>
+A <i>ValueChanged</i>
+<a href="#WidgetEvent">WidgetEvent</a>
+is sent by most interactive widgets that have a value that can be changed by
+the user.
+They all require the
+<a href="event-intro.html#notify">notify option</a>
+to be set to send this event.
+<p>
+Widgets that have the concept of a "selected item" like
+<a href="../widgets/YSelectionBox-widget.html">SelectionBox</a>,
+<a href="../widgets/YTable-widget.html">Table</a>, or
+<a href="../widgets/YTree-widget.html">Tree</a>
+don't send this event - they send a
+<a href="#SelectionChanged">SelectionChanged WidgetEvent</a>
+instead.
+One exception to this rule is the
+<a href="../widgets/YMultiSelectionBox-widget.html">MultiSelectionBox</a>
+which can send both events, depending on what the user did.
+<p>
+
+
+<table border="1">
+    <thead>
+        <th>Widget Type</th>
+	<th>Widget Options</t>
+	<th>Action to Trigger the Event</th>
+    </thead>
+    <tr>
+	<td><a href="../widgets/YMultiSelectionBox-widget.html">MultiSelectionBox</a></td>
+	<td><a href="event-intro.html#notify">`opt(`notify&nbsp;)</a></td>
+	<td>
+	    Toggle an item's on/off state:
+	    <ul>
+	    <li>Click on an item's checkbox (Qt).
+	    <li>Press <i>space</i> on an item.
+	    </ul>
+	</td>
+    </tr>
+    <tr>
+	<td><a href="../widgets/YCheckBox-widget.html">CheckBox</a></td>
+	<td><a href="event-intro.html#notify">`opt(`notify&nbsp;)</a></td>
+	<td>
+	    Toggle the on/off state:
+	    <ul>
+	    <li>Single click the widget (Qt).
+	    <li>Press <i>space</i> on the widget.
+	    </ul>
+	</td>
+    </tr>
+    <tr>
+	<td><a href="../widgets/YRadioButton-widget.html">RadioButton</a></td>
+	<td><a href="event-intro.html#notify">`opt(`notify&nbsp;)</a></td>
+	<td>
+	    Set this RadioButton to <i>on</i>:
+	    <ul>
+	    <li>Single click the widget (Qt).
+	    <li>Press <i>space</i> on the widget.
+	    </ul>
+	    No event is sent when the button's status is set to <i>off</i>
+	    because another RadioButton of the same
+	    <a href="../widgets/YRadioButtonGroup-widget.html">RadioButtonGroup</a>
+	    is set to <i>on</i> to avoid generating a lot of useless events:
+	    Only the <i>on</i> case is relevant for most YCP applications.
+	</td>
+    </tr>
+    <tr>
+	<td>
+	    <a href="../widgets/YTextEntry-widget.html">TextEntry</a><br>
+	    <a href="../widgets/YMultiLineEdit-widget.html">MultiLineEdit</a>
+	</td>
+	<td><a href="event-intro.html#notify">`opt(`notify&nbsp;)</a></td>
+	<td>Enter text.</td>
+    </tr>
+    <tr>
+	<td><a href="../widgets/YComboBox-widget.html">ComboBox</a></td>
+	<td><a href="event-intro.html#notify">`opt(`notify&nbsp;)</a></td>
+	<td>
+	    <ul>
+	    <li>Select another value from the drop-down list:
+	        <ul>
+	        <li>Open the drop-down list and click on one of its items (Qt).
+		<li>Open the drop-down list, use the cursor keys to move the
+		selection and press <i>space</i> or <i>return</i> to actually
+		accept that item.
+		<p>
+			    Simply opening the drop-down list and moving the
+			    cursor around in it (i.e. changing its selection)
+			    does <b>not</b> trigger this event.
+		</ul>
+	    <li>Enter text (with <a href="../widgets/YComboBox-widget.html">`opt(`editable )</a> ).
+	    </ul>
+	</td>
+    </tr>
+    <tr>
+	<td><a href="../widgets/YIntField-widget.html">IntField</a></td>
+	<td><a href="event-intro.html#notify">`opt(`notify&nbsp;)</a></td>
+	<td>
+	    Change the numeric value:
+	    <ul>
+	    <li>Enter a number.
+	    <li>Click on the <i>up</i> button (Qt).
+	    <li>Click on the <i>down</i> button (Qt).
+	    <li>Press <i>cursor up</i> in the widget (NCurses).
+	    <li>Press <i>cursor down</i> in the widget (NCurses).
+	    </ul>
+	</td>
+    </tr>
+    <tr>
+	<td><a href="../widgets/YSlider-widget.html">Slider</a></td>
+	<td><a href="event-intro.html#notify">`opt(`notify&nbsp;)</a></td>
+	<td>
+	    <ul>
+	    <li>Move the slider.
+	    <li>Enter a number in the embedded IntField.
+	    <li>Use one of the embedded IntField's <i>up</i> / <i>down</i> button.
+	    </ul>
+	</td>
+    </tr>
+    <tr>
+	<td><a href="../widgets/YPartitionSplitter-widget.html">PartitionSplitter</a></td>
+	<td><a href="event-intro.html#notify">`opt(`notify&nbsp;)</a></td>
+	<td>
+	    <ul>
+	    <li>Move the slider.
+	    <li>Enter a number in one of the embedded IntFields.
+	    <li>Use one of the embedded IntFields' <i>up</i> / <i>down</i> button.
+	    </ul>
+	</td>
+    </tr>
+</table>
+
+
+
+
+
+
+
+<h2><a name="SelectionChanged">SelectionChanged WidgetEvent</h2>
+
+<table border="1">
+    <thead>
+	<th>Map Key</th>
+	<th>Value Type</th>
+	<th>Valid Values</th>
+	<th>Description</th>
+    </thead>
+    <tr>
+	<td class="map-key">EventReason</tt></td>
+	<td class="map-type">string</td>
+	<td class="map-value">SelectionChanged</td>
+	<td>(constant)</td>
+    </tr>
+</table>
+
+<p>
+A <i>SelectionChanged</i>
+<a href="#SelectionChanged">WidgetEvent</a>
+is sent by most widgets that have the concept of a "selected item" like
+<a href="../widgets/YSelectionBox-widget.html">SelectionBox</a>,
+<a href="../widgets/YTable-widget.html">Table</a>, or
+<a href="../widgets/YTree-widget.html">Tree</a>
+when the selected item changes.
+<p>
+Note that the
+<a href="../widgets/YMultiSelectionBox-widget.html">MultiSelectionBox</a>
+widget can send a <i>SelectionChanged</i> event, but also a
+<a href="#ValueChanged">ValueChanged WidgetEvent</a>
+depending on what the user did.
+This is one reason to keep <i>SelectionChanged</i> and
+<a href="#ValueChanged">ValueChanged</a> two distinct events:
+Widgets can have both concepts which may be equally important, depending on the
+YCP application.
+
+<p>
+The <a href="../widgets/YComboBox-widget.html">ComboBox</a>
+never sends a <i>SelectionChanged</i> event. It only sends
+<a href="#ValueChanged">ValueChanged WidgetEvents</a>.
+<p>
+The rationale behind this is that merely opening the drop-down list without
+actually accepting one of its items is just a temporary operation in a separate
+pop-up window (the drop-down list) that should not affect the YCP application
+or other widgets in the same dialog until the user actually accepts a value
+- upon which event a
+<a href="#ValueChanged">ValueChanged WidgetEvent</a> is sent.
+
+
+<table border="1">
+    <thead>
+        <th>Widget Type</th>
+	<th>Widget Options</t>
+	<th>Action to Trigger the Event</th>
+    </thead>
+    <tr>
+	<td>
+	    <a href="../widgets/YSelectionBox-widget.html">SelectionBox</a><br>
+	</td>
+	<td>
+	    <table>
+	        <tr>
+		    <td>Qt:</td>
+		    <td><a href="event-intro.html#notify">`opt(`notify&nbsp;)</a></td>
+		</tr>
+	        <tr>
+		    <td>NCurses:</td>
+		    <td>`opt(<a href="event-intro.html#notify">`notify</a>,&nbsp;`immediate&nbsp;)</td>
+		</tr>
+	    </table>
+	</td>
+	<td>
+	    Select another item:
+	    <ul>
+	    <li>Click on an item (Qt).
+	    <li>Press <i>cursor up</i> in the widget.
+	    <li>Press <i>cursor down</i> in the widget.
+	    </ul>
+	</td>
+    </tr>
+    <tr>
+	<td>
+	    <a href="../widgets/YTable-widget.html">Table</a><br>
+	</td>
+	<td><a href="event-intro.html#notify">`opt(`notify,&nbsp;`immediate&nbsp;)</a></td>
+	<td>
+	    Select another item:
+	    <ul>
+	    <li>Click on an item (Qt).
+	    <li>Press <i>cursor up</i> in the widget.
+	    <li>Press <i>cursor down</i> in the widget.
+	    </ul>
+	</td>
+    </tr>
+    <tr>
+	<td>
+	    <a href="../widgets/YTree-widget.html">Tree</a><br>
+	</td>
+	<td><a href="event-intro.html#notify">`opt(`notify&nbsp;)</a></td>
+	<td>
+	    Select another item:
+	    <ul>
+	    <li>Click on an item (Qt).
+	    <li>Press <i>cursor up</i> in the widget.
+	    <li>Press <i>cursor down</i> in the widget.
+	    </ul>
+	</td>
+    </tr>
+    <tr>
+	<td><a href="../widgets/YMultiSelectionBox-widget.html">MultiSelectionBox</a></td>
+	<td><a href="event-intro.html#notify">`opt(`notify&nbsp;)</a></td>
+	<td>
+	    Select another item:
+	    <ul>
+	    <li>Click on an item's text (not on the checkbox) (Qt).
+	    <li>Press <i>cursor up</i> in the widget.
+	    <li>Press <i>cursor down</i> in the widget.
+	    </ul>
+	</td>
+    </tr>
+</table>
+
+
+
+<h2><a name="MenuEvent">MenuEvent</h2>
+
+<table border="1">
+    <thead>
+	<th>Map Key</th>
+	<th>Value Type</th>
+	<th>Valid Values</th>
+	<th>Description</th>
+    </thead>
+    <tr>
+	<td class="map-key">EventType</tt></td>
+	<td class="map-type">string</td>
+	<td class="map-value">MenuEvent</td>
+	<td>(constant)</td>
+    </tr>
+    <tr>
+	<td class="map-key">ID</tt></td>
+	<td class="map-type">any</td>
+	<td class="map-value"></td>
+	<td>
+	<p>
+	The ID of the menu item the user selected or the <i>href</i> target
+	(as string) for hyperlinks in
+	<a href="../widgets/YRichText-widget.html">RichText</a> widgets.
+	<p>
+ 	<b>Notice:</b>This is not the widget ID, it is a menu item or hyperlink
+	ID <i>inside</i> that
+	<a href="../widgets/YMenuButton-widget.html">MenuButton</a> or
+	<a href="../widgets/YRichText-widget.html">RichText</a> widget!
+	</td>
+    </tr>
+</table>
+
+<p>
+A MenuEvent is sent when the user activates a menu entry in a
+<a href="../widgets/YMenuButton-widget.html">MenuButton</a>
+or a hyperlink in a
+<a href="../widgets/YRichText-widget.html">RichText</a> widget.
+<p>
+Since the ID of the
+<a href="../widgets/YMenuButton-widget.html">MenuButton</a> or
+<a href="../widgets/YRichText-widget.html">RichText</a>
+widget is irrelevant in either case, this is not another subclass of
+<a href="#WidgetEvent">WidgetEvent</a>; the ID field has different semantics -
+and remember, the ID field is the only thing what
+<a href="event-builtins.html#UserInput">UserInput()</a> returns so this is
+particularly important.
+<p>
+For most YCP applications this difference is purely academic. Simply use the ID
+and treat it like it were just another button's ID.
+<p>
+No <a href="event-intro.html#notify">notify option</a> is necessary for
+getting this event. Both
+<a href="../widgets/YMenuButton-widget.html">MenuButton</a> and
+<a href="../widgets/YRichText-widget.html">RichText</a>
+deliver MenuEvents right away.
+
+
+<h2><a name="TimeoutEvent">TimeoutEvent</h2>
+
+<table border="1">
+    <thead>
+	<th>Map Key</th>
+	<th>Value Type</th>
+	<th>Valid Values</th>
+	<th>Description</th>
+    </thead>
+    <tr>
+	<td class="map-key">EventType</tt></td>
+	<td class="map-type">string</td>
+	<td class="map-value">TimeoutEvent</td>
+	<td>(constant)</td>
+    </tr>
+    <tr>
+	<td class="map-key">ID</tt></td>
+	<td class="map-type">symbol</td>
+	<td class="map-value">`timeout</td>
+	<td>(constant)</td>
+    </tr>
+</table>
+
+<p>
+A TimeoutEvent is sent when the timeout specified at
+<a href="event-builtins.html#WaitForEvent">WaitForEvent()</a> or
+<a href="event-builtins.html#TimeoutUserInput">TimeoutUserInput()</a>
+is expired and there is no other event pending (i.e. there is no other user
+input).
+<p>
+<a href="event-builtins.html#PollInput">PollInput()</a> never returns a
+TimeoutEvent; it simply returns <i>nil</i> if there is no input.
+
+
+<h2><a name="CancelEvent">CancelEvent</h2>
+
+
+
+<table border="1">
+    <thead>
+	<th>Map Key</th>
+	<th>Value Type</th>
+	<th>Valid Values</th>
+	<th>Description</th>
+    </thead>
+    <tr>
+	<td class="map-key">EventType</tt></td>
+	<td class="map-type">string</td>
+	<td class="map-value">CancelEvent</td>
+	<td>(constant)</td>
+    </tr>
+    <tr>
+	<td class="map-key">ID</tt></td>
+	<td class="map-type">symbol</td>
+	<td class="map-value">`cancel</td>
+	<td>(constant)</td>
+    </tr>
+</table>
+
+<p>
+A CancelEvent is an event that is sent when the user performs a general
+"cancel" action that is usually not part of the YCP application.
+<p>
+For the <b>Qt UI</b>, this means he used the window manager close button or a special
+key combination like Alt-F4 to close the active dialog's window.
+For the <b>NCurses UI</b>, this means he hit the ESC key.
+
+<p class="info-box">
+<b>User interface style hint:</b>
+It is usually a good idea for each dialog to provide some kind of "safe exit"
+anyway. Most popup dialogs (at least those that have more than just a simple
+"OK" button) should provide a "Cancel" button. If you use the widget ID `cancel
+for that button, CancelEvents integrate seamlessly into your YCP application.
+<br><br>
+"Main window" type dialogs should have an "Abort" button or something
+similar. If you don't use the widget ID `cancel for that button, don't forget
+to handle `cancel or "CancelEvent" like that "Abort" button. The user should
+always have a safe way out of a dialog - preferably one that doesn't change
+anything. Don't forget to add a confirmation popup before you really exit if
+there are unsaved data that might get lost!
+
+
+
+<h2><a name="KeyEvent">KeyEvent</h2>
+
+<p>
+KeyEvents are specific to the NCurses UI. They are not intended for general
+usage. The idea is to use them where the default keyboard focus
+handling is insufficient - for example, when the logical layout of a dialog is
+known and the keyboard focus should be moved to the logically right widget upon
+pressing the <i>cursor right</i> key.
+<p>
+Widgets deliver KeyEvents if they have <tt>`opt( keyEvent )</tt> set.
+This is independent of the <a href="event-intro.html#notify">notify option</a>.
+<p>
+It is completely up to the UI what key presses are delivered as key
+events. Never rely on each and every key press to be delivered.
+
+
+<table border="1">
+    <thead>
+	<th>Map Key</th>
+	<th>Value Type</th>
+	<th>Valid Values</th>
+	<th>Description</th>
+    </thead>
+    <tr>
+	<td class="map-key">EventType</tt></td>
+	<td class="map-type">string</td>
+	<td class="map-value">KeyEvent</td>
+	<td>(constant)</td>
+    </tr>
+    <tr>
+	<td class="map-key">ID</td>
+	<td class="map-type">string</td>
+	<td class="map-value">
+		CursorRight<br>
+		CursorDown<br>
+		F1<br>
+		a<br>
+		A<br>
+		...
+	</td>
+	<td>
+	The key symbol of this event in human readable form.<br>
+	This is what
+	<a href="event-builtins.html#UserInput">UserInput()</a> returns.
+    </tr>
+    <tr>
+	<td class="map-key">KeySymbol</td>
+	<td class="map-type">string</td>
+	<td class="map-value">
+		CursorRight<br>
+		CursorDown<br>
+		F1<br>
+		a<br>
+		A<br>
+		...
+	</td>
+	<td>
+	The key symbol of this event in human readable form.<br>
+	This is nothing but an alias for "ID", but with this alias you can
+	easily find out if this is a key event at the same time as you
+	retrieve the key symbol: No other events than KeyEvent have this
+	field.
+    </tr>
+    <tr>
+	<td class="map-key">FocusWidgetID</td>
+	<td class="map-type">any</td>
+	<td></td>
+	<td>
+	The ID of the widget that currently has the keyboard focus.<br>
+	Unlike a <a href="#WidgetEvent">WidgetEvent</a>, this is <b>not</b>
+	the same as "ID".
+    </tr>
+    <tr>
+	<td class="map-key">FocusWidgetClass</td>
+	<td class="map-type">string</td>
+	<td class="map-value">
+	TextEntry<br>
+	SelectionBox<br>
+	...
+	</td>
+	<td>The class (type) of the widget that has the keyboard focus.</td>
+    </tr>
+    <tr>
+	<td class="map-key">FocusWidgetDebugLabel</td>
+	<td class="map-type">string</td>
+	<td class="map-value"></td>
+	<td>
+	<p>
+	The label (more general: the widget's <i>shortcut property</i>) of the
+	focus widget - in human readable form without any
+	shortcut markers ("&amp;"), maybe abbreviated to a reasonable length.
+	<p>
+	This label is translated to the current locale (the current user's language).
+	<p>
+	This is intended for debugging so you can easily dump something into
+	the log file when you get an event.
+	<p>
+	Wigets that don't have a label don't add this field to the event map,
+	so make sure you use a reasonable default when using a map lookup for
+	this field: Don't use <i>nil</i>, use "" (the emtpy string) instead.
+	</td>
+    </tr>
+</table>
+
+<p>
+Even though at first glance the KeyEvent map looks very much like the
+<a href="#WidgetEvent">WidgetEvent</a>'s map, it is different in how the "ID"
+field is used: A KeyEvent uses it to return the key symbol, while a
+<a href="#WidgetEvent">WidgetEvent</a> returns the widget ID. This is intended
+to integrate more seamlessly with common usage of
+<a href="event-builtins.html#UserInput">UserInput()</a>: A YCP application can
+simply use
+<a href="event-builtins.html#UserInput">UserInput()</a> and check for a return
+value "CursorRight" etc. - which should not cause any trouble unless somebody
+uses this as a (badly chosen) widget ID.
+
+
+
+<h2><a name="DebugEvent">DebugEvent</h2>
+
+
+<table border="1">
+    <thead>
+	<th>Map Key</th>
+	<th>Value Type</th>
+	<th>Valid Values</th>
+	<th>Description</th>
+    </thead>
+    <tr>
+	<td class="map-key">EventType</tt></td>
+	<td class="map-type">string</td>
+	<td class="map-value">DebugEvent</td>
+	<td>(constant)</td>
+    </tr>
+    <tr>
+	<td class="map-key">ID</tt></td>
+	<td class="map-type">symbol</td>
+	<td class="map-value">`debugHotkey</td>
+	<td>(constant)</td>
+    </tr>
+</table>
+
+<p>
+A DebugEvent is an event type especially intended for debugging YCP code. It is
+sent when the user presses a special key combination.
+<p>
+For the <b>Qt UI</b>, this event is sent upon pressing Alt-Ctrl-Shift-D. There is
+currently no such key combination in the <b>NCurses UI</b>.
+
+<p class="info-box">
+Use DebugEvents event to dump additional data to the log file or to open special
+debugging popup dialogs - but <b>never</b> do anything with it that might turn
+out to be a security hazard. Remember, even though the key combination is
+really awkward, sooner or later some users will get to know it, and they will
+experiment.
+</p>
+
+
+<br><br><br>
+
+<table class="navigation-bar" width=100%>
+    <tr>
+	<td width="33%" align="left">Prev: <a href="event-builtins.html">Event-related UI builtins</a></td>
+	<td width="33%" align="center">Top: <a href="index.html">Event Handling Index</a></td>
+	<td width="33%" align="right">Next: (none)</a></td>
+    </tr>
+</table>
+
+<p><i>$Id$</i>
+
+</body>
+</html>
+

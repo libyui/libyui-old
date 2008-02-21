@@ -1,0 +1,1512 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">
+<html>
+<head>
+	<title>The YaST2 Layout HOWTO</title>
+</head>
+<body>
+
+<h1 align=center>The YaST2 Layout HOWTO</h1>
+
+<p align=center>
+Author: <a href="mailto:sh@suse.de">Stefan Hundhammer (sh@suse.de)</a>
+- Comments Welcome
+
+<p align=center>
+Updated: 2004-07-21 21, 2004 - see the <a href="#Change_Log">change log</a> for details.
+<p>
+
+
+<h2>Summary: What's This All About?</h2>
+
+<p>
+This is both a tutorial and a reference on how to lay out YaST2 dialogs.
+
+<p>
+Since experience shows that most people begin this with only a vague perception
+of YaST2's concepts, it also includes some basics that might be covered in
+other YaST2 documentation as well - just enough to get started.
+
+
+<br><br><hr>
+<h2>Contents</h2>
+
+<blockquote>
+
+	<p><a href="#basics">			Basics and Terms			</a><br>
+	<blockquote>
+		<a href="#ui">			The UI					</a><br>
+		<a href="#widgets">		Widgets					</a><br>
+		<a href="#ui_indepencence">	UI Independence and the <i>libyui</i>	</a><br>
+		<a href="#nice_size">		The Nice Size				</a><br>
+		<a href="#initial_dialog_sizes">Initial Dialog Sizes			</a><br>
+		<a href="#defaultsize">		Full Screen Dialogs: `opt(`defaultsize)	</a><br>
+	</blockquote>
+
+	<p><a href="#building_blocks">		Layout Building Blocks					</a>
+	<blockquote>
+		<a href="#layout_boxes">	Layout boxes: HBox and VBox				</a><br>
+		<a href="#weights">		Specifying Proportions: HWeight and VWeight		</a><br>
+		<a href="#rubber_bands">	Rubber Bands: HStretch and VStretch			</a><br>
+		<a href="#opt_stretch">		Making Common Widgets Stretchable: `opt(`hstretch) and `opt(`vstretch)	</a><br>
+		<a href="#spacings">		Spacings: HSpacing and VSpacing				</a><br>
+		<a href="#alignments">		Alignments: Left, Right, HCenter, Top, Bottom, VCenter, HVCenter	</a><br>
+		<a href="#squash">		Compressing Excess Space: HSquash, VSquash, HVSquash	</a><br>
+		<a href="#frame">		Optical Grouping: Frame					</a><br>
+		<a href="#radiobuttongroup">	Grouping RadioButtons: RadioButtonGroup			</a><br>
+		<a href="#replacepoint">	The Esoterics: ReplacePoint				</a><br>
+		<a href="#split">		Obsolete: Split						</a><br>
+	</blockquote>
+
+	<p><a href="#common_techniques">	Common Layout Techniques				</a>
+	<blockquote>
+		<a href="#equal">		Creating Widgets of Equal Size				</a><br>
+		<a href="#equal_no_grow">	Creating Widgets of Equal Size that don't Grow		</a><br>
+		<a href="#equal_no_grow_spaced">Creating Widgets of Equal Size that don't Grow - with Spacings in between</a><br>
+		<a href="#scrollable_sizes">	Specifying the Size of Scrollable Widgets		</a><br>
+	</blockquote>
+
+	<p><a href="#hints">			Hints and Tips						</a>
+	<blockquote>
+		<a href="#log_file">		Debugging Aids: The Log File						</a><br>
+		<a href="#dont_overcrowd">	Keep it Simple - Do not Overcrowd Dialogs!				</a><br>
+		<a href="#check_ncurses">	Always Keep other UIs in Mind - What does it Look Like with NCurses?	</a><br>
+		<a href="#keyboard_shortcuts">	Do not Neglect Mouseless Users - Always Provide Keyboard Shortcuts!	</a><br>
+	</blockquote>
+
+	<p><a href="#layout_algorithm">		The Layout Algorithm - How the Layout Engine Works Internally	</a>
+	<blockquote>
+		<a href="#calc_nice_size">	Calculating the Nice Size					</a>
+		<blockquote>
+			<a href="#sec_nice_size">  Secondary Nice Size						</a><br>
+			<a href="#prim_nice_size"> Primary Nice Size						</a><br>
+		</blockquote>
+		<a href="#set_size">		Setting the Size of a Layout - SetSize()			</a><br>
+		<a href="#out_of_space">	Running out of Space - the Pathological Cases			</a><br>
+		<a href="#centering_secondary">	Centering in the Secondary Dimension				</a><br>
+	</blockquote>
+
+	<p><a href="#Change_Log">		Change log			</a>
+
+</blockquote>
+
+
+
+
+
+
+<br><br><hr>
+<h2>Basics and Terms
+	<a name="basics"></a>
+</h2>
+
+<p>
+If you are in a hurry or - like most developers - you don't like to read docs,
+you can skip this section and move right on to the
+<a href="#impatient_reader">next section</a>.
+
+That is, if you think you know what the next few headlines mean. You can always
+come back here later.
+
+
+<p>
+Just don't ask anything that is explained here on the <i>yast2-hackers</i>
+mailing list - you'll very likely just get a plain <i>RTFM</i> answer shot
+right back into your face. And <b>this is the FM</b>, so read it
+if you need explanations. ;-)
+
+
+
+<h3>The UI
+	<a name="ui"></a>
+</h3>
+
+<p>
+The UI (user interface) is that part of YaST2 that displays dialogs. It is a
+separate process which uses a separate interpreter. Always think of it as
+something running on a different machine: There is the machine you want to
+install with YaST2 (i.e. the machine where the disks will be formatted etc.)
+and there is the machine that displays the dialogs - the UI machine. In most
+cases, this will actually be the same machine. But it doesn't need to be. Both
+parts of YaST2 might as well run on different machines connected via a serial
+line, a network or by some other means of communication (telepathy? ;-)  ).
+
+
+<p>
+The logical consequence of this is that the UI uses its own separate set of
+function definitions and variables. You need to be real careful not to mix that
+up. Always keep in mind what part of YaST2 needs to do what and what variables
+need to be stored where. You can easily tell by the <tt>UI</tt> prefix within
+the YCP code what parts are getting executed by the UI.
+
+
+<h3>Widgets
+	<a name="widgets"></a>
+</h3>
+
+<p>
+A <i>widget</i> is the most basic building block of the
+<a href="#ui">UI</a>.
+In short, each single dialog item like a PushButton, a SelectionBox or a
+TextEntry field is a widget. But there are more: Most static texts in dialogs
+are widgets, too. And there are a lot of widgets you can't see: Layout boxes
+like <i>HBox</i> or <i>VBox</i> and many more that don't actually display
+something but arrange other widgets in some way.
+
+
+<p>
+See the <a href="widgets/index.html">widget reference</a> for details
+and a list of all available widgets.
+
+
+
+<h3>UI Independence and the <i>libyui</i>
+	<a name="ui_indepencence"></a>
+</h3>
+
+
+<p>
+There are several different <a href="#ui">UIs</a> for YaST2. There is the
+<a href="http://www.trolltech.com/products/index.html">Qt</a>
+based UI (<i>y2qt</i>) as a graphical frontend which requires the X Window
+System; this is what most people know as the "normal" YaST2 UI.  But there is
+also a NCurses based UI (<i>y2ncurses</i>) for text terminals or consoles. A
+web UI (<i>y2web</i>) is being developed at the time of this writing.
+
+
+<p>
+That means, of course, that all YaST2 dialogs need to be written in a way that
+is compatible with each of those UIs. This is why <i>libyui</i> was introduced
+as an intermediate abstract layer between the YCP application and the UI. You
+do not communicate directly with either <i>y2qt</i>, <i>y2ncurses</i> or
+<i>y2web</i> - you communicate with the libyui.
+
+
+<p>
+Thus, YaST2 dialogs need to be described logically rather than in terms of
+pixel sizes and positions: You specify some buttons to be arranged next to each
+other rather than at positions (200, 50), (200, 150), (200, 200) etc. -
+whatever exactly this "next to each other" means to the specific UI.
+
+
+<p>
+Add to that the fact that there are several dialog languages to choose from:
+User messages or button labels have different lengths in different languages.
+Just compare the length of English messages to those in German or French, and
+you'll discover another good reason not to hard-code coordinates.
+
+
+<p>
+In addition to that, always keep in mind that
+<b>the same dialog might require a different amount of space in a different UI</b>.
+Overcrowded dialogs don't look good in the Qt UI. In the NCurses UI, they will
+very likely break completely: There simply isn't as much space available (80x25
+characters vs. 640x480 pixels).
+
+
+
+<h3>The Nice Size
+	<a name="nice_size"></a>
+</h3>
+
+<p>
+Each widget has a so-called <i>nice size</i> - this is the size the widget
+would like to have in order to look nice. E.g. for PushButtons that means the
+entire button label fits into the button. Likewise for labels.
+
+
+<p>
+Then there are widgets that don't have a natural nice size. For example, what
+size should a SelectionBox get? It can scroll anyway, so anything that makes at
+least one line of the list visible will satisfy the basic requirements. More
+space will make it look nicer; but how much is enough? The widget cannot tell
+that by itself.
+
+
+<p>
+Such widgets report a somewhat random size as their <i>nice size</i>. This is a
+number chosen for debugging purposes rather than for aesthetics. You almost
+always need to specify the size from the outside for that very reason. Always
+supply a <a href="#weights">weight</a> for such widgets or
+<a href="#scrollable_sizes">surround them with spacings</a>.
+
+
+
+<h3>Initial Dialog Sizes
+	<a name="initial_dialog_sizes"></a>
+</h3>
+
+
+<p>
+By default, all dialogs will be as large as they need to be - up to full screen
+size (which is UI dependent - 640x480 pixels for Qt, 80x25 characters for
+NCurses): The outermost widget is asked what size it would like to have,
+i.e. its <a href="#nice_size">nice size</a>. If that outermost widget has any
+children, for example because it is a <a href="#layout_boxes">layout box</a>,
+it will ask all of its children and sum up the individual sizes. Those in turn
+may have to ask their children and so on.  The resulting size will be the
+dialog's initial size - unless, of course, this would exceed the screen size
+(UI dependent, see above).
+
+
+<h3>Full Screen Dialogs: `opt(`defaultsize)
+	<a name="defaultsize"></a>
+</h3>
+
+<p>
+You can force full screen size for any dialog by setting the
+<tt>`defaultsize</tt> option when opening it:
+
+<blockquote>
+<pre>
+OpenDialog(
+           `opt(`defaultsize ),
+	   `VBox(...)
+          );
+
+</pre>
+</blockquote>
+
+
+<p>
+This will create a dialog of 640x480 pixels (<i>y2qt</i>) or 80x25 characters
+(<i>y2ncurses</i>) - regardless of its contents.
+
+
+<p>
+Use this for main windows or for popup dialogs with very much the same
+semantics - e.g. many of the YaST2 installation wizard's "expert" dialogs. Even
+though they are technically popup dialogs and they return to the main thread of
+dialog sequence they have main window semantics to the user.
+
+
+<p>
+Use your common sense when considering whether or not to use this feature for a
+particular dialog.
+
+
+<p>
+<b>Note:</b> Not every UI may be capable of this feature. This is only a hint to
+the UI; you cannot blindly rely on it being honored.
+
+
+
+
+
+<a name="impatient_reader"></a>
+
+<br><br><hr>
+<h2>Layout Building Blocks
+	<a name="building_blocks"></a>
+</h2>
+
+
+<p>
+This section covers the widgets used for creating dialog layouts - the kind of
+widgets that are less obvious to the user. If you are interested in the "real"
+widgets, i.e. the kind you can actually see, please refer to the
+<a href="widgets/index.html">widget reference</a>.
+
+
+
+
+<h3>Layout Boxes:
+	<a name="layout_boxes"></a>
+	<a href="widgets/Box-widget.html">HBox</a>
+	and
+	<a href="widgets/Box-widget.html">VBox</a>
+</h3>
+
+
+<p>
+This is the most basic and also the most natural layout widget.
+
+The <a href="widgets/Box-widget.html">HBox</a> widget arranges two or more
+widgets horizontally, i.e. left to right.
+The <a href="widgets/Box-widget.html">VBox</a> arranges two or more widgets
+vertically, i.e. top to bottom.
+
+<p>
+The strategy used for doing this is the same, just the dimensions (horizontal /
+vertical) are different. Each child widget will be positioned logically next to
+its neighbor. You don't have to care about exact sizes and positions; the
+layout box will do that for you.
+
+<p>
+See the description of the
+<a href="#layout_algorithm">layout algorithm</a> for details.
+
+
+<p>
+For creating more complex layouts, nest HBox and VBox widgets into each
+other. Usually you will have a structure very much like this:
+
+<blockquote>
+<pre>
+
+`VBox(
+      `HBox(...),
+      `HBox(...),
+      ...
+      )
+
+</pre>
+</blockquote>
+
+
+<p>
+i.e. a VBox that has several HBoxes inside. Those in turn can have VBoxes
+inside etc. - nest as deep as you like.
+
+
+<p>
+Almost every kind of layout can be broken down into such columns (i.e. VBoxes)
+or rows (i.e. HBoxes). If you feel you can't do that with your special layout,
+try using <a href="#weights">weights</a>.
+
+
+
+<h3>Specifying Proportions:
+	<a name="weights"></a>
+	<a href="widgets/YWeight-widget.html">HWeight</a>
+	and
+	<a href="widgets/YWeight-widget.html">VWeight</a>
+</h3>
+
+
+<p>
+By default, each widget in a layout box (i.e. in a HBox or a VBox) will get its
+<a href="#nice_size">nice size</a>, no more and no less. If for any reason you
+don't want that, you can exactly specify the proportions of each widget in the
+layout box. You do that by supplying the widgets with a <i>weight</i> (to be
+more exact: by making it the child of a weight widget, a <a
+href="widgets/YWeight-widget.html">HWeight</a> or a <a
+href="widgets/YWeight-widget.html">VWeight</a>).
+
+
+<p>
+You can specify percentages for weights, or you can choose random numbers. The
+layout engine will add the weights of all children of a layout box and
+calculate percentages for each widget automatically. Specify a <b>HWeight</b>
+for <b>HBox</b> children and a <b>VWeight</b> for <b>VBox</b> children.
+
+
+<h4>Example 1:</h4>
+
+<blockquote>
+<pre>
+`HBox(
+      `HWeight( 20, `PushButton( "OK"     ) ),
+      `HWeight( 50, `PushButton( "Cancel" ) ),
+      `HWeight( 30, `PushButton( "Help"   ) )
+     )
+</pre>
+</blockquote>
+
+
+<p>
+In this example, the "OK" button will get 20%, the "Cancel" button 50% and the
+"Help" button 30% of the available space. In this example, the weights add up
+to 100, but they don't need to.
+
+
+<p>
+<i><b>Note:</b> This dialog looks extremely ugly - don't try this at home, kids</i>
+;-)
+
+
+<p>
+<b>The weight ratios will be maintained at all times</b>, even if that means
+violating <a href="#nice_size">nice size</a> restrictions (i.e. a widget gets
+less space than it needs). You are the boss; if you specify weights, the layout
+engine assumes you know what you are doing.
+
+
+<h4>Example 2:</h4>
+
+<p>
+(See also
+<a href="#equal">creating widgets of equal size</a> in the
+<a href="#common_techniques">common layout techniques</a> section)
+
+<blockquote>
+<pre>
+`HBox(
+      `HWeight( 1, `PushButton( "OK"     ) ),
+      `HWeight( 1, `PushButton( "Cancel" ) ),
+      `HWeight( 1, `PushButton( "Help"   ) )
+     )
+</pre>
+</blockquote>
+
+<p>
+<i><b>Note:</b> This is a very common technique</i>.
+
+<p>
+In this example all buttons will get an equal size. The button with the largest
+label will determine the overall size and thus the size of each individual
+button.
+
+
+<p>
+Please note how the weights do not add up to 100 here. The value "1" is
+absolutely random; we might as well have specified "42" for each button to
+achieve that effect.
+
+
+<h4>Example 3:</h4>
+
+<p>
+The YaST2 wizard layout reserves 30% of horizontal space for the help text
+(a <a href="widgets/YRichText-widget.html">RichText</a> widget)
+and the remaining 70% for the rest of the dialog.
+The important part of that code (simplified for demonstration purposes) looks
+like that:
+
+<blockquote>
+<pre>
+`HBox(
+      `HWeight( 30, `RichText( "Help text") ),
+      `HWeight( 70, `VBox(
+			  ...	// the dialog contents
+			  `HBox(
+				`PushButton( "Back"),
+				`HCenter( `PushButton( "Abort Installation") ),
+				`PushButton( "Next")
+                               )
+			  )
+              )
+      )
+</pre>
+</blockquote>
+
+
+<p>
+Specifying the size of the help text like that is important for most kinds of
+widgets that can scroll - like the RichText widget used here, for example. The
+RichText widget can take any amount of space available; it will wrap lines by
+itself as long as possible and provide scroll bars as necessary. Thus, it
+cannot supply any reasonable default size on its own - you must supply one. We
+chose 30% of the screen space - which of course is absolutely random but suits
+well for the purposes of YaST2.
+
+
+<p>
+Use this technique for widgets like the
+<a href="widgets/YSelectionBox-widget.html">SelectionBox</a>, the
+<a href="widgets/YTable-widget.html">Table widget</a>, the
+<a href="widgets/YTree-widget.html">Tree widget</a>, the
+<a href="widgets/YRichText-widget.html">RichText</a>,
+but also for less obvious ones like the
+<a href="widgets/YTextEntry-widget.html">TextEntry</a>.
+
+
+<p>
+<b>Note:</b> This list may be incomplete. Use your common sense.
+
+
+<h3>Rubber Bands:
+	<a name="rubber_bands"></a>
+	<a href="widgets/YEmpty-widget.html">HStretch</a>
+	and
+	<a href="widgets/YEmpty-widget.html">VStretch</a>
+</h3>
+
+
+<p>
+When you don't want parts of a dialog to be resized just because some
+neighboring widget needs more space, you can insert <i>stretch</i> widgets to
+take any excess space.
+Insert a
+<a href="widgets/YEmpty-widget.html">HStretch</a> in a
+<a href="widgets/Box-widget.html">HBox</a> or a
+<a href="widgets/YEmpty-widget.html">VStretch</a> in a
+<a href="widgets/Box-widget.html">VBox</a>.
+Those will act as "rubber bands" and leave the other widgets in the
+corresponding layout box untouched.
+
+
+<p>
+You can also insert several stretches in one layout box; excess space will be
+evenly distributed among them.
+
+
+<p>
+If there is no excess space, stretch widgets will be invisible. They don't
+consume any space unless there is too much of it (or unless you explicitly told
+them to - e.g. by using <a href="#weights">weights</a>).
+
+
+
+<h3>Making Common Widgets Stretchable: `opt(`hstretch) and `opt(`vstretch)
+	<a name="opt_stretch"></a>
+</h3>
+
+
+<p>
+Some widgets that are not stretchable by default can be made stretchable by
+setting the <tt>`hstretch</tt> option.
+<a href="widgets/YPushButton-widget.html">PushButtons</a> are typical
+candidates for this: They normally consume only as much space as they really
+need, i.e. their <a href="#nice_size">nice size</a>. With the
+<tt>`hstretch</tt> option, however, they can grow and take any extra space -
+very much like <a href="#rubber_bands">stretch</a> widgets.
+
+
+<p>
+Please note, however, that all widgets for with a <a href="#weights">weight</a>
+are implicitly stretchable anyway, so specifying <tt>`opt(`hstretch)</tt> or
+<tt>`opt(`vstretch)</tt> for them as well is absolutely redundant.
+
+
+
+<h3>Spacings:
+	<a name="spacings"></a>
+	<a href="widgets/YSpacing-widget.html">HSpacing</a>
+	and
+	<a href="widgets/YSpacing-widget.html">VSpacing</a>
+</h3>
+
+
+<p>
+Use
+<a href="widgets/YSpacing-widget.html">HSpacing</a> or
+<a href="widgets/YSpacing-widget.html">VSpacing</a>
+to create some empty space within a layout.
+This is normally used for aesthetical reasons only - to make dialogs
+appear less cramped.
+
+
+<p>
+The size of a spacing is specified as a float number, measured in units roughly
+equivalent to the size of a character in the respective UI (1/80 of the
+<a href="#defaultsize">full screen width</a> horizontally , 1/25 of the full
+screen width vertically).  Fractional numbers can be used here, but text based
+UIs may choose to round the number as appropriate - even if this means simply
+ignoring a spacing when its size becomes zero.
+
+
+<p>
+You can combine the effects of a
+<a href="#spacings">spacing</a> and a
+<a href="#rubber_bands">stretch</a> if you specify a
+<a href="#opt_stretch">hstretch</a> or a
+<a href="#opt_stretch">vstretch</a> option for it:
+You will have a rubber band that will take at least the specified amount of
+space. Use this to create nicely spaced dialogs with a reasonable resize
+behaviour.
+
+<h4>Example:</h4>
+
+<blockquote>
+<pre>
+`HBox(
+      `PushButton( "OK"	),
+      `HSpacing( `opt(`hstretch), 0.5),
+      `PushButton( "Cancel" )
+     )
+</pre>
+</blockquote>
+
+
+<p>
+This will create two buttons with a spacing between them. When the dialog is
+resized, the spacing will grow.
+
+
+<h3>Alignments:
+	<a name="alignments"></a>
+	<a href="widgets/YAlignment-widget.html">Left</a>,
+	<a href="widgets/YAlignment-widget.html">Right</a>,
+	<a href="widgets/YAlignment-widget.html">HCenter</a>,
+	<a href="widgets/YAlignment-widget.html">Top</a>,
+	<a href="widgets/YAlignment-widget.html">Bottom</a>,
+	<a href="widgets/YAlignment-widget.html">VCenter</a>,
+	<a href="widgets/YAlignment-widget.html">HVCenter</a>
+</h3>
+
+
+<p>
+Alignments are widgets that align their single child widget in some way.
+
+
+<p>
+<a href="widgets/YAlignment-widget.html">HCenter</a> centers horizontally,
+<a href="widgets/YAlignment-widget.html">VCenter</a> centers vertically,
+<a href="widgets/YAlignment-widget.html">HVCenter</a> centers both
+horizontally and vertically. The others align their child as the name implies.
+
+
+
+<p>
+More often than not, you could achieve the same effect with a clever
+combination of
+<a href="#spacings">spacings</a>,
+but sometimes this might require an additional
+<a href="widgets/Box-widget.html">HBox</a> within a
+<a href="widgets/Box-widget.html">HBox</a> or a
+<a href="widgets/Box-widget.html">VBox</a> within a
+<a href="widgets/Box-widget.html">VBox</a>,
+i.e. more overhead.
+
+
+
+<h3>Compressing Excess Space:
+	<a name="squash"></a>
+	<a href="widgets/YSquash-widget.html">HSquash</a>,
+	<a href="widgets/YSquash-widget.html">VSquash</a>,
+	<a href="widgets/YSquash-widget.html">HVSquash</a>
+</h3>
+
+
+<p>
+Sometimes you wish to squeeze any extra space from a part of a dialog. This
+might be necessary if you want to draw a <a href="#frame">frame</a> around a
+RadioBox in a <a href="#defaultsize">defaultsize</a> dialog: You want the frame
+drawn as close as possible to the
+<a href="widgets/YRadioButton-widget.html">RadioButtons</a>, not next to the
+window frame with lots of empty space between the frame and the RadioButtons.
+Use a squash widget for that purpose:
+
+<a name="squash_example"></a>
+<blockquote>
+<pre>
+`HVCenter(
+          `HVSquash(
+	            `Frame( "Select Software categories",
+		           `VBox(
+                                 ...
+                                )
+                          )
+                   )
+         )
+</pre>
+</blockquote>
+
+
+
+<h3>Optical Grouping:
+	<a name="frame"></a>
+	<a href="widgets/YFrame-widget.html">Frame</a>
+</h3>
+
+
+<p>
+This is not exactly a layout-only widget - you can see it. It is being
+mentioned here more because like layout widgets it can have children.
+
+<p>
+Use a <a href="widgets/YFrame-widget.html">Frame</a> to visually group widgets
+that logically belong together - such as the
+<a href="widgets/YRadioButton-widget.html">RadioButtons</a> of a RadioBox or a
+group of <a href="widgets/YCheckBox-widget.html">CheckBoxes</a> that have a
+meaning in common (e.g. individual file permissions, software categories to
+install, ...).
+
+
+<p>
+<b>Note:</b>
+Do not overuse frames. They have a nice visual effect, but only if used
+sparingly.
+
+
+<p>
+You may need to put a <a href="#squash">squash</a> widget around the frame in
+order to avoid excessive empty space between the frame and its inner widgets.
+
+
+<h4>Example:</h4>
+
+See the <a href="#squash_example">squash example</a>.
+
+
+<h3>Grouping RadioButtons:
+	<a name="radiobuttongroup"></a>
+	<a href="widgets/YRadioButtonGroup-widget.html">RadioButtonGroup</a>
+</h3>
+
+
+<p>
+The <a href="widgets/YRadioButtonGroup-widget.html">RadioButtonGroup</a>
+is a widget go logically group individual
+<a href="widgets/YRadioButton-widget.html">RadioButton</a> widgets.
+It does not have a visual effect or an effect on the layout.
+All it does is to manage the one-out-of-many logic of a RadioBox: When one
+<a href="widgets/YRadioButton-widget.html">RadioButton</a> is selected, all
+the others in the same RadioBox (i.e. in the same RadioButtonGroup) must be
+unselected.
+
+
+<p>
+Please notice that this might not be as trivial as it seems to be at first
+glance: There might be some outer RadioBox that switches between several
+general settings, enabling or disabling the others as necessary. Any of those
+general settings might contain another RadioBox - which of course is
+independent of the outer one. This is why you really need to specify the
+RadioButtonGroup.
+
+
+<p>
+You usually just surround the
+<a href="widgets/Box-widget.html">VBox</a> containing the
+<a href="widgets/YRadioButton-widget.html">RadioButtons</a> with a
+The <a href="widgets/YRadioButtonGroup-widget.html">RadioButtonGroup</a>.
+
+
+<p>
+Don't forget to include your RadioBox within a <a href="#frame">frame!</a>
+<a href="widgets/YRadioButtonGroup-widget.html">RadioButtonGroup</a>,
+<a href="widgets/YFrame-widget.html">Frame</a> and
+<a href="widgets/YSquash-widget.html">HVSquash</a> usually all come together.
+
+
+<h4>Example:</h4>
+
+
+<a name="squash_example"></a>
+<blockquote>
+<pre width=100>
+`HVCenter(
+          `HVSquash(
+	            `Frame( "Select Installation Type",
+                           `RadioButtonGroup(
+		                             `VBox(
+                                                   `RadioButton(...),
+                                                   `RadioButton(...),
+                                                   `RadioButton(...)
+                                                  )
+                                            )
+                          )
+                   )
+         )
+</pre>
+</blockquote>
+
+
+
+<h3>The Esoterics:
+	<a name="replacepoint"></a>
+	<a href="widgets/YReplacePoint-widget.html">ReplacePoint</a>
+</h3>
+
+
+<p>
+A <a href="widgets/YReplacePoint-widget.html">ReplacePoint</a> is a "marker"
+within the widget hierarchy of a layout. You can later refer to it with
+<tt>ReplaceWidget()</tt>. Use this to cut out a part of the widget hierarchy
+and paste some other sub-hierarchy to this point.
+
+
+<p>
+The YaST2 wizard dialogs use this a lot: The main window stays the same, just
+some parts are replaced as needed - usually the large part to the right of the
+help text, between the title bar and the "previous" and "next" buttons.
+
+
+<p>
+A ReplacePoint has no other visual or layout effect.
+
+
+<h3>Obsolete: Split
+	<a name="split"></a>
+</h3>
+
+<p>
+This is not used any more. If you know anything about it, forget it. If you
+don't, don't bother. It's old and obsolete and nobody used it anyway.
+
+
+
+
+<br><br><hr>
+<h2>Common Layout Techniques
+	<a name="common_techniques"></a>
+</h2>
+
+
+<p>
+Use the case studies in this section as building blocks for your own
+dialogs.
+
+
+<p>
+Remember that even though most of the examples use a horizontal layout
+(a <a href="widgets/Box-widget.html">HBox</a>), the same rules and techniques
+apply in the vertical dimension as well - just replace
+<a href="widgets/Box-widget.html">HBox</a> with
+<a href="widgets/Box-widget.html">VBox</a>,
+<a href="widgets/YWeight-widget.html">HWeight</a> with
+<a href="widgets/YWeight-widget.html">VWeight</a> etc.
+
+
+
+
+<h3>Creating Widgets of Equal Size
+	<a name="equal"></a>
+</h3>
+
+
+<p><img src="examples/screenshots/Layout-Buttons-Equal-Growing.png">
+<p><i>
+Screen shot of the
+<a href="examples/Layout-Buttons-Equal-Growing.ycp">Layout-Buttons-Equal-Growing.ycp</a>
+example</i>
+
+
+<p>
+You can easily make several widgets the same size - like in this example. Just
+specify equal <a href="#weights">weights</a> for all widgets:
+
+<blockquote>
+<pre>
+
+`HBox(
+      `HWeight(1, `PushButton( "OK"                ) ),
+      `HWeight(1, `PushButton( "Cancel everything" ) ),
+      `HWeight(1, `PushButton( "Help"              ) )
+     )
+
+</pre>
+</blockquote>
+
+
+<p>
+The widgets will grow or shrink when resized. They will always retain equal sizes:
+
+
+<p><img src="examples/screenshots/resized-larger/Layout-Buttons-Equal-Growing.png">
+<p><i>The same example, resized larger.</i>
+<br><br><br>
+
+<p><img src="examples/screenshots/resized-smaller/Layout-Buttons-Equal-Growing.png">
+<p><i>The same example, resized smaller.</i>
+<br><br><br>
+
+
+
+
+
+<h3>Creating Widgets of Equal Size that don't Grow
+	<a name="equal_no_grow"></a>
+</h3>
+
+
+<p><img src="examples/screenshots/Layout-Buttons-Equal-Even-Spaced1.png">
+
+<p><i>
+Screen shot of the
+<a href="examples/Layout-Buttons-Equal-Even-Spaced1.ycp">Layout-Buttons-Equal-Even-Spaced1.ycp</a>
+example</i>
+
+
+<p>
+Widgets with a <a href="#weights">weight</a> (such as these buttons) are
+implicitly stretchable. If you don't want the widgets to grow, insert
+<a href="#rubber_bands">stretches</a> without any
+<a href="#weights">weight</a> between them. They will take all excess
+space - but <b>only if there is no <a href="#weights">weight</a> specified</b>
+(otherwise, the <a href="#rubber_bands">stretches</a> would always maintain a
+size according to the specified <a href="#weights">weight</a> - not what is
+desired here).
+
+
+<blockquote>
+<pre>
+
+`HBox(
+      `HWeight(1, `PushButton( "OK"                ) ),
+      `HStretch(),
+      `HWeight(1, `PushButton( "Cancel everything" ) ),
+      `HStretch(),
+      `HWeight(1, `PushButton( "Help"              ) )
+     )
+
+</pre>
+</blockquote>
+
+
+<p><img src="examples/screenshots/resized-larger/Layout-Buttons-Equal-Even-Spaced1.png">
+<p><i>The same example, resized larger.
+Notice how the stretches take the excess space.</i>
+<br><br><br>
+
+
+<p><img src="examples/screenshots/resized-smaller/Layout-Buttons-Equal-Even-Spaced1.png">
+<p><i>The same example, resized smaller.<br>
+The stretches don't need any space if there is not enough space anyway.</i>
+<br><br><br>
+
+
+
+<h3>Creating Widgets of Equal Size that don't Grow - with Spacings in between
+	<a name="equal_no_grow_spaced"></a>
+</h3>
+
+
+<p><img src="examples/screenshots/Layout-Buttons-Equal-Even-Spaced2.png">
+
+<p><i>
+Screen shot of the
+<a href="examples/Layout-Buttons-Equal-Even-Spaced2.ycp">Layout-Buttons-Equal-Even-Spaced2.ycp</a>
+example.<br>
+Notice the spacing between the buttons.
+</i>
+
+
+<p>
+If you want some space between the individual widgets, insert a
+<a href="#spacings">spacing</a>. You could use both a
+<a href="#spacings">spacing</a> and a
+<a href="#rubber_bands">stretch</a>, but specifying the
+<a href="#opt_stretch">stretchable</a> option for the
+<a href="#spacings">spacing</a> will do the trick as well - and save some
+unnecessary widgets:
+
+
+<blockquote>
+<pre>
+
+`HBox(
+      `HWeight(1, `PushButton( "OK"                ) ),
+      `HSpacing(`opt(`hstretch), 3),
+      `HWeight(1, `PushButton( "Cancel everything" ) ),
+      `HSpacing(`opt(`hstretch), 3),
+      `HWeight(1, `PushButton( "Help"              ) )
+     )
+
+</pre>
+</blockquote>
+
+
+<p>
+The value "3" used here for the <a href="#spacings"></a> is absolutely random,
+chosen just for aesthetics. Use your own as appropriate.
+
+
+<p><img src="examples/screenshots/resized-larger/Layout-Buttons-Equal-Even-Spaced2.png">
+<p><i>The same example, resized larger.
+Notice how the spacings take the excess space.</i>
+<br><br><br>
+
+
+<p><img src="examples/screenshots/resized-smaller/Layout-Buttons-Equal-Even-Spaced2.png">
+<p><i>The same example, resized smaller.</i>
+
+<p>
+As you can see, the spacings have one disadvantage here: They need the space
+you specified even if that means that there is not enough space for the other widgets.
+
+<br><br><br>
+
+
+
+<h3>Specifying the Size of Scrollable Widgets
+	<a name="scrollable_sizes"></a>
+</h3>
+
+
+<p>
+<a href="#nice_size">As mentioned before</a>,
+most kinds of widgets that can scroll don't have a natural
+<a href="#nice_size">nice size</a>. If the overall size of your layout is fixed
+by some other means (e.g. because it is a
+<a href="#defaultsize">full screen</a> dialog), you can have it take the
+remaining space or specify proportions with
+<a href="#weights">weights</a>.
+
+
+<p>
+If this is not the case, create such "other means" yourself: Surround the
+scrollable widget with widgets of a well-defined size, e.g. with
+<a href="#spacings">spacings</a>.
+
+
+<p>
+Prevent the <a href="#spacings">spacings</a> from
+actually using precious screen space themselves by putting a
+<a href="widgets/YSpacing-widget.html">VSpacing</a> in a
+<a href="widgets/Box-widget.html">HBox</a> or a
+<a href="widgets/YSpacing-widget.html">HSpacing</a> in a
+<a href="widgets/Box-widget.html">VBox</a> - it will resize the corresponding
+<a href="#layout_boxes">layout box</a> in its
+<a href="#dimensions">secondary dimension</a>.
+It will take no space in its
+<a href="#dimensions">primary dimension</a>.
+
+
+<h4>Example:</h4>
+
+<blockquote>
+<pre>
+
+`VBox(
+      `HSpacing(40),		// make the scrollable widget at least 40 units wide
+      `HBox(
+	    `VSpacing(10),	// make the scrollable widget at least 10 units high
+	    `Table(...)		// or any other scrollable widget
+           )
+     )
+
+</pre>
+</blockquote>
+
+
+<p>
+See also the
+<a href="examples/Table2.ycp">Table2.ycp</a>,
+<a href="examples/Table3.ycp">Table3.ycp</a>,
+<a href="examples/Table4.ycp">Table4.ycp</a> and
+<a href="examples/Table5.ycp">Table5.ycp</a> examples.
+
+
+
+<p>
+As a general rule of thumb, use this technique whenever you place a scrollable
+widget in a non-<a href="#defaultsize">defaultsize</a> dialog. Don't leave the
+size of such widgets to pure coincidence - always explicitly specify their sizes.
+
+
+
+<br><br><hr>
+<h2>Hints and Tips
+	<a name="hints"></a>
+</h2>
+
+
+
+<h3>Debugging Aids: The Log File
+	<a name="log_file"></a>
+</h3>
+
+
+<p>
+<i>printf()</i> is your best friend when debugging - every seasoned programmer
+knows that. YaST2 has something very much like that: <i>y2log()</i>, available
+both in YCP and in the C++ sources. It is being used a lot, and you can add
+your own in your YCP code. Thus, if something strange happens, check the log
+file - either in your home directory (<tt>~/.y2log</tt>) or the system wide log
+file (<tt>/var/log/y2log</tt>).
+
+
+<p>
+You can increase the level of verbosity by setting the <tt>Y2DEBUG</tt>
+environment variable to 1 - both in your shell and at the boot prompt (for
+debugging during an installation) - boot with something like
+
+
+<blockquote>
+<pre>
+linux Y2DEBUG=1
+</pre>
+</blockquote>
+
+
+
+<p>
+Log files will be wrapped when they reach a certain size - i.e. the current log
+file is renamed to <tt>~/.y2log-1</tt>, <tt>~/.y2log-2</tt> etc. or
+<tt>/var/log/y2log-1</tt>, <tt>/var/log/y2log-2</tt> etc., and a new log file
+is begun.
+
+
+<h3>Keep it Simple - Do not Overcrowd Dialogs!
+	<a name="dont_overcrowd"></a>
+</h3>
+
+<p>
+If the layout engine complains about widgets not getting their <i>nice size</i>
+and tell you to <i>check the layout</i>, please do that before you write a bug
+report. More often than not that just means that your dialog is overcrowded.
+That doesn't only raise technical problems: In that case your dialog most
+likely is too complex and not likely to be understood by novice users. In
+short, you very likely have a problem with your logical design, not with the
+layout engine. Consider making it easier or splitting it up into several
+dialogs - e.g. an easy-to-understand novice level base dialog and an advanced
+"expert" dialog. Use YaST2's partitioning, software selection and LILO
+configuration dialogs as examples for how to do this.
+
+
+<p>
+You might also consider replacing some widgets with others that don't use as
+much screen space - e.g. use a ComboBox rather than a SelectionBox, or a
+ComboBox rather than a RadioBox. But always keep in mind that this just reduces
+screen space usage, not complexity. Plus, widgets like the ComboBox frequently
+are harder to operate from a user's point of view because they require more
+mouse clicks or keys presses to get anything done. Use with caution.
+
+
+
+<h3>Always Keep Other UIs in Mind - What does it Look Like with NCurses?
+	<a name="check_ncurses"></a>
+</h3>
+
+<p>
+When you created a new dialog or substantially changed an existing one always
+remember to check it with the other UIs, too. If it looks good with the Qt UI
+that doesn't mean it looks good with the NCurses UI as well - it might even
+break completely. There might be too many widgets or parts of widgets may be
+invisible because of insufficient screen space.
+
+
+<p>
+If you don't like that idea always remember some day <em>you</em> might be that
+poor guy who can't run YaST2 with Qt - maybe because of a brand new graphics
+card the X server doesn't support yet or maybe because you have to install a
+server system that just has a serial console.
+
+
+<p>
+The text based version may not need to look as good (but it would sure be nice
+if it did), but it needs to work. That means all widgets must be there and be
+visible. If they are not, you really need to rearrange or even redesign your
+dialog. Possibly before somebody from the support department finds it out the
+hard way - because a user complained badly about it.
+
+
+
+<h3>Do not Neglect Mouseless Users - Always Provide Keyboard Shortcuts!
+	<a name="keyboard_shortcuts"></a>
+</h3>
+
+<p>
+Very much the same like the previous issue: Consider somebody who wants or
+needs to operate your dialog without a mouse. Maybe he doesn't have one or
+maybe it doesn't work - or maybe he uses the NCurses UI. There are even a lot
+of users who can work a whole lot quicker if they can use keyboard shortcuts
+for common tasks - e.g. activating buttons or jumping to text input fields. You
+can and should provide keyboard shortcuts for each of those kinds of widgets.
+
+
+<p>
+Of course this needs to be double-checked with each of the translated versions:
+Keyboard shortcuts not only are language dependent (so users can memorize
+them), they are even contained within messages files. The translators need to
+include their own in the respective language, and that means chances are some
+of the sort cuts are double used - e.g. Alt-K may be used twice in the same
+dialog, which renders the second use ineffective. Always check that, too.
+
+
+
+
+
+<br><br><hr>
+<h2>The Layout Algorithm - How the Layout Engine Works Internally
+	<a name="layout_algorithm"></a>
+</h2>
+
+<p>
+You don't need to know the internals of the YaST2 UI layout engine in order to
+be able to create YaST2 dialogs. But this kind of background knowledge
+certainly helps a lot when you need to debug a layout - i.e. when a dialog you
+programmed behaves "strange" and doesn't look at all like you expected.
+
+
+
+<h3>Primary and Secondary Dimensions
+	<a name="dimensions"></a>
+</h3>
+
+
+<p>
+A <a href="widgets/Box-widget.html">HBox</a> lays out its children
+horizontally, a
+<a href="widgets/Box-widget.html">VBox</a> vertically. How they do that is
+very much the same except for the dimensions: The HBox uses horizontal as its
+<i>primary</i> dimension, the VBox vertical. The other dimension is called the
+<i>secondary</i> dimension (vertical for the HBox, horizontal for the VBox).
+
+
+
+<h3>Calculating the Nice Size
+	<a name="calc_nice_size"></a>
+</h3>
+
+
+
+<h4>Secondary Nice Size
+	<a name="sec_nice_size"></a>
+</h4>
+
+
+<p>
+Calculating the <a href="#nice_size">nice size</a> in the
+<a href="#dimensions">secondary dimension</a> is easy:
+It is the maximum of the nice sizes of all children.
+Thus, for a
+<a href="widgets/Box-widget.html">HBox</a>
+this is the nice height of the highest child, for a
+<a href="widgets/Box-widget.html">VBox</a>
+this is the nice width of the widest child.
+
+
+<p>
+If any child is a
+<a href="#layout_boxes">layout box</a>
+itself (or any other container widget), this process will become recursive for
+the children of that layout box etc. - this holds true for both the
+<a href="#dimensions">primary</a>
+and the
+<a href="#dimensions">secondary</a>
+dimension.
+
+
+
+<h4>Primary Nice Size
+	<a name="prim_nice_size"></a>
+</h4>
+
+
+<p>
+In the
+<a href="#dimensions">primary</a>
+dimension things are a bit more complicated:
+First, the nice sizes of all children without
+<a href="#weights">weights</a>
+are summed up.
+
+
+<p>
+Then the sizes of all children with weights are added to that sum - in such a
+way that each of those gets at least its nice size, yet all weights are
+maintained with respect to each other. I.e. when a button is supposed to get
+30% he must get it, but its label must still be completely visible.
+
+
+<p>
+Maybe some of the children with weights need to be resized larger because of
+those restrictions. Exactly how large is calculated based on the so-called
+<i>boss child</i>. This is the one widget that commands the overall size of all
+children with weights, the one with
+
+<blockquote>
+max ( nice size / weight )
+</blockquote>
+
+
+<p>
+The boss child's nice size and its weight determine the accumulated nice size
+of all children with weights. The other children with weights will be
+resized larger to get their share of that accumulated size according to their
+individual weights.
+
+
+<p>
+By the way this is why all children with weights are implicitly
+<a href="#opt_stretch">stretchable</a>
+- most of them will be resized larger so the weights can be maintained at all
+times.
+
+
+
+<h3>Setting the Size of a Layout - SetSize()
+	<a name="set_size"></a>
+</h3>
+
+
+<p>
+Each widget has a SetSize() method. This will be called recursively for all
+widgets from top (i.e. the outer dialog) to bottom. When a dialog is opened,
+the UI determines how large a dialog should become. The UI tries to use the dialog's
+<a href="#nice_size">nice size</a>, if possible - unless the
+<a href="#defaultsize">defaultsize</a> option is set or the nice size exceeds
+the screen size, in which case the screen size is used.
+
+
+<p>
+After the dialog is opened, the SetSize() method will be called again when:
+
+<ul>
+	<li>The user resizes a dialog.
+	<li>A significant portion of the dialog changes - e.g. because of ReplaceWidget().
+</ul>
+
+
+<p>
+All of those cases will cause a re-layout of the entire dialog.
+
+
+<p>
+For <a href="#layout_boxes">layout boxes</a>, the SetSize() method works like
+this:
+
+
+<p>
+If none of the children of a layout box has a
+<a href="#weights">weight</a>,
+any extra space (i.e. space in excess of the
+<a href="#nice_size">nice size)</a>
+is evenly distributed among the
+<a href="#opt_stretch">stretchable</a>
+children. All non-stretchable children get their nice size, no more.
+
+
+<p>
+If there are not any
+<a href="#opt_stretch">stretchable</a>
+children, there will be empty space at the end of the layout (i.e. to the right
+for a
+<a href="widgets/Box-widget.html">HBox</a>
+and at the bottom of a
+<a href="widgets/Box-widget.html">VBox</a>).
+
+If any child has a
+<a href="#weights">weight</a>,
+all children without weights will get no more than their nice sizes - no matter
+whether or not they are
+<a href="#opt_stretch">stretchable</a>.
+
+
+<p>
+The rest of the space will be distributed among the children with weights
+according to the individual weights.
+
+<p>
+There is one exception to that rule, however:
+If there is more space than the weighted childrens' nice size and there are any
+<a href="#rubber_bands">stretches</a> or stretchable
+<a href="#spacings">spacings</a> without weights,
+the excess space will be evenly distributed among them.
+
+
+<p>
+This may sound like a <i>very</i> pathological case, but in fact only this
+gives the application programmer a chance to create
+<a href="#equal_no_grow">equal sized widgets that don't grow</a>,
+maybe
+<a href="#equal_no_grow_spaced">with a little extra space between them</a>.
+Simple popup dialogs with some buttons are typical examples for this, and this
+is quite common.
+
+
+
+<h4>Running out of Space - the Pathological Cases
+	<a name="out_of_space"></a>
+</h4>
+
+
+<p>
+There should be enough space for any layout box: By default, the overall size
+of a dialog is calculated based on its
+<a href="#nice_size">nice size</a>.
+
+But this might exceed the
+<a href="#defaultsize">full screen size</a>,
+or the user might manually have resized the dialog (some UIs are capable of
+that) - both of which cases will cause a dialog to get less than its nice size.
+
+
+<p>
+If there is not enough space, the layout engine will complain about that fact
+in the <a href="#log_file">log file</a>, asking you to "check the
+layout". Please do that if this message <i>always</i> appears when a certain
+dialog is opened - you may have to rearrange your dialog so all widgets
+properly fit into it.
+
+<p>
+Anyway, if it happens, some widgets will get less than their nice size and
+probably will not look good; some might even be completely invisible.
+
+
+<p>
+Even then, as long as there is enough space for all children without <a
+href="#weights">weights</a>, those will get their nice sizes. Only the
+remaining space will be distributed among the children with weights.
+
+
+<p>
+If the space isn't even enough for the children without weights, each of them
+will have to spend some of its space to make up for the loss. The layout engine
+tries to treat each of them equally bad, i.e. each of them has to give some
+space.
+
+
+
+
+<h4>Centering in the Secondary Dimension
+	<a name="centering_secondary"></a>
+</h4>
+
+If there is too much space in the secondary dimension and a child cannot be
+resized larger to take this space (because it isn't
+<a href="#opt_stretch">stretchable</a>
+), it will be centered.
+
+<p>
+This behaviour may be somewhat unexpected, but not only is this compatible with
+older versions of the YaST2
+<a href="#ui">UI</a>,
+it also comes very handy for simple layout tasks like this
+(taken from the
+<a href="examples/Label1.ycp">Label1.ycp</a>
+example):
+
+<blockquote>
+<pre>
+
+`VBox(
+      `Label( "Hello, world" ),
+      `PushButton( "OK" )
+     )
+
+</pre>
+</blockquote>
+
+
+<p>
+This button will be centered horizontally - without the need for a
+<a href="widgets/YAlignment-widget.html">HCenter</a>
+around it.
+
+
+
+
+
+
+
+<br><br><hr>
+<h2>Change Log
+	<a name="Change_Log"></a>
+</h2>
+
+<table border>
+<tr>
+	<td valign=top>Sep&nbsp;22,&nbsp;2000</td>
+	<td valign=top><a href="mailto:sh@suse.de">sh@suse.de</a></td>
+	<td>
+		<ul>
+			<li>Initial version
+		</ul>
+	</td>
+</tr>
+<tr>
+	<td valign=top>Sep&nbsp;27,&nbsp;2000</td>
+	<td valign=top><a href="mailto:sh@suse.de">sh@suse.de</a></td>
+	<td>
+		<ul>
+			<li>Fixed some typos thanks to 
+			<a href="mailto:ke@suse.de">Karl</a>'s 
+			proof reading
+			<li>Fixed some typos I found myself
+		</ul>
+	</td>
+</tr>
+<tr>
+	<td valign=top>Jul&nbsp;21,&nbsp;2004</td>
+	<td valign=top><a href="mailto:sh@suse.de">sh@suse.de</a></td>
+	<td>
+		<ul>
+			<li>Added this change log entry so people believe that
+			it's really still up-to-date after almost 4 years.
+			Some people had thought this document was obsolete just
+			because nothing had changed during all that time.
+			OK, you got your change. It's this change log entry. ;-)
+		</ul>
+	</td>
+</tr>
+</table>
+
+<br>
+
+
+
+</body>
+</html>

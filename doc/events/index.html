@@ -1,0 +1,96 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+
+<head>
+    <title>Event Handling in the YaST2 User Interfaces</title>
+    <link rel="stylesheet" type="text/css" href="events.css">
+</head>
+
+<body>
+
+
+<h1 class="doc-title">Event Handling in the YaST2 UI</h1>
+
+
+<p align=center>
+Author: Stefan Hundhammer 
+&lt;<a href="mailto:sh@suse.de?subject=YaST2 Event Handling">sh@suse.de</a>&gt;
+</p>
+
+
+
+
+<table class="navigation-bar" width=100%>
+    <tr>
+	<td width="33%" align="left">Prev: (none)</td>
+	<td width="33%" align="center"></td>
+	<td width="33%" align="right">Next: <a href="event-intro.html">Introduction</a></td>
+    </tr>
+</table>
+
+
+<h2><a name="contents">Contents</a></h2>
+
+<ul>
+<li><a href="event-intro.html">Introduction</a></li>
+    <ul>
+    <li><a href="event-intro.html#y2_model">The YaST2 Event Model</a>
+        <ul>
+        <li><a href="event-intro.html#classic_gui">Classic GUI Event Loops</a>
+        <li><a href="event-intro.html#y2_approach">The YaST2 Approach</a>
+        <li><a href="event-intro.html#simplicity">Simplicity vs. Features</a>
+        <li><a href="event-intro.html#notify">The <i>notify</i> Option</a>
+	<li><a href="event-intro.html#downsides">Downsides and Discussions</a>
+        <li><a href="event-intro.html#design_alternatives">Design Alternatives</a>
+        </ul>
+    <li><a href="event-intro.html#delivery">Event Delivery</a>
+        <ul>
+        <li><a href="event-intro.html#queues">Event Queues vs. One Single Pending Event</a>
+        <li><a href="event-intro.html#reliability">Event Reliability</a>
+        <li><a href="event-intro.html#defensive_programming">Defensive Programming</a>
+        </ul>
+    </ul>
+<br>
+<li><a href="event-builtins.html">Event-related UI builtin functions</a>
+    <ul>
+    <li><a href="event-builtins.html#quick_reference">Quick Reference</a>
+    <li><a href="event-builtins.html#UserInput">UserInput()</a>
+    <li><a href="event-builtins.html#PollInput">PollInput()</a>
+    <li><a href="event-builtins.html#TimeoutUserInput">TimeoutUserInput()</a>
+    <li><a href="event-builtins.html#WaitForEvent">WaitForEvent()</a>
+    </ul>
+<br>
+<li><a href="event-reference.html">Event Reference</a>
+    <ul>
+    <li><a href="event-reference.html#event_map">Event Maps in General</a>
+    <li><a href="event-reference.html#event_types">Event Types</a>
+        <ul>
+        <li><a href="event-reference.html#WidgetEvent">WidgetEvent</a>
+            <ul>
+            <li><a href="event-reference.html#Activated">Activated</a>
+            <li><a href="event-reference.html#ValueChanged">ValueChanged</a>
+            <li><a href="event-reference.html#SelectionChanged">SelectionChanged</a>
+            </ul>
+        <li><a href="event-reference.html#MenuEvent">MenuEvent</a>
+        <li><a href="event-reference.html#TimeoutEvent">TimeoutEvent</a>
+        <li><a href="event-reference.html#CancelEvent">CancelEvent</a>
+        <li><a href="event-reference.html#KeyEvent">KeyEvent</a>
+        <li><a href="event-reference.html#DebugEvent">DebugEvent</a>
+        </ul>
+    </ul>
+</ul>
+
+
+<table class="navigation-bar" width=100%>
+    <tr>
+	<td width="33%" align="left">Prev: (none)</td>
+	<td width="33%" align="center"></td>
+	<td width="33%" align="right">Next: <a href="event-intro.html">Introduction</a></td>
+    </tr>
+</table>
+
+<p><i>$Id$</i>
+
+</body>
+</html>
+

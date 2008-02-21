@@ -1,0 +1,381 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section>
+    <title>The YaST2 Macro Recorder</title>
+
+    <simpara>
+        Target Audience:
+    </simpara>
+
+    <itemizedlist>
+        <listitem>
+            <simpara>
+                YaST2 power users
+            </simpara>
+        </listitem>
+        <listitem>
+            <simpara>
+                Quality assurance (Testers)
+            </simpara>
+        </listitem>
+        <listitem>
+            <simpara>
+                Technical writers
+            </simpara>
+        </listitem>
+    </itemizedlist>
+    <section>
+        <title>Introduction</title>
+        <simpara>
+            The YaST2 UI (User Interface) features a macro recorder and player that records
+            user interaction during installation or system configuration and plays those
+            user actions at a later time in the same scenario.
+        </simpara>
+
+        <simpara>
+            The Qt (graphical) and NCurses (text mode) user interfaces both support the
+            macro recorder. It is also independent of graphics mode, display resolution,
+            widget theme, terminal type or other details of the desktop being used: Not
+            low-level input device (mouse or keyboard) events are recorded but logical user
+            actions such as "Accept button was activated", and widget status information is
+            saved in terms as "the <emphasis>user name</emphasis> input field contains <emphasis>tux</emphasis>", not individual
+            keystrokes that might include lots of cursor movement and hitting the
+            "backspace" key.
+        </simpara>
+
+        <simpara>
+            Macros recorded in one environment using the Qt UI may be played in another
+            using the NCurses UI - unless, of course, the dialogs in either situation have
+            completely different contents because extended features were used the other UI
+            is not capable of. This should occur only very rarely, however.
+        </simpara>
+
+    </section>
+    <section>
+        <title>Quick Start</title>
+        <simpara>
+            Since most readers are impatient and just want to know how to get it going,
+            here is a quick start guide - but PLEASE read the other sections anyway to
+            avoid disappointment or even severe data loss:
+        </simpara>
+
+        <itemizedlist>
+            <listitem>
+                <simpara>
+                    Start a YaST2 module in Qt (grahpical) mode - from the YaST2 control center,
+                    from the KDE control center, from the desktop menu or via command line.
+                </simpara>
+            </listitem>
+            <listitem>
+                <simpara>
+                    To record a macro, press <keycap>Alt-Ctrl-Shift M</keycap>
+                    The sequence of first Alt, then Ctrl, then Shift is important!
+                    A file selection box opens prompting you to enter a file name for the macro.
+                    Make sure you have write permission to the directory you select.
+                </simpara>
+            </listitem>
+            <listitem>
+                <simpara>
+                    Work with the YaST2 module as usual.
+                </simpara>
+            </listitem>
+            <listitem>
+                <simpara>
+                    Press <keycap>Alt-Ctrl-Shift M</keycap> again to stop recording. When the module is finished
+                    of course recording stops automatically.
+                </simpara>
+            </listitem>
+            <listitem>
+                <simpara>
+                    Start the same module again.
+                </simpara>
+            </listitem>
+            <listitem>
+                <simpara>
+                    To play a macro, press <keycap>Alt-Ctrl-Shift P</keycap>.
+                </simpara>
+                <simpara>
+                    A file selection box opens. Select the macro file you recorded
+                    earlier.
+                </simpara>
+            </listitem>
+            <listitem>
+                <simpara>
+                    Watch the YaST2 module replay the same you did when recording the macro.
+                </simpara>
+            </listitem>
+        </itemizedlist>
+        <simpara>
+            Alternatively, you can also supply a macro on the
+            <command>"y2base"</command> command line:
+        </simpara>
+
+        <screen>
+            /usr/lib/YaST2/bin/y2base some_yast2_module qt --macro /wherever/macro.ycp
+        </screen>
+        <screen>
+            /usr/lib/YaST2/bin/y2base some_yast2_module ncurses --macro /wherever/macro.ycp
+        </screen>
+        <simpara>
+            This is currently the only way to play macros with the NCurses (text mode) UI -
+            it doesn't provide special key combinations for recording or playing macros
+            (yet).
+        </simpara>
+
+    </section>
+    <section>
+        <title>Purpose</title>
+        <simpara>
+            The general idea of this macro recorder is to provide an easy way of automating
+            repetetive tasks on the user level - for automated testing and to easily
+            produce lots of screen shots in recurring situations.
+        </simpara>
+
+        <simpara>
+            For example, the SuSE Linux installation manuals include lots of screen shots
+            that of course look differently in each language, and it is very desirable to
+            have the screen shot in the same language as the rest of the manual. For the
+            documentation department, this means that all required screen shots have to be
+            made in all languages we ship translated manuals for, so all relevant
+            installation scenarios have to be restaged with only the language being
+            different. To make matters worse, the responsible person might not even
+            understand all those languages and thus has to rely on guessing what button to
+            click on.
+        </simpara>
+
+        <simpara>
+            With the macro recorder, he can record a macro in a language he understands, do
+            all screen shots there, then restart the process, select another language and
+            play the macro - all screen shots he took will then automatically be made in
+            that language. Of course, not a button text like "Accept" is being recorded,
+            but an internal logical button name that doesn't change depending on language.
+        </simpara>
+
+    </section>
+    <section>
+        <title>What it is not</title>
+        <simpara>
+            The macro recorder is not intended as a poor man's substitute for AutoYaST, the
+            automatic untattended installation - even though it can be (mis-) used that way
+            to some degree.
+        </simpara>
+
+        <simpara>
+            If you have lots of machines to install in a similar way, use AutoYaST, not the
+            macro recorder: The macro recorder is dumb. It will blindly repeat whatever you
+            did while recording the macro. If however at some other machine the situation
+            is only slightly different, this might easily not work any more: If there are
+            hard disks of different size or with a different partitioning scheme and you
+            didn't rely on YaST2's automatic modes but created partitions manually, this
+            might fail on the other machine.
+        </simpara>
+
+        <simpara>
+            Then you will get an error dialog, at which point your macro will no longer
+            match the situation, but of course the macro will not realize this and happily
+            keep playing user actions that are completely out of sync with the dialogs
+            on-screen. Usually this will just cause lots of more error dialogs, but chances
+            are that it might keep working for a while and cause data loss on that machine.
+        </simpara>
+
+        <simpara>
+            Note: This might even happen at the same machine if the environment just
+            changed a bit - if, say, you added a hard disk partition in the first run, this
+            might fail in the second run (or in the third or fourth run) because there is
+            no more free space on the disk. Then you will also get error dialogs.
+        </simpara>
+
+        <simpara>
+            AutoYaST on the other hand takes all this into account and reacts in a much
+            more intelligent way.
+        </simpara>
+
+    </section>
+    <section>
+        <title>Quirks and Limitations</title>
+        <simpara>
+            Given the intentions and target user group of the macro recorder, there are
+            some known limitations that will very likely remain for the forseeable future:
+        </simpara>
+
+        <simpara>
+            Some widgets in the Qt UI "eat" the special key combinations. If one of those
+            has the keyboard focus, pressing Alt-Ctrl-Shift M (or P) will have no effect.
+            But there is an easy workaround: Simply move the keyboard focus with the
+            "Tab" key to another widget like a push button - this will not change the
+            environment for macro recording or playing. It is otherwise irrelevant to the
+            macro recorder which widget has the keyboard focus.
+        </simpara>
+        <simpara>
+            Qt selection boxes are particular notable for this - you have to hit "Tab" in
+            the language selection in the first dialog of a YaST2 installation before you
+            can start recording or playing a macro there.
+        </simpara>
+        <simpara>
+            The software package manager user interface does not support the macro
+            recorder at all. This was the tradeoff for getting a user interface that
+            powerful: All that dialog is one large widget written purely in C++ unlike
+            almost all other YaST2 dialogs.
+        </simpara>
+        <simpara>
+            If you use the macro recorder, don't go into the detailed software selection.
+        </simpara>
+        <simpara>
+            The Qt version of the YaST2 control center also does not support the macro
+            recorder at all. It is a relatively basic Qt/C++ program that acts as a
+            program launcher for the YaST2 modules, but it is not connected to them very
+            closely. This was also a tradeoff: It is optimized for pretty looks and fast
+            startup time.
+        </simpara>
+    </section>
+    <section>
+        <title>Anatomy of a Macro</title>
+        <simpara>
+            Here is an example of a macro recorded during the first part of a YaST2
+            installation:
+        </simpara>
+
+        <simpara>
+            In the language dialog, "German" was selected.  Notice how there are no German
+            texts to be seen anywhere inside the macro - only symbolic names are used.
+        </simpara>
+
+        <simpara>
+            Then in a popup asking whether to update or to do a new installation
+            "installation" was chosen.
+        </simpara>
+
+        <simpara>
+            From the installation settings proposal "software" was selected to change the
+            amount of software to install from "default system" to "minimal+X11".
+        </simpara>
+
+        <simpara>
+            Then the installation was started.
+        </simpara>
+
+        <example>
+            <title>YaST2 UI macro file</title>
+            <programlisting>
+// YaST2 UI macro file generated by UI macro recorder
+//
+//     Qt UI: Alt-Ctrl-Shift-M: start/stop Macro recorder
+//            Alt-Ctrl-Shift-P: Play macro
+//
+// Each block will be executed just before the next UserInput().
+// 'return' before the closing brace ( '}' ) of each block relinquishes control
+// back to the YCP source.
+// Inside each block arbitrary YCP code can be added manually.
+
+{
+    {
+        UI::ChangeWidget( `id (`language),	`CurrentItem,	"de_DE" );	// YSelectionBox
+
+        // UI::MakeScreenShot( "/tmp/yast2-0000" );
+        UI::FakeUserInput( `language );
+
+        return;
+    }
+
+    {
+        UI::ChangeWidget( `id (`language),	`CurrentItem,	"de_DE" );	// YSelectionBox
+
+        UI::MakeScreenShot( "/tmp/screen-shots/language-selection.png" );
+        // UI::MakeScreenShot( "/tmp/yast2-0001" );
+        UI::FakeUserInput( `accept );
+
+        return;
+    }
+
+    {
+        UI::ChangeWidget( `id (`install),	`Value,	true );	// YRadioButton
+
+        // UI::MakeScreenShot( "/tmp/yast2-0002" );
+        UI::FakeUserInput( `ok );
+
+        return;
+    }
+
+    {
+        // UI::MakeScreenShot( "/tmp/yast2-0003" );
+        UI::FakeUserInput( "software" );
+
+        return;
+    }
+
+    {
+        UI::ChangeWidget( `id ("Minimal+X11"),	`Value,	true );	// YRadioButton
+
+        UI::MakeScreenShot( "/tmp/screen-shots/sw-base-selection.png" );
+        // UI::MakeScreenShot( "/tmp/yast2-0004" );
+        UI::FakeUserInput( "Minimal+X11" );
+
+        return;
+    }
+
+    {
+        UI::ChangeWidget( `id ("Minimal+X11"),	`Value,	true );	// YRadioButton
+
+        // UI::MakeScreenShot( "/tmp/yast2-0005" );
+        UI::FakeUserInput( `accept );
+
+        return;
+    }
+
+    {
+        // UI::MakeScreenShot( "/tmp/yast2-0006" );
+        UI::FakeUserInput( `accept );
+
+        return;
+    }
+
+}
+</programlisting>
+</example>
+
+<simpara>
+    Each dialog that is opened gets its own block enclosed in curly braces
+    ( "{..}" ). In each block, the status of each widget that holds status
+    information is restored (UI::ChangeWidget()).
+</simpara>
+
+<simpara>
+    Then there is a chance to make a screen shot; the macro recorder automatically
+    adds a UI::MakeScreenShot() statement at the appropriate place, assigning
+    generic file names that end in numbers. This statement is commented out by
+    default as indicated by leading double slashes ( "//" ) - this makes it simple
+    to enable it if desired.
+</simpara>
+
+<simpara>
+    If the user explicitly hits the [PrintScreen] key to make a screen shot,
+    another UI::MakeScreenShot() call (this time not commented out) will be added
+    with the exact file name the user entered at the file selection box. The idea
+    is to give the user a chance to assign more descriptive names to the screen
+    shots.
+</simpara>
+
+<simpara>
+    After that, UI::FakeUserInput() simulates the same input the user had done
+    while recording the macro. Usually, this is activation of a push button (like
+    `accept as seen so many times above), but it can also be changing a selection
+    box like in the language selection at the start of the macro (for insiders: if
+    the widget has `opt(`notify) set).
+</simpara>
+
+<simpara>
+    The last line is a "return" statement that returns control flow from the macro
+    block to the application that is being executed.
+</simpara>
+
+<simpara>
+    When the next dialog is executed (for insiders: when UI::UserInput() or related
+    are called), the next macro block is executed.
+</simpara>
+
+<simpara>
+    So not only is the mechanism very generic, the code that is produced is also
+    plain YCP code that is readable and that can easily be adapted if necessary.
+</simpara>
+
+</section>
+</section>

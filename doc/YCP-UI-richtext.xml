@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<appendix id="YCP-UI-Richtext">
+                <title>UI Richtext</title>
+
+<para>
+The RichText widget in the Qt UI
+currently supports the tags listed below. Note that not all of them
+will make sense for use within YaST2 (Most notably all those which
+refer to files) 
+</para>
+  <itemizedlist spacing="compact">
+    <listitem>
+      <para>&lt;qt&gt;...&lt;/qt&gt; - A Qt rich text document. It
+understands the following attributes</para>
+    </listitem>
+          <listitem>
+            <para>title - the caption of the document. This attribute is easily
+accessible with [25]QTextView::documentTitle()</para>
+          </listitem>
+    <listitem>
+      <para>type - The type of the document. The default type is page . It
+indicates that the document is displayed in a page of its own.
+Another style is detail. It can be used to explain certain
+expressions more detailed in a few sentences. The QTextBrowser will
+then keep the current page and display the new document in a small
+popup similar to QWhatsThis. Note that links will not work in
+documents with &lt;qt type="detail" &gt;...&lt;/qt&gt;</para>
+    </listitem>
+    <listitem>
+      <para>bgcolor - The background color, for example bgcolor="yellow" or
+bgcolor="#0000FF"</para>
+    </listitem>
+    <listitem>
+      <para>background - The background pixmap, for example
+background="granit.xpm". The pixmap name will be resolved by a
+[26]QMimeSourceFactory().</para>
+    </listitem>
+    <listitem>
+      <para>text - The default text color, for example text="red"</para>
+    </listitem>
+    <listitem>
+      <para>link - The link color, for example link="green"</para>
+    </listitem>
+  </itemizedlist>
+  <itemizedlist spacing="compact">
+    <listitem>
+      <para>&lt;a&gt;...&lt;/a&gt; - An anchor or link. The reference
+target is defined in the href attribute of the tag as in \c&lt;a
+href="target.qml"&gt;...&lt;/a&gt;. You can also specify an
+additional anchor within the specified target document, for example
+&lt;a href="target.qml#123"&gt;...&lt;/a&gt;. If a is meant to be
+an anchor, the reference source is given in the name
+attribute.</para>
+    </listitem>
+    <listitem>
+      <para>&lt;font&gt;...&lt;/font&gt; - Customizes the font size and
+text color. The tag understands two attributes:</para>
+    </listitem>
+  </itemizedlist>
+  <itemizedlist spacing="compact">
+    <listitem>
+      <para>color - the text color, for example color="red" or
+color="#FF0000".</para>
+    </listitem>
+    <listitem>
+      <para>size - the logical size of the font. Logical sizes 1 to 7 are
+supported. The value may either be absolute, for example size=3, or
+relative. In the latter case, the sizes are simply added.</para>
+    </listitem>
+  </itemizedlist>
+  <itemizedlist spacing="compact">
+    <listitem>
+      <para>&lt;em&gt;...&lt;/em&gt; - Emphasized. As default, this is the
+same as &lt;i&gt;...&lt;/i&gt; (Italic)</para>
+    </listitem>
+    <listitem>
+      <para>&lt;strong&gt;...&lt;/strong&gt; - Strong. As default, this is
+the same as &lt;bold&gt;...&lt;/bold&gt; (bold)</para>
+    </listitem>
+    <listitem>
+      <para>&lt;big&gt;...&lt;/big&gt; - A larger font size.</para>
+    </listitem>
+    <listitem>
+      <para>&lt;small&gt;...&lt;/small&gt; - A smaller font size.</para>
+    </listitem>
+    <listitem>
+      <para>&lt;code&gt;...&lt;/code&gt; - Indicates Code. As default, this
+is the same as &lt;tt&gt;...&lt;/tt&gt; (typewriter)</para>
+    </listitem>
+    <listitem>
+      <para>&lt;pre&gt;...&lt;/pre&gt; - For larger junks of code.
+Whitespaces in the contents are preserved.</para>
+    </listitem>
+    <listitem>
+      <para>&lt;large&gt;...&lt;/large&gt; - Large font size.</para>
+    </listitem>
+    <listitem>
+      <para>&lt;b&gt;...&lt;/b&gt; - Bold font style.</para>
+    </listitem>
+    <listitem>
+      <para>&lt;h1&gt;...&lt;/h1&gt; - A top-level heading.</para>
+    </listitem>
+    <listitem>
+      <para>&lt;h2&gt;...&lt;/h2&gt; - A sub-level heading.</para>
+    </listitem>
+    <listitem>
+      <para>&lt;h3&gt;...&lt;/h3&gt; - A sub-sub-level heading.</para>
+    </listitem>
+    <listitem>
+      <para>&lt;p&gt;...&lt;/p&gt; - A paragraph.</para>
+    </listitem>
+    <listitem>
+      <para>&lt;center&gt;...&lt;/center&gt; - A centered paragraph.</para>
+    </listitem>
+    <listitem>
+      <para>&lt;blockquote&gt;...&lt;/blockquote&gt; - An indented
+paragraph, useful for quotes.</para>
+    </listitem>
+    <listitem>
+      <para>&lt;multicol cols=n &gt;...&lt;/multicol&gt; - Multicol display
+with n columns</para>
+    </listitem>
+    <listitem>
+      <para>&lt;twocolumn&gt;...&lt;/twocolumn&gt; - Two-column
+display.</para>
+    </listitem>
+    <listitem>
+      <para>&lt;ul&gt;...&lt;/ul&gt; - An un-ordered list. You can also
+pass a type argument to define the bullet style. The default is
+type=disc, other types are circle and square.</para>
+    </listitem>
+    <listitem>
+      <para>&lt;ol&gt;...&lt;/ol&gt; - An ordered list. You can also pass a
+type argument to define the enumeration label style. The default is
+type="1", other types are "a" and "A".</para>
+    </listitem>
+    <listitem>
+      <para>&lt;li&gt;...&lt;/li&gt; - A list item.</para>
+    </listitem>
+    <listitem>
+      <para>&lt;img&gt; - An image. The image name for the mime source
+factory is given in the source attribute, for example &lt;img
+source="qt.xpm"/&gt; The image tag also understands the attributes
+width and height that determine the size of the image. If the
+pixmap does not fit to the specified size, it will be scaled
+automatically.</para>
+    </listitem>
+    <listitem>
+      <para>&lt;br&gt; - A line break</para>
+    </listitem>
+    <listitem>
+      <para>&lt;hr&gt; - A horizonal line</para>
+    </listitem>
+  </itemizedlist>
+                            </appendix>

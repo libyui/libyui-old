@@ -1,0 +1,336 @@
+This is about the generic `opt(`notify) widget option that causes a widget
+other than a PushButton to return from UserInput().
+
+There was a lenghty discussion on the (SuSE internal) [yast2-hacker] mailing
+list about specifying that more exactly. At that time, the spec said about that
+widget option:
+
+
+ `opt(`notify) Make UserInput() return on any action in this widget. Normally
+		UserInput() returns only when a button is clicked; with this
+		option on you can make it return for other events, too,
+		e.g. when the user selects an item in a SelectionBox (if
+		`opt(`notify) is set for that SelectionBox). Only widgets with
+		this option set are affected.
+
+
+Which of course leaves many questions open. Here are some discussions and
+background information about all that. Those who have access to the SuSE
+internal mailing list archive can find that thread at the URLs preceding each
+posting. 
+
+Note: Quoted parts of referenced postings have been liberally deleted.
+
+
+
+
+http://w3.suse.de/Mailinglisten/Archive/SuSE/yast2-announce/2002/yast2-announce.2002.02/msg00028.html
+
+
+Subject: [yast2-announce]opt(notify) in ui-ncurses
+From: Michael Andres <ma@suse.de>
+Date: Wed, 20 Feb 2002 20:09:26 +0100
+
+As it seems to be a major and neverending problem, I'm going to change
+yast2-ui-ncurses handling of 'opt(notify) for Taable, SelectionBox,
+MultiSelectionBox.
+
+On 'opt(notify) UserInput will be returned whenever the user changes the 
+highlighted item (i.e. scrolls through the list) or pressed SPACE/RETURN 
+on an item. 
+
+That might be still not exactly how qt behaves, but nobody seems to be 
+anyway able to tell how qt exactly behaves, or will behave in the next
+release.
+
+
+
+http://w3.suse.de/Mailinglisten/Archive/SuSE/yast2-announce/2002/yast2-announce.2002.02/msg00030.html
+
+
+Subject: [yast2-announce]opt(notify) in ui-ncurses reverted to old behaviour
+From: Michael Andres <ma@suse.de>
+Date: Fri, 22 Feb 2002 12:19:17 +0100
+
+Sorry, but too many ycp code missbehaved with the new notify policy.
+So I restored the old behaviour. I'm willing to change it, if the 
+YCP UI Widget Reference gives a more precice definition than 'Make 
+UserInput() return on any action in this widget.' 
+
+If Stefan is willing to specify what 'any action' is, I'll  break 
+the ycp stuff again. ;)
+
+
+
+
+http://w3.suse.de/Mailinglisten/Archive/SuSE/yast2-announce/2002/yast2-announce.2002.02/msg00031.html
+
+
+Subject: Re: [yast2-announce]opt(notify) in ui-ncurses reverted to old behaviour
+From: Karsten Keil <kkeil@suse.de>
+Date: Fri, 22 Feb 2002 12:58:08 +0100
+
+What is about enable it if opt(notify) && opt(immediate) ?
+I how it works on ui_qt ?
+
+
+
+
+http://w3.suse.de/Mailinglisten/Archive/SuSE/yast2-announce/2002/yast2-announce.2002.02/msg00032.html
+
+
+Subject: Re: [yast2-announce]opt(notify) in ui-ncurses reverted to old behaviour
+From: Michael Andres <ma@suse.de>
+Date: Fri, 22 Feb 2002 13:25:46 +0100
+
+
+> What is about enable it if opt(notify) && opt(immediate) ?
+> I how it works on ui_qt ?
+
+AFAIK is opt(immediate) available for Tables only. Personaly I don't mind 
+how ui-ncurses behaves. It's up to the YCP hackers to decide wheter 
+something is sufficient or not. And it's up to the UI hackers to decide 
+whether a different behaviour can be realized or not. 
+
+Nobody seems to be able to tell me how qt behaves, and how it will behave
+in the next release. Come to an agreement among the YCP hackers and make 
+Stefan writing it down in YCP UI Widget Reference.
+
+I'll try to give you any feature you need, as long as it does not break 
+the existing code or there's common sense among the coders that it's worth 
+changing it.
+
+
+
+
+http://w3.suse.de/Mailinglisten/Archive/SuSE/yast2-hacker/2002/yast2-hacker.2002.02/msg00286.html
+
+
+Subject: [yast2-hacker]Re: [yast2-announce]opt(notify) in ui-ncurses reverted to old behaviour
+From: Martin Vidner <mvidner@suse.cz>
+Date: Fri, 22 Feb 2002 13:42:57 +0100 (CET)
+
+
+> Nobody seems to be able to tell me how qt behaves, and how it will behave
+> in the next release. Come to an agreement among the YCP hackers and make
+> Stefan writing it down in YCP UI Widget Reference.
+
+Well, one thing is how yast2-ui-qt behaves in this respect, which until
+now was not specified, if I understand it correctly.
+
+And it should be specified, unless we don't know how qt itself behaves,
+and I can't believe it is unspecified there.
+
+
+
+
+http://w3.suse.de/Mailinglisten/Archive/SuSE/yast2-hacker/2002/yast2-hacker.2002.02/msg00288.html
+
+
+Subject: Re: [yast2-hacker]Re: [yast2-announce]opt(notify) in ui-ncurses reverted to old behaviour
+From: Petr Blahos <pblahos@suse.cz>
+Date: Fri, 22 Feb 2002 13:51:12 +0100 (CET)
+
+
+It should be specified EVEN IF we don't know how qt ....
+
+We proudly show off that we have frontend independent UI library, so we
+must first design and then implement. Our ui is so elementary that it
+must be easily implementable with any toolkit.
+
+
+
+
+http://w3.suse.de/Mailinglisten/Archive/SuSE/yast2-hacker/2002/yast2-hacker.2002.02/msg00294.html
+
+
+Subject: Re: [yast2-hacker]Re: [yast2-announce]opt(notify) in ui-ncurses reverted to old behaviour
+From: Stefan Hundhammer <sh@suse.de>
+Date: Fri, 22 Feb 2002 14:52:58 +0100
+
+
+> We proudly show off that we have frontend independent UI library, so we
+> must first design and then implement. Our ui is so elementary that it
+> must be easily implementable with any toolkit.
+
+This is exactly the point. Of course we could simply write down how it works 
+in the Qt UI and demand all other UIs behave just the same. But I fear this 
+simply cannot be done in every instance. We can do many tricks with NCurses 
+because basically Michael writes all its widgets manually, but what about any 
+other future UIs? 
+
+Klaus hasn't lost all faith in the web UI, and maybe some day we might choose 
+to substitute Qt with something else. Not that there is any hint of that - 
+but we shouldn't abandon that option.
+
+So, if everybody now boldly demands "document this and make it work according 
+to that new spec for all times", this not only induces a lot of work (the 
+least part of which is the documentation - the larger part will be test cases 
+for all pathological situations and performing those checks - manually for 
+the larger part since the UI is an interactive component). No, it also 
+restricts us to the least common denominator of all UIs present and expected 
+- which will not be too much given uncertain things like requested 
+bug-compatibility to something as featureless as HTML with CGI for a web UI.
+
+In addition to that, that will most likely make us stall every time TrollTech 
+chooses to release a new Qt version: All that then etched in stone behaviour 
+will have to be tested with that new version. And what if a new Qt behaves 
+slightly differently in one case? We surely cannot patch Qt up to our liking 
+in YaST2, so we'll end up rewriting large parts of Qt internals time and 
+again.
+
+I did that many times for things that proved to be either very important or 
+very annoying to the user. Most of you most likely never noticed any of this: 
+The UI does all that transparently without you having to bother what's going 
+on. And I'd like to keep it that way.
+
+But the very day everybody demands each and every occurrence of a notify 
+event be specified and sent exactly according to that spec, things will go 
+downhill. What if a new or changed Qt widget simply doesn't send that event 
+at init time when we specified it like that? What if OTOH such a widget sends 
+such an event twice? How will we get that missing event in the first case, 
+how will we get rid of that extraneous event in the second case?
+
+That's why I have been praying that for so long now: Relying on the exact 
+sequence of notify events if evil. A YCP app that only works if this is so is 
+simply broken. It's pretty easy simply avoiding that pitfal: Program 
+defensively. Better ask a widget twice if unsure. See the notify event as a 
+hint to ask the widgets (all of them if in doubt) about their status and NOT 
+blindly rely in "I received this event, thus this must have changed from 
+false to true".
+
+
+All that notify event stuff is just a kludge to work around a failure in 
+concept of the YaST2 UI in general: UserInput(). This simply isn't BASIC - 
+it's event-driven software, and we insist in doing it the BASIC way.
+
+IMHO it's long overdue to overhaul that concept. All GUI toolkits I know use 
+event-driven mechanisms of one kind or another - name it callbacks, name it 
+signals and slots, whatever. But linear sequence until a stopping point like 
+UserInput() is reached can only emulate this so far. And we've come so far.
+
+But if we change this concept, we'll have to change a lot of YCP apps, too - 
+I am sure you are aware of that.
+
+Maybe now it's a good time for all of us to go to "deep thinking mode" about 
+that issue and discuss the results of that deep thinking after the master so 
+we can make a decision about our future direction.
+
+
+But OTOH we might as well not let all this discussion go overboard and 
+concentrate on the original problem that came up here: The NCurses selection 
+box. This behaves differently in NCurses and Qt, and that was what had caused 
+all that irritation.
+
+
+
+
+http://w3.suse.de/Mailinglisten/Archive/SuSE/yast2-hacker/2002/yast2-hacker.2002.02/msg00333.html
+
+
+Subject: Re: [yast2-hacker]Re: [yast2-announce]opt(notify) in ui-ncurses reverted to old behaviour
+From: Michael Andres <ma@suse.de>
+Date: Tue, 26 Feb 2002 13:40:42 +0100
+
+
+> This is exactly the point. Of course we could simply write down how it works 
+> in the Qt UI and demand all other UIs behave just the same. But I fear this 
+> simply cannot be done in every instance. We can do many tricks with NCurses 
+> because basically Michael writes all its widgets manually, but what about any 
+> other future UIs? 
+
+I dont agree with this. The task is not to write down how Qt behaves, and 
+make all other UI's follow. 
+
+The task is to write down how libyui behaves, and to make all other UI's 
+confirm to this.
+
+As far as I see, it would be sufficient to be able to distinguish between
+'user selects an item via doubleclick/SPACE/RETURN' and 'something else 
+happened' in lists and tables.
+
+'user selects' is an important event which must be present anyway. I can't 
+believe that it's such a big deal to offer some kind of ET_NOTIFY for 
+anything but 'user selects' (==ET_BUTTON).
+
+I still believe it's worth thinking about this, even if it's an iterim 
+soloutin. And it IMHO would lower the urge to redesign the YaST2 UI or to 
+have specialized widgets for single package selection. Besides performance 
+isssues, the inabilty to distinguish between package select, and something 
+else - like motion, prevents us from having a more comfortable way of 
+presenting package related data. A version column in a table, thats hidden 
+behind the packages label is not more than a kludge. While being able to 
+have a small window summing up the current packages basic data, would 
+solve most people's needs.
+
+
+
+
+http://w3.suse.de/Mailinglisten/Archive/SuSE/yast2-hacker/2002/yast2-hacker.2002.02/msg00334.html
+
+
+Subject: Re: [yast2-hacker]Re: [yast2-announce]opt(notify) in ui-ncurses reverted to old behaviour
+From: Stefan Hundhammer <sh@suse.de>
+Date: Tue, 26 Feb 2002 14:00:07 +0100
+
+
+> The task is to write down how libyui behaves, and to make all other UI's
+> confirm to this.
+
+libyui doesn't behave at all in that regard. libyui merely provides the 
+infrastructure to be filled with life by the real UIs.
+
+
+> As far as I see, it would be sufficient to be able to distinguish between
+> 'user selects an item via doubleclick/SPACE/RETURN' and 'something else
+> happened' in lists and tables.
+
+Yes, of course. We can and should define it that far - on an abstract level: 
+"User selets a list item (usually by single click)", "User executes item 
+(usually by double click)". Bear in mind that not all UIs present and future 
+may provide that exact way of selection.
+
+
+> 'user selects' is an important event which must be present anyway. I can't
+> believe that it's such a big deal to offer some kind of ET_NOTIFY for
+> anything but 'user selects' (==ET_BUTTON).
+
+Yes. But: We cannot strictly define the exact sequence of such events, if 
+they are to be expected initially after creating the widget, if a 
+ChangeWidget() on any specific property will trigger that event, too. That 
+was my point. These areas are deliberately left undefined for the reasons I 
+pointed out.
+
+
+> I still believe it's worth thinking about this, even if it's an iterim
+> soloutin. And it IMHO would lower the urge to redesign the YaST2 UI or to
+> have specialized widgets for single package selection. 
+
+Those specialized widgets (to be more exact: THAT one specialized widget for 
+package selection) is intended to get rid of that kludge we have now that was 
+always only intended as an intermediate solution. Nobody is happy with the 
+way this is now, and this part is really important. Rather than overloading 
+that table widget used there even more with all kinds of features and widget 
+options, we should go for the real solution. 
+
+And IMHO the same holds true for other areas: If we can't get it right for 
+everybody with the generic widget set, we should consider writing more 
+special widgets. We did that successfully for the partition splitter (nobody 
+ever complained about that - to the contrary), and we should very well be 
+able to do that again. 
+
+That would be better for everybody's nerves as well as for performance and 
+usability.
+
+
+> Besides performance isssues, the inabilty to distinguish between package
+> select, and something else - like motion, prevents us from having a more
+> comfortable way of presenting package related data. A version column in a
+> table, thats hidden behind the packages label is not more than a
+> kludge. While being able to have a small window summing up the current
+> packages basic data, would solve most people's needs.
+
+See, that's the point: Those things are specific for that one application, 
+but they may be irrelevant or totally different everywhere else. That's why 
+I'd prefer a special widget if it gets that special.
+

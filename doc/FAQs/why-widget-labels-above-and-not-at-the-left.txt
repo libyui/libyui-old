@@ -1,0 +1,127 @@
+From sh@suse.de Fri Jun 29 14:00:03 2001
+Content-Type: text/plain;
+  charset="iso-8859-1"
+From: Stefan Hundhammer <sh@suse.de>
+Organization: SuSE GmbH
+To: Petr Blahos <pblahos@suse.cz>
+Subject: Widgets labels left of widget rather than above - Was: Re: Runlevel-Editor - some new ideas
+Date: Fri, 29 Jun 2001 14:00:03 +0200
+X-Mailer: KMail [version 1.2]
+References: <Pine.LNX.4.33.0106291134480.11246-100000@valkyrie.suse.cz>
+In-Reply-To: <Pine.LNX.4.33.0106291134480.11246-100000@valkyrie.suse.cz>
+Cc: yast2-hacker@suse.de
+MIME-Version: 1.0
+Message-Id: <01062914000302.17121@snell>
+Content-Transfer-Encoding: 8bit
+Status: RO
+X-Status: S
+
+On Freitag, 29. Juni 2001 11:39, Petr Blahos wrote:
+> `HBox (
+>   `VBox (`VStretch (), `Label ("ahahah")),
+>   `VBox (`ComboBox (`id (`c), ""/*empty caption*/, []))
+> );
+>
+> And you placed it perfectly. But one would suppose that shortcut in label
+> next to combobox will move focus to combo box. So I would prefere clean
+> solution or just decision that we do not support such widgets.
+
+Currently we simply don't support widget labels at the widget's left side 
+rather than above it.
+
+Reasons:
+
+1. Consistent style.
+
+All YaST2 dialogs should look as consistent as we can manage to make them. 
+Placement of a widget's label is part of that. If we choose to change that 
+from above to the left side, we should do that consistently throughout YaST2 
+- which not only would mean _lots_ of work, it's also likely to bring up 
+problems very much like that in this original thread, only the other way 
+round.
+
+
+2. Layout would be much more complicated - both for application developers 
+and for the layout engine.
+
+Placement of the label above its main widget is a simple layout task:
+
+	Label
+	[...(something else)...]
+
+or
+
+	Label
+	+--------------------------+
+	|                          |
+	|                          |
+	| (something much higher)  |
+	|                          |
+	.                          .
+	.                          .
+	|                          |
+	+--------------------------+
+
+The main widget's size is not an issue here - it doesn't matter how high the 
+main widget is, neither does it matter how wide it is.
+
+OTOH, consider labels places left:
+
+	Label [...(something else)...]
+
+	LabelThatMayBeSomeWhatLonger [...(something else)...]
+
+	SomeOtherLabel [...(something else)...]
+
+	YetAnotherLabel	+--------------------------+
+			|                          |
+			|                          |
+			| (something much higher)  |
+			|                          |
+			.                          .
+			.                          .
+			|                          |
+			+--------------------------+
+
+			+--------------------------+
+			|                          |
+			|                          |
+			| (something much higher)  |
+	MayBeCentered	|                          |
+			.                          .
+			.                          .
+			|                          |
+			+--------------------------+
+
+
+In order to avoid a layout messed up badly like this, we'd need to specify 
+alignments and place all the widgets in some grid layout (which we don't have 
+at this point). While the latter is an OPL (*) for all of you (the UI must 
+take care of this), the former is something that would have to be taken into 
+account by every YCP hacker - everywhere, in each dialog.
+
+
+What would we gain? Maybe some more input fields / combo boxes in some 
+dialogs.
+
+What would we lose? We'd have to cope with _lots_ of empty space due to 
+lining up the main widgets properly in each dialog that doesn't have simple 
+one-line widgets, but rather selection boxes, tables and other widgets with 
+more height.
+
+What we sure don't want IMHO is mix all that up freely. IMHO we should choose 
+between labels always on top or always at the left, and I think "always on 
+top" comes out on top here given all pros and cons.
+
+
+
+(*) OPL: Other People's Problem (from you know where - hint: 42)
+
+
+
+CU
+-- 
+Stefan Hundhammer <sh@suse.de>                Penguin by conviction.
+SuSE Labs
+Nuernberg, Germany
+

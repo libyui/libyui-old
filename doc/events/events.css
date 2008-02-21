@@ -1,0 +1,108 @@
+/* Emacs: -*- c -*-						*/
+/* Style sheet for YaST2 UI event handling documentation	*/
+/*								*/
+/* (c) 2003 SuSE Linux AG					*/
+/*								*/
+/* Author: Stefan Hundhammer <sh@suse.de>			*/
+
+
+
+/* General background color */
+body
+{
+    background-color:#F0F0F8;
+}
+
+/* Document title. Use sparingly - only once per document. */
+.doc-title
+{
+    background-color:#B0B0F0;
+    text-align:center;
+}
+
+h1
+{
+    background-color:#D8D8F4;
+    margin-botton:0;
+    text-align:center;
+}
+
+h2
+{
+    background-color:#D8D8F4;
+    margin-top:1.5cm;
+    padding-left:0.3cm;
+}
+
+
+td
+{
+    vertical-align:top;
+    padding-left:5;
+    padding-right:5;
+    padding-top:3;
+    padding-bottom:3;
+}
+
+
+
+/* Code examples */
+.code
+{
+    font-family:monospace;
+    background-color:#E0E0ED;
+    margin-left:0.75cm;
+    padding-left:0.3cm;
+    padding-right:0.3cm;
+    font-weight:normal;
+}
+
+/* Bold inside code example - for keywords etc. */
+.code b
+{
+    font-weight:bold;
+}
+
+/* Emphasized inside code example. Use sparingly. */
+.code em
+{
+    background-color:#B0B0F0;
+    font-weight:bolder;
+    padding-left:0.2cm;
+    padding-right:0.2cm;
+    padding-top:0.1cm;
+    padding-bottom:0.1cm;
+}
+
+
+.navigation-bar
+{
+    font-style:italic;
+    background-color:#D8D8F0;
+}
+
+.info-box
+{
+    padding-left:0.3cm;
+    padding-right:0.3cm;
+    padding-top:0.3cm;
+    padding-bottom:0.3cm;
+    margin-left:0.75cm;
+    margin-right:0.75cm;
+    background-color:#E0E0ED;
+}
+
+.map-key
+{
+    font-family:monospace;
+}
+
+.map-type
+{
+    font-style:italic;
+}
+
+.map-value
+{
+    font-family:monospace;
+}

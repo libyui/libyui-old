@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN" 
+"/usr/share/xml/docbook/schema/dtd/4.2/docbookx.dtd" [
+
+<!ENTITY  YCPDialogParser SYSTEM "YCPDialogParser.xml">
+<!ENTITY  YUI_builtins SYSTEM "YCP_UI.xml">
+<!ENTITY  YCP-UI-richtext  SYSTEM "YCP-UI-richtext.xml">
+<!ENTITY  YCP-UI-layout  SYSTEM "YCP-UI-layout.xml">
+<!ENTITY  UI-event-intro  SYSTEM "events/event-intro.xml">
+<!ENTITY  UI-event-builtins  SYSTEM "events/event-builtins.xml">
+
+]>
+<book>
+    <bookinfo>
+        <title>YaST2 Layout</title>
+        <subtitle>YCP UI Widgets and Layout</subtitle>
+        <authorgroup>
+            <author>
+                <firstname>Stefan</firstname>
+                <surname>Hundhammer</surname>
+                <affiliation>
+                    <orgname> SUSE Linux AG</orgname>
+                </affiliation>
+            </author>
+        </authorgroup>
+        <corpauthor>SUSE Linux AG</corpauthor>
+        <copyright>
+            <year>2004</year>
+            <holder> SUSE Linux AG</holder>
+        </copyright>
+    </bookinfo>
+
+
+    <toc>
+    </toc>
+
+
+        &YCP-UI-layout;
+        &UI-event-intro;
+    <!-- event builtin reference -->
+    &YCPDialogParser;
+    &YUI_builtins;
+    &UI-event-builtins;
+    <appendix id="YCP-UI-Richtext">
+        <title>UI Richtext</title>
+        &YCP-UI-richtext;
+    </appendix>
+
+</book>
+
