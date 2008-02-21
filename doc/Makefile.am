@@ -22,8 +22,10 @@ html_DATA =			\
 EXTRA_DIST =
 	YCP-UI-layout.xml	\
 	YCP-UI-richtext.xml	\
-	macro-recorder.xml	\
-	ui.xml
+	macro-recorder.xml
+
+# FIXME failed in abuild
+#	ui.xml
 
 
 
