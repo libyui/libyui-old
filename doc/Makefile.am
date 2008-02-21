@@ -15,15 +15,11 @@ xmlfiles   := $(foreach xml,$(builtinxml),$(notdir $(xml)))
 htmlfiles = $(wildcard html/*.html)
 
 html_DATA =			\
-	ui-arch.jpg		\
-	README.newapi		\
 	html/index.html		\
 	$(htmlfiles)		\
 	html/yast2docs.css
 
 EXTRA_DIST =
-	ui-arch.jpg		\
-	README.newapi		\
 	YCP-UI-layout.xml	\
 	YCP-UI-richtext.xml	\
 	macro-recorder.xml	\
