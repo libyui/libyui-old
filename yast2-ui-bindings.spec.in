@@ -2,34 +2,45 @@
 
 
 @HEADER@
-# obviously
+
+
 BuildRequires:	gcc-c++
-# we have a parser
 BuildRequires:	yast2-devtools
-# autodocs
+
+# autodocs + docbook docs
 BuildRequires:	doxygen
-# docbook docs
-BuildRequires:	docbook-xsl-stylesheets libxslt 
-# catalog: convert URIs to local filenames
+BuildRequires:	docbook-xsl-stylesheets libxslt
 BuildRequires:	sgml-skel
+
+Requires:	yast2-core
+BuildRequires:	yast2-core-devel
+
+Requires:	yast2-libyui
+BuildRequires:	yast2-libyui-devel
+
 # libyui ImplPtr
 BuildRequires:	boost-devel
 
+
 Summary:	-
-Provides:	liby2util = 2.16.1
-Obsoletes:	liby2util < 2.16.1
+Provides:	@plugindir@/libpy2UI.so.2.0.0
 
 %description
 -
 
 @HEADER-DEVEL@
 Summary:	-
-Provides:	liby2util-devel = 2.16.1
-Requires:	glibc-devel libstdc++-devel boost-devel  pcre-devel 
 
+Requires:	glibc-devel
+Requires:	libstdc++-devel
+Requires:	boost-devel
+Requires:	yast2-libyui-devel
+Requires:	yast2-core-devel
+Requires:	yast2-devtools
 
 %description devel
 -
+
 
 @PREP@
 
@@ -41,11 +52,6 @@ mkdir -p "$RPM_BUILD_ROOT"@logdir@
 
 @CLEAN@
 
-%post
-%run_ldconfig
-
-%postun
-%run_ldconfig
 
 %files
 %defattr(-,root,root)
@@ -57,20 +63,14 @@ mkdir -p "$RPM_BUILD_ROOT"@logdir@
 %dir /usr/share/YaST2
 
 %dir %attr(0700,root,root) @logdir@
-%dir @ybindir@
 %dir @plugindir@
-%dir @execcompdir@/servers
-%dir @execcompdir@/servers_non_y2
 
 @plugindir@/lib*.so.*
 
 %files devel
 %defattr(-,root,root)
-%{_libdir}/lib*.so
-%{_libdir}/lib*.la
 @plugindir@/lib*.so
 @plugindir@/lib*.la
 @includedir@
 @pkgconfigdir@/@RPMNAME@.pc
 %doc @docdir@
-@ydatadir@/devtools/bin/generateYCPWrappers
