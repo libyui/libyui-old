@@ -50,8 +50,6 @@ mkdir -p "$RPM_BUILD_ROOT"@logdir@
 %files
 %defattr(-,root,root)
 
-%dir %attr(0700,root,root) @logdir@
-
 %{_libdir}/lib*.so.*
 
 %files devel
