@@ -1,9 +1,9 @@
 # Makefile.am for core/libyui/doc/examples
 
-examplesdir = 	$(docdir)/libyui/examples
+examplesdir = 	$(docdir)/examples
 
 SUBDIRS = 	screenshots
 
-examples_DATA =	$(wildcard *.ycp) start_glyphs
+examples_DATA =	$(wildcard *.ycp)
 
 EXTRA_DIST = $(examples_DATA)
