@@ -1,5 +1,5 @@
 #
-# Makefile.am for core/libyui/src
+# Makefile.am for libyui/src
 #
 
 # The leading . makes automake process this dir first, then the subdir
