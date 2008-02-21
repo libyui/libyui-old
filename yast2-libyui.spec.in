@@ -62,10 +62,7 @@ mkdir -p "$RPM_BUILD_ROOT"@logdir@
 %dir @execcompdir@/servers
 %dir @execcompdir@/servers_non_y2
 
-/usr/bin/ycpc
-%{_libdir}/lib*.so.*
 @plugindir@/lib*.so.*
-@scrconfdir@/*.scr
 
 %files devel
 %defattr(-,root,root)
