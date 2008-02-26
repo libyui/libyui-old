@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Feb 26 18:29:05 CET 2008 - sh@suse.de
+
+- Added cmake support for dependent packages
+- V 2.16.38 
+
+-------------------------------------------------------------------
 Thu Feb 21 14:39:37 CET 2008 - sh@suse.de
 
 - Package split off from yast2-core 
