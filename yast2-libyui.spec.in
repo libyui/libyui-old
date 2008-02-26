@@ -59,4 +59,7 @@ mkdir -p "$RPM_BUILD_ROOT"@logdir@
 %{_libdir}/lib*.la
 @includedir@
 @pkgconfigdir@/@RPMNAME@.pc
+%dir %{_datadir}/cmake
+%dir %{_datadir}/cmake/Modules
+%{_datadir}/cmake/Modules/*
 %doc @docdir@
