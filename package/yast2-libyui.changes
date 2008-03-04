@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Mar  4 13:48:08 CET 2008 - sh@suse.de
+
+- Conflict with yast2-core < 2.16.38 (before pkg split) 
+
+-------------------------------------------------------------------
 Tue Feb 26 18:29:05 CET 2008 - sh@suse.de
 
 - Added cmake support for dependent packages
