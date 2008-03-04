@@ -11,6 +11,7 @@ BuildRequires:	yast2-devtools
 BuildRequires:	doxygen
 BuildRequires:	docbook-xsl-stylesheets libxslt
 BuildRequires:	sgml-skel
+Conflicts:	yast2-core < 2.16.38
 
 # libyui ImplPtr
 BuildRequires:	boost-devel
