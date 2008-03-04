@@ -16,6 +16,7 @@
     // Rather, it returns the ID of the widget (normally the PushButton)
     // that caused UI::UserInput() to return.
     string name = (string) UI::QueryWidget(`id(`name), `Value);
+    y2warning( "Name: %1", name );
     
     // Close the dialog.
     // Remember to read values from the dialog's widgets BEFORE closing it!
