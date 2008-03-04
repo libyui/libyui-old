@@ -10,7 +10,7 @@
 {
     /**
      * Nicely (HTML-) format an event map.
-
+     *
      * @param	event	The event map to format
      * @return	html	HTML code for the formatted event
      **/
@@ -249,6 +249,7 @@ y2milestone ("formatEvent(%1)", event);
 	}
 	else if ( event["ID"]:nil == `cancel_order )
 	{
+	    y2milestone( "Cancelling order" );
 	    UI::ChangeWidget(`delivery_service,	`Value, nil );
 	    UI::ChangeWidget(`pizza,		`Value, nil );
 	    UI::ChangeWidget(`toppings,		`CurrentItem, nil );
