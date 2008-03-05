@@ -254,6 +254,8 @@ struct YUILogPrivate
      **/
     YUILogPrivate()
 	: loggerFunction( stderrLogger )
+	, enableDebugLoggingHook( 0 )
+	, debugLoggingEnabledHook( 0 )
 	, enableDebugLogging( true )
 	{}
 
@@ -296,10 +298,12 @@ struct YUILogPrivate
     // Data members
     //
 
-    YUILoggerFunction		loggerFunction;
-    bool			enableDebugLogging;
+    YUILoggerFunction			loggerFunction;
+    YUIEnableDebugLoggingFunction	enableDebugLoggingHook;
+    YUIDebugLoggingEnabledFunction	debugLoggingEnabledHook;
+    bool				enableDebugLogging;
 
-    vector<YPerThreadLogInfo *>	threadLogInfo;
+    vector<YPerThreadLogInfo *>		threadLogInfo;
 };
 
 
@@ -336,13 +340,19 @@ void
 YUILog::enableDebugLogging( bool debugLogging )
 {
     instance()->priv->enableDebugLogging = debugLogging;
+
+    if ( instance()->priv->enableDebugLoggingHook )
+	instance()->priv->enableDebugLoggingHook( debugLogging );
 }
 
 
 bool
 YUILog::debugLoggingEnabled()
 {
-    return instance()->priv->enableDebugLogging;
+    if ( instance()->priv->debugLoggingEnabledHook )
+	return instance()->priv->debugLoggingEnabledHook();
+    else
+	return instance()->priv->enableDebugLogging;
 }
 
 
@@ -365,6 +375,29 @@ YUILog::loggerFunction( bool returnStderrLogger )
 	logger = 0;
 
     return logger;
+}
+
+
+void
+YUILog::setEnableDebugLoggingHooks( YUIEnableDebugLoggingFunction  enableFunction,
+				    YUIDebugLoggingEnabledFunction isEnabledFunction )
+{
+    instance()->priv->enableDebugLoggingHook  = enableFunction;
+    instance()->priv->debugLoggingEnabledHook = isEnabledFunction;
+}
+
+
+YUIEnableDebugLoggingFunction
+YUILog::enableDebugLoggingHook()
+{
+    return instance()->priv->enableDebugLoggingHook;
+}
+
+
+YUIDebugLoggingEnabledFunction
+YUILog::debugLoggingEnabledHook()
+{
+    return instance()->priv->debugLoggingEnabledHook;
 }
 
 

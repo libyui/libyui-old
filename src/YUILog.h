@@ -84,6 +84,10 @@ typedef void (*YUILoggerFunction)( YUILogLevel_t,	// logLevel
 				   const char *, 	// sourceFunctionName
 				   const char * );	// message
 
+typedef void (*YUIEnableDebugLoggingFunction)( bool );
+typedef bool (*YUIDebugLoggingEnabledFunction)();
+
+
 /**
  * UI logging.
  **/
@@ -143,6 +147,31 @@ public:
      * internally used stderr-logger is returned).
      **/
     static YUILoggerFunction loggerFunction( bool returnStderrLogger = false );
+
+    /**
+     * Set the hook functions to enable/disable debug logging and to query if
+     * debug logging is enabled:
+     *
+     *     void enableDebugLogging( bool enable );
+     *     bool debugLoggingEnabled();
+     *
+     * If those functions are set, they will be used instead of the internal
+     * "debugLogging" flag.
+     **/
+    static void setEnableDebugLoggingHooks( YUIEnableDebugLoggingFunction  enableFunction,
+					    YUIDebugLoggingEnabledFunction isEnabledFunction );
+
+    /**
+     * Return the hook function that enables or disables debug logging
+     * or 0 if no such hook function is set.
+     **/
+    static YUIEnableDebugLoggingFunction  enableDebugLoggingHook();
+
+    /**
+     * Return the hook function that checks if debug logging is enabled
+     * or 0 if no such hook function is set.
+     **/
+    static YUIDebugLoggingEnabledFunction debugLoggingEnabledHook();
 
 
 private:

@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Mar  5 17:08:42 CET 2008 - sh@suse.de
+
+- Fixed bnc #365999: Shift-F7 affects only UI logging
+- V 2.16.39
+
+-------------------------------------------------------------------
 Tue Mar  4 13:48:08 CET 2008 - sh@suse.de
 
 - Conflict with yast2-core < 2.16.38 (before pkg split) 
