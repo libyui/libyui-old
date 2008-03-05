@@ -146,6 +146,8 @@ YUIComponent::createUI()
     y2debug( "Creating UI" );
     
     YUILog::setLoggerFunction( yui_y2logger );
+    YUILog::setEnableDebugLoggingHooks( set_log_debug,   // from y2log
+					get_log_debug ); // from y2log
 
     try
     {
