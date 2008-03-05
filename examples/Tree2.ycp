@@ -60,9 +60,10 @@
 					  )
 				   ] ),
 		     `HBox(
-			   `PushButton(`id(`sel_opt),		`opt(`hstretch), "/&opt" ),
-			   `PushButton(`id(`sel_usr),		`opt(`hstretch), "/&usr" ),
-			   `PushButton(`id(`sel_usr_local),	`opt(`hstretch), "/usr/&local" )
+			   `PushButton(`id(`sel_opt ),		`opt(`hstretch), "/&opt" ),
+			   `PushButton(`id(`sel_usr ),		`opt(`hstretch), "/&usr" ),
+			   `PushButton(`id(`sel_usr_local ),	`opt(`hstretch), "/usr/&local" ),
+			   `PushButton(`id(`none ),		`opt(`hstretch), "none"  )
 			   ),
 		     `HBox(
 			   `Label("Current Value:"),
@@ -76,12 +77,14 @@
 
     repeat
 	{
+	    y2debug( "Waiting for UserInput()" );
 	    id = UI::UserInput();
 
-	    if      ( id == `sel_usr)		UI::ChangeWidget(`dest_dir, `CurrentItem, "usr"  );
-	    else if ( id == `sel_usr_local)	UI::ChangeWidget(`dest_dir, `CurrentItem, `usr_local );
-	    else if ( id == `sel_opt) 		UI::ChangeWidget(`dest_dir, `CurrentItem, `opt );
-	    else if ( id == `dest_dir)
+	    if      ( id == `sel_usr	)	UI::ChangeWidget(`dest_dir, `CurrentItem, "usr"  );
+	    else if ( id == `sel_usr_local )	UI::ChangeWidget(`dest_dir, `CurrentItem, `usr_local );
+	    else if ( id == `sel_opt 	) 	UI::ChangeWidget(`dest_dir, `CurrentItem, `opt );
+	    else if ( id == `none 	) 	UI::ChangeWidget(`dest_dir, `CurrentItem, nil );
+	    else if ( id == `dest_dir	)
 	    {
 		UI::ChangeWidget(`echo, `Value, "");
 		any current_dir = UI::QueryWidget(`dest_dir, `CurrentItem);
