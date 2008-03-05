@@ -171,20 +171,13 @@ YUIComponent::createUI()
 YCPValue
 YUIComponent::callBuiltin( void * function, int fn_argc, YCPValue fn_argv[] )
 {
-    if ( ! _ui && ! _useDummyUI )
+    if ( _useDummyUI )
+	return YCPVoid();
+    
+    if ( ! _ui )
 	createUI();
 
-    if ( _ui )
-    {
-#if 0
-	// obsolete? The corresponding UI function always returns YCPull()
-	return _ui->callBuiltin( function, fn_argc, fn_argv );
-#else
-	return YCPNull();
-#endif
-    }
-    else
-	return YCPVoid();
+    return YCPNull();
 }
 
 
