@@ -83,14 +83,12 @@
 	    else if ( id == `sel_usr_local )	UI::ChangeWidget(`dest_dir, `CurrentItem, `usr_local );
 	    else if ( id == `sel_opt 	) 	UI::ChangeWidget(`dest_dir, `CurrentItem, `opt );
 	    else if ( id == `none 	) 	UI::ChangeWidget(`dest_dir, `CurrentItem, nil );
-	    else if ( id == `dest_dir	)
-	    {
-		UI::ChangeWidget(`echo, `Value, "");
-		any current_dir = UI::QueryWidget(`dest_dir, `CurrentItem);
 
-		if ( current_dir != nil )
-		    UI::ChangeWidget(`echo, `Value, sformat( "%1", current_dir ) );
-	    }
+	    UI::ChangeWidget(`echo, `Value, "");
+	    any current_dir = UI::QueryWidget(`dest_dir, `CurrentItem);
+
+	    if ( current_dir != nil )
+		UI::ChangeWidget(`echo, `Value, sformat( "%1", current_dir ) );
 
 	    y2milestone( "Items:\n%1", UI::QueryWidget(`dest_dir, `Items ) );
 	    y2milestone( "OpenItems: %1", UI::QueryWidget(`dest_dir, `OpenItems ) );
