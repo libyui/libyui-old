@@ -77,7 +77,6 @@
 
     repeat
 	{
-	    y2debug( "Waiting for UserInput()" );
 	    id = UI::UserInput();
 
 	    if      ( id == `sel_usr	)	UI::ChangeWidget(`dest_dir, `CurrentItem, "usr"  );
