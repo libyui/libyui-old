@@ -20,7 +20,7 @@
 
 #include <string>
 
-#define y2log_component "ui"
+#define y2log_component "ui-component"
 #include <y2util/y2log.h>
 
 #include <y2/Y2Component.h>
@@ -106,7 +106,7 @@ YUIComponentCreator::createInternal( const string & componentName, bool isNamesp
 	if ( name == "UI" || name == "ui" )
 	    name = "";		// Automatically choose the appropriate UI
 
-	YUIComponent* uiComponent = YUIComponent::uiComponent();
+	YUIComponent * uiComponent = YUIComponent::uiComponent();
 
 	if ( ! uiComponent )
 	{

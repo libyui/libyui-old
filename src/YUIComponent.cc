@@ -19,8 +19,13 @@
 
 #include <string.h>
 #include <stdio.h>
-#define y2log_component "ui"
+
+#define YUILogComponent "ui-component"
+#include "YUILog.h"
+
+#define y2log_component "ui-component"
 #include <ycp/y2log.h>
+
 #include <ycp/YCPValue.h>
 #include <ycp/YCPVoid.h>
 
@@ -33,9 +38,6 @@
 #include "YMacro.h"
 #include "YCPMacroRecorder.h"
 #include "YCPMacroPlayer.h"
-
-#define YUILogComponent "ui"
-#include "YUILog.h"
 
 
 static void

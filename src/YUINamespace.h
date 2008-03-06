@@ -29,9 +29,6 @@
 #include <ycp/YCPCode.h>
 #include <ycp/StaticDeclaration.h>
 
-#define y2log_component "ui"
-#include <ycp/y2log.h>
-
 #include "YUI.h"
 #include "YUIComponent.h"
 
