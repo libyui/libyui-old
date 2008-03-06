@@ -117,39 +117,36 @@ private:
 std::streamsize
 YUILogBuffer::writeBuffer( const char * sequence, std::streamsize seqLen )
 {
-    if ( logLevel != YUI_LOG_DEBUG || YUILog::debugLoggingEnabled() )
+    // Add new character sequence
+
+    if ( seqLen > 0 )
+	buffer += string( sequence, seqLen );
+
+    //
+    // Output buffer contents line by line
+    //
+
+    std::size_t start       = 0;
+    std::size_t newline_pos = 0;
+
+    while ( start < buffer.length() &&
+	    ( newline_pos = buffer.find_first_of( '\n', start ) ) != string::npos )
     {
-	// Add new character sequence
+	YUILoggerFunction loggerFunction = YUILog::loggerFunction( true ); // never return 0
 
-	if ( seqLen > 0 )
-	    buffer += string( sequence, seqLen );
+	string line = buffer.substr( start, newline_pos - start );
 
-	//
-	// Output buffer contents line by line
-	//
+	loggerFunction( logLevel, logComponent,
+			sourceFileName, lineNo, functionName,
+			line.c_str() );
 
-	std::size_t start       = 0;
-	std::size_t newline_pos = 0;
-
-	while ( start < buffer.length() &&
-		( newline_pos = buffer.find_first_of( '\n', start ) ) != string::npos )
-	{
-	    YUILoggerFunction loggerFunction = YUILog::loggerFunction( true ); // never return 0
-
-	    string line = buffer.substr( start, newline_pos - start );
-
-	    loggerFunction( logLevel, logComponent,
-			    sourceFileName, lineNo, functionName,
-			    line.c_str() );
-
-	    start = newline_pos + 1;
-	}
-
-	if ( start < buffer.length() )
-	    buffer = buffer.substr( start, string::npos );
-	else
-	    buffer.clear();
+	start = newline_pos + 1;
     }
+
+    if ( start < buffer.length() )
+	buffer = buffer.substr( start, string::npos );
+    else
+	buffer.clear();
 
     return seqLen;
 }
@@ -256,7 +253,7 @@ struct YUILogPrivate
 	: loggerFunction( stderrLogger )
 	, enableDebugLoggingHook( 0 )
 	, debugLoggingEnabledHook( 0 )
-	, enableDebugLogging( true )
+	, enableDebugLogging( false )
 	{}
 
     /**
@@ -472,7 +469,12 @@ stderrLogger( YUILogLevel_t	logLevel,
 
     switch ( logLevel )
     {
-	case YUI_LOG_DEBUG:	logLevelStr = "dbg";	break;
+	case YUI_LOG_DEBUG:	if ( ! YUILog::debugLoggingEnabled )
+				    return;
+	    
+				logLevelStr = "dbg";
+				break;
+	    
 	case YUI_LOG_MILESTONE:	logLevelStr = "_M_";	break;
 	case YUI_LOG_WARNING:	logLevelStr = "WRN";	break;
 	case YUI_LOG_ERROR:	logLevelStr = "ERR";	break;
