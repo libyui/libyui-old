@@ -88,3 +88,16 @@ void YTreeItem::deleteChildren()
 
     _children.clear();
 }
+
+
+bool YTreeItem::isOpen() const
+{
+    return hasChildren() ? _isOpen : false;
+}
+
+
+void YTreeItem::setOpen( bool open )
+{
+    _isOpen = open;
+}
+

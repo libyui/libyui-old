@@ -106,13 +106,16 @@ public:
    /**
      * Return 'true' if this tree item should be displayed open (with its
      * children visible) by default.
+     *
+     * Notice that this will always return 'false' for tree items without
+     * children.  
      **/
-    bool isOpen() const { return _isOpen; }
+    bool isOpen() const;
 
     /**
      * Change the 'isOpen' flag.
      **/
-    void setOpen( bool open ) { _isOpen = open; }
+    void setOpen( bool open );
 
     /**
      * Returns this item's parent item or 0 if it is a toplevel item.
