@@ -1012,14 +1012,17 @@ YCPPropertyHandler::getTreeOpenItems( YCPMap &			openItems,
     {
 	YTreeItem * item = dynamic_cast<YTreeItem *> (*it);
 
-	if ( item && item->isOpen() )
+	if ( item )
 	{
 	    YCPTreeItem * ycpTreeItem = dynamic_cast<YCPTreeItem *> (item);
 
-	    if ( ycpTreeItem && ycpTreeItem->hasId() )
-		openItems.add( ycpTreeItem->id(), YCPString( "ID" ) );
-	    else
-		openItems.add( YCPString( item->label() ), YCPString( "Text" ) );
+	    if ( item->isOpen() )
+	    {
+		if ( ycpTreeItem && ycpTreeItem->hasId() )
+		    openItems.add( ycpTreeItem->id(), YCPString( "ID" ) );
+		else
+		    openItems.add( YCPString( item->label() ), YCPString( "Text" ) );
+	    }
 
 	    if ( item->hasChildren() )
 		getTreeOpenItems( openItems, item->childrenBegin(), item->childrenEnd() );
