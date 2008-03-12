@@ -83,7 +83,7 @@ INCLUDES =					\
 	-I$(includedir)				\
 	-I$(includedir)/yui
 
-libpy2UI_la_LDFLAGS = -version-info 2:0 -Wl,--no-undefined
+libpy2UI_la_LDFLAGS = -L$(libdir) -version-info 2:0 -Wl,--no-undefined
 
 libpy2UI_la_LIBADD =				\
 	-lpthread -lyui -ly2 -lycp -lycpvalues -ly2util
