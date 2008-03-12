@@ -435,7 +435,7 @@ public:
     /**
      * Sets the Notify property
      **/
-    void setNotify( bool notify );
+    void setNotify( bool notify = true );
 
     /**
      * Returns whether the widget will notify, i.e. will case UserInput to

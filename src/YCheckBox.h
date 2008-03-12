@@ -95,7 +95,7 @@ public:
     /**
      * Simplified access to setValue(): Check of uncheck the CheckBox.
      **/
-    void setChecked( bool checked )
+    void setChecked( bool checked = true )
 	{ setValue( checked ? YCheckBox_on : YCheckBox_off ); }
 
     /**
