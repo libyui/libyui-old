@@ -46,10 +46,10 @@ int main( int argc, char **argv )
 
     YPushButton * valueButton = YUI::widgetFactory()->createPushButton( hbox, "&Value" );
 
-    YUI::widgetFactory()->createVSpacing( vbox, 0.7 );
+    YUI::widgetFactory()->createVSpacing( vbox, 0.3 );
 
-    YAlignment    * rightAlignment = YUI::widgetFactory()->createRight( vbox );
-    YPushButton   * closeButton    = YUI::widgetFactory()->createPushButton( rightAlignment, "&Close" );
+    YAlignment  * rightAlignment = YUI::widgetFactory()->createRight( vbox );
+    YPushButton * closeButton    = YUI::widgetFactory()->createPushButton( rightAlignment, "&Close" );
 
 
     //
