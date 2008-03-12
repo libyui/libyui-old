@@ -176,7 +176,7 @@ public:
      * The name of the widget property that will return user input.
      * Inherited from YWidget.
      **/
-    const char *userInputProperty() { return YUIProperty_CurrentItem; }
+    const char * userInputProperty() { return YUIProperty_CurrentItem; }
 
 
 protected:

@@ -91,7 +91,7 @@ public:
      * The name of the widget property that will return user input.
      * Inherited from YWidget.
      **/
-    const char *userInputProperty() { return YUIProperty_SelectedItems; }
+    const char * userInputProperty() { return YUIProperty_SelectedItems; }
 
     /**
      * Return the the item that currently has the keyboard focus

@@ -518,7 +518,7 @@ public:
      * SelBox) should overwrite this methods. Widgets that are purely passive
      * (such as Label, RichText) should not.
      **/
-    virtual const char *userInputProperty() { return (const char *) 0; }
+    virtual const char * userInputProperty() { return (const char *) 0; }
 
     /**
      * Debugging function:
