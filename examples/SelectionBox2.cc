@@ -63,19 +63,26 @@ int main( int argc, char **argv )
     // depends on other widgets in the layout.
     YAlignment * minSize = YUI::widgetFactory()->createMinSize( vbox, 40, 8 ); // minWidth, minHeight
 
-    //
-    // This is what this example all about.
-    // The other widgets are here just to allow some experimenting.
-    //
+    
+    // The SelectionBox. This is what this example all about.
+    // The other widgets are just here to allow some experimenting.
 
     YSelectionBox * selBox = YUI::widgetFactory()->createSelectionBox( minSize, "&Menu" );
     selBox->addItems( pizzaItems() );
 
-    YLayoutBox    * buttonBox	= YUI::widgetFactory()->createHBox( vbox );
-    YPushButton   * pastaButton = YUI::widgetFactory()->createPushButton( buttonBox, "&Pasta" );
-    YPushButton   * pizzaButton = YUI::widgetFactory()->createPushButton( buttonBox, "Pi&zza" );
+
+    // Buttons to allow changing the SelectionBox items
+
+    YLayoutBox  * buttonBox      = YUI::widgetFactory()->createHBox( vbox );
+    YPushButton * pastaButton    = YUI::widgetFactory()->createPushButton( buttonBox, "&Pasta" );
+    YPushButton * pizzaButton    = YUI::widgetFactory()->createPushButton( buttonBox, "Pi&zza" );
+    YPushButton * clearButton    = YUI::widgetFactory()->createPushButton( buttonBox, "C&lear" );
+    YPushButton * deselectButton = YUI::widgetFactory()->createPushButton( buttonBox, "&Deselect" );
 
     YUI::widgetFactory()->createVSpacing( vbox, 0.5 );
+
+    
+    // Check boxes to allow toogling "notify" and "immediate" for the SelectionBox
 
     YAlignment * leftAlignment = YUI::widgetFactory()->createLeft( vbox );
     YCheckBox * notifyCheckBox = YUI::widgetFactory()->createCheckBox( leftAlignment, "&Notify Mode" );
@@ -87,6 +94,10 @@ int main( int argc, char **argv )
 
     YUI::widgetFactory()->createVSpacing( vbox, 0.3 );
 
+
+    // OutputField + button to allow monitoring the SelectionBox value
+    // (and when it changes, i.e. when events are sent)
+
     YLayoutBox * hbox = YUI::widgetFactory()->createHBox( vbox );
     YLabel * valueField  = YUI::widgetFactory()->createOutputField( hbox, "???" );
     valueField->setStretchable( YD_HORIZ, true ); // allow stretching over entire dialog width
@@ -94,6 +105,9 @@ int main( int argc, char **argv )
     YPushButton * valueButton = YUI::widgetFactory()->createPushButton( hbox, "&Value" );
 
     YUI::widgetFactory()->createVSpacing( vbox, 0.7 );
+
+    
+    // "Close" button
 
     YAlignment    * rightAlignment = YUI::widgetFactory()->createRight( vbox );
     YPushButton   * closeButton    = YUI::widgetFactory()->createPushButton( rightAlignment, "&Close" );
@@ -129,6 +143,14 @@ int main( int argc, char **argv )
 		{
 		    selBox->deleteAllItems();
 		    selBox->addItems( pizzaItems() );
+		}
+		else if ( widgetEvent->widget() == clearButton )
+		{
+		    selBox->deleteAllItems();
+		}
+		else if ( widgetEvent->widget() == deselectButton )
+		{
+		    selBox->deselectAllItems();
 		}
 		else if ( widgetEvent->widget() == notifyCheckBox )
 		{
