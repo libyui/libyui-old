@@ -96,7 +96,7 @@ OTOH, consider labels places left:
 
 In order to avoid a layout messed up badly like this, we'd need to specify 
 alignments and place all the widgets in some grid layout (which we don't have 
-at this point). While the latter is an OPL (*) for all of you (the UI must 
+at this point). While the latter is an OPP (*) for all of you (the UI must 
 take care of this), the former is something that would have to be taken into 
 account by every YCP hacker - everywhere, in each dialog.
 
@@ -115,7 +115,7 @@ top" comes out on top here given all pros and cons.
 
 
 
-(*) OPL: Other People's Problem (from you know where - hint: 42)
+(*) OPP: Other People's Problem (from you know where - hint: 42)
 
 
 
