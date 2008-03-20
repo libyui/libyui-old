@@ -19,6 +19,7 @@
 
 #include <signal.h>
 #include <iostream>
+#include <sstream>
 
 #define YUILogComponent "ui"
 #include "YUILog.h"
@@ -40,6 +41,7 @@
 #define YWIDGET_MAGIC		42
 
 #define CHECK_FOR_DUPLICATE_CHILDREN	1
+#define LOG_WIDGET_REP			0
 
 
 using std::string;
@@ -650,16 +652,27 @@ void YWidget::dumpWidgetTree( int indentationLevel )
 
 void YWidget::dumpWidget( YWidget *w, int indentationLevel )
 {
+    std::ostringstream str;
+    
     string indentation ( indentationLevel * 4, ' ' );
+    str << "Widget tree: " << indentation << w;
+
+    if ( w->widgetRep() )
+    {
+	str << " (widgetRep: "
+	    << hex << w->widgetRep() << dec
+	    << ")";
+    }
+    
     string stretch;
 
     if ( w->stretchable( YD_HORIZ ) )	stretch += "hstretch ";
     if ( w->stretchable( YD_VERT  ) )	stretch += "vstretch";
 
     if ( ! stretch.empty() )
-	stretch = " (" + stretch + ") ";
-
-    yuiMilestone() << indentation << "Widget tree: " << w << stretch << endl;
+	str << " ( " << stretch << " ) ";
+    
+    yuiMilestone() << str.str() << endl;
 }
 
 
@@ -721,12 +734,14 @@ std::ostream & operator<<( std::ostream & stream, const YWidget * w )
 
 	stream << " at " << hex << (void *) w << dec;
 
+#if LOG_WIDGET_REP
 	if ( w->widgetRep() )
 	{
 	    stream << " (widgetRep: "
 		   << hex << w->widgetRep() << dec
 		   << ")";
 	}
+#endif
     }
     else
     {
