@@ -80,6 +80,23 @@ public:
     unsigned long serial() const { return _serial; }
 
     /**
+     * Returns the widget that caused this event or 0 if there is none.
+     *
+     * This default implementation always returns 0.
+     * Subclasses that actually return widgets should overwrite this method.
+     **/
+    virtual YWidget * widget() const { return 0; }
+
+    /**
+     * Return the YItem that corresponds to this event or 0 if there is none.
+     *
+     * This default implementation always returns 0.
+     * Subclasses that actually return items should overwrite this method.
+     **/
+    virtual YItem * item() const { return 0; }
+
+    
+    /**
      * Returns the character representation of an event type.
      **/
     static const char * toString( EventType eventType );
@@ -113,10 +130,10 @@ public:
 		  EventType 	eventType	= WidgetEvent );
 
     /**
-     * Returns the widget that caused this event. This might as well be 0 if
-     * this is not a widget event.
+     * Returns the widget that caused this event.
+     * Reimplemented from YEvent.
      **/
-    YWidget * widget() const { return _widget; }
+    virtual YWidget * widget() const { return _widget; }
 
     /**
      * Returns the reason for this event. This very much like an event sub-type.
@@ -183,8 +200,10 @@ public:
     /**
      * Return the YItem that corresponds to this event or 0 if the event was
      * constructed with a string ID.
+     *
+     * Reimplemented from YEvent.
      **/
-    YItem * item() const { return _item; }
+    virtual YItem * item() const { return _item; }
 
     /**
      * Return the string ID of this event. This will be an empty string if the

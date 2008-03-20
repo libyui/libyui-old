@@ -129,78 +129,73 @@ int main( int argc, char **argv )
 	    if ( event->eventType() == YEvent::CancelEvent ) // window manager "close window" button
 		break; // leave event loop
 
-	    YWidgetEvent * widgetEvent = dynamic_cast<YWidgetEvent *> (event);
+	    valueField->setValue( "???" );
 
-	    if ( widgetEvent )
+	    if ( event->widget() == closeButton )
+		break; // leave event loop
+	    else if ( event->widget() == pastaButton )
 	    {
-		valueField->setValue( "???" );
-
-		if ( widgetEvent->widget() == closeButton )
-		    break; // leave event loop
-		else if ( widgetEvent->widget() == pastaButton )
-		{
-		    selBox->deleteAllItems();
-		    selBox->addItems( pastaItems() );
-		}
-		else if ( widgetEvent->widget() == pizzaButton )
-		{
-		    selBox->deleteAllItems();
-		    selBox->addItems( pizzaItems() );
-		}
-		else if ( widgetEvent->widget() == clearButton )
-		{
-		    selBox->deleteAllItems();
-		}
-		else if ( widgetEvent->widget() == deselectButton )
-		{
-		    selBox->deselectAllItems();
-		}
-		else if ( widgetEvent->widget() == notifyCheckBox )
-		{
-		    bool notify = notifyCheckBox->isChecked();
-
-		    if ( ! notify )
-		    {
-			// immediateMode implicitly includes notify, so set
-			// immediateMode off if the user wants to set notify off
-
-			selBox->setImmediateMode( false );
-			immediateCheckBox->setChecked( false );
-		    }
-
-		    selBox->setNotify( notify );
-		}
-		else if ( widgetEvent->widget() == immediateCheckBox )
-		{
-		    bool immediate = immediateCheckBox->isChecked();
-		    selBox->setImmediateMode( immediate );
-
-		    // immediateMode implicitly includes notify;
-		    // reflect this in the notify check box
-
-		    if ( immediate )
-			notifyCheckBox->setChecked( true );
-		}
-		else if ( widgetEvent->widget() == selBox ||
-			  widgetEvent->widget() == valueButton )
-		{
-		    YItem * item = selBox->selectedItem();
-
-		    if ( item )
-			valueField->setValue( item->label() );
-		    else
-			valueField->setValue( "<none>" );
-		}
+		selBox->deleteAllItems();
+		selBox->addItems( pastaItems() );
 	    }
+	    else if ( event->widget() == pizzaButton )
+	    {
+		selBox->deleteAllItems();
+		selBox->addItems( pizzaItems() );
+	    }
+	    else if ( event->widget() == clearButton )
+	    {
+		selBox->deleteAllItems();
+	    }
+	    else if ( event->widget() == deselectButton )
+	    {
+		selBox->deselectAllItems();
+	    }
+	    else if ( event->widget() == notifyCheckBox )
+	    {
+		bool notify = notifyCheckBox->isChecked();
 
+		if ( ! notify )
+		{
+		    // immediateMode implicitly includes notify, so set
+		    // immediateMode off if the user wants to set notify off
 
-	    // YDialog::waitForEvent() allocates a new YEvent and transfers
-	    // ownership of the event to the caller, so the caller has to make
-	    // sure the memory for the event is deallocated after use.
-	    // Otherwise there will be a memory leak.
+		    selBox->setImmediateMode( false );
+		    immediateCheckBox->setChecked( false );
+		}
 
-	    delete event;
+		selBox->setNotify( notify );
+	    }
+	    else if ( event->widget() == immediateCheckBox )
+	    {
+		bool immediate = immediateCheckBox->isChecked();
+		selBox->setImmediateMode( immediate );
+
+		// immediateMode implicitly includes notify;
+		// reflect this in the notify check box
+
+		if ( immediate )
+		    notifyCheckBox->setChecked( true );
+	    }
+	    else if ( event->widget() == selBox ||
+		      event->widget() == valueButton )
+	    {
+		YItem * item = selBox->selectedItem();
+
+		if ( item )
+		    valueField->setValue( item->label() );
+		else
+		    valueField->setValue( "<none>" );
+	    }
 	}
+
+
+	// YDialog::waitForEvent() allocates a new YEvent and transfers
+	// ownership of the event to the caller, so the caller has to make
+	// sure the memory for the event is deallocated after use.
+	// Otherwise there will be a memory leak.
+
+	delete event;
     }
 
 
