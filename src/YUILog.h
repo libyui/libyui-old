@@ -23,8 +23,10 @@
 #endif
 
 #include <iostream>
+#include <string>
 
 #include "ImplPtr.h"
+
 
 //
 // UI Logging: Macros for Application use.
@@ -54,6 +56,7 @@ using std::hex;
 using std::dec;
 using std::boolalpha;
 using std::noboolalpha;
+using std::string;
 
 //
 // ------ End of user relevant part ------
@@ -105,14 +108,14 @@ public:
     static std::ostream & error    ( const char * logComponent, const char * sourceFileName, int lineNo, const char * functionName );
 
     /**
-     * Generic log function.
+     * Generic log function. debug(), milestone() etc. ultimately all call this function.
      **/
     std::ostream & log( YUILogLevel_t	logLevel,
 			const char *	logComponent,
 			const char *	sourceFileName,
 			int 		lineNo,
 			const char * 	functionName );
-    
+
     /**
      * Return the singleton object for this class.
      * This will create the singleton if it doesn't exist yet.
@@ -130,6 +133,37 @@ public:
     static bool debugLoggingEnabled();
 
     /**
+     * Set the log file name to be used with the standard logger function.
+     * Output will be appended to this file.
+     *
+     * Until this file name is set, the standard logger function logs to stderr.
+     * Set the log file name to an empty string to log to stderr again.
+     *
+     * This returns 'true' upon success (opening the file was successful),
+     *'false' upon error.
+     *
+     *
+     * Notice:
+     *
+     * (1) This file name is only relevant as long as the standard logger
+     *     function is used. Custom logger functions may or may not use this
+     *     file name. 
+     *
+     * (2) No attempt is made to do anything fancy with the log file like log
+     *     file rotation when a certain file size is reached. Applications that
+     *     need this should use a custom logger function.
+     *     See also setLoggerFunction().
+     **/
+    static bool setLogFileName( const string & logFileName );
+
+    /**
+     * Return the current log file name or an empty string if stderr is used.
+     * Notice that this information is only relevant as long as the standard
+     * logger function is used.
+     **/
+    static string logFileName();
+
+    /**
      * Set the UI logger function. This is the function that will ultimately
      * receive all UI log output (except debug logging if debug logging is
      * disabled).
@@ -143,10 +177,10 @@ public:
      * Return the UI logger function.
      *
      * If stderr is used for logging (i.e. no logger function set), 0 is
-     * returned (unless 'returnStderrLogger' is 'true', in which case the
+     * returned (unless 'returnStdLogger' is 'true', in which case the
      * internally used stderr-logger is returned).
      **/
-    static YUILoggerFunction loggerFunction( bool returnStderrLogger = false );
+    static YUILoggerFunction loggerFunction( bool returnStdLogger = false );
 
     /**
      * Set the hook functions to enable/disable debug logging and to query if

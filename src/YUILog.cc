@@ -18,7 +18,9 @@
 
 
 #include <string.h>
-#include <string>
+
+#include <ostream>
+#include <fstream>
 #include <vector>
 #include <pthread.h>
 
@@ -28,19 +30,19 @@
 #include "YUIException.h"
 
 using std::ostream;
+using std::ofstream;
 using std::cerr;
 using std::endl;
-using std::string;
 using std::vector;
 
-static void
-stderrLogger( YUILogLevel_t	logLevel,
-	      const char *	logComponent,
-	      const char *	sourceFileName,
-	      int 	 	sourceLineNo,
-	      const char * 	sourceFunctionName,
-	      const char *	message );
+static void stdLogger( YUILogLevel_t	logLevel,
+		       const char *	logComponent,
+		       const char *	sourceFileName,
+		       int 	 	sourceLineNo,
+		       const char * 	sourceFunctionName,
+		       const char *	message );
 
+static ostream * stdLogStream = &cerr;
 
 
 /**
@@ -250,7 +252,7 @@ struct YUILogPrivate
      * Constructor
      **/
     YUILogPrivate()
-	: loggerFunction( stderrLogger )
+	: loggerFunction( stdLogger )
 	, enableDebugLoggingHook( 0 )
 	, debugLoggingEnabledHook( 0 )
 	, enableDebugLogging( false )
@@ -295,6 +297,8 @@ struct YUILogPrivate
     // Data members
     //
 
+    string				logFileName;
+    ofstream				stdLogStream;
     YUILoggerFunction			loggerFunction;
     YUIEnableDebugLoggingFunction	enableDebugLoggingHook;
     YUIDebugLoggingEnabledFunction	debugLoggingEnabledHook;
@@ -315,6 +319,8 @@ YUILog::YUILog()
 
 YUILog::~YUILog()
 {
+    if ( priv->stdLogStream.is_open() )
+	priv->stdLogStream.close();
 }
 
 
@@ -330,6 +336,49 @@ YUILog::instance()
     }
 
     return instance;
+}
+
+
+bool
+YUILog::setLogFileName( const string & logFileName )
+{
+    instance()->priv->logFileName = logFileName;
+
+    ofstream & logStream = instance()->priv->stdLogStream;
+
+    if ( logStream.is_open() )
+	logStream.close();
+
+    bool success = true;
+    
+    if ( logFileName.empty() ) // log to stderr again
+    {
+	stdLogStream = &cerr;
+    }
+    else
+    {
+	logStream.open( logFileName.c_str(), std::ios_base::app );
+	success = logStream.good();
+
+	if ( success )
+	{
+	    stdLogStream = &( instance()->priv->stdLogStream );
+	}
+	else
+	{
+	    cerr << "ERROR: Can't open log file " << logFileName << endl;
+	    stdLogStream = &cerr;
+	}
+    }
+
+    return success;
+}
+
+
+string
+YUILog::logFileName()
+{
+    return instance()->priv->logFileName;
 }
 
 
@@ -357,18 +406,18 @@ void
 YUILog::setLoggerFunction( YUILoggerFunction loggerFunction )
 {
     if ( ! loggerFunction )
-	loggerFunction = stderrLogger;
+	loggerFunction = stdLogger;
 
     instance()->priv->loggerFunction = loggerFunction;
 }
 
 
 YUILoggerFunction
-YUILog::loggerFunction( bool returnStderrLogger )
+YUILog::loggerFunction( bool returnStdLogger )
 {
     YUILoggerFunction logger = instance()->priv->loggerFunction;
 
-    if ( logger == stderrLogger && ! returnStderrLogger )
+    if ( logger == stdLogger && ! returnStdLogger )
 	logger = 0;
 
     return logger;
@@ -458,22 +507,23 @@ YUILog::error( const char * logComponent, const char * sourceFileName, int lineN
 
 
 static void
-stderrLogger( YUILogLevel_t	logLevel,
-	      const char *	logComponent,
-	      const char *	sourceFileName,
-	      int 	 	sourceLineNo,
-	      const char * 	sourceFunctionName,
-	      const char *	message )
+stdLogger( YUILogLevel_t	logLevel,
+	   const char *		logComponent,
+	   const char *		sourceFileName,
+	   int 	 		sourceLineNo,
+	   const char * 	sourceFunctionName,
+	   const char *		message )
 {
     const char * logLevelStr = "";
 
     switch ( logLevel )
     {
-	case YUI_LOG_DEBUG:	if ( ! YUILog::debugLoggingEnabled )
-				    return;
+	case YUI_LOG_DEBUG:
+	    if ( ! YUILog::debugLoggingEnabled() )
+		return;
 	    
-				logLevelStr = "dbg";
-				break;
+	    logLevelStr = "dbg";
+	    break;
 	    
 	case YUI_LOG_MILESTONE:	logLevelStr = "_M_";	break;
 	case YUI_LOG_WARNING:	logLevelStr = "WRN";	break;
@@ -492,10 +542,10 @@ stderrLogger( YUILogLevel_t	logLevel,
     if ( ! message )
 	message = "";
 
-    cerr << "<" << logLevelStr  << "> "
-	 << "[" << logComponent << "] "
-	 << sourceFileName	<< ":" << sourceLineNo << " "
-	 << sourceFunctionName	<< "(): "
-	 << message
-	 << endl;
+    (*stdLogStream) << "<" << logLevelStr  << "> "
+		    << "[" << logComponent << "] "
+		    << sourceFileName	<< ":" << sourceLineNo << " "
+		    << sourceFunctionName	<< "(): "
+		    << message
+		    << endl;
 }
