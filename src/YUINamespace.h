@@ -85,7 +85,7 @@ public:
 			    vector<SymbolEntryPtr>::iterator 	candidates_e,
 			    bool 				play_macro_blocks );
 
-    // attachParameter, appendParameter, reset from parent: fine   
+    // attachParameter, appendParameter, reset from parent: fine
     // wantedParameterType from parent: kind of fine
 
     bool finishParameters();
@@ -96,9 +96,9 @@ class YUINamespace: public Y2Namespace
 {
 private:
     void registerFunctions();
-	
+
     vector<string> _registered_functions;
-	
+
     YUIComponent* m_comp;
 
 public:
@@ -133,7 +133,7 @@ public:
 
 
 
-    
+
     /* TYPEINFO: void (string) */
     YCPValue SetLanguage( const YCPString & language );
 
@@ -280,7 +280,7 @@ public:
     YCPValue AskForExistingDirectory( const YCPString & startDir, const YCPString & headline );
 
     /* TYPEINFO: string (string, string, string) */
-    YCPValue AskForExistingFile( const YCPString & startWith, const YCPString & filter, const YCPString & headline  );
+    YCPValue AskForExistingFile( const YCPString & startWith, const YCPString & filter, const YCPString & headline );
 
     /* TYPEINFO: string (string, string, string) */
     YCPValue AskForSaveFileName( const YCPString & startWith, const YCPString & filter, const YCPString & headline );
@@ -297,8 +297,11 @@ public:
     /* TYPEINFO: boolean (term) */
     YCPValue WizardCommand( const YCPTerm & command );
 
+    /* TYPEINFO: boolean () */
+    YCPBoolean TextMode();
 
+
+    
     YCPValue
     CallHandler( void * ptr, int argc, YCPValue argv[] );
-
 };

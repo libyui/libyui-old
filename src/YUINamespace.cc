@@ -584,6 +584,16 @@ YUINamespace::WizardCommand( const YCPTerm & command )
 }
 
 
+YCPBoolean
+YUINamespace::TextMode()
+{
+    if ( YUIComponent::ui() )
+	return YCP_UI::TextMode();
+    else
+	return YCPBoolean( false );
+}
+
+
 YCPValue
 YUINamespace::CallHandler( void * ptr, int argc, YCPValue argv[] )
 {
@@ -618,7 +628,7 @@ m_position (pos)
 , m_param4 ( YCPNull() )
 , m_param5 ( YCPNull() )
 {
-    
+
 };
 
 

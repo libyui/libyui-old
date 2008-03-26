@@ -84,6 +84,7 @@ public:
     static YCPValue 	WaitForEvent			( const YCPInteger & timeout = YCPNull() );
     static YCPValue 	WizardCommand			( const YCPTerm & command );
     static YCPValue 	PollInput			();
+    static YCPBoolean	TextMode			();
 
     /**
      * Not really a UI built-in: This implements the WFM or SCR callback command.

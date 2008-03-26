@@ -958,6 +958,42 @@ void YCP_UI::NormalCursor()
 
 
 /**
+ * @builtin TextMode
+ * @short Check if the UI is running in text (NCurses) mode.
+ *
+ * @description
+ *
+ * This checks if a text mode UI (NCurses) is currently running.
+ * Please notice that this is almost always bad style. The purpose of the YaST2
+ * UI is to have an abstraction layer to avoid this kind of check.
+ *
+ * When you find yourself using this built-in, please check if there is really
+ * no other way. In particular, NEVER rely on this check to make any
+ * assumptions on the UI's capabilities. Rather, use the map entries from
+ * UI::GetDisplayInfo() or UI::HasSpecialWidget().
+ *
+ * If you feel you must make a difference between text mode and GUI mode for a
+ * dialog's layout, please check if that dialog is not simply overcrowded and
+ * thus should be redesigned - it is very likely that it is also overly
+ * complex.
+ *
+ * Also keep in mind that layout units are UI independent; a spacing should
+ * consume about the same amount of space in all UIs. A Qt UI 800x600 main
+ * window corresponds to 80x25 layout units, i.e. the typical NCurses terminal
+ * size. 
+ *
+ * @return true if text mode, false if GUI (Qt / Gtk).
+ */
+
+YCPBoolean YCP_UI::TextMode()
+{
+    y2warning( "Please check if checking for text mode is really necessary!" );
+    
+    return YCPBoolean( YUI::app()->isTextMode() );
+}
+
+
+/**
  * @builtin RedrawScreen
  * @short Redraws the screen
  * @description
