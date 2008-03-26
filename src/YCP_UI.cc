@@ -987,7 +987,7 @@ void YCP_UI::NormalCursor()
 
 YCPBoolean YCP_UI::TextMode()
 {
-    y2warning( "Please check if checking for text mode is really necessary!" );
+    ycpwarning( "UI::TextMode(): Please check if this is really necessary!" );
     
     return YCPBoolean( YUI::app()->isTextMode() );
 }
