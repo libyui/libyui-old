@@ -61,7 +61,7 @@
 		 "The system needs some available disk space to run properly."
 		 "</p>" );
 
-    UI::WizardCommand(`SetDialogIcon( "/usr/share/YaST2/theme/SuSELinux/icons/22x22/apps/yast-software.png" ) );
+    UI::WizardCommand(`SetDialogIcon( "/usr/share/YaST2/theme/current/icons/22x22/apps/YaST.png" ) );
     UI::WizardCommand(`SetDialogHeading( "Software Selection" ) );
     UI::WizardCommand(`SetHelpText( help_text ) );
     
