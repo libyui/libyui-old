@@ -118,7 +118,7 @@ y2milestone ("formatEvent(%1)", event);
 				`HWeight( 1, pizza	),
 				`HWeight( 1, toppings	),
 				`HWeight( 1, drink	),
-				`HWeight( 1, `RichText(`id(`help), help_text ) )
+				`HWeight( 1, `RichText(`id(`help_text), help_text ) )
 				);
 
     term buttons 	= `HBox(
@@ -176,7 +176,7 @@ y2milestone ("formatEvent(%1)", event);
 
     
     UI::OpenDialog(`opt(`defaultsize),
-		   `VBox(
+		   `VBox(`id(`mainLayout),
 			 `Heading( "Event Example" ),
 			 `Label( howto ),
 			 `VSpacing(),
@@ -200,9 +200,15 @@ y2milestone ("formatEvent(%1)", event);
 			 `VWeight( 1, 
 				   `RichText(`id(`event_display), event_display )
 				   ),
-			 `Right( `PushButton(`id(`close), "C&lose" ) )
+			 `HBox(
+			       `PushButton(`id(`help), "&Help" ),
+			       `HStretch(),
+			       `PushButton(`id(`close), "C&lose" )
+			       )
 			 )
 		   );
+
+    UI::ChangeWidget(`mainLayout, `HelpText, howto );
 
     //
     // Event loop
@@ -246,6 +252,13 @@ y2milestone ("formatEvent(%1)", event);
 	{
 	    UI::ChangeWidget(`send_mafioso, `Value, nil );
 	    UI::DumpWidgetTree();
+	}
+	else if (  event["ID"]:nil == `help )
+	{
+	    UI::OpenDialog(`VBox(`MinSize( 35, 7, `RichText( howto ) ),
+				 `PushButton("&OK" ) ) );
+	    UI::UserInput();
+	    UI::CloseDialog();
 	}
 	else if ( event["ID"]:nil == `cancel_order )
 	{
