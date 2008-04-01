@@ -89,6 +89,20 @@ public:
      **/
     void setWidgetName( const string & name );
 
+    /**
+     * Return the help text for this widget.
+     **/
+    string helpText() const;
+
+    /**
+     * Set a help text for this widget.
+     *
+     * Currently, the UI does not do anything with this text but store it.
+     * Displaying the text at a convenient time is currently the application's
+     * responsibility. This may change in future versions.
+     **/
+    void setHelpText( const string & helpText );
+
 
     //
     // Property Management
@@ -545,7 +559,7 @@ public:
 
     /**
      * Recursively save the user input of all child widgets to a macro
-     * recorder: 
+     * recorder:
      *
      * All child widgets that could contain data entered by the user
      * are requested to send their contents to the macro recorder, e.g. input
@@ -559,7 +573,7 @@ public:
      *
      * Widgets that need another number of properties recorded should
      * reimplement this method (and NOT call this default method in the new
-     * implementation).  
+     * implementation).
      **/
     virtual void saveUserInput( YMacroRecorder *macroRecorder );
 

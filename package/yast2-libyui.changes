@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Tue Apr  1 17:49:15 CEST 2008 - sh@suse.de
+
+- Added "HelpText" property to YWidget for easier support of
+  YCP wizard layouts without permanent help panel
+- V 2.16.41 
+
+-------------------------------------------------------------------
 Thu Mar 20 19:17:19 CET 2008 - sh@suse.de
 
 - Added standard file logger (when used independently of YaST2)

@@ -88,6 +88,7 @@ struct YWidgetPrivate
     YBothDim<int>		weight;
     int				functionKey;
     string			widgetName;
+    string			helpText;
 };
 
 
@@ -340,7 +341,18 @@ void YWidget::setWidgetName( const string & name )
 {
     priv->widgetName = name;
 }
-    
+
+
+string YWidget::helpText() const
+{
+    return priv->helpText;
+}
+
+
+void YWidget::setHelpText( const string & helpText )
+{
+    priv->helpText = helpText;
+}
 
 
 YWidgetID *
@@ -350,8 +362,7 @@ YWidget::id() const
 }
 
 
-void
-YWidget::setId( YWidgetID * newId )
+void YWidget::setId( YWidgetID * newId )
 {
     if ( priv->id )
 	delete priv->id;
@@ -360,8 +371,7 @@ YWidget::setId( YWidgetID * newId )
 }
 
 
-bool
-YWidget::hasId() const
+bool YWidget::hasId() const
 {
     return priv->id != 0;
 }
@@ -397,6 +407,7 @@ YWidget::propertySet()
 	 * @property boolean Notify 		the current notify state (see also `opt( `notify ))
 	 * @property string  WidgetClass 	the widget class of this widget (YLabel, YPushButton, ...)
 	 * @property string  WidgetName		internal name for this widget (by default the string-ized ID)
+	 * @property string  HelpText		help text
 	 * @property string  DebugLabel		(possibly translated) text describing this widget for debugging
 	 **/
 
@@ -405,6 +416,7 @@ YWidget::propertySet()
 	propSet.add( YProperty( YUIProperty_WidgetClass,	YStringProperty, true	) ); // read-only
 	propSet.add( YProperty( YUIProperty_DebugLabel,		YStringProperty, true	) ); // read-only
 	propSet.add( YProperty( YUIProperty_WidgetName,		YStringProperty ) );
+	propSet.add( YProperty( YUIProperty_HelpText,		YStringProperty ) );
     }
 
     return propSet;
@@ -427,6 +439,7 @@ YWidget::setProperty( const std::string & propertyName, const YPropertyValue & v
     if      ( propertyName == YUIProperty_Enabled )	setEnabled( val.boolVal() );
     else if ( propertyName == YUIProperty_Notify  )	setNotify ( val.boolVal() );
     else if ( propertyName == YUIProperty_WidgetName )	setWidgetName( val.stringVal() );
+    else if ( propertyName == YUIProperty_HelpText )	setHelpText( val.stringVal() );
 
     return true; // success -- no special processing necessary
 }
@@ -449,6 +462,7 @@ YWidget::getProperty( const std::string & propertyName )
     if ( propertyName == YUIProperty_Notify  		) return YPropertyValue( notify()   	);
     if ( propertyName == YUIProperty_WidgetClass	) return YPropertyValue( widgetClass() 	);
     if ( propertyName == YUIProperty_WidgetName		) return YPropertyValue( widgetName() 	);
+    if ( propertyName == YUIProperty_HelpText		) return YPropertyValue( helpText() 	);
     if ( propertyName == YUIProperty_DebugLabel		) return YPropertyValue( debugLabel()	);
 
     return YPropertyValue( false ); // NOTREACHED
@@ -653,7 +667,7 @@ void YWidget::dumpWidgetTree( int indentationLevel )
 void YWidget::dumpWidget( YWidget *w, int indentationLevel )
 {
     std::ostringstream str;
-    
+
     string indentation ( indentationLevel * 4, ' ' );
     str << "Widget tree: " << indentation << w;
 
@@ -663,7 +677,7 @@ void YWidget::dumpWidget( YWidget *w, int indentationLevel )
 	    << hex << w->widgetRep() << dec
 	    << ")";
     }
-    
+
     string stretch;
 
     if ( w->stretchable( YD_HORIZ ) )	stretch += "hstretch ";
@@ -671,7 +685,7 @@ void YWidget::dumpWidget( YWidget *w, int indentationLevel )
 
     if ( ! stretch.empty() )
 	str << " ( " << stretch << " ) ";
-    
+
     yuiMilestone() << str.str() << endl;
 }
 
@@ -682,7 +696,7 @@ YWidget::saveUserInput( YMacroRecorder *macroRecorder )
     //
     // Record this widget's user input property (if there is any)
     //
-    
+
     if ( userInputProperty() )
     {
 	macroRecorder->recordWidgetProperty( this, userInputProperty() );
@@ -691,7 +705,7 @@ YWidget::saveUserInput( YMacroRecorder *macroRecorder )
     //
     // Record the child widgets' (if there are any) user input
     //
-    
+
     for ( YWidgetListConstIterator it = childrenBegin();
 	  it != childrenEnd();
 	  ++it )

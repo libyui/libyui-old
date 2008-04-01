@@ -157,6 +157,7 @@
 #define YUIProperty_Enabled			"Enabled"
 #define YUIProperty_ExpectedSize		"ExpectedSize"
 #define YUIProperty_Filename			"Filename"
+#define YUIProperty_HelpText			"HelpText"
 #define YUIProperty_IconPath			"IconPath"
 #define YUIProperty_InputMaxLength		"InputMaxLength"
 #define YUIProperty_Item			"Item"
