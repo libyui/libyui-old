@@ -537,12 +537,12 @@ YCPBoolean YCP_UI::OpenDialog( const YCPTerm & opts, const YCPTerm & dialogTerm 
 	    {
 		if ( optList->value(o)->isSymbol() )
 		{
-		    if      ( optList->value(o)->asSymbol()->symbol() == YUIOpt_mainDialog  ) 		dialogType = YMainDialog;
-		    if      ( optList->value(o)->asSymbol()->symbol() == YUIOpt_defaultsize ) 		dialogType = YMainDialog;
-		    else if ( optList->value(o)->asSymbol()->symbol() == YUIOpt_infocolor )		colorMode  = YDialogInfoColor;
-		    else if ( optList->value(o)->asSymbol()->symbol() == YUIOpt_warncolor )		colorMode  = YDialogWarnColor;
-		    else if ( optList->value(o)->asSymbol()->symbol() == YUIOpt_decorated ) 		{} // obsolete
-		    else if ( optList->value(o)->asSymbol()->symbol() == YUIOpt_centered  )		{} // obsolete
+		    if      ( optList->value(o)->asSymbol()->symbol() == YUIOpt_mainDialog  ) 	dialogType = YMainDialog;
+		    if      ( optList->value(o)->asSymbol()->symbol() == YUIOpt_defaultsize ) 	dialogType = YMainDialog;
+		    else if ( optList->value(o)->asSymbol()->symbol() == YUIOpt_infocolor )	colorMode  = YDialogInfoColor;
+		    else if ( optList->value(o)->asSymbol()->symbol() == YUIOpt_warncolor )	colorMode  = YDialogWarnColor;
+		    else if ( optList->value(o)->asSymbol()->symbol() == YUIOpt_decorated ) 	{} // obsolete
+		    else if ( optList->value(o)->asSymbol()->symbol() == YUIOpt_centered  )	{} // obsolete
 		    else
 			yuiWarning() << "Unknown option " << opts->value(o) << " for OpenDialog" << endl;
 		}
@@ -980,7 +980,7 @@ void YCP_UI::NormalCursor()
  * Also keep in mind that layout units are UI independent; a spacing should
  * consume about the same amount of space in all UIs. A Qt UI 800x600 main
  * window corresponds to 80x25 layout units, i.e. the typical NCurses terminal
- * size. 
+ * size.
  *
  * @return true if text mode, false if GUI (Qt / Gtk).
  */
@@ -988,7 +988,7 @@ void YCP_UI::NormalCursor()
 YCPBoolean YCP_UI::TextMode()
 {
     ycpwarning( "UI::TextMode(): Please check if this is really necessary!" );
-    
+
     return YCPBoolean( YUI::app()->isTextMode() );
 }
 
@@ -1076,7 +1076,7 @@ void YCP_UI::RecordMacro( const YCPString & filename )
 {
     YMacro::record( filename->value () );
 }
- 
+
 
 
 /**
@@ -1592,7 +1592,7 @@ YCPValue YCP_UI::evaluateCallback( const YCPTerm & term, bool to_wfm )
     if ( callbackComponent )
     {
 	YCPValue ret = YCPNull();
-	
+
 	if ( to_wfm )	// if it goes to WFM, just send the value
 	{
 	    ret = callbackComponent->evaluate( term->value(0) );
