@@ -255,7 +255,8 @@ y2milestone ("formatEvent(%1)", event);
 	}
 	else if (  event["ID"]:nil == `help )
 	{
-	    UI::OpenDialog(`VBox(`MinSize( 35, 7, `RichText( howto ) ),
+	    string helpText = (string) UI::QueryWidget(`mainLayout, `HelpText );
+	    UI::OpenDialog(`VBox(`MinSize( 35, 7, `RichText( helpText ) ),
 				 `PushButton("&OK" ) ) );
 	    UI::UserInput();
 	    UI::CloseDialog();
