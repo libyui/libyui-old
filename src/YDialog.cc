@@ -23,6 +23,12 @@
 #include "YDialog.h"
 #include "YShortcutManager.h"
 #include "YPushButton.h"
+
+#include "YUI.h"
+#include "YWidgetFactory.h"
+#include "YLayoutBox.h"
+#include "YRichText.h"
+#include "YAlignment.h"
 #include "YUIException.h"
 
 using std::string;
@@ -256,6 +262,41 @@ YDialog::waitForEvent( int timeout_millisec )
 
 	// If there was no event or if filterInvalidEvents() discarded
 	// an invalid event, go back and get the next one.
+
+	if ( event->widget() )
+	{
+	    YPushButton * button = dynamic_cast<YPushButton *> ( event->widget() );
+
+	    if ( button && button->isHelpButton() )
+	    {
+		string helpText;
+		YWidget * widget = button;
+
+		while ( widget )
+		{
+		    if ( ! widget->helpText().empty() )
+		    {
+			yuiDebug() << "Found help text for " << widget << endl;
+			helpText = widget->helpText();
+		    }
+		    
+		    widget = widget->parent();
+		}
+
+		if ( ! helpText.empty() )
+		{
+		    yuiMilestone() << "Showing help text" << endl;
+		    showText( helpText, true );
+		    yuiMilestone() << "Help dialog closed" << endl;
+		}
+		else
+		    yuiWarning() << "No help text in dialog " << this << endl;
+		
+		delete event;
+		event = 0;
+	    }
+	}
+	
     } while ( ! event );
 
     return event;
@@ -419,3 +460,28 @@ YDialog::openDialogsCount()
 }
 
 
+void
+YDialog::showText( const string & text, bool useRichText )
+{
+    try
+    {
+	YDialog     * dialog   = YUI::widgetFactory()->createPopupDialog();
+	YAlignment  * minSize  = YUI::widgetFactory()->createMinSize( dialog, 45, 15 );
+	YLayoutBox  * vbox     = YUI::widgetFactory()->createVBox( minSize );
+	YUI::widgetFactory()->createRichText( vbox, text, ! useRichText );
+	YPushButton * okButton = YUI::widgetFactory()->createPushButton( vbox, "&OK" );
+	okButton->setDefaultButton();
+	
+	YEvent * event = dialog->waitForEvent();
+
+	if ( event )
+	    delete event;
+	dialog->destroy();
+    }
+    catch ( YUIException exception )
+    {
+	// Don't let the application die just because help couldn't be displayed.
+	
+	YUI_CAUGHT( exception );
+    }
+}

@@ -256,6 +256,13 @@ public:
      **/
     virtual void activate() = 0;
 
+    /**
+     * Show the specified text in a pop-up dialog with a local event loop.
+     * This is useful for help texts.
+     * 'richText' indicates if YRichText formatting should be applied.
+     **/
+    static void showText( const string & text, bool richText = false );
+
 
 protected:
 

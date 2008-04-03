@@ -196,6 +196,7 @@
 #define YUIOpt_disabled				"disabled"
 #define YUIOpt_easterEgg			"easterEgg"
 #define YUIOpt_editable				"editable"
+#define YUIOpt_helpButton			"helpButton"
 #define YUIOpt_hstretch				"hstretch"
 #define YUIOpt_hvstretch			"hvstretch"
 #define YUIOpt_immediate			"immediate"

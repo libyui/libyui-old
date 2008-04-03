@@ -36,11 +36,13 @@ struct YPushButtonPrivate
 	: label( label )
 	, isDefaultButton( false )
 	, setDefaultButtonRecursive( false )
+	, isHelpButton( false )
 	{}
     
     string	label;
     bool	isDefaultButton;
     bool	setDefaultButtonRecursive;
+    bool	isHelpButton;
 };
 
 
@@ -111,6 +113,19 @@ void YPushButton::setDefaultButton( bool isDefaultButton )
 	priv->setDefaultButtonRecursive = false;
     }
 }
+
+
+bool YPushButton::isHelpButton() const
+{
+    return priv->isHelpButton;
+}
+
+
+void YPushButton::setHelpButton( bool helpButton )
+{
+    priv->isHelpButton = helpButton;
+}
+
 
 
 const YPropertySet &

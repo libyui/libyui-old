@@ -60,6 +60,15 @@ public:
     virtual void setLabel( const string & label );
 
     /**
+     * Set this button's icon from an icon file in the UI's default icon
+     * directory. Clear the icon if the name is empty.
+     *
+     * This default implementation does nothing.
+     * UIs that can handle icons can choose to overwrite this method.
+     **/
+    virtual void setIcon( const string & iconName ) {}
+
+    /**
      * Returns 'true' if this is the dialog's default button, i.e. the one
      * button that gets activated if the user hits the [Return] key anywhere in
      * the dialog.
@@ -70,18 +79,32 @@ public:
      * Make this button the default button.
      *
      * Derived classes should reimplement this, but call this base class
-     * function in the overwritten function. 
+     * function in the overwritten function.
      **/
     virtual void setDefaultButton( bool def = true );
 
     /**
-     * Set this button's icon from an icon file in the UI's default icon
-     * directory. Clear the icon if the name is empty.
+     * Returns 'true' if this is a "Help" button.
      *
-     * This default implementation does nothing.
-     * UIs that can handle icons can choose to overwrite this method.
+     * When activated, a help button will traverse up its widget hierarchy and
+     * search for the topmost widget with a helpText() set and display that
+     * help text in a pop-up dialog (with a local event loop).
+     *
+     * NOTE that this is only done during YDialog::waitForEvent() (i.e. in YCP
+     * UI::WaitForEvent(), UI::UserInput(), UI::TimeoutUserInput() ) and not
+     * during YDialog::pollEvent() (i.e. YCP UI::PollInput()) since displaying
+     * the help text will block the application until the user closes the help
+     * text.
      **/
-    virtual void setIcon( const string & iconName ) {}
+    bool isHelpButton() const;
+
+    /**
+     * Make this button a help button.
+     *
+     * Derived classes are free to reimplement this, but they should call this
+     * base class method in the overloaded function.
+     **/
+    virtual void setHelpButton( bool helpButton = true );
 
     /**
      * Set a property.
@@ -111,7 +134,7 @@ public:
      * Reimplemented from YWidget.
      **/
     virtual const YPropertySet & propertySet();
-    
+
     /**
      * Get the string of this widget that holds the keyboard shortcut.
      *
