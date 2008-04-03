@@ -1147,6 +1147,7 @@ YCPDialogParser::parseLogView( YWidget * parent, YWidgetOpt & opt,
  * @arg		string iconName (IconButton only)
  * @arg		string label
  * @option	default makes this button the dialogs default button
+ * @option	helpButton automatically shows topmost `HelpText
  * @usage	`PushButton( `id( `click ), `opt( `default, `hstretch ), "Click me" )
  * @examples	PushButton1.ycp PushButton2.ycp IconButton1.ycp
  *
@@ -1170,6 +1171,15 @@ YCPDialogParser::parseLogView( YWidget * parent, YWidgetOpt & opt,
  * Icons are (at the time of this writing) loaded from the <em>theme</em>
  * directory, /usr/share/YaST2/theme/current.
  *
+ * If a button has `opt(`helpButton) set, it is the official help button of
+ * this dialog. When activated, this will open a new dialog with the topmost
+ * help text in this dialog (the topmost widget that has a property `HelpText)
+ * in a pop-up dialog with a local event loop. Note that this is not done
+ * during UI::PollInput() to prevent the application from blocking as long as
+ * the help dialog is open.
+ *
+ * Since a help button is handled internally by the UI, UI::UserInput() and
+ * related will never return this button's ID.
  **/
 
 YWidget *
@@ -1180,6 +1190,7 @@ YCPDialogParser::parsePushButton( YWidget * parent, YWidgetOpt & opt,
     string label;
     string iconName;
     bool   isDefaultButton = false;
+    bool   isHelpButton    = false;
 
     if ( isIconButton )
     {
@@ -1212,7 +1223,8 @@ YCPDialogParser::parsePushButton( YWidget * parent, YWidgetOpt & opt,
 	{
 	    string sym = optList->value(o)->asSymbol()->symbol();
 
-	    if	 ( sym == YUIOpt_default )	isDefaultButton = true;
+	    if	 ( sym == YUIOpt_default    )	isDefaultButton = true;
+	    if	 ( sym == YUIOpt_helpButton )	isHelpButton    = true;
 	    else logUnknownOption( term, optList->value(o) );
 	}
 	else logUnknownOption( term, optList->value(o) );
@@ -1222,6 +1234,9 @@ YCPDialogParser::parsePushButton( YWidget * parent, YWidgetOpt & opt,
 
     if ( isDefaultButton )
 	button->setDefaultButton();
+
+    if ( isHelpButton )
+	button->setHelpButton();
 
     if ( isIconButton )
 	button->setIcon( iconName );

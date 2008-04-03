@@ -201,7 +201,7 @@ y2milestone ("formatEvent(%1)", event);
 				   `RichText(`id(`event_display), event_display )
 				   ),
 			 `HBox(
-			       `PushButton(`id(`help), "&Help" ),
+			       `PushButton(`id(`help), `opt(`helpButton), "&Help" ),
 			       `HStretch(),
 			       `PushButton(`id(`close), "C&lose" )
 			       )
@@ -253,14 +253,17 @@ y2milestone ("formatEvent(%1)", event);
 	    UI::ChangeWidget(`send_mafioso, `Value, nil );
 	    UI::DumpWidgetTree();
 	}
-	else if (  event["ID"]:nil == `help )
-	{
-	    string helpText = (string) UI::QueryWidget(`mainLayout, `HelpText );
-	    UI::OpenDialog(`VBox(`MinSize( 35, 7, `RichText( helpText ) ),
-				 `PushButton("&OK" ) ) );
-	    UI::UserInput();
-	    UI::CloseDialog();
-	}
+	//
+	// Help text is displayed automatically (because of `opt(`helpButton)
+	//
+	//	else if (  event["ID"]:nil == `help )
+	//	{
+	//	    string helpText = (string) UI::QueryWidget(`mainLayout, `HelpText );
+	//	    UI::OpenDialog(`VBox(`MinSize( 35, 7, `RichText( helpText ) ),
+	//				 `PushButton("&OK" ) ) );
+	//	    UI::UserInput();
+	//	    UI::CloseDialog();
+	//	}
 	else if ( event["ID"]:nil == `cancel_order )
 	{
 	    y2milestone( "Cancelling order" );
