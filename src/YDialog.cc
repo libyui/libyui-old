@@ -279,7 +279,7 @@ YDialog::waitForEvent( int timeout_millisec )
 			yuiDebug() << "Found help text for " << widget << endl;
 			helpText = widget->helpText();
 		    }
-		    
+
 		    widget = widget->parent();
 		}
 
@@ -287,16 +287,22 @@ YDialog::waitForEvent( int timeout_millisec )
 		{
 		    yuiMilestone() << "Showing help text" << endl;
 		    showText( helpText, true );
+
+		    // Don't return the event from this help button -
+		    // get back into event loop
+		    delete event;
+		    event = 0;
+
 		    yuiMilestone() << "Help dialog closed" << endl;
 		}
-		else
-		    yuiWarning() << "No help text in dialog " << this << endl;
-		
-		delete event;
-		event = 0;
+		else // No help text
+		{
+		    // Return the event from this help button
+		    yuiWarning() << "No help text in " << this << endl;
+		}
 	    }
 	}
-	
+
     } while ( ! event );
 
     return event;
@@ -471,7 +477,7 @@ YDialog::showText( const string & text, bool useRichText )
 	YUI::widgetFactory()->createRichText( vbox, text, ! useRichText );
 	YPushButton * okButton = YUI::widgetFactory()->createPushButton( vbox, "&OK" );
 	okButton->setDefaultButton();
-	
+
 	YEvent * event = dialog->waitForEvent();
 
 	if ( event )
@@ -481,7 +487,7 @@ YDialog::showText( const string & text, bool useRichText )
     catch ( YUIException exception )
     {
 	// Don't let the application die just because help couldn't be displayed.
-	
+
 	YUI_CAUGHT( exception );
     }
 }
