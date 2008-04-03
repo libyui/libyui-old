@@ -1223,8 +1223,8 @@ YCPDialogParser::parsePushButton( YWidget * parent, YWidgetOpt & opt,
 	{
 	    string sym = optList->value(o)->asSymbol()->symbol();
 
-	    if	 ( sym == YUIOpt_default    )	isDefaultButton = true;
-	    if	 ( sym == YUIOpt_helpButton )	isHelpButton    = true;
+	    if	    ( sym == YUIOpt_default    )	isDefaultButton = true;
+	    else if ( sym == YUIOpt_helpButton )	isHelpButton    = true;
 	    else logUnknownOption( term, optList->value(o) );
 	}
 	else logUnknownOption( term, optList->value(o) );
