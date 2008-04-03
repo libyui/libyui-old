@@ -1,0 +1,17 @@
+// Simple example for help text
+{
+    UI::OpenDialog(
+		   `VBox(`id(`mainLayout),
+			 `Label("Hello, World!"),
+			 `HBox(
+			       `PushButton(`opt(`helpButton ), "&Help"),
+			       `PushButton(`opt(`default    ), "&OK")
+			       )
+			 )
+		   );
+    UI::ChangeWidget(`mainLayout, `HelpText,
+		     "Oh, come on, do you really need help for this?" );
+		   
+    UI::UserInput();
+    UI::CloseDialog();
+}
