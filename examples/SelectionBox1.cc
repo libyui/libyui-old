@@ -65,25 +65,20 @@ int main( int argc, char **argv )
 	    if ( event->eventType() == YEvent::CancelEvent ) // window manager "close window" button
 		break; // leave event loop
 
-	    YWidgetEvent * widgetEvent = dynamic_cast<YWidgetEvent *> (event);
+	    valueField->setValue( "???" );
 
-	    if ( widgetEvent )
-	    {
-		valueField->setValue( "???" );
-
-		if ( widgetEvent->widget() == closeButton )
-		    break; // leave event loop
+	    if ( event->widget() == closeButton )
+		break; // leave event loop
 		
-		if ( widgetEvent->widget() == valueButton ||
-		     widgetEvent->widget() == selBox ) // selBox will only send events with setNotify()
-		{
-		    YItem * item = selBox->selectedItem();
+	    if ( event->widget() == valueButton ||
+		 event->widget() == selBox )		// selBox will only send events with setNotify()
+	    {
+		YItem * item = selBox->selectedItem();
 
-		    if ( item )
-			valueField->setValue( item->label() );
-		    else
-			valueField->setValue( "<none>" );
-		}
+		if ( item )
+		    valueField->setValue( item->label() );
+		else
+		    valueField->setValue( "<none>" );
 	    }
 
 
