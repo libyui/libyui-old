@@ -105,7 +105,7 @@ YCommandLine::add( const string & arg )
 string
 YCommandLine::arg( int index ) const
 {
-    YUI_CHECK_INDEX( index, 0, (int) priv->args.size() );
+    YUI_CHECK_INDEX( index, 0, (int) priv->args.size()-1 );
 
     return priv->args[ index ];
 }
@@ -114,15 +114,16 @@ YCommandLine::arg( int index ) const
 void
 YCommandLine::remove( int index )
 {
-    YUI_CHECK_INDEX( index, 0, (int) priv->args.size() );
+    YUI_CHECK_INDEX( index, 0, (int) priv->args.size()-1 );
 
+    priv->args.erase( priv->args.begin() + index );
 }
 
 
 void
 YCommandLine::replace( int index, const string & newArg )
 {
-    YUI_CHECK_INDEX( index, 0, (int) priv->args.size() );
+    YUI_CHECK_INDEX( index, 0, (int) priv->args.size()-1 );
 
     priv->args[ index ] = newArg;
 }
