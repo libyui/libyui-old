@@ -207,6 +207,11 @@ public:
      **/
     static YUIDebugLoggingEnabledFunction debugLoggingEnabledHook();
 
+    /**
+     * Return the base name without path from a file name with path.  
+     **/
+    static string basename( const string & fileNameWithPath );
+
 
 private:
     /**

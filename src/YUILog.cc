@@ -139,7 +139,7 @@ YUILogBuffer::writeBuffer( const char * sequence, std::streamsize seqLen )
 	string line = buffer.substr( start, newline_pos - start );
 
 	loggerFunction( logLevel, logComponent,
-			sourceFileName, lineNo, functionName,
+			YUILog::basename( sourceFileName ).c_str(), lineNo, functionName,
 			line.c_str() );
 
 	start = newline_pos + 1;
@@ -504,6 +504,22 @@ YUILog::error( const char * logComponent, const char * sourceFileName, int lineN
 {
     return instance()->log( YUI_LOG_ERROR, logComponent, sourceFileName, lineNo, functionName );
 }
+
+
+
+string
+YUILog::basename( const string & fileNameWithPath )
+{
+    std::size_t lastSlashPos = fileNameWithPath.find_last_of( '/' );
+    
+    string fileName =
+	( lastSlashPos == string::npos ) ?
+	fileNameWithPath :
+	fileNameWithPath.substr( lastSlashPos+1 );
+    
+    return fileName;
+}
+
 
 
 static void
