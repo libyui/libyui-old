@@ -24,6 +24,11 @@
 #include "YCPValueWidgetID.h"
 #include "YWizard.h"
 #include "YPushButton.h"
+#include "YReplacePoint.h"
+#include "YDialog.h"
+#include "YUISymbols.h"
+#include "YUI.h"
+#include "YOptionalWidgetFactory.h"
 
 
 bool
@@ -90,6 +95,13 @@ YCPWizardCommandParser::parseAndExecute( YWizard * wizard, const YCPTerm & cmd )
     if ( isCommand( "HideReleaseNotesButton()"		     , cmd ) )	{ wizard->hideReleaseNotesButton();			return true; }
     if ( isCommand( "RetranslateInternalButtons()"	     , cmd ) )	{ wizard->retranslateInternalButtons() ;		return true; }
     if ( isCommand( "Ping()"				     , cmd ) )	{ wizard->ping() ;					return true; }
+    if ( isCommand( "DockSubWizard( any, string, any, string, any, string )", cmd ) )
+    {
+	return dockSubWizard( anyArg( cmd, 0 ), stringArg( cmd, 1 ),
+			      anyArg( cmd, 2 ), stringArg( cmd, 3 ),
+			      anyArg( cmd, 4 ), stringArg( cmd, 5 ) ) != 0;
+    }
+    if ( isCommand( "DeleteSubWizard()"			     , cmd ) )	{ wizard->deleteSubWizard();				return true; }
     y2error( "Undefined wizard command: %s", cmd->toString().c_str() );
     return false;
 }
@@ -332,3 +344,50 @@ YCPWizardCommandParser::setFocus( YWidget * widget )
 	y2error( "NULL widget" );
 }
 
+
+YWizard *
+YCPWizardCommandParser::dockSubWizard( const YCPValue & backButtonId,  const string & 	backButtonLabel,
+				       const YCPValue & abortButtonId, const string & 	abortButtonLabel,
+				       const YCPValue & nextButtonId,  const string & 	nextButtonLabel )
+{
+    try
+    {
+	YWizard * subWizard = 0;
+	YWidget * w = YDialog::topmostDialog()->firstChild();
+
+	if ( ! w )
+	    return 0;
+
+	YWizard * parentWizard = dynamic_cast<YWizard *> (w);
+
+	if ( parentWizard && parentWizard->wizardMode() == YWizardMode_Steps )
+	{
+	    y2milestone( "Docking subwizard" );
+	    subWizard = YUI::optionalWidgetFactory()->createWizard( parentWizard,
+								    backButtonLabel,
+								    abortButtonLabel,
+								    nextButtonLabel,
+								    YWizardMode_Standard );
+	    YUI_CHECK_NEW( subWizard );
+	    
+	    parentWizard->setInternalIdsEnabled( false ); // avoid duplicate IDs
+
+	    // All wizard widgets have a fixed ID `wizard
+	    subWizard->setId( new YCPValueWidgetID( YCPSymbol( YWizardID ) ) );
+
+	    // The wizard internal contents ReplacePoint has a fixed ID `contents
+	    subWizard->contentsReplacePoint()->setId( new YCPValueWidgetID( YCPSymbol( YWizardContentsReplacePointID ) ) );
+		
+	    if ( subWizard->backButton()  )	subWizard->backButton()->setId ( new YCPValueWidgetID( backButtonId  ) );
+	    if ( subWizard->abortButton() ) 	subWizard->abortButton()->setId( new YCPValueWidgetID( abortButtonId ) );
+	    if ( subWizard->nextButton()  ) 	subWizard->nextButton()->setId ( new YCPValueWidgetID( nextButtonId  ) );
+	}
+
+	return subWizard;
+    }
+    catch ( YUIException & exception )
+    {
+	YUI_CAUGHT( exception );
+	return 0;
+    }
+}

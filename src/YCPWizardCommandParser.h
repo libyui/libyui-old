@@ -44,6 +44,15 @@ public:
     static bool parseAndExecute( YWizard *	 wizard,
 				 const YCPTerm & command );
 
+    /**
+     * Try to create a new wizard as a sub-wizard as the existing wizard, if
+     * the current dialog has a wizard in "steps" mode.
+     * Return the new wizard on success and 0 if failed.   
+     **/
+    static YWizard * dockSubWizard( const YCPValue & backButtonId,  const string & backButtonLabel,
+				    const YCPValue & abortButtonId, const string & abortButtonLabel,
+				    const YCPValue & nextButtonId,  const string & nextButtonLabel );
+    
 private:
 
     /**

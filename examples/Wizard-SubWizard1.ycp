@@ -1,0 +1,113 @@
+// Example of using the Wizard widget.
+//
+// Note: YCP applications are discouraged from using the Wizard widget directly.
+// Use the Wizard module instead.
+
+{
+    void handleSubWizard()
+    {
+	if ( UI::WizardCommand(`DockSubWizard(`back,  "&Back (Sub)",
+					      `abort, "Ab&ort (Sub)",
+					      `next,  "&Next (Sub)" ) ) )
+	{
+	    y2milestone( "Docking sub-wizard successful" );
+		
+	    UI::ReplaceWidget(`contents, `Label( "Sub-Wizard" ) );
+
+	    while ( true )
+	    {
+		map event = UI::WaitForEvent();
+
+		y2milestone( "Sub-wizard event: %1", event );
+
+		integer	serial	= (integer) event[ "EventSerialNo" ]:0;
+		string	type	= (string)  event[ "EventType"     ]:"";
+		symbol	id	= (symbol)  event[ "ID"            ]:`nil;
+
+		if ( id == `abort || id == `cancel )
+		    break;
+
+		UI::ReplaceWidget(`id(`contents),
+				  `VBox(
+					`Heading( "Sub-Wizard event:" ),
+					`VSpacing(0.5),
+					`Label( "Serial No: "	+ tostring( serial ) ),
+					`Label( "Type: "	+ type   ),
+					`Label( "ID: "		+ tostring( id ) )
+					) );
+	    }
+
+	    y2milestone( "Closing sub-wizard" );
+	    UI::WizardCommand(`DeleteSubWizard() );
+	}
+    }
+
+    
+    if ( ! UI::HasSpecialWidget(`Wizard) )
+    {
+	y2error( "This works only with UIs that provide the wizard widget!" );
+	return;
+    }
+
+    string help_text =
+	"<p>This is a help text.</p>"
+	+ "<p>It should be helpful.</p>"
+	+ "<p>If it isn't helpful, it should rather not be called a <i>help text</i>.</p>";
+
+    UI::OpenDialog(`opt(`defaultsize ),
+		   `Wizard(`opt(`stepsEnabled),
+			   `back,  "&Back",
+			   `abort, "Ab&ort",
+			   `next,  "&Next" ) );
+
+    // UI::DumpWidgetTree();
+
+    UI::WizardCommand(`SetDialogIcon( "/usr/share/YaST2/theme/current/icons/22x22/apps/YaST.png" ) );
+    UI::WizardCommand(`SetDialogHeading( "Welcome to the YaST2 installation" ) );
+    UI::WizardCommand(`SetHelpText( help_text ) );
+
+    UI::WizardCommand(`AddStepHeading( "Base Installation" ) );
+    UI::WizardCommand(`AddStep( "Language", 			"lang" 		) );
+    UI::WizardCommand(`AddStep( "Installation Settings", 	"proposal" 	) );
+    UI::WizardCommand(`AddStep( "Perform Installation",		"doit"		) );
+
+    UI::WizardCommand(`AddStepHeading( "Configuration" ) );
+    UI::WizardCommand(`AddStep( "Root Password",		"root_pw"	) );
+    UI::WizardCommand(`AddStep( "Network",			"net"		) );
+    UI::WizardCommand(`AddStep( "Online Update",		"you"		) );
+    UI::WizardCommand(`AddStep( "Users",			"auth"		) );
+    UI::WizardCommand(`AddStep( "Clean Up",			"suse_config"	) );
+    UI::WizardCommand(`AddStep( "Release Notes",		"rel_notes"	) );
+    UI::WizardCommand(`AddStep( "Device Configuration",		"hw_proposal"	) );
+    UI::WizardCommand(`UpdateSteps() );
+
+    UI::WizardCommand(`SetCurrentStep( "net" ) );
+
+    UI::ReplaceWidget(`contents,
+		      `VBox(
+			    `HVCenter( `PushButton(`id(`subWizard), "&Sub-Wizard" ) )
+			    )
+		      );
+	
+    while( true )
+    {
+	map event = UI::WaitForEvent();
+
+	y2milestone( "Got event: %1", event );
+
+	if ( event[ "ID" ]:nil == `abort )
+	    break;
+
+	symbol id = (symbol)  event[ "ID" ]:`nil;
+
+
+	if ( id == `subWizard )
+	{
+	    handleSubWizard();
+	}
+	else if ( id == `cancel || id == `abort )
+	    break;
+    }
+
+    UI::CloseDialog();
+}
