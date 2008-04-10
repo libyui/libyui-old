@@ -114,6 +114,11 @@ public:
     //
     // Wizard basics
     //
+
+    /**
+     * Return this wizard's mode.
+     **/
+    YWizardMode wizardMode() const;
     
     /**
      * Return the wizard buttons or 0 if there is no such button.
@@ -164,6 +169,27 @@ public:
      * Set the dialog heading.
      **/
     virtual void setDialogHeading( const string & headingText ) = 0;
+
+    /**
+     * Enable or disable the IDs of this wizard and its internal widgets:
+     * backButton(), abortButton(), nextButton(), contentsReplacePoint().
+     *
+     * This wizard keeps count of those calls and really enables the IDs only
+     * when the internal counter reaches 0.
+     **/
+    void setInternalIdsEnabled( bool enabled );
+
+    /**
+     * Return the next widget parent upwards in the hierarchy of this wizard
+     * or 0 if there is none.
+     **/
+    YWizard * wizardParent() const;
+
+    /**
+     * Delete the last sub-wizard of this wizard, if there is one.
+     * Do nothing if there is none.
+     **/
+    virtual void deleteSubWizard() = 0;
 
     
     //

@@ -30,9 +30,11 @@ typedef long long	YFileSize_t;
 
 class YWidget;
 
-typedef std::list<YWidget *>			YWidgetList;
-typedef std::list<YWidget *>::iterator		YWidgetListIterator;
-typedef std::list<YWidget *>::const_iterator	YWidgetListConstIterator;
+typedef std::list<YWidget *>				YWidgetList;
+typedef std::list<YWidget *>::iterator			YWidgetListIterator;
+typedef std::list<YWidget *>::const_iterator		YWidgetListConstIterator;
+typedef std::list<YWidget *>::reverse_iterator		YWidgetListReverseIterator;
+typedef std::list<YWidget *>::const_reverse_iterator	YWidgetListConstReverseIterator;
 
 
 #define YUIAllDimensions	2

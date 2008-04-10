@@ -21,6 +21,9 @@
 
 int main( int argc, char **argv )
 {
+    YUILog::setLogFileName( "/tmp/libyui-examples.log" );
+    YUILog::enableDebugLogging();
+
     //
     // Create and open dialog
     //

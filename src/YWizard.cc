@@ -22,6 +22,7 @@
 
 #include "YWizard.h"
 #include "YPushButton.h"
+#include "YReplacePoint.h"
 
 
 struct YWizardPrivate
@@ -29,10 +30,12 @@ struct YWizardPrivate
     YWizardPrivate( YWizardMode wizardMode )
 	: wizardMode( wizardMode )
 	, nextButtonIsProtected( false )
+	, idsDisabledCount( 0 )
 	{}
 
     YWizardMode	wizardMode;
     bool	nextButtonIsProtected;
+    int		idsDisabledCount;
 };
 
 
@@ -60,7 +63,36 @@ YWizard::YWizard( YWidget *		parent,
 
 YWizard::~YWizard()
 {
-    // NOP
+    YWizard * parentWizard = wizardParent();
+
+    if ( parentWizard )
+	parentWizard->setInternalIdsEnabled( true );
+}
+
+
+YWizardMode
+YWizard::wizardMode() const
+{
+    return priv->wizardMode;
+}
+
+
+YWizard *
+YWizard::wizardParent() const
+{
+    YWidget * widget = parent();
+
+    while ( widget )
+    {
+	YWizard * wizard = dynamic_cast<YWizard *> (widget);
+
+	if ( wizard )
+	    return wizard;
+
+	widget = widget->parent();
+    }
+
+    return 0;
 }
 
 
@@ -94,6 +126,27 @@ void
 YWizard::ping()
 {
     yuiDebug() << "YWizard is active" << endl;
+}
+
+
+void
+YWizard::setInternalIdsEnabled( bool enabled )
+{
+    if ( enabled )
+	priv->idsDisabledCount--;
+    else
+    	priv->idsDisabledCount++;
+
+    if ( enabled && priv->idsDisabledCount > 0 )
+	return;
+
+    this->setIdEnabled( enabled );
+    
+    if ( backButton()  )	backButton ()->setIdEnabled( enabled );
+    if ( abortButton() )	abortButton()->setIdEnabled( enabled );
+    if ( nextButton()  )	nextButton ()->setIdEnabled( enabled );
+
+    if ( contentsReplacePoint() ) contentsReplacePoint()->setIdEnabled( enabled );
 }
 
 

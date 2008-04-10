@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Apr 10 19:51:35 CEST 2008 - sh@suse.de
+
+- Added support for docked sub-wizards
+- V 2.16.42 
+
+-------------------------------------------------------------------
 Thu Apr  3 15:03:35 CEST 2008 - sh@suse.de
 
 - Added YPushButton::setHelpButton() and isHelpButton() 

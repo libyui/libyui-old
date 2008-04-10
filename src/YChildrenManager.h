@@ -71,10 +71,22 @@ public:
 	{ return _children.begin(); }
 
     /**
-     * Returns an iterator that points after the last child.
+     * Return an iterator that points after the last child.
      **/
     typename ChildrenList::const_iterator end() const
 	{ return _children.end(); }
+
+    /**
+     * Return a reverse iterator that points to the last child.
+     **/
+    typename ChildrenList::const_reverse_iterator rbegin() const
+	{ return _children.rbegin(); }
+    
+    /**
+     * Return a reverse iterator that points before the first child.
+     **/
+    typename ChildrenList::const_reverse_iterator rend() const
+	{ return _children.rend(); }
 
     /**
      * Returns the first child or 0 if there is none.
@@ -82,6 +94,12 @@ public:
      **/
     T * firstChild()
 	{ return _children.empty() ? (T *) 0 : _children.front(); }
+
+    /**
+     * Returns the last child or 0 if there is none.
+     **/
+    T * lastChild()
+	{ return _children.empty() ? (T *) 0 : _children.back(); }
 
     /**
      * Add a new child.
