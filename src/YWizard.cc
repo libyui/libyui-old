@@ -63,10 +63,7 @@ YWizard::YWizard( YWidget *		parent,
 
 YWizard::~YWizard()
 {
-    YWizard * parentWizard = wizardParent();
-
-    if ( parentWizard )
-	parentWizard->setInternalIdsEnabled( true );
+    // NOP
 }
 
 

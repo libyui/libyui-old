@@ -179,17 +179,36 @@ public:
      **/
     void setInternalIdsEnabled( bool enabled );
 
+    //
+    // Sub-Wizard Docking
+    //
+
+    /**
+     * Dock a sub-wizard: Wizards in YWizardMode_Steps can "swallow" wizards
+     * in YWizardMode_Standard so they will obscure the content + buttons part
+     * of the "steps" wizard. The docked wizard must be created as the
+     * immediate child of the "steps" wizard.
+     *
+     * Return 'true' upon success, 'false' upon failure.
+     *
+     * This default implementation always returns 'false'.
+     **/
+    virtual bool dockSubWizard( YWizard * subWizard ) { return false; }
+
+    /**
+     * Delete a sub-wizard.
+     *
+     * Return 'true' upon success, 'false' upon failure.
+     *
+     * This default implementation always returns 'false'.
+     **/
+    virtual bool deleteSubWizard( YWizard * subWizard ) { return false; }
+
     /**
      * Return the next widget parent upwards in the hierarchy of this wizard
      * or 0 if there is none.
      **/
     YWizard * wizardParent() const;
-
-    /**
-     * Delete the last sub-wizard of this wizard, if there is one.
-     * Do nothing if there is none.
-     **/
-    virtual void deleteSubWizard() = 0;
 
     
     //
