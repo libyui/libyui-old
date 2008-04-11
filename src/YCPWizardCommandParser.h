@@ -44,15 +44,6 @@ public:
     static bool parseAndExecute( YWizard *	 wizard,
 				 const YCPTerm & command );
 
-    /**
-     * Try to create a new wizard as a sub-wizard as the existing wizard, if
-     * the current dialog has a wizard in "steps" mode.
-     * Return the new wizard on success and 0 if failed.   
-     **/
-    static YWizard * dockSubWizard( const YCPValue & backButtonId,  const string & backButtonLabel,
-				    const YCPValue & abortButtonId, const string & abortButtonLabel,
-				    const YCPValue & nextButtonId,  const string & nextButtonLabel );
-    
 private:
 
     /**
@@ -73,7 +64,7 @@ private:
      * Remove all whitespace (leading, trailing, and internal) from a string.
      **/
     static string stripWhitespace( const string & orig );
-    
+
     /**
      * Return argument number 'argNo' from 'term' as string.
      **/
@@ -97,7 +88,7 @@ private:
     /**
      * Enable or disable a widget if it is non-null.
      * Disabling the wizard's "Next" button is ignored if it is currently
-     * proteced with YWizard::ProtectNextButton().  
+     * proteced with YWizard::ProtectNextButton().
      **/
     static void enable( YWizard * wizard, YWidget * widget, bool enabled );
 
@@ -105,6 +96,24 @@ private:
      * Set the keyboard focus to a widget if it is non-null.
      **/
     static void setFocus( YWidget * widget );
+
+    /**
+     * Try to create a new wizard as a sub-wizard as the existing wizard, if
+     * the current dialog has a wizard in "steps" mode.
+     *
+     * Returns 'true' on success, 'false' on failure.
+     **/
+    static bool dockSubWizard( YWizard * parentWizard,
+			       const YCPValue & backButtonId,  const string & backButtonLabel,
+			       const YCPValue & abortButtonId, const string & abortButtonLabel,
+			       const YCPValue & nextButtonId,  const string & nextButtonLabel );
+
+    /**
+     * Try to delete a sub-wizard.
+     *
+     * Returns 'true' on success, 'false' on failure.
+     **/
+    static bool deleteSubWizard( YWizard * subWizard );
 
     /**
      * Constructor (disabled).
