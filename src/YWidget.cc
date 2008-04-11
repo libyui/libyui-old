@@ -55,14 +55,13 @@ struct YWidgetPrivate
 	: magic( YWIDGET_MAGIC )
 	, childrenManager( manager )
 	, parent( parentWidget )
-	, id( 0 )
 	, beingDestroyed( false )
 	, enabled( true )
 	, notify( false )
 	, sendKeyEvents( false )
 	, autoShortcut( false )
-	, idEnabled( true )
 	, toolkitWidgetRep( 0 )
+	, id( 0 )
 	, functionKey( 0 )
     {
 	stretch.hor	= false;
@@ -78,14 +77,13 @@ struct YWidgetPrivate
     int 			magic;
     YWidgetChildrenManager *	childrenManager;
     YWidget *			parent;
-    YWidgetID *			id;
     bool			beingDestroyed;
     bool			enabled;
     bool			notify;
     bool 			sendKeyEvents;
     bool 			autoShortcut;
-    bool			idEnabled;
     void *			toolkitWidgetRep;
+    YWidgetID *			id;
     YBothDim<bool>		stretch;
     YBothDim<int>		weight;
     int				functionKey;
@@ -360,7 +358,7 @@ void YWidget::setHelpText( const string & helpText )
 YWidgetID *
 YWidget::id() const
 {
-    return (priv->idEnabled ? priv->id : 0 );
+    return priv->id;
 }
 
 
@@ -376,18 +374,6 @@ void YWidget::setId( YWidgetID * newId )
 bool YWidget::hasId() const
 {
     return priv->id != 0;
-}
-
-
-void YWidget::setIdEnabled( bool enabled )
-{
-    priv->idEnabled = enabled;
-}
-
-
-bool YWidget::isIdEnabled() const
-{
-    return priv->idEnabled;
 }
 
 

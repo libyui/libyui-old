@@ -196,7 +196,6 @@ public:
      **/
     bool hasChildren() const
 	{ return childrenManager()->hasChildren(); }
-    
     /**
      * Returns the first child or 0 if there is none.
      * Useful mostly for children managers that handle only one child.
@@ -373,7 +372,7 @@ public:
     bool hasId() const;
 
     /**
-     * Returns this widget's ID unless the ID is disabled.
+     * Returns this widget's ID.
      **/
     YWidgetID * id() const;
 
@@ -559,21 +558,6 @@ public:
      * Enable or disable all widgets in this widget tree.
      **/
     void setChildrenEnabled( bool enabled );
-
-    /**
-     * Enable or disable this widget's ID.
-     *
-     * As long as the ID is disabled, subsequent calls to id() will return 0.
-     * Widget IDs are enabled by default. Disabling a widget ID makes sense
-     * only in very rare cases - see YWizard for an example.
-     **/
-    void setIdEnabled( bool enabled = true );
-    void setIdDisabled() { setIdEnabled( false ); }
-
-    /**
-     * Return 'true' if this widget's ID is enabled.
-     **/
-    bool isIdEnabled() const;
 
     //
     // Macro Recorder Support

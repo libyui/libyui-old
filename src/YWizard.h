@@ -114,11 +114,6 @@ public:
     //
     // Wizard basics
     //
-
-    /**
-     * Return this wizard's mode.
-     **/
-    YWizardMode wizardMode() const;
     
     /**
      * Return the wizard buttons or 0 if there is no such button.
@@ -169,46 +164,6 @@ public:
      * Set the dialog heading.
      **/
     virtual void setDialogHeading( const string & headingText ) = 0;
-
-    /**
-     * Enable or disable the IDs of this wizard and its internal widgets:
-     * backButton(), abortButton(), nextButton(), contentsReplacePoint().
-     *
-     * This wizard keeps count of those calls and really enables the IDs only
-     * when the internal counter reaches 0.
-     **/
-    void setInternalIdsEnabled( bool enabled );
-
-    //
-    // Sub-Wizard Docking
-    //
-
-    /**
-     * Dock a sub-wizard: Wizards in YWizardMode_Steps can "swallow" wizards
-     * in YWizardMode_Standard so they will obscure the content + buttons part
-     * of the "steps" wizard. The docked wizard must be created as the
-     * immediate child of the "steps" wizard.
-     *
-     * Return 'true' upon success, 'false' upon failure.
-     *
-     * This default implementation always returns 'false'.
-     **/
-    virtual bool dockSubWizard( YWizard * subWizard ) { return false; }
-
-    /**
-     * Delete a sub-wizard.
-     *
-     * Return 'true' upon success, 'false' upon failure.
-     *
-     * This default implementation always returns 'false'.
-     **/
-    virtual bool deleteSubWizard( YWizard * subWizard ) { return false; }
-
-    /**
-     * Return the next widget parent upwards in the hierarchy of this wizard
-     * or 0 if there is none.
-     **/
-    YWizard * wizardParent() const;
 
     
     //
