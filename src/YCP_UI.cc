@@ -505,6 +505,12 @@ YCPValue YCP_UI::doUserInput( const char * 	builtin_name,
  *
  * <tt>`defaultsize</tt> is an alias for <tt>`mainDialog</tt>.
  *
+ * <tt>`wizardDialog</tt> is a main dialog that will contain a wizard widget.
+ * For UIs that don't support this kind of specialized dialog, this is
+ * equivalent to <tt>`mainDialog</tt> -- see also the
+ * <tt>HasWizardDialogSupport</tt> entry of the map returned by
+ * <tt>UI::GetDisplayInfo()</tt>. 
+ *
  * The <tt>`warncolor</tt> option displays the entire dialog in a bright
  * warning color.
  *
@@ -538,7 +544,8 @@ YCPBoolean YCP_UI::OpenDialog( const YCPTerm & opts, const YCPTerm & dialogTerm 
 		if ( optList->value(o)->isSymbol() )
 		{
 		    if      ( optList->value(o)->asSymbol()->symbol() == YUIOpt_mainDialog  ) 	dialogType = YMainDialog;
-		    if      ( optList->value(o)->asSymbol()->symbol() == YUIOpt_defaultsize ) 	dialogType = YMainDialog;
+		    else if ( optList->value(o)->asSymbol()->symbol() == YUIOpt_defaultsize ) 	dialogType = YMainDialog;
+		    else if ( optList->value(o)->asSymbol()->symbol() == YUIOpt_wizardDialog )	dialogType = YWizardDialog;
 		    else if ( optList->value(o)->asSymbol()->symbol() == YUIOpt_infocolor )	colorMode  = YDialogInfoColor;
 		    else if ( optList->value(o)->asSymbol()->symbol() == YUIOpt_warncolor )	colorMode  = YDialogWarnColor;
 		    else if ( optList->value(o)->asSymbol()->symbol() == YUIOpt_decorated ) 	{} // obsolete
@@ -555,6 +562,9 @@ YCPBoolean YCP_UI::OpenDialog( const YCPTerm & opts, const YCPTerm & dialogTerm 
 
     try
     {
+	if ( dialogType == YWizardDialog && ! YUI::yApp()->hasWizardDialogSupport() )
+	    dialogType = YMainDialog;
+	
 	YDialog * dialog = YUI::widgetFactory()->createDialog( dialogType, colorMode );
 	YUI_CHECK_NEW( dialog );
 

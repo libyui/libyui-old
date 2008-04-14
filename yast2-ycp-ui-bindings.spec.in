@@ -19,8 +19,8 @@ Conflicts:	yast2-core < 2.16.38
 # libycp includes crypto built-ins
 BuildRequires:  libxcrypt-devel
 
-Requires:	yast2-libyui	   >= 2.16.43
-BuildRequires:	yast2-libyui-devel >= 2.16.43
+Requires:	yast2-libyui	   >= 2.16.44
+BuildRequires:	yast2-libyui-devel >= 2.16.44
 
 # libyui ImplPtr
 BuildRequires:	boost-devel
