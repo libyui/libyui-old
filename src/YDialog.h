@@ -198,9 +198,15 @@ public:
     void recalcLayout();
 
     /**
-     * Return this dialog's type (YMainDialog / YPopupDialog).
+     * Return this dialog's type (YMainDialog / YPopupDialog /YWizardDialog).
      **/
     YDialogType dialogType() const;
+
+    /**
+     * Return 'true' if this dialog is a dialog of main dialog size:
+     * YMainDialog or YWizardDialog. 
+     **/
+    bool isMainDialog();
 
     /**
      * Return this dialog's color mode.

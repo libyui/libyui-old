@@ -356,6 +356,7 @@ public:
     virtual bool hasFullUtf8Support()		= 0;
     virtual bool richTextSupportsTable()	= 0;
     virtual bool leftHandedMouse()		= 0;
+    virtual bool hasWizardDialogSupport() { return false; }
 
 
 private:

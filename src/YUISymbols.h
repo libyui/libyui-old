@@ -221,6 +221,7 @@
 #define YUIOpt_updateMode			"updateMode"
 #define YUIOpt_vstretch				"vstretch"
 #define YUIOpt_warncolor			"warncolor"
+#define YUIOpt_wizardDialog			"wizardDialog"
 #define YUIOpt_youMode				"youMode"
 #define YUIOpt_zeroHeight			"zeroHeight"
 #define YUIOpt_zeroWidth			"zeroWidth"
@@ -282,6 +283,7 @@
 #define YUICap_HasAnimationSupport		"HasAnimationSupport"
 #define YUICap_HasIconSupport			"HasIconSupport"
 #define YUICap_HasFullUtf8Support		"HasFullUtf8Support"
+#define YUICap_HasWizardDialogSupport		"HasWizardDialogSupport"
 #define YUICap_RichTextSupportsTable		"RichTextSupportsTable"
 #define YUICap_LeftHandedMouse			"LeftHandedMouse"
 

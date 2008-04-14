@@ -153,6 +153,24 @@ YDialog::dialogType() const
 }
 
 
+bool
+YDialog::isMainDialog()
+{
+    switch ( priv->dialogType )
+    {
+	case YMainDialog:	return true;
+	case YWizardDialog:	return true;
+	case YPopupDialog:	return false;
+
+	    // Intentionally omitting the 'default' case so the compiler can
+	    // catch unhandled enum values 
+    }
+
+    /*NOTREACHED*/
+    return false;
+}
+
+
 YDialogColorMode
 YDialog::colorMode() const
 {

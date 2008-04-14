@@ -58,7 +58,8 @@ enum YAlignmentType
 enum YDialogType
 {
     YMainDialog,
-    YPopupDialog
+    YPopupDialog,
+    YWizardDialog
 };
 
 
