@@ -49,7 +49,6 @@ void YCPErrorDialog::exceptionDialog( const string & headingText,
 	YLayoutBox * buttonBox = fac->createHBox( vbox );
 	fac->createHStretch( buttonBox );
 	YPushButton * closeButton = fac->createPushButton( buttonBox, "&Close" );
-	closeButton->setId( new YCPValueWidgetID( YCPSymbol( "cancel" ) ) );
 	dialog->open();
 
 	dialog->waitForEvent();
