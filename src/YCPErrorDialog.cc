@@ -52,8 +52,7 @@ void YCPErrorDialog::exceptionDialog( const string & headingText,
 	closeButton->setId( new YCPValueWidgetID( YCPSymbol( "cancel" ) ) );
 	dialog->open();
 
-	YEvent * event = dialog->waitForEvent();
-	delete event;
+	dialog->waitForEvent();
 	dialog->destroy();
     }
     catch ( YUIException & ex )
