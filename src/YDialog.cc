@@ -332,6 +332,8 @@ YDialog::waitForEvent( int timeout_millisec )
 
     } while ( ! event );
 
+    priv->lastEvent = event;
+
     return event;
 }
 
@@ -346,6 +348,7 @@ YDialog::pollEvent()
 	open();
 
     YEvent * event = filterInvalidEvents( pollEventInternal() );
+    priv->lastEvent = event;
 
     // Nevermind if filterInvalidEvents() discarded an invalid event.
     // pollInput() is normally called very often (in a loop), and most of the
