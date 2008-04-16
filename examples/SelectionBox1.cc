@@ -83,14 +83,6 @@ int main( int argc, char **argv )
 		else
 		    valueField->setValue( "<none>" );
 	    }
-
-
-	    // YDialog::waitForEvent() allocates a new YEvent and transfers
-	    // ownership of the event to the caller, so the caller has to make
-	    // sure the memory for the event is deallocated after use.
-	    // Otherwise there will be a memory leak.
-
-	    delete event;
 	}
     }
 

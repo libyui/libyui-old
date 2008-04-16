@@ -17,8 +17,6 @@ int main( int argc, char **argv )
     YUI::widgetFactory()->createLabel     ( vbox, "Hello, World!" );
     YUI::widgetFactory()->createPushButton( vbox, "&OK" );
     
-    YEvent * event = dialog->waitForEvent();
-    delete event;
-
+    dialog->waitForEvent();
     dialog->destroy();
 }

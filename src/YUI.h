@@ -205,6 +205,11 @@ public:
      * UI-specific runPkgSelection method.
      *
      * Derived classes are required to implement this.
+     *
+     * The packageSelector's dialog will take care of the event and delete it
+     * when appropriate. The returned pointer is valid until the next call to
+     * YDialog::userInput(), YDialog::pollInput(), or YUI::runPkgSelection() or
+     * until the dialog with the packageSelector is destroyed.
      **/
     virtual YEvent * runPkgSelection( YWidget * packageSelector ) = 0;
 

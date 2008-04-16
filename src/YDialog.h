@@ -21,12 +21,12 @@
 #define YDialog_h
 
 #include "YSingleChildContainerWidget.h"
-#include "YEvent.h"
 #include <stack>
 
 class YShortcutManager;
 class YPushButton;
 class YDialogPrivate;
+class YEvent;
 
 // See YTypes.h for enum YDialogType and enum YDialogColorMode
 
@@ -92,8 +92,10 @@ public:
      * If open() has not been called for this dialog until now,
      * it is called now.
      *
-     * Ownership of the event is transferred to the caller, i.e. the caller is
-     * responsible for deleting it after use.
+     * The dialog retains ownership of the event and will delete it upon the
+     * next call to waitForEvent() or pollEvent() or when the dialog is
+     * deleted. This also means that the return value of this function can
+     * safely be ignored without fear of memory leaks.
      *
      * If this dialog is not the topmost dialog, an exception is thrown.
      **/
@@ -106,11 +108,13 @@ public:
      * If open() has not been called for this dialog until now,
      * it is called now.
      *
-     * Ownership of the event is transferred to the caller, i.e. the caller is
-     * responsible for deleting it after use.
+     * The dialog retains ownership of the event and will delete it upon the
+     * next call to waitForEvent() or pollEvent() or when the dialog is
+     * deleted. This also means that the return value of this function can
+     * safely be ignored without fear of memory leaks.
      *
      * If this dialog is not the topmost dialog, an exception is thrown.
-     **/ 
+     **/
     YEvent * pollEvent();
 
     /**
@@ -204,7 +208,7 @@ public:
 
     /**
      * Return 'true' if this dialog is a dialog of main dialog size:
-     * YMainDialog or YWizardDialog. 
+     * YMainDialog or YWizardDialog.
      **/
     bool isMainDialog();
 
@@ -241,6 +245,11 @@ public:
      * This might return 0 if there is no default button.
      **/
     YPushButton * defaultButton() const;
+
+    /**
+     * Delete an event.
+     **/
+    void deleteEvent( YEvent * event );
 
     /**
      * Set this dialog's default button (the button that is activated when
@@ -287,7 +296,7 @@ protected:
      * Derived classes are required to implement this.
      **/
     virtual YEvent * waitForEventInternal( int timeout_millisec ) = 0;
-    
+
     /**
      * Check if a user event is pending. If there is one, return it.
      * If there is none, do not wait for one - return 0.

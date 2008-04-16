@@ -21,6 +21,7 @@
 #include "YUILog.h"
 
 #include "YDialog.h"
+#include "YEvent.h"
 #include "YShortcutManager.h"
 #include "YPushButton.h"
 
@@ -48,6 +49,7 @@ struct YDialogPrivate
 	, shortcutCheckPostponed( false )
 	, defaultButton( 0 )
 	, isOpen( false )
+	, lastEvent( 0 )
 	{}
 
     YDialogType		dialogType;
@@ -55,6 +57,7 @@ struct YDialogPrivate
     bool		shortcutCheckPostponed;
     YPushButton *	defaultButton;
     bool		isOpen;
+    YEvent *		lastEvent;
 };
 
 
@@ -78,6 +81,9 @@ YDialog::~YDialog()
 #if VERBOSE_DIALOGS
     yuiDebug() << "Destroying " << this << endl;
 #endif
+
+    if ( priv->lastEvent )
+	deleteEvent( priv->lastEvent );
 
     if ( ! _dialogStack.empty() && _dialogStack.top() == this )
     {
@@ -163,7 +169,7 @@ YDialog::isMainDialog()
 	case YPopupDialog:	return false;
 
 	    // Intentionally omitting the 'default' case so the compiler can
-	    // catch unhandled enum values 
+	    // catch unhandled enum values
     }
 
     /*NOTREACHED*/
@@ -272,6 +278,9 @@ YDialog::waitForEvent( int timeout_millisec )
 	checkShortcuts( true );
     }
 
+    if ( priv->lastEvent )
+	deleteEvent( priv->lastEvent );
+
     YEvent * event = 0;
 
     do
@@ -308,7 +317,7 @@ YDialog::waitForEvent( int timeout_millisec )
 
 		    // Don't return the event from this help button -
 		    // get back into event loop
-		    delete event;
+		    deleteEvent( event );
 		    event = 0;
 
 		    yuiMilestone() << "Help dialog closed" << endl;
@@ -369,7 +378,7 @@ YDialog::filterInvalidEvents( YEvent * event )
 
 	    // yuiDebug() << "Discarding event for widget that has become invalid" << endl;
 
-	    delete widgetEvent;
+	    deleteEvent( widgetEvent );
 	    return 0;
 	}
 
@@ -401,7 +410,7 @@ YDialog::filterInvalidEvents( YEvent * event )
 
 	    activate(); // try to force this dialog to the foreground
 
-	    delete widgetEvent;
+	    deleteEvent( widgetEvent );
 	    return 0;
 	}
 
@@ -409,6 +418,18 @@ YDialog::filterInvalidEvents( YEvent * event )
 
     return event;
 }
+
+
+void
+YDialog::deleteEvent( YEvent * event )
+{
+    if ( event == priv->lastEvent )
+	priv->lastEvent = 0;
+
+    if ( event )
+	delete event;
+}
+
 
 
 
@@ -496,10 +517,7 @@ YDialog::showText( const string & text, bool useRichText )
 	YPushButton * okButton = YUI::widgetFactory()->createPushButton( vbox, "&OK" );
 	okButton->setDefaultButton();
 
-	YEvent * event = dialog->waitForEvent();
-
-	if ( event )
-	    delete event;
+	dialog->waitForEvent();
 	dialog->destroy();
     }
     catch ( YUIException exception )

@@ -50,7 +50,7 @@ void YSimpleEventHandler::clear()
 #if VERBOSE_EVENTS
 	yuiDebug() << "Clearing pending event: " << YEvent::toString( _pendingEvent->eventType() ) << endl;
 #endif
-	delete _pendingEvent;
+	deleteEvent( _pendingEvent );
     }
 }
 
@@ -79,7 +79,7 @@ void YSimpleEventHandler::sendEvent( YEvent * event )
 #endif
 	// Avoid memory leak: The event handler assumes ownership of the newly
 	// created event, so we have to clean it up here.
-	delete event;
+	deleteEvent( event );
 
 	return;
     }
@@ -96,7 +96,7 @@ void YSimpleEventHandler::sendEvent( YEvent * event )
 	 * processed) by the generic UI.
 	 **/
 
-	delete _pendingEvent;
+	deleteEvent( _pendingEvent );
     }
 
 #if VERBOSE_EVENTS
@@ -127,4 +127,14 @@ void YSimpleEventHandler::blockEvents( bool block )
 #endif
 
     _eventsBlocked = block;
+}
+
+
+void YSimpleEventHandler::deleteEvent( YEvent * event )
+{
+    if ( event == _pendingEvent )
+	_pendingEvent = 0;
+    
+    if ( event )
+	delete event;
 }

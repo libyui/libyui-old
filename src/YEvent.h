@@ -21,10 +21,13 @@
 
 
 #include <string>
+#include "YDialog.h"
+#include "YSimpleEventHandler.h"
 
 using std::string;
 class YWidget;
 class YItem;
+class YDialog;
 
 
 /**
@@ -63,12 +66,6 @@ public:
     YEvent( EventType eventType = UnknownEvent );
 
     /**
-     * Virtual desctructor to force a polymorph object
-     * so dynamic_cast<> can be used.
-     **/
-    virtual ~YEvent();
-
-    /**
      * Returns the event type.
      **/
     EventType eventType() const { return _eventType; }
@@ -95,7 +92,11 @@ public:
      **/
     virtual YItem * item() const { return 0; }
 
-    
+    /**
+     * Return the dialog this event belongs to or 0 if no dialog was set yet.
+     **/
+    YDialog * dialog() const { return _dialog; }
+
     /**
      * Returns the character representation of an event type.
      **/
@@ -108,9 +109,35 @@ public:
 
 
 protected:
+    
+    /**
+     * Set the dialog this event belongs to.
+     **/
+    void setDialog( YDialog * dia ) { _dialog = dia; }
+
+    /**
+     * Protected destructor - events can only be deleted via
+     * YDialog::deleteEvent(). The associated dialog will take care of this
+     * event and delete it when appropriate.
+     *
+     * This desctructor is virtual to force a polymorph object 
+     * so dynamic_cast<> can be used.
+     **/
+    virtual ~YEvent();
+    
+private:
+    
+    friend void YDialog::deleteEvent( YEvent * event );
+    friend void YSimpleEventHandler::deleteEvent( YEvent * event );
+
+
+    //
+    // Data members
+    //
 
     EventType 			_eventType;
     unsigned long		_serial;
+    YDialog *			_dialog;
 
     static unsigned long	_nextSerial;
     static int			_activeEvents;
@@ -142,6 +169,18 @@ public:
 
 protected:
 
+    /**
+     * Protected destructor - events can only be deleted via
+     * YDialog::deleteEvent(). The associated dialog will take care of this
+     * event and delete it when appropriate.
+     **/
+    virtual ~YWidgetEvent() {}
+
+    
+    //
+    // Data members
+    //
+    
     YWidget * 	_widget;
     EventReason	_reason;
 };
@@ -176,6 +215,18 @@ public:
     YWidget * focusWidget() const { return _focusWidget; }
 
 protected:
+    
+    /**
+     * Protected destructor - events can only be deleted via
+     * YDialog::deleteEvent(). The associated dialog will take care of this
+     * event and delete it when appropriate.
+     **/
+    virtual ~YKeyEvent() {}
+
+    
+    //
+    // Data members
+    //
 
     string	_keySymbol;
     YWidget * 	_focusWidget;
@@ -212,6 +263,18 @@ public:
     string id() const { return _id; }
 
 protected:
+    
+    /**
+     * Protected destructor - events can only be deleted via
+     * YDialog::deleteEvent(). The associated dialog will take care of this
+     * event and delete it when appropriate.
+     **/
+    virtual ~YMenuEvent() {}
+
+    
+    //
+    // Data members
+    //
 
     YItem * _item;
     string  _id;
@@ -227,6 +290,15 @@ class YCancelEvent: public YEvent
 public:
 
     YCancelEvent() : YEvent( CancelEvent ) {}
+
+    
+protected:
+    /**
+     * Protected destructor - events can only be deleted via
+     * YDialog::deleteEvent(). The associated dialog will take care of this
+     * event and delete it when appropriate.
+     **/
+    virtual ~YCancelEvent() {}
 };
 
 
@@ -239,6 +311,14 @@ class YDebugEvent: public YEvent
 public:
 
     YDebugEvent() : YEvent( DebugEvent ) {}
+    
+protected:
+    /**
+     * Protected destructor - events can only be deleted via
+     * YDialog::deleteEvent(). The associated dialog will take care of this
+     * event and delete it when appropriate.
+     **/
+    virtual ~YDebugEvent() {}
 };
 
 
@@ -251,6 +331,14 @@ class YTimeoutEvent: public YEvent
 public:
 
     YTimeoutEvent() : YEvent( TimeoutEvent ) {}
+    
+protected:
+    /**
+     * Protected destructor - events can only be deleted via
+     * YDialog::deleteEvent(). The associated dialog will take care of this
+     * event and delete it when appropriate.
+     **/
+    virtual ~YTimeoutEvent() {}
 };
 
 

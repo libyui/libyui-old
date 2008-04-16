@@ -23,6 +23,7 @@
 
 #include "YWidget.h"
 #include "YEvent.h"
+#include "YDialog.h"
 
 using std::string;
 
@@ -34,6 +35,7 @@ int		YEvent::_activeEvents	= 0;
 YEvent::YEvent( EventType eventType )
 	: _eventType( eventType )
 {
+    _dialog = YDialog::currentDialog( false ); // don't throw
     _serial = _nextSerial++;
 
     if ( ++_activeEvents > 3 )
@@ -102,6 +104,8 @@ YWidgetEvent::YWidgetEvent( YWidget *	widget,
     , _widget( widget )
     , _reason( reason )
 {
+    if ( widget )
+	setDialog( widget->findDialog() );
 }
 
 

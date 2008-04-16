@@ -66,7 +66,7 @@ int main( int argc, char **argv )
     // depends on other widgets in the layout.
     YAlignment * minSize = YUI::widgetFactory()->createMinSize( vbox, 40, 8 ); // minWidth, minHeight
 
-    
+
     // The SelectionBox. This is what this example all about.
     // The other widgets are just here to allow some experimenting.
 
@@ -84,7 +84,7 @@ int main( int argc, char **argv )
 
     YUI::widgetFactory()->createVSpacing( vbox, 0.5 );
 
-    
+
     // Check boxes to allow toogling "notify" and "immediate" for the SelectionBox
 
     YAlignment * leftAlignment = YUI::widgetFactory()->createLeft( vbox );
@@ -109,7 +109,7 @@ int main( int argc, char **argv )
 
     YUI::widgetFactory()->createVSpacing( vbox, 0.7 );
 
-    
+
     // "Close" button
 
     YAlignment    * rightAlignment = YUI::widgetFactory()->createRight( vbox );
@@ -188,14 +188,6 @@ int main( int argc, char **argv )
 		    valueField->setValue( "<none>" );
 	    }
 	}
-
-
-	// YDialog::waitForEvent() allocates a new YEvent and transfers
-	// ownership of the event to the caller, so the caller has to make
-	// sure the memory for the event is deallocated after use.
-	// Otherwise there will be a memory leak.
-
-	delete event;
     }
 
 

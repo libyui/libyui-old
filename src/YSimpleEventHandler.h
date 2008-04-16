@@ -108,6 +108,12 @@ public:
      **/
     bool eventsBlocked() const { return _eventsBlocked; }
 
+    /**
+     * Delete an event. Don't call this from the outside; this is public only
+     * because of limitations of C++ .
+     **/
+    void deleteEvent( YEvent * event );
+
 
 protected:
 

@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Wed Apr 16 12:24:44 CEST 2008 - sh@suse.de
+
+- Deleting events is now automatically handled by YDialog.
+  Simply remove all "delete event" calls. 
+- V 2.16.45 
+
+-------------------------------------------------------------------
 Mon Apr 14 16:38:12 CEST 2008 - sh@suse.de
 
 - Added dialog type YWizardDialog for main dialogs that will
