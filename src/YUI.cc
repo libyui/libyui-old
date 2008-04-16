@@ -81,6 +81,13 @@ YUI::~YUI()
 }
 
 
+void
+YUI::uiThreadDestructor()
+{
+    YDialog::deleteAllDialogs();
+}
+
+
 YUI *
 YUI::ui()
 {
@@ -332,6 +339,7 @@ void YUI::uiThreadMainLoop()
 	{
 	    signalYCPThread();
 	    yuiDebug() << "Shutting down UI main loop" << endl;
+	    uiThreadDestructor();
 	    return;
 	}
 

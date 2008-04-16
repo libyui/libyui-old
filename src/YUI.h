@@ -245,6 +245,15 @@ protected:
     friend void *start_ui_thread( void *ui_int );
 
     /**
+     * Destructor for the UI thread. This will be called as the last thing the
+     * UI thread does.
+     *
+     * Derived classes can overwrite this. In most cases it makes sense to call
+     * this base class method in the new implementation.
+     **/
+    virtual void uiThreadDestructor();
+
+    /**
      * Signals the ui thread by sending one byte through the pipe
      * to it.
      **/

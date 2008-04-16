@@ -3,6 +3,7 @@ Wed Apr 16 12:24:44 CEST 2008 - sh@suse.de
 
 - Deleting events is now automatically handled by YDialog.
   Simply remove all "delete event" calls. 
+- Introduced uiThreadDestructor() (bnc #346987)
 - V 2.16.45 
 
 -------------------------------------------------------------------
