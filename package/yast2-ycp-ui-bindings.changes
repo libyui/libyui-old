@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Apr 16 12:27:51 CEST 2008 - sh@suse.de
+
+- Let YDialog take care of deleting events
+- V 2.16.45 
+
+-------------------------------------------------------------------
 Mon Apr 14 16:39:51 CEST 2008 - sh@suse.de
 
 - Added `opt(`wizardDialog) to UI::OpenDialog():

@@ -477,15 +477,6 @@ YCPValue YCP_UI::doUserInput( const char * 	builtin_name,
 	YUI_RETHROW( exception );
     }
 
-    // Clean up.
-    //
-    // The generic UI interpreter assumes ownership of events delivered by
-    // userInput() / pollInput(), so now (after it is processed) is the time to
-    // delete that event.
-
-    if ( event )
-	delete event;
-
     return input;
 }
 
@@ -1404,8 +1395,6 @@ YCPValue YCP_UI::RunPkgSelection( const YCPValue & value_id )
 		result = YCPSymbol( result->asString()->value() ); // "accept" -> `accept
 
 	    yuiMilestone() << "Package selection done. Returning with " << result << endl;
-
-	    delete event;
 	}
     }
     catch ( YUIException & exception )
