@@ -337,9 +337,9 @@ void YUI::uiThreadMainLoop()
 
 	if ( _terminate_ui_thread )
 	{
+	    uiThreadDestructor();
 	    signalYCPThread();
 	    yuiDebug() << "Shutting down UI main loop" << endl;
-	    uiThreadDestructor();
 	    return;
 	}
 
