@@ -181,7 +181,7 @@
 <table cellspacing=\"10\" cellpadding=\"5\">						\
 <tr>											\
 <td width =\"*\">									\
-<img src=\"/opt/kde3/share/icons/crystalsvg/128x128/apps/kscd.png\"  width=\"100\"	\
+<img src=\"/usr/share/YaST2/theme/current/icons/48x48/apps/yast-sound.png\"		\
 align=\"left\">										\
 </td>											\
 											\
