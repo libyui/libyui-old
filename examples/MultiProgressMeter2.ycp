@@ -1,6 +1,21 @@
-// MultiProgressMeter example with huge numbers
+//
+// Advanced MultiProgressMeter example:
+// Change values interactively with sliders
+// and allow tests with huge numbers
+//
 {
-    // Return a VBox term with Slider widgets for each list value.
+    //
+    // Global variables
+    //
+    
+    list<integer> maxValueList = [ 950, 200, 500, 20, 100 ];
+    list<integer> valueList =    [ 100,  30, 400,  0,   0 ];
+    integer unit = 0; // exponent: powers of 2
+
+    
+    /**
+     * Return a VBox term with Slider widgets for each list value.
+     **/
     term slidersVBox( list<integer> maxValuesList, list<integer> currentValuesList )
     {
 	term vbox = `VBox();
@@ -23,7 +38,63 @@
     }
 
 
+    /**
+     * Apply unit to a list of values. Return the scaled list.
+     **/
+    list<integer> scaleList( integer unit, list<integer> values )
+    {
+	list<integer> scaledValues = [];
 
+	foreach ( integer val, values,
+	{
+	    scaledValues = add( scaledValues, val << unit );
+	});
+
+	// y2debug( "Values: %1   unit: %2   scaled: %3", values, unit, scaledValues );
+	return scaledValues;
+    }
+
+
+    /**
+     * Get the current values from all sliders and return them as a list.
+     **/
+    list<integer> getValues()
+    {
+	list<integer> values = [];
+	integer i = 0;
+
+	while ( true )
+	{
+	    term sliderID = `slider(i);
+	    // y2debug( "Looking for %1", sliderID );
+
+	    if ( ! UI::WidgetExists(`id( sliderID) ) )
+		break;
+
+	    values = add( values, (integer) UI::QueryWidget(`id(sliderID), `Value ) );
+	    i = i+1;
+	}
+
+	// y2debug( "Values: %1", values );
+	return values;
+    }
+
+    
+    /**
+     * Update progress meters with values from sliders.
+     **/
+    void updateProgress()
+    {
+	list<integer> values = scaleList( unit, getValues() );
+	UI::ChangeWidget(`vProgress, `Values, values );
+	UI::ChangeWidget(`hProgress, `Values, values );
+    }
+    
+
+
+    //
+    // Check if required special widgets are available
+    //
 
     if ( ! UI::HasSpecialWidget(`HMultiProgressMeter ) ||
 	 ! UI::HasSpecialWidget(`Slider              )   )
@@ -41,9 +112,23 @@
     }
 
 
-
-    list<integer> maxValueList = [ 1000, 200, 500, 20, 100 ];
-    list<integer> valueList =    [    0,   0,   0,  0,   0 ];
+    //
+    // Create dialog
+    //
+    
+    term radioBox =
+	`Frame( "Unit",
+		`RadioButtonGroup(`id(`unit), `opt(`notify),
+				  `HBox(
+					`HSpacing(0.5),
+					`RadioButton(`id(`unit( 0)), `opt(`notify), "&Bytes"), `HSpacing(1.5),
+					`RadioButton(`id(`unit(10)), `opt(`notify), "&kB"),    `HSpacing(1.5),
+					`RadioButton(`id(`unit(20)), `opt(`notify), "&MB"),    `HSpacing(1.5),
+					`RadioButton(`id(`unit(30)), `opt(`notify), "&GB"),
+					`HSpacing(0.5)
+					)
+				  )
+		);
 
     UI::OpenDialog(
 		   `VBox(
@@ -52,30 +137,69 @@
 				     `Heading( "MultiProgressMeter Example" ),
 				     `VSpacing( 1 ),
 				     slidersVBox( maxValueList, valueList ),
-				     `Frame( "Unit",
-					     `RadioButtonGroup(`id(`unit), `opt(`notify),
-							       `HBox(
-								     `HSpacing(0.5),
-								     `RadioButton(`id(`unit( 0)), "&Bytes", true), `HSpacing(1.5),
-								     `RadioButton(`id(`unit(10)), "&kB"),          `HSpacing(1.5),
-								     `RadioButton(`id(`unit(20)), "&MB"),          `HSpacing(1.5),
-								     `RadioButton(`id(`unit(30)), "&GB"),
-								     `HSpacing(0.5)
-								     )
-							       )
-					     ),
+				     radioBox,
 				     `VStretch()
 				     ),
 			       `HSpacing( 1 ),
-			       `VMultiProgressMeter(`id(`vProgress), maxValueList )
+			       `ReplacePoint(`id(`rep_vProgress),
+					     `VMultiProgressMeter(`id(`vProgress), scaleList( unit, maxValueList ) )
+					     )
 			       ),
 			 `HBox(
-			       `HMultiProgressMeter(`id(`hProgress), maxValueList ),
+			       `ReplacePoint(`id(`rep_hProgress),
+					     `HMultiProgressMeter(`id(`hProgress), scaleList( unit, maxValueList ) )
+					     ),
 			       `HSpacing( 0.5 ),
 			       `PushButton(`id(`cancel), "&Close" )
 			       )
 			 )
 		   );
-    UI::UserInput();
+    
+    UI::ChangeWidget(`id(`unit), `Value, `unit( unit ) );
+    updateProgress();
+
+
+    //
+    // Event loop
+    //
+
+    while ( true )
+    {
+	map<string, any> event = UI::WaitForEvent();
+	// y2debug( "Event: %1", event );
+	any id = event["ID"]:nil;
+	symbol widgetClass = (symbol) event["WidgetClass"]:nil;
+
+	if ( widgetClass == `RadioButton )
+	{
+	    any currentUnitID = UI::QueryWidget(`unit, `CurrentButton );
+
+	    if ( is( currentUnitID, term ) )
+	    {
+		unit = ( (term) currentUnitID )[0]:0;
+
+		y2milestone( "New unit: 2^%1", unit );
+		UI::ReplaceWidget(`rep_vProgress, `VMultiProgressMeter(`id(`vProgress), scaleList( unit, maxValueList ) ) );
+		UI::ReplaceWidget(`rep_hProgress, `HMultiProgressMeter(`id(`hProgress), scaleList( unit, maxValueList ) ) );
+		updateProgress();
+	    }
+	}
+	if ( widgetClass == `Slider )
+	{
+	    updateProgress();
+	    list<integer> values = scaleList( unit, getValues() );
+	    UI::ChangeWidget(`vProgress, `Values, values );
+	    UI::ChangeWidget(`hProgress, `Values, values );
+	}
+
+	if ( id == `cancel )
+	    break;
+    }
+
+    
+    //
+    // Clean up
+    //
+    
     UI::CloseDialog();
 }
