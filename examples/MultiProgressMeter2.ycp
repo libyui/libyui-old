@@ -1,0 +1,81 @@
+// MultiProgressMeter example with huge numbers
+{
+    // Return a VBox term with Slider widgets for each list value.
+    term slidersVBox( list<integer> maxValuesList, list<integer> currentValuesList )
+    {
+	term vbox = `VBox();
+	integer i=0;
+
+	foreach ( integer maxVal, maxValuesList,
+	{
+	    vbox = add( vbox, `Slider(`id(`slider(i) ),
+				      `opt(`notify),
+				      "",		// label
+				      0,		// minVal
+				      maxVal,
+				      currentValuesList[i]:0  // currentVal
+				      )
+			);
+	    i = i+1;
+	});
+
+	return vbox;
+    }
+
+
+
+
+    if ( ! UI::HasSpecialWidget(`HMultiProgressMeter ) ||
+	 ! UI::HasSpecialWidget(`Slider              )   )
+    {
+        UI::OpenDialog(
+		       `VBox(
+			     `Label("Error: This UI doesn't support the required widgets!"),
+			     `PushButton(`opt(`default), "&OK")
+			     )
+		       );
+        UI::UserInput();
+        UI::CloseDialog();
+
+	return;
+    }
+
+
+
+    list<integer> maxValueList = [ 1000, 200, 500, 20, 100 ];
+    list<integer> valueList =    [    0,   0,   0,  0,   0 ];
+
+    UI::OpenDialog(
+		   `VBox(
+			 `HBox(
+			       `VBox(
+				     `Heading( "MultiProgressMeter Example" ),
+				     `VSpacing( 1 ),
+				     slidersVBox( maxValueList, valueList ),
+				     `Frame( "Unit",
+					     `RadioButtonGroup(`id(`unit), `opt(`notify),
+							       `HBox(
+								     `HSpacing(0.5),
+								     `RadioButton(`id(`unit( 0)), "&Bytes", true), `HSpacing(1.5),
+								     `RadioButton(`id(`unit(10)), "&kB"),          `HSpacing(1.5),
+								     `RadioButton(`id(`unit(20)), "&MB"),          `HSpacing(1.5),
+								     `RadioButton(`id(`unit(30)), "&GB"),
+								     `HSpacing(0.5)
+								     )
+							       )
+					     ),
+				     `VStretch()
+				     ),
+			       `HSpacing( 1 ),
+			       `VMultiProgressMeter(`id(`vProgress), maxValueList )
+			       ),
+			 `HBox(
+			       `HMultiProgressMeter(`id(`hProgress), maxValueList ),
+			       `HSpacing( 0.5 ),
+			       `PushButton(`id(`cancel), "&Close" )
+			       )
+			 )
+		   );
+    UI::UserInput();
+    UI::CloseDialog();
+}
