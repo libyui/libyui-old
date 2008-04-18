@@ -589,7 +589,7 @@ YCPPropertyHandler::trySetRadioButtonGroupCurrentButton( YWidget * widget, const
 
     if ( newCurrentButton )
     {
-	y2debug( "Setting new current radio button: %s", newCurrentButton->debugLabel().c_str() );
+	// y2debug( "Setting new current radio button: %s", newCurrentButton->debugLabel().c_str() );
 	newCurrentButton->setValue( true );
     }
     else
@@ -902,7 +902,7 @@ YCPPropertyHandler::tryGetRadioButtonGroupCurrentButton( YWidget * widget )
     if ( ! currentButton )
 	return YCPVoid();
 
-    y2debug( "Current radio button: %s", currentButton->debugLabel().c_str() );
+    // y2debug( "Current radio button: %s", currentButton->debugLabel().c_str() );
 
     if ( currentButton->hasId() )
     {
