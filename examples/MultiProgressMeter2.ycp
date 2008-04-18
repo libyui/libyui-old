@@ -7,12 +7,12 @@
     //
     // Global variables
     //
-    
+
     list<integer> maxValueList = [ 950, 200, 500, 20, 100 ];
-    list<integer> valueList =    [ 100,  30, 400,  0,   0 ];
+    list<integer> valueList =	 [ 100,	 30, 400,  0,	0 ];
     integer unit = 0; // exponent: powers of 2
 
-    
+
     /**
      * Return a VBox term with Slider widgets for each list value.
      **/
@@ -50,7 +50,7 @@
 	    scaledValues = add( scaledValues, val << unit );
 	});
 
-	// y2debug( "Values: %1   unit: %2   scaled: %3", values, unit, scaledValues );
+	// y2debug( "Values: %1	  unit: %2   scaled: %3", values, unit, scaledValues );
 	return scaledValues;
     }
 
@@ -79,7 +79,7 @@
 	return values;
     }
 
-    
+
     /**
      * Update progress meters with values from sliders.
      **/
@@ -89,7 +89,7 @@
 	UI::ChangeWidget(`vProgress, `Values, values );
 	UI::ChangeWidget(`hProgress, `Values, values );
     }
-    
+
 
 
     //
@@ -97,16 +97,16 @@
     //
 
     if ( ! UI::HasSpecialWidget(`HMultiProgressMeter ) ||
-	 ! UI::HasSpecialWidget(`Slider              )   )
+	 ! UI::HasSpecialWidget(`Slider		     )	 )
     {
-        UI::OpenDialog(
+	UI::OpenDialog(
 		       `VBox(
 			     `Label("Error: This UI doesn't support the required widgets!"),
 			     `PushButton(`opt(`default), "&OK")
 			     )
 		       );
-        UI::UserInput();
-        UI::CloseDialog();
+	UI::UserInput();
+	UI::CloseDialog();
 
 	return;
     }
@@ -115,7 +115,7 @@
     //
     // Create dialog
     //
-    
+
     term radioBox =
 	`Frame( "Unit",
 		`RadioButtonGroup(`id(`unit), `opt(`notify),
@@ -154,7 +154,7 @@
 			       )
 			 )
 		   );
-    
+
     UI::ChangeWidget(`id(`unit), `Value, `unit( unit ) );
     updateProgress();
 
@@ -196,10 +196,10 @@
 	    break;
     }
 
-    
+
     //
     // Clean up
     //
-    
+
     UI::CloseDialog();
 }
