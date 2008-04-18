@@ -2727,7 +2727,7 @@ YCPDialogParser::parseDumbTab( YWidget *parent, YWidgetOpt & opt,
  * @usage	if ( HasSpecialWidget( `MultiProgressMeter ) {...
  *		`MultiProgressMeter( "Percentage", 1, 100, 50 )
  *
- * @examples	MultiProgressMeter1.ycp
+ * @examples	MultiProgressMeter1.ycp MultiProgressMeter2.ycp
  *
  * @description
  *
