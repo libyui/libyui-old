@@ -46,7 +46,7 @@ class YMultiProgressMeterPrivate;
  *
  * CD #1: A lot of packages are to be installed from this CD, and a fair amount
  *        of those are already installed, but some are still missing.
- * CD #2: Some packages were installed from this , but this CD is finished.
+ * CD #2: Some packages were installed from this, but this CD is finished.
  * CD #3: Quite some packages are to be installed from this CD.
  * CD #4: Very few packages are to be installed from this CD.
  *
