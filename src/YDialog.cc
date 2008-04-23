@@ -290,7 +290,7 @@ YDialog::waitForEvent( int timeout_millisec )
 	// If there was no event or if filterInvalidEvents() discarded
 	// an invalid event, go back and get the next one.
 
-	if ( event->widget() )
+	if ( event && event->widget() )
 	{
 	    YPushButton * button = dynamic_cast<YPushButton *> ( event->widget() );
 
