@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Wed Apr 30 14:50:36 CEST 2008 - lslezak@suse.cz
+
+- added repoMgrEnabled() method to YPackageSelector widget
+  (repository management is now optional) (bnc#381956)
+- V 2.16.47
+
+-------------------------------------------------------------------
 Wed Apr 23 15:57:16 CEST 2008 - sh@suse.de
 
 - Fixed segfault when discarding events from foreign dialogs 

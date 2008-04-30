@@ -210,6 +210,7 @@
 #define YUIOpt_outputField			"outputField"
 #define YUIOpt_plainText			"plainText"
 #define YUIOpt_repoMode				"repoMode"
+#define YUIOpt_repoMgr				"repoMgr"
 #define YUIOpt_scaleToFit			"scaleToFit"
 #define YUIOpt_searchMode			"searchMode"
 #define YUIOpt_shrinkable			"shrinkable"

@@ -28,6 +28,8 @@
 #define YPkg_SummaryMode	1 << 4
 #define YPkg_RepoMode		1 << 5
 
+#define YPkg_RepoMgr		1 << 15
+
 
 class YPackageSelector : public YWidget
 {
@@ -56,6 +58,8 @@ public:
     bool searchMode() 		const { return _modeFlags & YPkg_SearchMode;	   }
     bool summaryMode()		const { return _modeFlags & YPkg_SummaryMode;	   }
     bool repoMode()		const { return _modeFlags & YPkg_RepoMode;         }
+
+    bool repoMgrEnabled()	const { return _modeFlags & YPkg_RepoMgr;          }
 
 protected:
     long _modeFlags;
