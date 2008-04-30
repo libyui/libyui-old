@@ -2370,6 +2370,7 @@ YCPDialogParser::parseIntField( YWidget * parent, YWidgetOpt & opt,
  * @option	searchMode start with the "search" filter view
  * @option	summaryMode start with the "installation summary" filter view
  * @option	repoMode start with the "repositories" filter view
+ * @option	repoMgr enable "Repository Manager" menu item
  * @usage	`PackageSelector()
  *
  * @examples	PackageSelector.ycp
@@ -2421,6 +2422,7 @@ YCPDialogParser::parsePackageSelector( YWidget * parent, YWidgetOpt & opt,
 	    else if ( sym == YUIOpt_summaryMode )	modeFlags |= YPkg_SummaryMode;
 	    else if ( sym == YUIOpt_repoMode	)	modeFlags |= YPkg_RepoMode;
 	    else if ( sym == YUIOpt_testMode 	)	modeFlags |= YPkg_TestMode;
+	    else if ( sym == YUIOpt_repoMgr 	)	modeFlags |= YPkg_RepoMgr;
 	    else logUnknownOption( term, optList->value(o) );
 	}
 	else logUnknownOption( term, optList->value(o) );
