@@ -180,12 +180,18 @@ int main( int argc, char **argv )
 	    else if ( event->widget() == selBox ||
 		      event->widget() == valueButton )
 	    {
+		yuiMilestone() << "Event widget: " << event->widget() << endl;
+		
 		YItem * item = selBox->selectedItem();
 
 		if ( item )
 		    valueField->setValue( item->label() );
 		else
 		    valueField->setValue( "<none>" );
+	    }
+	    else
+	    {
+		yuiMilestone() << "Unknown event" << endl;
 	    }
 	}
     }
