@@ -139,6 +139,12 @@ public:
      **/
     virtual void moveChild( YWidget * child, int newX, int newY ) = 0;
 
+    /**
+     * Check if this is a layout stretch widget in the specfied dimension,
+     * i.e. an empty widget that is stretchable.
+     **/
+    static bool isLayoutStretch( YWidget * child, YUIDimension dimension );
+
 
 protected:
 
@@ -176,12 +182,6 @@ protected:
      * {H|V}Spacing ). Only those without a weight are counted.
      **/
     int countLayoutStretchChildren( YUIDimension dimension );
-
-    /**
-     * Check if this is a layout stretch widget in the specfied dimension,
-     * i.e. an empty widget that is stretchable.
-     **/
-    static bool isLayoutStretch( YWidget * child, YUIDimension dimension );
 
     /**
      * Determine the number of the "dominating child" - the child widget that
