@@ -434,11 +434,6 @@ YDialog::deleteEvent( YEvent * event )
 }
 
 
-
-
-
-
-
 YDialog *
 YDialog::currentDialog( bool doThrow )
 {
