@@ -32,7 +32,7 @@ class YApplicationPrivate;
 
 /**
  * Class for application-wide values and functions.
- * This is a singleton. Access and create it via its static functions.
+ * This is a singleton. Access and create it via the static functions in YUI.
  **/
 class YApplication
 {
