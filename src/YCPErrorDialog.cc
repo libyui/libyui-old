@@ -48,7 +48,7 @@ void YCPErrorDialog::exceptionDialog( const string & headingText,
 	fac->createLabel( vbox, "Check the log file!" );
 	YLayoutBox * buttonBox = fac->createHBox( vbox );
 	fac->createHStretch( buttonBox );
-	YPushButton * closeButton = fac->createPushButton( buttonBox, "&Close" );
+	fac->createPushButton( buttonBox, "&Close" );
 	dialog->open();
 
 	dialog->waitForEvent();
