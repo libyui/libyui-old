@@ -188,7 +188,7 @@ void YCP_UI::SetProductName( const YCPString & name )
  * @param string font
  * @param string screen_map
  * @param string unicode_map
- * @param string encoding
+ * @param string language
  * @return void
  *
  * @usage SetConsoleFont( "( K", "lat2u-16.psf", "latin2u.scrnmap", "lat2u.uni", "latin1" )
@@ -198,13 +198,13 @@ void YCP_UI::SetConsoleFont( const YCPString & console_magic,
 				  const YCPString & font,
 				  const YCPString & screen_map,
 				  const YCPString & unicode_map,
-				  const YCPString & encoding )
+				  const YCPString & language )
 {
     YUI::app()->setConsoleFont( console_magic->value(),
 				font->value(),
 				screen_map->value(),
 				unicode_map->value(),
-				encoding->value() );
+				language->value() );
 }
 
 
