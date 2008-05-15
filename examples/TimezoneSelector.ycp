@@ -62,7 +62,7 @@
 	// Only create a dialog with this kind of widget if it is supported
 	UI::OpenDialog(
 		   `VBox(
-			 `TimezoneSelector(`id(`timezone), `opt(`notify),  Directory::themedir + "/current/worldmap/GLOBALeb10colshade.jpg", examples),
+			 `TimezoneSelector(`id(`timezone), `opt(`notify),  Directory::themedir + "/current/worldmap/worldmap.jpg", examples),
 			 `PushButton(`id(`ok), `opt(`default), "&Close"),
 			 `ComboBox(`id(`combozone), `opt(`notify),
 				    "",
