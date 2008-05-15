@@ -52,7 +52,8 @@
 			      ),
 			  `HBox(
 				`PushButton(`id(`menu), "&Menu" ),
-				`PushButton(`id(`toppings), "&Toppings" )
+				`PushButton(`id(`toppings), "&Toppings" ),
+				`PushButton(`id(`empty), "&None" )
 				),
 			  `PushButton(`id(`ok), "&OK" )
 			  )
@@ -66,6 +67,7 @@
 
 	if ( button == `menu )      UI::ChangeWidget(`listing, `Items, menu);
 	if ( button == `toppings )  UI::ChangeWidget(`listing, `Items, toppings );
+	if ( button == `empty )	    UI::ChangeWidget(`listing, `Items, [] );
 	
 	
     } while ( button != `ok );
