@@ -171,8 +171,8 @@ public:
      * for a widget with that ID.
      *
      * Throws a YUIWidgetNotFoundException if there is no widget with that ID.
-     **/
     YWidget * findWidget();
+     **/
 
 
 private:
