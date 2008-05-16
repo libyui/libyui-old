@@ -54,7 +54,7 @@ public:
      * Returns the number of shortcut conflicts.
      * Valid only after checkShortcuts() or resolveAllConflicts().
      **/
-    int conflictCount();
+    int conflictCount() { return _conflictCount; }
 
     /**
      * Resolve shortcut conflicts. Requires checkShortcuts() to be called first.
