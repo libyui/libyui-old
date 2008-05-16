@@ -164,16 +164,6 @@ public:
     bool 	boolVal()	const { return _boolVal;	}
     YInteger 	integerVal()	const { return _integerVal;	}
 
-    /**
-     * Find the widget that corresponds to this property value.
-     * If a widget pointer is specified, return that one.
-     * If not and a widget ID is specified, search the current topmost dialog
-     * for a widget with that ID.
-     *
-     * Throws a YUIWidgetNotFoundException if there is no widget with that ID.
-    YWidget * findWidget();
-     **/
-
 
 private:
 
