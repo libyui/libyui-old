@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Fri May 16 12:32:24 CEST 2008 - sh@suse.de
+
+- Handle nonexistent widgets in UI::SetFocus() more gracefully
+  (bnc #389126)
+- V 2.16.47 
+
+-------------------------------------------------------------------
 Wed Apr 30 15:08:14 CEST 2008 - lslezak@suse.cz
 
 - added support for `repoMgr option in

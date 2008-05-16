@@ -253,6 +253,10 @@ y2milestone ("formatEvent(%1)", event);
 	    UI::ChangeWidget(`send_mafioso, `Value, nil );
 	    UI::DumpWidgetTree();
 	}
+	else if ( event["ID"]:nil == `info )
+	{
+	    UI::SetFocus(`bogus);
+	}
 	//
 	// Help text is displayed automatically (because of `opt(`helpButton)
 	//

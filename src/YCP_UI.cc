@@ -906,13 +906,25 @@ YCPBoolean YCP_UI::SetFocus( const YCPValue & idValue )
     if ( ! YCPDialogParser::isSymbolOrId( idValue ) )
 	return YCPNull();
 
-    YCPValue id = YCPDialogParser::parseIdTerm( idValue );
-    YWidget *widget = YCPDialogParser::findWidgetWithId( id );
+    YCPBoolean result = YCPNull();
+    
+    try
+    {
+	YCPValue id = YCPDialogParser::parseIdTerm( idValue );
+	YWidget * widget = YCPDialogParser::findWidgetWithId( id );
 
-    if ( ! widget )
-	return YCPBoolean( false );
+	if ( ! widget )
+	    return YCPBoolean( false );
 
-    return YCPBoolean( widget->setKeyboardFocus() );
+	result = YCPBoolean( widget->setKeyboardFocus() );
+    }
+    catch ( YUIException & exception )
+    {
+	YUI_CAUGHT( exception );
+	ycperror( "UI::SetFocus() failed" );
+    }
+
+    return result;
 }
 
 
