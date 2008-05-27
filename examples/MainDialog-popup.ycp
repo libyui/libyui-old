@@ -4,47 +4,38 @@
     UI::OpenDialog(`opt(`defaultsize ),
 		   `VBox(
 			 `Heading( "Main Dialog" ),
-			 `VCenter( `ReplacePoint(`id(`contents), `Empty() ) ),
-			 `Right(`PushButton(`id(`abort), "&Abort" ) )
+			 `VStretch(),
+			 `PushButton(`id(`doit1), "&Do Something" ),
+			 `PushButton(`id(`doit2), "Do &More" ),
+			 `PushButton(`id(`popup), "&Popup Main Dialog" ),
+			 `VStretch(),
+			 `Right(`PushButton(`id(`close), "&Close" ) )
 			 )
 		   );
-
-    UI::ReplaceWidget( `contents,
-		       `VBox(
-			     `PushButton(`id(`doit1), "&Do Something" ),
-			     `PushButton(`id(`doit2), "Do &More" ),
-			     `PushButton(`id(`popup), "Popup &Wizard" )
-			     )
-		       );
 
     while( true )
     {
 	map event = UI::WaitForEvent();
 
 	y2milestone( "Got event: %1", event );
-	
+
 	symbol widget = (symbol) event[ "ID" ]:`nil;
 
-	if ( widget == `abort )
+	if ( widget == `close )
 	    break;
 
 	if ( widget == `popup )
 	{
 	    UI::OpenDialog(`opt(`defaultsize ),
-			   `VBox(
-				 `VCenter( `ReplacePoint(`id(`contents), `Empty() ) ),
-				 `Right(`PushButton(`id(`popdown), "Pop &Down" ) )
+			   `VBox(`id(`popupDialog),
+				 `Heading("Popup Main Dialog"),
+				 `VStretch(),
+				 `PushButton(`id(`doit11), "&Do Something" ),
+				 `PushButton(`id(`doit12), "Do &More" ),
+				 `VStretch(),
+				 `Right(`PushButton(`id(`popdown), "&Back" ) )
 				 )
 			   );
-
-	    UI::ReplaceWidget( `contents,
-			       `VBox(`id(`popupDialog),
-				     `Heading("Popup Main Dialog"),
-				     `VSpacing(2),
-				     `PushButton(`id(`doit11), "&Do Something" ),
-				     `PushButton(`id(`doit12), "Do &More" )
-				     )
-			       );
 	}
 
 	if ( widget == `popdown && UI::WidgetExists(`popupDialog) )
