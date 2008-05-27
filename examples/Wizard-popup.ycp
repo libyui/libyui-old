@@ -1,0 +1,81 @@
+// Example of using the Wizard widget.
+//
+// Note: YCP applications are discouraged from using the Wizard widget directly.
+// Use the Wizard module instead.
+
+{
+    if ( ! UI::HasSpecialWidget(`Wizard) )
+    {
+	y2error( "This works only with UIs that provide the wizard widget!" );
+	return;
+    }
+
+    string help_text =
+	"<p>This is a help text.</p>"
+	+ "<p>It should be helpful.</p>"
+	+ "<p>If it isn't helpful, it should rather not be called a <i>help text</i>.</p>";
+
+    UI::OpenDialog(`opt(`defaultsize ),
+		   `Wizard(`opt(`stepsEnabled),
+			   `back,  "&Back",
+			   `abort, "Ab&ort",
+			   `next,  "&Next" ) );
+
+    // UI::DumpWidgetTree();
+
+    UI::WizardCommand(`SetDialogIcon( "/usr/share/YaST2/theme/current/icons/22x22/apps/YaST.png" ) );
+    UI::WizardCommand(`SetDialogHeading( "Wizard with Pop-up Wizard" ) );
+    UI::WizardCommand(`SetHelpText( help_text ) );
+
+    UI::WizardCommand(`AddStepHeading( "Steps" ) );
+    UI::WizardCommand(`AddStep( "Step 1", "step1" ) );
+    UI::WizardCommand(`AddStep( "Step 2", "step2" ) );
+    UI::WizardCommand(`AddStep( "Step 3", "step3" ) );
+
+    UI::WizardCommand(`UpdateSteps() );
+
+    UI::ReplaceWidget( `contents,
+		       `VBox(
+			     `PushButton(`id(`doit1), "&Do Something" ),
+			     `PushButton(`id(`doit2), "Do &More" ),
+			     `PushButton(`id(`popup), "Popup &Wizard" )
+			     )
+		       );
+
+    UI::WizardCommand(`SetCurrentStep( "step1" ) );
+
+    
+    while( true )
+    {
+	map event = UI::WaitForEvent();
+
+	y2milestone( "Got event: %1", event );
+	
+	symbol widget = (symbol) event[ "ID" ]:`nil;
+
+	if ( widget == `abort )
+	    break;
+
+	if ( widget == `popup )
+	{
+	    UI::OpenDialog(`opt(`defaultsize ),
+			   `Wizard(`bla,     "",
+				   `popdown, "&Cancel",
+				   `accept,  "&Acce&pt" ) );
+	    
+	    UI::ReplaceWidget( `contents,
+			       `VBox(`id(`popupWizard),
+				     `Heading("Popup Wizard"),
+				     `VSpacing(2),
+				     `PushButton(`id(`doit11), "&Do Something" ),
+				     `PushButton(`id(`doit12), "Do &More" )
+				     )
+			       );
+	}
+
+	if ( widget == `popdown && UI::WidgetExists(`popupWizard) )
+	    UI::CloseDialog();
+    }
+
+    UI::CloseDialog();
+}
