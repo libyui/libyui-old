@@ -1,20 +1,6 @@
-// Example of using the Wizard widget.
-//
-// Note: YCP applications are discouraged from using the Wizard widget directly.
-// Use the Wizard module instead.
+// Multiple Main Dialogs
 
 {
-    if ( ! UI::HasSpecialWidget(`Wizard) )
-    {
-	y2error( "This works only with UIs that provide the wizard widget!" );
-	return;
-    }
-
-    string help_text =
-	"<p>This is a help text.</p>"
-	+ "<p>It should be helpful.</p>"
-	+ "<p>If it isn't helpful, it should rather not be called a <i>help text</i>.</p>";
-
     UI::OpenDialog(`opt(`defaultsize ),
 		   `VBox(
 			 `Heading( "Main Dialog" ),
