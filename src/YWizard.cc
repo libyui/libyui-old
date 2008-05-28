@@ -64,6 +64,12 @@ YWizard::~YWizard()
 }
 
 
+YWizardMode
+YWizard::wizardMode() const
+{
+    return priv->wizardMode;
+}
+
 bool
 YWizard::nextButtonIsProtected() const
 {

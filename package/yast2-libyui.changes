@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed May 28 14:31:31 CEST 2008 - sh@suse.de
+
+- Added YWizard::wizardMode() for bnc #393040
+- V 2.16.48 
+
+-------------------------------------------------------------------
 Wed Apr 30 14:50:36 CEST 2008 - lslezak@suse.cz
 
 - added repoMgrEnabled() method to YPackageSelector widget

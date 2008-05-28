@@ -114,6 +114,12 @@ public:
     //
     // Wizard basics
     //
+
+    /**
+     * Return the wizard mode (what kind of wizard this is):
+     * YWizardMode_Standard, YWizardMode_Steps, YWizardMode_Tree
+     **/
+    YWizardMode wizardMode() const;
     
     /**
      * Return the wizard buttons or 0 if there is no such button.
