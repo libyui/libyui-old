@@ -196,6 +196,7 @@ public:
      **/
     bool hasChildren() const
 	{ return childrenManager()->hasChildren(); }
+    
     /**
      * Returns the first child or 0 if there is none.
      * Useful mostly for children managers that handle only one child.
