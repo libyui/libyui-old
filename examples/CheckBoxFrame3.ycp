@@ -24,6 +24,7 @@
 
     symbol widget = nil;
     string old_server = "";
+    UI::FakeUserInput(`use_suse_server); // Use event loop to set up initial enabled/disabled states
     
     repeat
     {
@@ -31,6 +32,7 @@
 
 	if ( widget == `use_suse_server )
 	{
+	    y2debug( "Changing enabled states" );
 	    boolean use_suse_server = (boolean) UI::QueryWidget(`use_suse_server, `Value );
 	    UI::ChangeWidget(`server, `Enabled, ! use_suse_server );
 	    UI::ChangeWidget(`mode  , `Enabled, ! use_suse_server );
