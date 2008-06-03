@@ -20,7 +20,7 @@
 				 + "<font color=blue>	the		</font>"
 				 + "<font color=red>	UI.		</font>"
 				 + "</p>"
-				 + "<p>The product name is automatically replaced by the UI."
+				 + "<p>The product name is automatically replaced by the UI. "
 				 + "Use the special macro <b>&amp;product;</b> for that."
 				 + "</p><p>"
 				 + "The current product name is <b>&product;</b>."
