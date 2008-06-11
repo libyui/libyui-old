@@ -43,6 +43,7 @@ class YMacroRecorder;
 class YUI
 {
     friend class YUIFunction;
+    friend class YUITerminator;
 
 protected:
     /**
@@ -114,8 +115,9 @@ public:
      **/
     static void ensureUICreated();
 
-
+    
 protected:
+    
     /**
      * Create the widget factory that provides all the createXY() methods for
      * standard (mandatory, i.e. non-optional) widgets.
@@ -140,6 +142,7 @@ protected:
      **/
     virtual YApplication * createApplication() = 0;
 
+    
 public:
 
     /**

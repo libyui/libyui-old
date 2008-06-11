@@ -12,10 +12,7 @@
 
   File:		YUI.cc
 
-  Authors:	Stefan Hundhammer <sh@suse.de>
-		Stanislav Visnovsky <visnov@suse.cz>
-
-  Maintainer:	Stefan Hundhammer <sh@suse.de>
+  Author:	Stefan Hundhammer <sh@suse.de>
 
 /-*/
 
@@ -43,6 +40,7 @@
 
 
 YUI * YUI::_ui = 0;
+static bool uiDeleted = false;
 
 extern void * start_ui_thread( void * yui );
 
@@ -61,23 +59,29 @@ YUI::YUI( bool withThreads )
 
 YUI::~YUI()
 {
-    if ( _withThreads && _uiThread )
+    if ( _ui )
     {
-	yuiError() << "shutdownThreads() was never called!"     << endl;
-	yuiError() << "shutting down now - this might segfault" << endl;
-	shutdownThreads();
+	if ( _withThreads && _uiThread )
+	{
+	    yuiError() << "shutdownThreads() was never called!"     << endl;
+	    yuiError() << "shutting down now - this might segfault" << endl;
+	    shutdownThreads();
+	}
+
+	if ( YDialog::openDialogsCount() > 0 )
+	    yuiError() << YDialog::openDialogsCount() << " open dialogs left over" << endl;
+
+	if ( _builtinCaller )
+	    delete _builtinCaller;
+
+	YDialog::deleteAllDialogs();
+
+	YMacro::deleteRecorder();
+	YMacro::deletePlayer();
+	
+	_ui = 0;
+	uiDeleted = true;
     }
-
-    if ( YDialog::openDialogsCount() > 0 )
-	yuiError() << YDialog::openDialogsCount() << " open dialogs left over" << endl;
-
-    if ( _builtinCaller )
-	delete _builtinCaller;
-
-    YDialog::deleteAllDialogs();
-
-    YMacro::deleteRecorder();
-    YMacro::deletePlayer();
 }
 
 
@@ -146,9 +150,11 @@ void YUI::ensureUICreated()
     if ( _ui )
 	return;
 
+    if ( uiDeleted )
+	YUI_THROW( YUIException( "UI already deleted" ) );
+
     YUILoader::loadUI();
 }
-
 
 
 void YUI::topmostConstructorHasFinished()
@@ -353,8 +359,9 @@ void YUI::uiThreadMainLoop()
 }
 
 
+//
 // ----------------------------------------------------------------------
-
+//
 
 void * start_ui_thread( void * yui )
 {
@@ -368,6 +375,52 @@ void * start_ui_thread( void * yui )
 	ui->uiThreadMainLoop();
     return 0;
 }
+
+
+//
+// ----------------------------------------------------------------------
+//
+
+
+/**
+ * Helper class to make sure the UI is properly shut down.
+ **/
+class YUITerminator
+{
+public:
+    YUITerminator() {}
+
+    /**
+     * Destructor.
+     *
+     * If there still is a UI, it will be deleted.
+     * If there is none, this will do nothing.
+     **/
+    ~YUITerminator();
+};
+
+
+YUITerminator::~YUITerminator()
+{
+    if ( YUI::_ui )
+    {
+	yuiMilestone() << "Shutting down UI" << endl;
+	delete YUI::_ui;
+
+	YUI::_ui = 0;
+    }
+}
+
+
+/**
+ * Static YUITerminator instance: It will make sure the UI is deleted in its
+ * global destructor. If the UI is already destroyed, it will do nothing. If
+ * there still is a UI object, it will be deleted.
+ *
+ * This is particularly important for the NCurses UI so the terminal settings
+ * are properly restored.
+ **/ 
+static YUITerminator uiTerminator;
 
 
 
