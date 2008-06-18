@@ -541,7 +541,9 @@ YDialog::addEventFilter( YEventFilter * eventFilter )
     }
     else
     {
+#if VERBOSE_DIALOGS
 	yuiDebug() << "Adding event filter " << hex << eventFilter << dec << endl;
+#endif
 	priv->eventFilterList.push_back( eventFilter );
     }
 }
@@ -554,7 +556,9 @@ YDialog::removeEventFilter( YEventFilter * eventFilter )
 
     if ( ! beingDestroyed() ) // Optimization: No need to remove in dialog destructor
     {
+#if VERBOSE_DIALOGS
 	yuiDebug() << "Removing event filter " << hex << eventFilter << dec << endl;
+#endif
 	priv->eventFilterList.remove( eventFilter );
     }
 }
