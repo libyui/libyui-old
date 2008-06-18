@@ -17,6 +17,9 @@
 /-*/
 
 
+#include <list>
+#include <algorithm>
+
 #define YUILogComponent "ui"
 #include "YUILog.h"
 
@@ -31,6 +34,7 @@
 #include "YRichText.h"
 #include "YAlignment.h"
 #include "YUIException.h"
+#include "YEventFilter.h"
 
 using std::string;
 
@@ -39,6 +43,8 @@ using std::string;
 
 
 std::stack<YDialog *> YDialog::_dialogStack;
+
+typedef std::list<YEventFilter *> YEventFilterList;
 
 
 struct YDialogPrivate
@@ -58,7 +64,29 @@ struct YDialogPrivate
     YPushButton *	defaultButton;
     bool		isOpen;
     YEvent *		lastEvent;
+    YEventFilterList	eventFilterList;
 };
+
+
+
+/**
+ * Helper class: Event filter that handles "Help" buttons.
+ **/
+class YHelpButtonHandler: public YEventFilter
+{
+public:
+    YHelpButtonHandler( YDialog * dialog )
+	: YEventFilter( dialog )
+	{}
+
+    virtual ~YHelpButtonHandler() {}
+    
+    YEvent * filter( YEvent * event )
+    {
+	    
+    }
+};
+
 
 
 
@@ -81,6 +109,11 @@ YDialog::~YDialog()
 #if VERBOSE_DIALOGS
     yuiDebug() << "Destroying " << this << endl;
 #endif
+
+    // Inform attached classes that this dialog is in the process of being
+    // destroyed. This also happens in the base class destructor, but that
+    // might be too late.
+    setBeingDestroyed();
 
     if ( priv->lastEvent )
 	deleteEvent( priv->lastEvent );
@@ -278,17 +311,18 @@ YDialog::waitForEvent( int timeout_millisec )
 	checkShortcuts( true );
     }
 
-    if ( priv->lastEvent )
-	deleteEvent( priv->lastEvent );
-
+    deleteEvent( priv->lastEvent );
     YEvent * event = 0;
 
     do
     {
 	event = filterInvalidEvents( waitForEventInternal( timeout_millisec ) );
+	event = callEventFilters( event );
 
-	// If there was no event or if filterInvalidEvents() discarded
-	// an invalid event, go back and get the next one.
+
+	//
+	// Handle "Help" button
+	//
 
 	if ( event && event->widget() )
 	{
@@ -296,39 +330,17 @@ YDialog::waitForEvent( int timeout_millisec )
 
 	    if ( button && button->isHelpButton() )
 	    {
-		string helpText;
-		YWidget * widget = button;
-
-		while ( widget )
+		if ( YDialog::showHelpText( button ) )
 		{
-		    if ( ! widget->helpText().empty() )
-		    {
-			yuiDebug() << "Found help text for " << widget << endl;
-			helpText = widget->helpText();
-		    }
-
-		    widget = widget->parent();
-		}
-
-		if ( ! helpText.empty() )
-		{
-		    yuiMilestone() << "Showing help text" << endl;
-		    showText( helpText, true );
-
-		    // Don't return the event from this help button -
-		    // get back into event loop
 		    deleteEvent( event );
 		    event = 0;
-
-		    yuiMilestone() << "Help dialog closed" << endl;
-		}
-		else // No help text
-		{
-		    // Return the event from this help button
-		    yuiWarning() << "No help text in " << this << endl;
 		}
 	    }
 	}
+
+	// If there was no event, if filterInvalidEvents() discarded an invalid
+	// event, or if one of the event filters consumed an event, go back and
+	// get the next event.
 
     } while ( ! event );
 
@@ -348,6 +360,10 @@ YDialog::pollEvent()
 	open();
 
     YEvent * event = filterInvalidEvents( pollEventInternal() );
+
+    if ( event ) // Optimization (calling with 0 wouldn't hurt)
+	event = callEventFilters( event );
+
     priv->lastEvent = event;
 
     // Nevermind if filterInvalidEvents() discarded an invalid event.
@@ -504,6 +520,57 @@ YDialog::openDialogsCount()
 
 
 void
+YDialog::addEventFilter( YEventFilter * eventFilter )
+{
+    YUI_CHECK_PTR( eventFilter );
+
+    if ( find( priv->eventFilterList.begin(), priv->eventFilterList.end(),
+	       eventFilter ) != priv->eventFilterList.end() )
+    {
+	yuiError() << "event filter " << hex << eventFilter << dec
+		   << " already added to " << this
+		   << endl;
+    }
+    else
+    {
+	priv->eventFilterList.push_back( eventFilter );
+    }
+}
+
+
+void
+YDialog::removeEventFilter( YEventFilter * eventFilter )
+{
+    YUI_CHECK_PTR( eventFilter );
+
+    if ( ! beingDestroyed() ) // optimization: No need to remove in dialog destructor
+    {
+	priv->eventFilterList.remove( eventFilter );
+    }
+}
+
+
+YEvent *
+YDialog::callEventFilters( YEvent * event )
+{
+    YEventFilterList::const_iterator it = priv->eventFilterList.begin();
+
+    while ( it != priv->eventFilterList.end() && event )
+    {
+	YEvent * oldEvent = event;
+	event = (*it)->filter( event );
+
+	if ( oldEvent != event )     // event filter consumed or changed the old event?
+	    deleteEvent( oldEvent ); // get rid of the old one
+
+	++it;
+    }
+
+    return event;
+}
+
+
+void
 YDialog::showText( const string & text, bool useRichText )
 {
     try
@@ -524,4 +591,36 @@ YDialog::showText( const string & text, bool useRichText )
 
 	YUI_CAUGHT( exception );
     }
+}
+
+
+bool
+YDialog::showHelpText( YWidget * widget )
+{
+    string helpText;
+
+    while ( widget )
+    {
+	if ( ! widget->helpText().empty() )
+	{
+	    yuiDebug() << "Found help text for " << widget << endl;
+	    helpText = widget->helpText();
+	}
+
+	widget = widget->parent();
+    }
+
+    if ( ! helpText.empty() )
+    {
+	yuiMilestone() << "Showing help text" << endl;
+	showText( helpText, true );
+
+	yuiMilestone() << "Help dialog closed" << endl;
+    }
+    else // No help text
+    {
+	yuiWarning() << "No help text" << endl;
+    }
+
+    return ! helpText.empty();
 }

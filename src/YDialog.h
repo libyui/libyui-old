@@ -27,6 +27,7 @@ class YShortcutManager;
 class YPushButton;
 class YDialogPrivate;
 class YEvent;
+class YEventFilter;
 
 // See YTypes.h for enum YDialogType and enum YDialogColorMode
 
@@ -96,6 +97,13 @@ public:
      * next call to waitForEvent() or pollEvent() or when the dialog is
      * deleted. This also means that the return value of this function can
      * safely be ignored without fear of memory leaks.
+     *
+     * Applications can create YEventFilters to act upon some events before
+     * they are delivered to the application. Each event filter of this dialog
+     * is called (in undefined order) in waitForEvent(). An event filter can
+     * consume an event (in which case waitForEvent() will return to its
+     * internal event loop), pass it through unchanged, or even replace it with
+     * a new event. Refer to the YEventFilter documentation for more details.
      *
      * If this dialog is not the topmost dialog, an exception is thrown.
      **/
@@ -252,6 +260,33 @@ public:
     void deleteEvent( YEvent * event );
 
     /**
+     * Add an event filter. This can be useful to catch certain types of events
+     * before they are delivered to the application. All event filters are
+     * called (in unspecified order) in waitForEvent(). Each one may consume
+     * an event, pass it through unchanged, or replace it with a newly created
+     * event.
+     *
+     * Normally, an YEventFilter should be created on the heap with 'new'. In
+     * that case, the dialog's destructor will take care of deleting it.
+     *
+     * In rare cases it might make sense to create an YEventFilter on the stack
+     * (as a local variable) and rely on that variable to go out of scope and
+     * be destroyed before the dialog gets destroyed. But that may be risky.
+     *
+     * Notice that applications never need to call this function: YEventFilter
+     * does it automatically in its constructor.
+     **/
+    void addEventFilter( YEventFilter * eventFilter );
+
+    /**
+     * Remove an event filter.
+     *
+     * Notice that applications never need to call this function: YEventFilter
+     * does it automatically in its destructor.
+     **/
+    void removeEventFilter( YEventFilter * eventFilter );
+
+    /**
      * Set this dialog's default button (the button that is activated when
      * the user hits [Return] anywhere in this dialog). 0 means no default
      * button.
@@ -277,6 +312,18 @@ public:
      * 'richText' indicates if YRichText formatting should be applied.
      **/
     static void showText( const string & text, bool richText = false );
+
+    /**
+     * Show the help text for the specified widget. If it doesn't have one,
+     * traverse up the widget hierarchy until there is one.
+     *
+     * If there is a help text, it is displayed in a pop-up dialog with a local
+     * event loop.
+     *
+     * This returns 'true' on success (there was a help text) and 'false' on
+     * failure (no help text).
+     **/
+    static bool showHelpText( YWidget * widget );
 
 
 protected:
@@ -310,6 +357,11 @@ protected:
      * dialog or the unchanged event if it does.
      **/
     YEvent * filterInvalidEvents( YEvent * event );
+
+    /**
+     * Call the installed event filters.
+     **/
+    YEvent * callEventFilters( YEvent * event );
 
     /**
      * Stack holding all currently existing dialogs.
