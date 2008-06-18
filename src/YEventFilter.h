@@ -43,6 +43,8 @@ class YEventFilterPrivate;
  * YEventFilter::filter() method) for each event inside
  * YDialog::waitForEvent(). The order in which event filters are called is
  * undefined.
+ *
+ * See YHelpButtonHandler in YDialog.cc for an example.
  **/
 class YEventFilter
 {

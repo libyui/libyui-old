@@ -83,7 +83,20 @@ public:
     
     YEvent * filter( YEvent * event )
     {
-	    
+	if ( event && event->widget() )
+	{
+	    YPushButton * button = dynamic_cast<YPushButton *> ( event->widget() );
+
+	    if ( button && button->isHelpButton() )
+	    {
+		if ( YDialog::showHelpText( button ) )
+		{
+		    event = 0; // consume event
+		}
+	    }
+	}
+
+	return event;
     }
 };
 
@@ -101,6 +114,8 @@ YDialog::YDialog( YDialogType dialogType, YDialogColorMode colorMode )
 #if VERBOSE_DIALOGS
     yuiDebug() << "New " << this << endl;
 #endif
+
+    new YHelpButtonHandler( this );
 }
 
 
@@ -117,6 +132,18 @@ YDialog::~YDialog()
 
     if ( priv->lastEvent )
 	deleteEvent( priv->lastEvent );
+
+    //
+    // Delete event handlers
+    //
+    
+    for ( YEventFilterList::iterator it = priv->eventFilterList.begin();
+	  it != priv->eventFilterList.end();
+	  ++it )
+    {
+	yuiDebug() << "Deleting event filter " << hex << (*it) << dec << endl;
+	delete *it;
+    }
 
     if ( ! _dialogStack.empty() && _dialogStack.top() == this )
     {
@@ -319,25 +346,6 @@ YDialog::waitForEvent( int timeout_millisec )
 	event = filterInvalidEvents( waitForEventInternal( timeout_millisec ) );
 	event = callEventFilters( event );
 
-
-	//
-	// Handle "Help" button
-	//
-
-	if ( event && event->widget() )
-	{
-	    YPushButton * button = dynamic_cast<YPushButton *> ( event->widget() );
-
-	    if ( button && button->isHelpButton() )
-	    {
-		if ( YDialog::showHelpText( button ) )
-		{
-		    deleteEvent( event );
-		    event = 0;
-		}
-	    }
-	}
-
 	// If there was no event, if filterInvalidEvents() discarded an invalid
 	// event, or if one of the event filters consumed an event, go back and
 	// get the next event.
@@ -533,6 +541,7 @@ YDialog::addEventFilter( YEventFilter * eventFilter )
     }
     else
     {
+	yuiDebug() << "Adding event filter " << hex << eventFilter << dec << endl;
 	priv->eventFilterList.push_back( eventFilter );
     }
 }
@@ -543,8 +552,9 @@ YDialog::removeEventFilter( YEventFilter * eventFilter )
 {
     YUI_CHECK_PTR( eventFilter );
 
-    if ( ! beingDestroyed() ) // optimization: No need to remove in dialog destructor
+    if ( ! beingDestroyed() ) // Optimization: No need to remove in dialog destructor
     {
+	yuiDebug() << "Removing event filter " << hex << eventFilter << dec << endl;
 	priv->eventFilterList.remove( eventFilter );
     }
 }
