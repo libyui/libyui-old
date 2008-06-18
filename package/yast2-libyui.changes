@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Wed Jun 18 18:49:41 CEST 2008 - sh@suse.de
+
+- Introduced YEventFilter to improve support for higher-level
+  widgets that might send and need to handle internal events
+- V 2.17.2
+
+-------------------------------------------------------------------
 Wed Jun 11 19:49:36 CEST 2008 - sh@suse.de
 
 - Introduced YUITerminator to make sure the UI is properly shut
