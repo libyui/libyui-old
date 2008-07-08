@@ -22,6 +22,7 @@
 
 #include "YShortcutManager.h"
 #include "YDialog.h"
+#include "YDumbTab.h"
 
 
 // Return the number of elements of an array of any type
@@ -346,8 +347,20 @@ YShortcutManager::findShortcutWidgets( YWidgetListConstIterator begin,
     for ( YWidgetListConstIterator it = begin; it != end; ++it )
     {
 	YWidget * widget = *it;
-	
-	if ( ! widget->shortcutString().empty() )
+
+	YDumbTab * dumbTab = dynamic_cast<YDumbTab *> (widget);
+
+	if ( dumbTab )
+	{
+	    for ( YItemConstIterator it = dumbTab->itemsBegin();
+		  it != dumbTab->itemsEnd();
+		  ++it )
+	    {
+		YItemShortcut * shortcut = new YItemShortcut( dumbTab, *it );
+		_shortcutList.push_back( shortcut );
+	    }
+	}
+	else if ( ! widget->shortcutString().empty() )
 	{
 	    YShortcut * shortcut = new YShortcut( *it );
 	    _shortcutList.push_back( shortcut );

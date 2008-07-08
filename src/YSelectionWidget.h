@@ -104,9 +104,6 @@ public:
     /**
      * Add multiple items. For some UIs, this can be more efficient than
      * calling addItem() multiple times.
-     *
-     * Derived classes can overwrite this function, but they should call this
-     * base class function in the new implementation.
      **/
     virtual void addItems( const YItemCollection & itemCollection );
 

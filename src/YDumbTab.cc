@@ -60,11 +60,6 @@ void
 YDumbTab::addItem( YItem * item )
 {
     YSelectionWidget::addItem( item );
-
-    // Remove any keyboard shortcut marker there might be
-    // to avoid confusing the YShortcutManager
-    
-    item->setLabel( YShortcut::cleanShortcutString( item->label() ) );
 }
 
 

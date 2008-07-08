@@ -25,6 +25,7 @@
 #include <vector>
 
 using std::vector;
+class YItem;
 
 
 /**
@@ -110,7 +111,7 @@ public:
     /**
      * Set (override) the shortcut character.
      **/
-    void setShortcut( char newShortcut );
+    virtual void setShortcut( char newShortcut );
 
     /**
      * Clear the shortcut: Override the shortcut character with nothing.
@@ -182,7 +183,7 @@ protected:
      * Obtain the the shortcut property of this shortcut's widget - the string
      * that contains "& " to designate a shortcut.
      **/
-    string getShortcutString();
+    virtual string getShortcutString();
     
 
     // Data members
@@ -202,6 +203,54 @@ protected:
     bool	_isWizardButton;
     int		_distinctShortcutChars;
 };
+
+
+
+/**
+ * Special case for widgets that can have multiple shortcuts based on items
+ * (like YDumbTab)
+ **/
+class YItemShortcut: public YShortcut
+{
+public:
+    /**
+     * Constructor.
+     **/
+    YItemShortcut( YWidget * widget, YItem * item )
+	: YShortcut( widget )
+	, _item( item )
+	{}
+
+    /**
+     * Destructor.
+     **/
+    virtual ~YItemShortcut() {}
+
+    /**
+     * Return the associated item.
+     **/
+    YItem * item() const { return _item; }
+
+    /**
+     * Set (override) the shortcut character.
+     * In this subclass, it will change the internally stored item.
+     **/
+    virtual void setShortcut( char newShortcut );
+
+protected:
+
+    /**
+     * Obtain the the shortcut property of this shortcut's widget - the string
+     * that contains "& " to designate a shortcut.
+     **/
+    virtual string getShortcutString();
+
+
+private:
+
+    YItem * _item;
+};
+
 
 typedef vector<YShortcut *>		YShortcutList;
 typedef YShortcutList::iterator		YShortcutListIterator;

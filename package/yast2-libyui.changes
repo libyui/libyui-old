@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Jul  8 18:57:10 CEST 2008 - sh@suse.de
+
+- Enable keyboard shortcuts for YDumbTab widgets (fate #304890)
+- V 2.17.3 
+
+-------------------------------------------------------------------
 Wed Jun 18 18:49:41 CEST 2008 - sh@suse.de
 
 - Introduced YEventFilter to improve support for higher-level

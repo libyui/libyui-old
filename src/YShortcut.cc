@@ -25,6 +25,7 @@
 
 #include "YShortcut.h"
 #include "YPushButton.h"
+#include "YDumbTab.h"
 
 
 // Return the number of elements of an array of any type
@@ -281,4 +282,52 @@ YShortcut::normalized( char c )
     if ( c >= '0' && c <= '9' )	return c;
     return (char) 0;
 }
+
+
+
+string
+YItemShortcut::getShortcutString()
+{
+    if ( ! _item )
+	return "";
+
+    return _item->label();
+}
+
+
+void
+YItemShortcut::setShortcut( char newShortcut )
+{
+    string str = cleanShortcutString();
+
+    if ( newShortcut != YShortcut::None )
+    {
+	char findme[] = { tolower( newShortcut ), toupper( newShortcut ), 0 };
+	string::size_type pos = str.find_first_of( findme );
+
+	if ( pos == string::npos )
+	{
+	    yuiError() << "Can't find '<< " << newShortcut
+		       << "' in item " 
+		       << " \"" << cleanShortcutString() << "\""
+		       << endl;
+
+	    return;
+	}
+
+	str.insert( pos,
+		    string( 1, shortcutMarker() ) );	// equivalent to 'string( "& " )'
+    }
+
+    _item->setLabel( str );
+
+    // Notify the parent widget
+    widget()->setShortcutString( widget()->shortcutString() );
+
+    _shortcutStringCached	= false;
+    _cleanShortcutStringCached	= false;
+    _shortcut = newShortcut;
+     
+}
+
 

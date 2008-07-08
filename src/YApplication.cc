@@ -28,6 +28,7 @@
 #include "YUIException.h"
 #include "YShortcut.h"
 #include "YUI.h"
+#include "YItem.h"
 
 using std::map;
 
