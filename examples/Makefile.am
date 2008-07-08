@@ -4,12 +4,13 @@
 
 INCLUDES	= -I$(top_srcdir)/src/
 
-noinst_PROGRAMS	=		\
-	HelloWorld		\
-	ComboBox1		\
-	ComboBox1-editable	\
-	SelectionBox1		\
-	SelectionBox2
+noinst_PROGRAMS	=			\
+	HelloWorld			\
+	ComboBox1			\
+	ComboBox1-editable		\
+	SelectionBox1			\
+	SelectionBox2			\
+	SelectionBox3-many-items
 
 
 HelloWorld_SOURCES		= HelloWorld.cc
@@ -26,3 +27,7 @@ SelectionBox1_LDADD		= -L$(top_srcdir)/src -lyui
 
 SelectionBox2_SOURCES		= SelectionBox2.cc
 SelectionBox2_LDADD		= -L$(top_srcdir)/src -lyui
+
+SelectionBox3_many_items_SOURCES= SelectionBox3-many-items.cc
+SelectionBox3_many_items_LDADD	= -L$(top_srcdir)/src -lyui
+
