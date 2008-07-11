@@ -173,9 +173,9 @@ YShortcut::clearShortcut()
 int
 YShortcut::distinctShortcutChars()
 {
-    if ( _distinctShortcutChars < 0 )	// chache this value - it's expensive!
+    if ( _distinctShortcutChars < 0 )	// cache this value - it's expensive!
     {
-	// Create and initiazlize "contained" array - what possible shortcut
+	// Create and initialize "contained" array - what possible shortcut
 	// characters are contained in that string?
 
 	bool contained[ sizeof(char) << 8 ];
