@@ -1,0 +1,19 @@
+{
+    // Demo for shortcut checking:
+    // Only exotic characters, not enough valid shortcut characters.
+    
+    UI::OpenDialog(
+	       `HBox(
+		     `PushButton( "&§§" ),
+		     `PushButton( "&???" ),
+		     `PushButton( "?&??" ),
+		     `PushButton( "&!!!" ),
+		     `PushButton( "&***" ),
+		     `PushButton( "&OK" )
+		     )
+	       );
+
+    UI::UserInput();
+    UI::CloseDialog();
+}
+
