@@ -135,6 +135,12 @@ public:
      * string, i.e. how many different shortcuts that widget could get.
      **/
     int distinctShortcutChars();
+
+    /**
+     * Return true if this shortcut contains any character that would be valid
+     * as a shortcut character.
+     **/
+    bool hasValidShortcutChar();
     
     /**
      * Static function: Returns the character used for marking keyboard
@@ -196,8 +202,8 @@ protected:
     string	_cleanShortcutString;
     bool	_cleanShortcutStringCached;
     
-    int		_preferred;	// int to enable initializing with invalid char ( -1 )
-    int		_shortcut;	// int to enable initializing with invalid char ( -1 )
+    int		_preferred;	// int to enable initializing with invalid char (-1)
+    int		_shortcut;	// int to enable initializing with invalid char (-1)
     
     bool	_conflict;
     bool	_isButton;

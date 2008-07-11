@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Jul 11 16:29:47 CEST 2008 - sh@suse.de
+
+- Fixed bnc #367023: Keyboard shortcuts for non-ASCII languages
+
+-------------------------------------------------------------------
 Tue Jul  8 18:57:10 CEST 2008 - sh@suse.de
 
 - Enable keyboard shortcuts for YDumbTab widgets (fate #304890)

@@ -25,6 +25,12 @@
 #include "YDumbTab.h"
 
 
+// Threshold of widgets with valid shortcut characters below which no shortcut
+// check is performed at all. This might regularly occur for languages that
+// primarily use non-ASCII characters (Russian, Greek, Chinese, Japanese,
+// Korean). 
+#define MIN_VALID_PERCENT	50
+
 // Return the number of elements of an array of any type
 #define DIM( ARRAY )	( (int) ( sizeof( ARRAY)/( sizeof( ARRAY[0] ) ) ) )
 
@@ -52,6 +58,29 @@ YShortcutManager::checkShortcuts( bool autoResolve )
     clearShortcutList();
     findShortcutWidgets( _dialog->childrenBegin(), _dialog->childrenEnd() );
 
+    int validCount = 0;
+    
+    for ( unsigned i=0; i < _shortcutList.size(); i++ )
+    {
+	if ( _shortcutList[i]->hasValidShortcutChar() )
+	    ++validCount;
+    }
+
+    int validPercent = _shortcutList.size() > 0 ?
+	( 100 * validCount ) / _shortcutList.size() : 0;
+
+    if ( validPercent < MIN_VALID_PERCENT )
+    {
+        // No check at all if there are not enough widgets with valid shortcut
+        // characters ([A-Za-z0-9]). This might regularly occur for languages
+        // that primarily use non-ASCII characters (Russian, Greek, Chinese,
+        // Japanese, Korean).
+	
+	yuiMilestone() << "Not enough widgets with valid shorctcut characters - no check" << endl;
+	yuiDebug() << "Found " << validCount << " widgets with valid shortcut characters" << endl;
+	return;
+    }
+    
 
     // Initialize wanted character counters
     for ( int i=0; i < DIM( _wanted ); i++ )

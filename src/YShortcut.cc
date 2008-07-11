@@ -212,6 +212,21 @@ YShortcut::distinctShortcutChars()
 }
 
 
+bool
+YShortcut::hasValidShortcutChar()
+{
+    string clean = cleanShortcutString();
+
+    for ( string::size_type pos=0; pos < clean.length(); pos++ )
+    {
+	if ( YShortcut::isValid( clean[ pos ] ) )
+	    return true;
+    }
+
+    return false;
+}
+
+
 string
 YShortcut::getShortcutString()
 {
