@@ -1934,7 +1934,6 @@ YCPDialogParser::parseComboBox( YWidget * parent, YWidgetOpt & opt,
  *
  * Note: The Qt version of the Wizard widget also provides a built-in tree with
  * an API that is (sometimes) easier to use.
- *
  **/
 
 YWidget *
@@ -1989,13 +1988,17 @@ YCPDialogParser::parseTree( YWidget * parent, YWidgetOpt & opt,
  * @optarg	list items the items contained in the selection box
  * @option	immediate make `notify trigger immediately when the selected item changes
  * @option	keepSorting keep the insertion order - don't let the user sort manually by clicking
+ * @option	multiSelection	user can select multiple items (rows) at once (shift-click, ctrl-click)
  * @usage	`Table( `header( "Game", "Highscore" ), [ `item( `id(1), "xkobo", "1708" ) ] )
  * @examples	Table1.ycp Table2.ycp Table3.ycp Table4.ycp Table5.ycp
  *
  * @description
  *
- * The Table widget is a selection list with multiple columns. The user can
- * select exactly one row (with all its columns) from that list.
+ * The Table widget is a selection list with multiple columns. By default, the user can
+ * select exactly one row (with all its columns) from that list. With
+ * `opt(`multiSelection), the user can select one or more rows (with all their
+ * columns) from that list (In that case, use the `SelectedItems property, not
+ * `Value).
  *
  * Each cell (each column within each row) has a label text and an optional
  * icon.
@@ -2077,17 +2080,19 @@ YCPDialogParser::parseTable( YWidget * parent, YWidgetOpt & opt,
 
     bool immediate	= false;
     bool keepSorting	= false;
+    bool multiSelection	= false;
 
     for ( int o=0; o < optList->size(); o++ )
     {
-	if	( optList->value(o)->isSymbol() && optList->value(o)->asSymbol()->symbol() == YUIOpt_immediate	 ) immediate	= true;
-	else if ( optList->value(o)->isSymbol() && optList->value(o)->asSymbol()->symbol() == YUIOpt_keepSorting ) keepSorting	= true;
+	if	( optList->value(o)->isSymbol() && optList->value(o)->asSymbol()->symbol() == YUIOpt_immediate	    ) immediate	     = true;
+	else if ( optList->value(o)->isSymbol() && optList->value(o)->asSymbol()->symbol() == YUIOpt_keepSorting    ) keepSorting    = true;
+	else if ( optList->value(o)->isSymbol() && optList->value(o)->asSymbol()->symbol() == YUIOpt_multiSelection ) multiSelection = true;
 	else logUnknownOption( term, optList->value(o) );
     }
 
     YCPTerm headerTerm	= term->value( argnr )->asTerm();
 
-    YTable * table = YUI::widgetFactory()->createTable( parent, parseTableHeader( headerTerm ) );
+    YTable * table = YUI::widgetFactory()->createTable( parent, parseTableHeader( headerTerm ), multiSelection );
 
     if ( keepSorting )
 	table->setKeepSorting( true );

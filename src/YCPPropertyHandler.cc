@@ -116,6 +116,7 @@ YCPPropertyHandler::setComplexProperty( YWidget *		widget,
     else if ( propertyName == YUIProperty_SelectedItems )
     {
 	if ( trySetMultiSelectionBoxSelectedItems( widget, val ) )	return true;
+	if ( trySetTableSelectedItems( widget, val ) )			return true;
     }
 
     y2error( "Can't handle property %s::%s - not changing anything",
@@ -184,6 +185,7 @@ YCPPropertyHandler::getComplexProperty( YWidget * widget, const string & propert
     else if ( propertyName == YUIProperty_SelectedItems )
     {
 	val = tryGetMultiSelectionBoxSelectedItems( widget );	if ( ! val.isNull() ) return val;
+	val = tryGetTableSelectedItems( widget );		if ( ! val.isNull() ) return val;
     }
     else if ( propertyName == YUIProperty_OpenItems )
     {
@@ -604,8 +606,8 @@ YCPPropertyHandler::trySetRadioButtonGroupCurrentButton( YWidget * widget, const
 }
 
 
-bool
-YCPPropertyHandler::trySetMultiSelectionBoxSelectedItems( YWidget * widget, const YCPValue & val )
+template<class Widget_t, class Item_t>
+bool trySetSelectionWidgetSelectedItems( YWidget * widget, const YCPValue & val )
 {
     YMultiSelectionBox * multiSelBox = dynamic_cast<YMultiSelectionBox *> (widget);
 
@@ -643,6 +645,20 @@ YCPPropertyHandler::trySetMultiSelectionBoxSelectedItems( YWidget * widget, cons
     }
 
     return true;
+}
+
+
+bool
+YCPPropertyHandler::trySetMultiSelectionBoxSelectedItems( YWidget * widget, const YCPValue & val )
+{
+    return trySetSelectionWidgetSelectedItems<YMultiSelectionBox, YCPItem>( widget, val );
+}
+
+
+bool
+YCPPropertyHandler::trySetTableSelectedItems( YWidget * widget, const YCPValue & val )
+{
+    return trySetSelectionWidgetSelectedItems<YTable, YCPTableItem>( widget, val );
 }
 
 
@@ -819,7 +835,8 @@ YCPPropertyHandler::tryGetCheckBoxValue( YWidget * widget )
 }
 
 
-template<class Widget_t, class Item_t > YCPValue tryGetSelectionWidgetValue( YWidget * widget )
+template<class Widget_t, class Item_t >
+YCPValue tryGetSelectionWidgetValue( YWidget * widget )
 {
     Widget_t * selWidget = dynamic_cast<Widget_t *> (widget);
 
@@ -920,35 +937,49 @@ YCPPropertyHandler::tryGetRadioButtonGroupCurrentButton( YWidget * widget )
 }
 
 
-YCPValue
-YCPPropertyHandler::tryGetMultiSelectionBoxSelectedItems( YWidget * widget )
+template<class Widget_t, class Item_t >
+YCPValue tryGetSelectionWidgetSelectedItems( YWidget * widget )
 {
-    YMultiSelectionBox * multiSelBox = dynamic_cast<YMultiSelectionBox *> (widget);
+    Widget_t * selWidget = dynamic_cast<Widget_t *> (widget);
 
-    if ( ! multiSelBox )
+    if ( ! selWidget )
 	return YCPNull();
 
     YCPList selectedItemsList;
-    YItemCollection selectedItems = multiSelBox->selectedItems();
+    YItemCollection selectedItems = selWidget->selectedItems();
 
     for ( YItemIterator it = selectedItems.begin();
 	  it != selectedItems.end();
 	  ++it )
     {
-	const YCPItem * item = dynamic_cast<const YCPItem *> (*it);
+	const Item_t * item = dynamic_cast<const Item_t *> (*it);
 
 	if ( item )
 	{
 	    if ( item->hasId() )
 		selectedItemsList->add( item->id() );
 	    else
-		y2error( "Item has no ID: %s", item->label()->value().c_str() );
+		y2error( "Item has no ID: %s", (*it)->label().c_str() );
 	}
 	else
 	    y2error( "Wrong item type (not a YCPItem): %s", (*it)->label().c_str() );
     }
 
     return selectedItemsList;
+}
+
+
+YCPValue
+YCPPropertyHandler::tryGetMultiSelectionBoxSelectedItems( YWidget * widget )
+{
+    return tryGetSelectionWidgetSelectedItems<YMultiSelectionBox, YCPItem>( widget );
+}
+
+
+YCPValue
+YCPPropertyHandler::tryGetTableSelectedItems( YWidget * widget )
+{
+    return tryGetSelectionWidgetSelectedItems<YTable, YCPTableItem>( widget );
 }
 
 

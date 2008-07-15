@@ -102,7 +102,7 @@ y2milestone ("formatEvent(%1)", event);
 					      ]
 					     );
 
-    term drink		= `Table(`id(`drink), `opt(`notify, `immediate), `header( "Drink", "Contents" ),
+    term drink		= `Table(`id(`drink), `opt(`notify, `immediate, `multiSelection), `header( "Drink", "Contents" ),
 				 [
 				  `item(`id(`coke),	"Coca Cola",		"Caffeine" 	),
 				  `item(`id(`sprite),	"Sprite",		""		),
