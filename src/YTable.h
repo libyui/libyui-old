@@ -57,8 +57,12 @@ protected:
      * headings, and column alignment. The widget assumes ownership of this
      * object and will delete it when appropriate. The header cannot be changed
      * after creating the widget.
+     *
+     * 'multiSelection' indicates whether or not the user can select multiple
+     * items at the same time (e.g., with shift-click or ctrl-click). This can
+     * only be set in the constructor.
      **/
-    YTable( YWidget * parent, YTableHeader * header );
+    YTable( YWidget * parent, YTableHeader * header, bool multiSelection );
 
 public:
 
@@ -127,6 +131,12 @@ public:
      * base class function in the new implementation.
      **/
     virtual void setKeepSorting( bool keepSorting );
+
+    /**
+     * Return 'true' if the user can select multiple items  at the same time
+     * (e.g., with shift-click or ctrl-click).
+     **/
+    bool hasMultiSelection() const;
 
     /**
      * Notification that a cell (its text and/or its icon) was changed from the

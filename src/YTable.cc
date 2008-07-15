@@ -41,10 +41,10 @@ struct YTablePrivate
 
 
 
-YTable::YTable( YWidget * parent, YTableHeader * header )
+YTable::YTable( YWidget * parent, YTableHeader * header, bool multiSelection )
     : YSelectionWidget( parent,
 			"",	// label
-			true )	// enforceSingleSelection
+			! multiSelection ) // enforceSingleSelection
     , priv( new YTablePrivate( header ) )
 {
     YUI_CHECK_PTR( header );
@@ -134,6 +134,12 @@ YTable::setKeepSorting( bool keepSorting )
 }
 
 
+bool
+YTable::hasMultiSelection() const
+{
+    return ! YSelectionWidget::enforceSingleSelection();
+}
+
 
 const YPropertySet &
 YTable::propertySet()
@@ -146,19 +152,23 @@ YTable::propertySet()
 	 * @property itemID  	Value		The currently selected item
 	 * @property itemID  	CurrentItem	The currently selected item
 	 * @property itemList	Items		All items
+	 * @property itemList	SelectedItems	All currently selected items
 	 * @property string	Cell		One cell (one column of one item)
 	 * @property integer	Cell		(ChangeWidget only) One cell as integer
 	 * @property `icon(...)	Cell		Icon for one one cell
 	 * @property string	Item		Alias for Cell
 	 * @property string	Item		QueryWidget only: Return one complete item
 	 * @property string  	IconPath	Base path for icons
+	 * @property bool	MultiSelection	Flag: User can select multiple items (read-only)
 	 */
 	propSet.add( YProperty( YUIProperty_Value,		YOtherProperty	 ) );
 	propSet.add( YProperty( YUIProperty_CurrentItem,	YOtherProperty	 ) );
+	propSet.add( YProperty( YUIProperty_SelectedItems,	YOtherProperty	 ) );
 	propSet.add( YProperty( YUIProperty_Items,		YOtherProperty	 ) );
 	propSet.add( YProperty( YUIProperty_Cell,		YOtherProperty	 ) );
 	propSet.add( YProperty( YUIProperty_Item,		YOtherProperty	 ) );
 	propSet.add( YProperty( YUIProperty_IconPath,		YStringProperty	 ) );
+	propSet.add( YProperty( YUIProperty_MultiSelection,	YBoolProperty,   true ) ); // read-only
 	propSet.add( YWidget::propertySet() );
     }
 
@@ -173,6 +183,7 @@ YTable::setProperty( const string & propertyName, const YPropertyValue & val )
 
     if	    ( propertyName == YUIProperty_Value		)	return false; // Needs special handling
     else if ( propertyName == YUIProperty_CurrentItem 	)	return false; // Needs special handling
+    else if ( propertyName == YUIProperty_SelectedItems	)	return false; // Needs special handling
     else if ( propertyName == YUIProperty_Items 	)	return false; // Needs special handling
     else if ( propertyName == YUIProperty_Cell		)	return false; // Needs special handling
     else if ( propertyName == YUIProperty_Item 		)	return false; // Needs special handling
@@ -193,6 +204,7 @@ YTable::getProperty( const string & propertyName )
 
     if	    ( propertyName == YUIProperty_Value		)	return YPropertyValue( YOtherProperty );
     else if ( propertyName == YUIProperty_CurrentItem 	)	return YPropertyValue( YOtherProperty );
+    else if ( propertyName == YUIProperty_SelectedItems	)	return YPropertyValue( YOtherProperty );
     else if ( propertyName == YUIProperty_Items 	)	return YPropertyValue( YOtherProperty );
     else if ( propertyName == YUIProperty_Cell		)	return YPropertyValue( YOtherProperty );
     else if ( propertyName == YUIProperty_Item 		)	return YPropertyValue( YOtherProperty );
