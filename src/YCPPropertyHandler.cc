@@ -609,9 +609,9 @@ YCPPropertyHandler::trySetRadioButtonGroupCurrentButton( YWidget * widget, const
 template<class Widget_t, class Item_t>
 bool trySetSelectionWidgetSelectedItems( YWidget * widget, const YCPValue & val )
 {
-    Widget_t * multiSelBox = dynamic_cast<Widget_t *> (widget);
+    Widget_t * selWidget = dynamic_cast<Widget_t *> (widget);
 
-    if ( ! multiSelBox )
+    if ( ! selWidget )
 	return false;
 
     if ( ! val->isList() )
@@ -625,22 +625,22 @@ bool trySetSelectionWidgetSelectedItems( YWidget * widget, const YCPValue & val 
 
     YCPList itemIdList = val->asList();
 
-    multiSelBox->deselectAllItems();
+    selWidget->deselectAllItems();
 
     for ( int i=0; i < itemIdList.size(); i++ )
     {
-	Item_t * item = findItem<Item_t>( multiSelBox, itemIdList->value( i ) );
+	Item_t * item = findItem<Item_t>( selWidget, itemIdList->value( i ) );
 
 	if ( ! item )
 	{
 	    y2error( "%s \"%s\" has no item with ID %s",
-		     multiSelBox->widgetClass(),
-		     multiSelBox->debugLabel().c_str(),
+		     selWidget->widgetClass(),
+		     selWidget->debugLabel().c_str(),
 		     itemIdList->value(i)->toString().c_str() );
 	}
 	else
 	{
-	    multiSelBox->selectItem( item );
+	    selWidget->selectItem( item );
 	}
     }
 
