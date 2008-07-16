@@ -17,9 +17,12 @@
 		     `PushButton("&OK")
 		     )
 	       );
+
+    UI::ChangeWidget(`menu, `SelectedItems, [ 1, 2 ]);
+
     UI::UserInput();
 
-    any sel = UI::QueryWidget(`menu, `SelectedItems );
+    any sel = UI::QueryWidget(`menu, `SelectedItems);
     UI::CloseDialog();
 
     y2milestone( "Selected: %1", sel );
