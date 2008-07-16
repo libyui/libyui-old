@@ -609,7 +609,7 @@ YCPPropertyHandler::trySetRadioButtonGroupCurrentButton( YWidget * widget, const
 template<class Widget_t, class Item_t>
 bool trySetSelectionWidgetSelectedItems( YWidget * widget, const YCPValue & val )
 {
-    YMultiSelectionBox * multiSelBox = dynamic_cast<YMultiSelectionBox *> (widget);
+    Widget_t * multiSelBox = dynamic_cast<Widget_t *> (widget);
 
     if ( ! multiSelBox )
 	return false;
@@ -629,7 +629,7 @@ bool trySetSelectionWidgetSelectedItems( YWidget * widget, const YCPValue & val 
 
     for ( int i=0; i < itemIdList.size(); i++ )
     {
-	YCPItem * item = findItem<YCPItem>( multiSelBox, itemIdList->value( i ) );
+	Item_t * item = findItem<Item_t>( multiSelBox, itemIdList->value( i ) );
 
 	if ( ! item )
 	{
