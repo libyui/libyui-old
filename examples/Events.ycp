@@ -108,7 +108,7 @@ y2milestone ("formatEvent(%1)", event);
 				  `item(`id(`sprite),	"Sprite",		""		),
 				  `item(`id(`water),	"Mineral Water",	""		),
 				  `item(`id(`beer),	"Beer",			"Alcohol"	),
-				  `item(`id(`beer),	"Wine",			"Alcohol"	),
+				  `item(`id(`wine),	"Wine",			"Alcohol"	),
 				  `item(`id(`coffee),	"Coffee",		"Caffeine"	)
 				  ]
 				 );
@@ -139,7 +139,8 @@ y2milestone ("formatEvent(%1)", event);
 					     `item(`id(`doggie_bag ), "Order doggie bag" ),
 					     `item(`id( "This is a dumb user who will click on everything. Nevermind." ),
 						   "Order dog to eat the leftovers in the doggie bag" ),
-					     `item(`id(`cancel_order), "Cancel order" )
+					     `item(`id(`cancel_order), "Cancel order" ),
+					     `item(`id(`caffeine), "Give me caffeine" )
 					     ]
 					    )
 				);
@@ -252,6 +253,10 @@ y2milestone ("formatEvent(%1)", event);
 	{
 	    UI::ChangeWidget(`send_mafioso, `Value, nil );
 	    UI::DumpWidgetTree();
+	}
+	else if ( event["ID"]:nil == `caffeine )
+	{
+	    UI::ChangeWidget(`drink, `SelectedItems, [`coffee, `coke] );
 	}
 	else if ( event["ID"]:nil == `info )
 	{
