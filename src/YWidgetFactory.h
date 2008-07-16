@@ -185,7 +185,7 @@ protected:
     YWidgetFactory();
 
     /**
-     * Destructory.
+     * Destructor.
      **/
     virtual ~YWidgetFactory();
 
