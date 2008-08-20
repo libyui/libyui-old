@@ -84,6 +84,44 @@ public:
     virtual void setDefaultButton( bool def = true );
 
     /**
+     * Set a predefined role for this button.
+     *
+     * This is important when the button is a child of a YButtonBox so the
+     * layout can be arranged according to the conventions of the current UI or
+     * desktop environment.
+     *
+     * See YButtonBox.h for more details. YButtonRole is defined in YTypes.h
+     *
+     * The default is YCustomButton, i.e., no predefined role.
+     * setFunctionKey() uses some heuristics to map function keys to buttons:
+     *
+     *     F10 -> YOkButton
+     *     F9  -> YCancelButton
+     *     F1  -> YHelpButton
+     *
+     * Derived classes are free to reimplement this, but they should call this
+     * base class function in the overwritten function.
+     **/
+    virtual void setButtonRole( YButtonRole role );
+
+    /**
+     * Return the role of this button.
+     **/
+    YButtonRole buttonRole() const;
+
+    /**
+     * Assign a function key to this widget
+     * (1 for F1, 2 for F2, etc.; 0 for none)
+     *
+     * Reimplemented from YWidget to map function keys to button roles.
+     *
+     * Derived classes may want to overwrite this function, but they should
+     * call this base class function in the new function.
+     **/
+    virtual void setFunctionKey( int fkey_no );
+
+    
+    /**
      * Returns 'true' if this is a "Help" button.
      *
      * When activated, a help button will traverse up its widget hierarchy and

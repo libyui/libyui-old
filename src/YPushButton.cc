@@ -37,12 +37,14 @@ struct YPushButtonPrivate
 	, isDefaultButton( false )
 	, setDefaultButtonRecursive( false )
 	, isHelpButton( false )
+	, buttonRole( YCustomButton )
 	{}
     
     string	label;
     bool	isDefaultButton;
     bool	setDefaultButtonRecursive;
     bool	isHelpButton;
+    YButtonRole	role;
 };
 
 
@@ -124,8 +126,34 @@ bool YPushButton::isHelpButton() const
 void YPushButton::setHelpButton( bool helpButton )
 {
     priv->isHelpButton = helpButton;
+    priv->role = YHelpButton;
 }
 
+
+void YPushButton::setButtonRole( YButtonRole role )
+{
+    priv->role = role;
+}
+
+
+YButtonRole YPushButton::buttonRole() const
+{
+    return priv->role;
+}
+
+
+void YPushButton::setFunctionKey( int fkey_no )
+{
+    YWidget::setFunctionKey( fkey_no );
+    
+    switch ( functionKey() )	// base class method might have changed it
+    {
+	case 10:	priv->role = YOkButton;		break;
+	case 9:		priv->role = YCancelButton;	break;
+	case 1:		priv->role = YHelpButton;	break;
+	default:	break;
+    }
+}
 
 
 const YPropertySet &

@@ -682,9 +682,13 @@ private:
 
 
 /**
- * Exception class for "invalid child":
- * Attempt to remove a child from a children manager that is not in that
- * manager's children list.
+ * Exception class for "invalid child". One of:
+ *
+ * - Attempt to remove a child from a children manager that is not in that
+ *   manager's children list.
+ *
+ * - Child widget of wrong type added to a container widget, e.g., anything
+ *   other than a YPushButton added to a YButtonBox.  
  **/
 template<class YWidget> class YUIInvalidChildException: public YUIException
 {
@@ -868,10 +872,26 @@ class YUICantLoadAnyUIException: public YUIException
 {
 public:
     YUICantLoadAnyUIException()
-	: YUIException("No $DISPLAY and stdout is not a tty" ) 
+	: YUIException( "No $DISPLAY and stdout is not a tty" ) 
 	{}
 
     virtual ~YUICantLoadAnyUIException() throw()
+	{}
+};
+
+
+/**
+ * Exception class for "wrong button roles in YButtonBox"
+ **/
+class YUIButtonRoleMismatchException: public YUIException
+{
+public:
+
+    YUIButtonRoleMismatchException( const string & msg )
+	: YUIException( msg )
+	{}
+
+    virtual ~YUIButtonRoleMismatchException() throw()
 	{}
 };
 

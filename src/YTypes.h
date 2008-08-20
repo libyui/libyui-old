@@ -71,5 +71,29 @@ enum YDialogColorMode
 };
 
 
+enum YButtonRole
+{
+    YCustomButton = 0,	// No predefined role
+    YOkButton,		// [OK], [Continue], [Yes], [Accept], [Next]
+    YApplyButton,	// [Apply]
+    YCancelButton,	// [Cancel]
+    YHelpButton,	// [Help]
+
+    YMaxButtonRole	// For use as array size
+};
+
+
+enum YButtonOrder
+{
+    YKDEButtonOrder,	// [OK] [Apply] [Cancel] [Custom1] [Custom2] [Help]
+			// [Yes] [No]
+			// [Continue] [Cancel]
+    
+    YGnomeButtonOrder	// [Help] [Custom1] [Custom2] [Apply] [Cancel] [OK]
+			// [No] [Yes]
+			// [Cancel] [Continue]
+};
+
+
 
 #endif // YTypes_h
