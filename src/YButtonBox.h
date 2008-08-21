@@ -341,6 +341,11 @@ protected:
      **/
     virtual void moveChild( YWidget * child, int newX, int newY ) = 0;
 
+    /**
+     * Calculate the preferred with with or without trying to enforce buttons
+     * of equal size.
+     **/
+    int preferredWidth( bool equalSizeButtons );
 
 
 private:
