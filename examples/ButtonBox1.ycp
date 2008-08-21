@@ -1,0 +1,18 @@
+// Example for ButtonBox
+{
+    UI::OpenDialog(`VBox(
+			 `HVCenter(
+				   `Label( "Hello, world!" )
+				   ),
+			 `ButtonBox(
+				    `PushButton(`id(`doit1), "Do &Something Very Cool" ),
+				    `PushButton(`id(`doit2), "Do &More" ),
+				    `PushButton(`id(`ok), "&OK" ),
+				    `PushButton(`id(`cancel), "&Cancel" ),
+				    `PushButton(`id(`apply), "&Apply" )
+				    )
+			 )
+		   );
+    UI::UserInput();
+    UI::CloseDialog();
+}
