@@ -193,6 +193,7 @@
 #define YUIOpt_boldFont				"boldFont"
 #define YUIOpt_cancelButton			"cancelButton"
 #define YUIOpt_centered				"centered"
+#define YUIOpt_customButton			"customButton"
 #define YUIOpt_debugLayout			"debugLayout"
 #define YUIOpt_decorated			"decorated"
 #define YUIOpt_default				"default"
