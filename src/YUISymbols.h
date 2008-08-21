@@ -148,11 +148,12 @@
 
 // Widget properties
 
+#define YUIProperty_Alive			"Alive"
 #define YUIProperty_Cell			"Cell"
 #define YUIProperty_CurrentBranch		"CurrentBranch"
 #define YUIProperty_CurrentButton		"CurrentButton"
-#define YUIProperty_CurrentSize			"CurrentSize"
 #define YUIProperty_CurrentItem			"CurrentItem"
+#define YUIProperty_CurrentSize			"CurrentSize"
 #define YUIProperty_DebugLabel			"DebugLabel"
 #define YUIProperty_EasterEgg			"EasterEgg"
 #define YUIProperty_Enabled			"Enabled"
@@ -174,14 +175,13 @@
 #define YUIProperty_OpenItems			"OpenItems"
 #define YUIProperty_SelectedItems		"SelectedItems"
 #define YUIProperty_Text			"Text"
+#define YUIProperty_Timeout			"Timeout"
 #define YUIProperty_ValidChars			"ValidChars"
 #define YUIProperty_Value			"Value"
 #define YUIProperty_Values			"Values"
 #define YUIProperty_VisibleLines		"VisibleLines"
 #define YUIProperty_WidgetClass			"WidgetClass"
 #define YUIProperty_WidgetName			"WidgetName"
-#define YUIProperty_Timeout			"Timeout"
-#define YUIProperty_Alive			"Alive"
 
 
 // Widget and dialog options
