@@ -139,6 +139,8 @@ struct YButtonBoxMargins
  **/
 class YButtonBox : public YWidget
 {
+    friend class YButtonBoxPrivate;
+
 protected:
     /**
      * Constructor.
@@ -221,10 +223,13 @@ public:
      * button order is implemented.
      *
      * This method is called by the default setSize() method. It uses
-     * YButtonBox::buttonOrder(), the specified margins (defaultMargins unless
-     * changed with setMargins() ) and equalButtonSize(). It should
-     * work reasonably in all cases (Qt-UI with KDE button order, Gtk-UI with
-     * Gnome button order, NCurses-UI with KDE button order).
+     * YButtonBox::layoutPolicy() and the specified margins (defaultMargins
+     * unless changed with setMargins() ). It moves the buttons to their
+     * position with moveChild().
+     *
+     * This all should work reasonably in all cases (Qt-UI with KDE button
+     * order, Gtk-UI with Gnome button order, NCurses-UI with KDE button
+     * order).
      *
      * Still, derived classes can reimplement this. It does not make very much
      * sense to call this default method in a new implementation.
@@ -235,7 +240,30 @@ public:
      * Search the child widgets for the first button with the specified role.
      * Return the button or 0 if there is no button with that role.
      **/
-    YPushButton * findButton( YButtonRole * role );
+    YPushButton * findButton( YButtonRole role );
+
+    /**
+     * Sanity check: Check if all child widgets have the correct widget class
+     * and if the button roles are assigned correctly.
+     *
+     * A YButtonBox with more than one button is required to have one YOKButton
+     * and ony YCancelButton. Neither button role may be assigned more than
+     * once.
+     *
+     * This method may throw exceptions:
+     * - YUIButtonRoleMismatchException
+     * - YUIInvalidChildException	(wrong widget class)
+     *
+     * This cannot be done as child widgets are inserted since this is done
+     * from the child widgets' constructors, so virtual methods or dynamic_cast
+     * don't work at that point.
+     *
+     * This is called in the default setSize() method (just before doLayout()),
+     * so any of the above errors are caught only at that time. Applications
+     * are free to call this before that time to make error handling more
+     * transparent.
+     **/
+    void sanityCheck();
 
     /**
      * Preferred width of the widget.
@@ -293,7 +321,7 @@ protected:
      * are multiple buttons with any of the standard button roles (except
      * YCustomButton, of course).
      **/
-    virtual std::vector<YPushButton *> buttonsByButtonOrder() const;
+    virtual std::vector<YPushButton *> buttonsByButtonOrder();
 
     /**
      * Return the (preferred) size of the biggest child widget in the specified

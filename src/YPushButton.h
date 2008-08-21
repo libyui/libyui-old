@@ -102,12 +102,12 @@ public:
      * Derived classes are free to reimplement this, but they should call this
      * base class function in the overwritten function.
      **/
-    virtual void setButtonRole( YButtonRole role );
+    virtual void setRole( YButtonRole role );
 
     /**
      * Return the role of this button.
      **/
-    YButtonRole buttonRole() const;
+    YButtonRole role() const;
 
     /**
      * Assign a function key to this widget

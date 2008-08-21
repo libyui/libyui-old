@@ -44,7 +44,7 @@ struct YButtonBoxPrivate
      * Constructor
      **/
     YButtonBoxPrivate()
-	: margins( _defaultMargins )
+	: margins( YButtonBox::_defaultMargins )
 	{}
 
     //
@@ -57,7 +57,7 @@ struct YButtonBoxPrivate
 
 
 
-YButtonBox::YButtonBox()
+YButtonBox::YButtonBox( YWidget * parent )
     : YWidget( parent )
     , priv( new YButtonBoxPrivate() )
 {
@@ -157,12 +157,18 @@ YButtonBox::doLayout( int width, int height )
 
     if ( buttons.empty() )
 	return;
-    
+
     YPushButton * helpButton = findButton( YHelpButton );
-    
+
     int prefWidth  = preferredWidth();
     int prefHeight = preferredHeight();
     YButtonBoxMargins margins = priv->margins;
+
+
+    //
+    // Horizontal layout
+    //
+    
     int widthLoss = 0;
 
     if ( width < prefWidth ) // Not enough horizontal space
@@ -185,16 +191,16 @@ YButtonBox::doLayout( int width, int height )
 	    margins.right = 0;
 	}
 
-	if ( missing > 0 && buttons.count() > 1 )
+	if ( missing > 0 && buttons.size() > 1 )
 	{
 	    // Try reducing spacing
-	    
-	    int totalSpacing = ( buttons.count() - 1 ) * margins.spacing;
+
+	    int totalSpacing = ( buttons.size() - 1 ) * margins.spacing;
 
 	    if ( missing <= totalSpacing )
 	    {
 		totalSpacing -= missing;
-		margins.spacing = totalSpacing / ( buttons.count() - 1 );
+		margins.spacing = totalSpacing / ( buttons.size() - 1 );
 		missing = 0;
 	    }
 	    else
@@ -207,7 +213,7 @@ YButtonBox::doLayout( int width, int height )
 	if ( missing > 0 && helpButton )
 	{
 	    // Try reducing help button extra spacing
-	    
+
 	    if ( missing <= margins.helpButtonExtraSpacing )
 	    {
 		margins.helpButtonExtraSpacing -= missing;
@@ -220,39 +226,44 @@ YButtonBox::doLayout( int width, int height )
 	    }
 	}
 
-	
+
 	// Distribute missing width among all buttons
-	
+
 	if ( missing > 0 )
-	    widthLoss = missing / buttons.count();
+	    widthLoss = missing / buttons.size();
     }
 
     if ( width > prefWidth ) // Excess horizontal space
     {
 	int excessWidth = width - prefWidth;
-	
+
 	switch ( _layoutPolicy.alignment[ YD_HORIZ ] )
 	{
 	    case YAlignCenter:
 		margins.left  += excessWidth / 2;
 		margins.right += excessWidth / 2;
 		break;
-		
+
 	    case YAlignBegin:
+	    case YAlignUnchanged:
 		margins.right += excessWidth;
 		break;
-		
+
 	    case YAlignEnd:
 		margins.left  += excessWidth;
 		break;
 	}
     }
 
+    
+    //
+    // Vertical layout
+    //
 
     if ( height < prefHeight ) // Not enough vertical space
     {
 	// Reduce margins
-	
+
 	int missing = prefHeight - height;
 
 	if ( missing < margins.top + margins.bottom )
@@ -267,25 +278,33 @@ YButtonBox::doLayout( int width, int height )
 	}
     }
 
+
+    //
+    // Set child widget positions and sizes from left to right
+    //
     
     int x_pos = margins.left;
     int buttonWidth = 0;
-    
+
     if ( _layoutPolicy.equalSizeButtons )
     {
 	buttonWidth  = maxChildSize( YD_HORIZ );
 	buttonWidth -= widthLoss;
     }
 
+    
     for ( vector<YPushButton *>::iterator it = buttons.begin();
 	  it != buttons.end();
 	  ++it )
     {
 	YPushButton * button = *it;
 
-	if ( button == helpButton && button != buttons.front() )
-	    x_pos += helpButtonExtraSpacing;
+	// Extra spacing left of [Help] button
+	// (Only if this isn't the first button)
 	
+	if ( button == helpButton && button != buttons.front() )
+	    x_pos += margins.helpButtonExtraSpacing;
+
 	if ( ! _layoutPolicy.equalSizeButtons )
 	{
 	    buttonWidth  = button->preferredWidth();
@@ -305,7 +324,7 @@ YButtonBox::doLayout( int width, int height )
 	else // Excess vertical space
 	{
 	    // Distribute excess vertical space
-	    
+
 	    int excessHeight = height - buttonHeight;
 	    excessHeight -= margins.top;
 	    excessHeight -= margins.bottom;
@@ -313,8 +332,9 @@ YButtonBox::doLayout( int width, int height )
 	    switch ( _layoutPolicy.alignment[ YD_VERT ] )
 	    {
 		case YAlignBegin:	// Align top
+		case YAlignUnchanged:
 		    break;
-		    
+
 		case YAlignCenter:
 		    y_pos += excessHeight / 2;
 		    break;
@@ -331,6 +351,9 @@ YButtonBox::doLayout( int width, int height )
 	x_pos += buttonWidth;
 	x_pos += margins.spacing;
 
+	
+	// Extra spacing right of [Help] button
+	
 	if ( button == helpButton )
 	    x_pos += margins.helpButtonExtraSpacing;
     }
@@ -338,7 +361,7 @@ YButtonBox::doLayout( int width, int height )
 
 
 vector<YPushButton *>
-YButtonBox::buttonsByButtonOrder() const
+YButtonBox::buttonsByButtonOrder()
 {
     vector<YPushButton *> specialButtons( YMaxButtonRole, (YPushButton *) 0 );
     vector<YPushButton *> customButtons;
@@ -350,8 +373,8 @@ YButtonBox::buttonsByButtonOrder() const
 	YPushButton * button = dynamic_cast<YPushButton *> (*it);
 
 	if ( ! button )
-	    YUI_THROW( YUIInvalidChildException( this, *it ) );
-	    
+	    YUI_THROW( YUIInvalidChildException<YWidget>( this, *it ) );
+
 	switch ( button->role() )
 	{
 	    case YOKButton:
@@ -399,7 +422,7 @@ YButtonBox::buttonsByButtonOrder() const
 	if ( specialButtons[ YHelpButton   ] )	buttons.push_back( specialButtons[ YHelpButton   ] );
 
 	buttons.insert( buttons.end(), customButtons.begin(), customButtons.end() );
-	
+
 	if ( specialButtons[ YApplyButton  ] )	buttons.push_back( specialButtons[ YApplyButton  ] );
 	if ( specialButtons[ YCancelButton ] )	buttons.push_back( specialButtons[ YCancelButton ] );
 	if ( specialButtons[ YOKButton     ] )	buttons.push_back( specialButtons[ YOKButton     ] );
@@ -415,7 +438,7 @@ YButtonBox::preferredWidth()
     if ( childrenCount() < 1 )
 	return 0;
 
-    int width = ( childrenCount() - 1 ) * priv->spacing;
+    int width = ( childrenCount() - 1 ) * priv->margins.spacing;
 
     if ( _layoutPolicy.equalSizeButtons )
 	width += maxChildSize( YD_HORIZ ) * childrenCount();
@@ -455,7 +478,7 @@ YButtonBox::maxChildSize( YUIDimension dim ) const
 	  it != childrenEnd();
 	  ++it )
     {
-	maxChildSize = max( maxChildSize, (*it)->preferredSize( dim ) );
+	maxSize = max( maxSize, (*it)->preferredSize( dim ) );
     }
 
     return maxSize;
@@ -481,7 +504,7 @@ YButtonBox::totalChildrenWidth() const
 bool
 YButtonBox::stretchable( YUIDimension dimension ) const
 {
-    switch ( dim )
+    switch ( dimension )
     {
 	case YD_HORIZ:	return true;
 	case YD_VERT :	return false;
@@ -494,7 +517,7 @@ YButtonBox::stretchable( YUIDimension dimension ) const
 
 
 YPushButton *
-YButtonBox::findButton( YButtonRole * role )
+YButtonBox::findButton( YButtonRole role )
 {
     for ( YWidgetListConstIterator it = childrenBegin();
 	  it != childrenEnd();
@@ -502,7 +525,7 @@ YButtonBox::findButton( YButtonRole * role )
     {
 	YPushButton * button = dynamic_cast<YPushButton *> (*it);
 
-	if ( button && button->role == role )
+	if ( button && button->role() == role )
 	    return button;
     }
 
@@ -513,8 +536,8 @@ YButtonBox::findButton( YButtonRole * role )
 void
 YButtonBox::sanityCheck()
 {
-    YPushButton okButton     = 0;
-    YPushButton cancelButton = 0;
+    YPushButton * okButton     = 0;
+    YPushButton * cancelButton = 0;
 
     for ( YWidgetListConstIterator it = childrenBegin();
 	  it != childrenEnd();
@@ -523,7 +546,7 @@ YButtonBox::sanityCheck()
 	YPushButton * button = dynamic_cast<YPushButton *> (*it);
 
 	if ( ! button )
-	    YUI_THROW( YUIInvalidChildException( this, *it ) );
+	    YUI_THROW( YUIInvalidChildException<YWidget>( this, *it ) );
 
 	switch ( button->role() )
 	{
@@ -555,6 +578,4 @@ YButtonBox::sanityCheck()
 	if ( ! okButton || ! cancelButton )
 	    YUI_THROW( YUIButtonRoleMismatchException( "Button role mismatch: Must have both [OK] and [Cancel] roles" ) );
     }
-
-    return 0;
 }

@@ -74,7 +74,7 @@ enum YDialogColorMode
 enum YButtonRole
 {
     YCustomButton = 0,	// No predefined role
-    YOkButton,		// [OK], [Continue], [Yes], [Accept], [Next]
+    YOKButton,		// [OK], [Continue], [Yes], [Accept], [Next]
     YApplyButton,	// [Apply]
     YCancelButton,	// [Cancel]
     YHelpButton,	// [Help]

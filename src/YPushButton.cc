@@ -37,7 +37,7 @@ struct YPushButtonPrivate
 	, isDefaultButton( false )
 	, setDefaultButtonRecursive( false )
 	, isHelpButton( false )
-	, buttonRole( YCustomButton )
+	, role( YCustomButton )
 	{}
     
     string	label;
@@ -130,13 +130,13 @@ void YPushButton::setHelpButton( bool helpButton )
 }
 
 
-void YPushButton::setButtonRole( YButtonRole role )
+void YPushButton::setRole( YButtonRole role )
 {
     priv->role = role;
 }
 
 
-YButtonRole YPushButton::buttonRole() const
+YButtonRole YPushButton::role() const
 {
     return priv->role;
 }
@@ -148,7 +148,7 @@ void YPushButton::setFunctionKey( int fkey_no )
     
     switch ( functionKey() )	// base class method might have changed it
     {
-	case 10:	priv->role = YOkButton;		break;
+	case 10:	priv->role = YOKButton;		break;
 	case 9:		priv->role = YCancelButton;	break;
 	case 1:		priv->role = YHelpButton;	break;
 	default:	break;

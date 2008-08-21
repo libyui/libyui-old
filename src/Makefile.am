@@ -48,6 +48,7 @@ libyui_la_SOURCES =				\
 	YAlignment.cc				\
 	YBarGraph.cc				\
 	YBusyIndicator.cc			\
+	YButtonBox.cc				\
 	YCheckBox.cc				\
 	YCheckBoxFrame.cc			\
 	YComboBox.cc				\
@@ -136,6 +137,7 @@ pkginclude_HEADERS =				\
 	YAlignment.h				\
 	YBarGraph.h				\
 	YBusyIndicator.h			\
+	YButtonBox.h				\
 	YCheckBoxFrame.h			\
 	YCheckBox.h				\
 	YComboBox.h				\

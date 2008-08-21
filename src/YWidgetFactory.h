@@ -27,6 +27,7 @@ using std::string;
 
 class YWidget;
 class YAlignment;
+class YButtonBox;
 class YCheckBox;
 class YCheckBoxFrame;
 class YComboBox;
@@ -85,7 +86,8 @@ public:
 
     YLayoutBox *		createVBox		( YWidget * parent );
     YLayoutBox *		createHBox		( YWidget * parent );
-    virtual YLayoutBox *	createLayoutBox		( YWidget * parent, YUIDimension dimension )				= 0;		
+    virtual YLayoutBox *	createLayoutBox		( YWidget * parent, YUIDimension dimension )				= 0;
+    virtual YButtonBox *	createButtonBox		( YWidget * parent )							= 0;
 
     //
     // Common Leaf Widgets
@@ -150,7 +152,7 @@ public:
     YAlignment *		createMinWidth		( YWidget * parent, YLayoutSize_t minWidth  );
     YAlignment *		createMinHeight		( YWidget * parent, YLayoutSize_t minHeight );
     YAlignment *		createMinSize		( YWidget * parent, YLayoutSize_t minWidth, YLayoutSize_t minHeight );
-    
+
     virtual YAlignment *	createAlignment		( YWidget * parent, YAlignmentType horAlignment, YAlignmentType vertAlignment )	= 0;
 
     YSquash *			createHSquash		( YWidget * parent );
