@@ -73,6 +73,8 @@
 // Mandatory widgets
 
 #define YUIWidget_Bottom			"Bottom"
+#define YUIWidget_BusyIndicator			"BusyIndicator"
+#define YUIWidget_ButtonBox			"ButtonBox"
 #define YUIWidget_CheckBox			"CheckBox"
 #define YUIWidget_CheckBoxFrame			"CheckBoxFrame"
 #define YUIWidget_ComboBox			"ComboBox"
@@ -88,14 +90,14 @@
 #define YUIWidget_HWeight			"HWeight"
 #define YUIWidget_Heading			"Heading"
 #define YUIWidget_IconButton			"IconButton"
-#define YUIWidget_InputField			"InputField"
 #define YUIWidget_Image				"Image"
+#define YUIWidget_InputField			"InputField"
 #define YUIWidget_IntField			"IntField"
 #define YUIWidget_Label				"Label"
 #define YUIWidget_Left				"Left"
 #define YUIWidget_LogView			"LogView"
-#define YUIWidget_MenuButton			"MenuButton"
 #define YUIWidget_MarginBox			"MarginBox"
+#define YUIWidget_MenuButton			"MenuButton"
 #define YUIWidget_MinHeight			"MinHeight"
 #define YUIWidget_MinSize			"MinSize"
 #define YUIWidget_MinWidth			"MinWidth"
@@ -103,6 +105,7 @@
 #define YUIWidget_MultiSelectionBox		"MultiSelectionBox"
 #define YUIWidget_PackageSelector		"PackageSelector"
 #define YUIWidget_Password			"Password"
+#define YUIWidget_PkgSpecial			"PkgSpecial"
 #define YUIWidget_ProgressBar			"ProgressBar"
 #define YUIWidget_PushButton			"PushButton"
 #define YUIWidget_RadioButton			"RadioButton"
@@ -121,8 +124,6 @@
 #define YUIWidget_VSquash			"VSquash"
 #define YUIWidget_VStretch			"VStretch"
 #define YUIWidget_VWeight			"VWeight"
-#define YUIWidget_PkgSpecial			"PkgSpecial"
-#define YUIWidget_BusyIndicator			"BusyIndicator"
 
 
 // Special (optional) widgets
@@ -186,9 +187,11 @@
 // Widget and dialog options
 
 #define YUIOpt_animated				"animated"
+#define YUIOpt_applyButton			"applyButton"
 #define YUIOpt_autoScrollDown			"autoScrollDown"
 #define YUIOpt_autoShortcut			"autoShortcut"
 #define YUIOpt_boldFont				"boldFont"
+#define YUIOpt_cancelButton			"cancelButton"
 #define YUIOpt_centered				"centered"
 #define YUIOpt_debugLayout			"debugLayout"
 #define YUIOpt_decorated			"decorated"
@@ -209,10 +212,11 @@
 #define YUIOpt_multiSelection			"multiSelection"
 #define YUIOpt_noAutoEnable			"noAutoEnable"
 #define YUIOpt_notify				"notify"
+#define YUIOpt_okButton				"okButton"
 #define YUIOpt_outputField			"outputField"
 #define YUIOpt_plainText			"plainText"
-#define YUIOpt_repoMode				"repoMode"
 #define YUIOpt_repoMgr				"repoMgr"
+#define YUIOpt_repoMode				"repoMode"
 #define YUIOpt_scaleToFit			"scaleToFit"
 #define YUIOpt_searchMode			"searchMode"
 #define YUIOpt_shrinkable			"shrinkable"
