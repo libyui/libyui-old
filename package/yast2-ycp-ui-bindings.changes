@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Aug 21 18:45:43 CEST 2008 - sh@suse.de
+
+- Added support for new YButtonBox widget (fate #303446)
+- V 2.17.3
+
+-------------------------------------------------------------------
 Tue Jul 15 19:13:25 CEST 2008 - sh@suse.de
 
 - Implemented fate #303492: Multi selection for table widget

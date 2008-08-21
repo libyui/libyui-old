@@ -132,6 +132,7 @@ struct YWidgetOpt
 
     YBoolOpt boldFont;		// YCheckBox, YRadioButton, YLabel
     YLongOpt key_Fxx;		// YPushButton: No. of F-Key (1..24), 0 if none
+    YBoolOpt customButton;	// YPushButton: Override other button roles
 };
 
 

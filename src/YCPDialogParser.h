@@ -152,6 +152,11 @@ protected:
     static YWidget * parseLayoutBox( YWidget *parent, YWidgetOpt & opt,
 				     const YCPTerm & term, const YCPList & optList, int argnr,
 				     YUIDimension dim );
+    /**
+     * ButtonBox
+     **/ 
+    static YWidget * parseButtonBox( YWidget *parent, YWidgetOpt & opt,
+				      const YCPTerm & term, const YCPList & optList, int argnr );
 
     /**
      * Label, Heading
@@ -306,6 +311,12 @@ protected:
      * 'optList': the list of options not yet processed
      **/
     static void rejectAllOptions( const YCPTerm & term, const YCPList & optList );
+    
+    /**
+     * Return 'true' if 'str' starts with 'word'. This is case insensitive.
+     **/
+    static bool startsWith( const string & str, const char * word );
+
 
 private:
 
@@ -317,5 +328,6 @@ private:
     YCPDialogParser() {}
 
 };
+
 
 #endif // YCPDialogParser_h

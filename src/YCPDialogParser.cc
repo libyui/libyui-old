@@ -17,6 +17,8 @@
 /-*/
 
 
+#include <string.h>		// strncasecmp()
+
 #include <ycp/YCPString.h>
 #include <ycp/YCPVoid.h>
 #include <ycp/YCPInteger.h>
@@ -51,6 +53,7 @@
 
 #include "YAlignment.h"
 #include "YBarGraph.h"
+#include "YButtonBox.h"
 #include "YCheckBox.h"
 #include "YCheckBoxFrame.h"
 #include "YComboBox.h"
@@ -238,6 +241,7 @@ YCPDialogParser::parseWidgetTreeTerm( YWidget *		p,
     string    s	= term->name();
 
     if      ( s == YUIWidget_Bottom		)	w = parseAlignment		( p, opt, term, ol, n, YAlignUnchanged,	YAlignEnd	);
+    else if ( s == YUIWidget_ButtonBox		)	w = parseButtonBox		( p, opt, term, ol, n );
     else if ( s == YUIWidget_CheckBox		)	w = parseCheckBox		( p, opt, term, ol, n );
     else if ( s == YUIWidget_CheckBoxFrame	)	w = parseCheckBoxFrame		( p, opt, term, ol, n );
     else if ( s == YUIWidget_ComboBox		)	w = parseComboBox		( p, opt, term, ol, n );
@@ -971,6 +975,164 @@ YCPDialogParser::parseLayoutBox( YWidget * parent, YWidgetOpt & opt,
 
 
 /**
+ * @widgets	ButtonBox
+ * @id          ButtonBox
+ * @short	Layout for push buttons that takes button order into account
+ * @class	ButtonBox
+ * @arg		term button1 the first button
+ * @optarg	term button2 the second button (etc.)
+ * @usage	`ButtonBox(`PushButton( `id( `ok ), "OK" ), `PushButton( `id( `cancel ), "Cancel" ) )
+ *
+ * @examples	ButtonBox1.ycp
+ *
+ * @description
+ *
+ * This widget arranges its push button child widgets according to the current
+ * button order.
+ *
+ * The button order depends on what UI is used and (optionally) what desktop
+ * environment the UI currently runs in.
+ *
+ * The Qt and NCurses UIs use the KDE / Windows button order:
+ *
+ *     [OK] [Apply] [Cancel] [Custom1] [Custom2] ... [Help]
+ *
+ *     [Continue] [Cancel]
+ *
+ *     [Yes] [No]
+ *
+ *
+ * The Gtk UI uses the GNOME / MacOS button order:
+ *
+ *     [Help] [Custom1] [Custom2] ... [Apply] [Cancel] [OK]
+ *
+ *     [Cancel] [Continue]
+ *
+ *     [No] [Yes]
+ *
+ *
+ * Certain buttons have a predefined role:
+ *
+ * - okButton: Positive confirmation: Use the values from the dialog to do
+ *   whatever the dialog is all about and close the dialog.
+ *
+ * - applyButton: Use the values from the dialog, but leave the dialog open.
+ *
+ * - cancelButton: Discard all changes and close the dialog.
+ *
+ * - helpButton: Show help for this dialog.
+ *
+ * In a [Continue] [Cancel] dialog, [Continue] has the okButton role.
+ * In a [Yes] [No] dialog, [Yes] has the okButton role, [No] has the
+ * cancelButton role.
+ *
+ * The UI automatically recognizes standard button labels and assigns the
+ * proper role. This is done very much like assigning function keys (see
+ * UI::SetFunctionKeys()). The UI also has some built-in heuristics to
+ * recognize standard button IDs like `id(`ok), `id("ok"), `id(`yes), etc.
+ *
+ * Sometimes it makes sense to use something like [Print] or [Delete] for the
+ * okButton role if printing or deleting is what the respective dialog is all
+ * about. In that case, the application has to explicitly specify that button
+ * role: Use `opt(`okButton).
+ *
+ * Similarly, there are `opt(`cancelButton), `opt(`applyButton),
+ * `opt(`helpButton).
+ *
+ * A ButtonBox with more than one button is required to have one okButton and
+ * one cancelButton.
+ *
+ * ButtonBox widgets can have no other child widgets than PushButton widgets.
+ * ButtonBox widgets are horizontally stretchable and vertically
+ * non-stretchable. If there is more space, their layout policy (depending on
+ * KDE or GNOME button order) specifies whether to center or right-align the
+ * buttons. 
+ **/
+
+YWidget *
+YCPDialogParser::parseButtonBox( YWidget * parent, YWidgetOpt & opt,
+				 const YCPTerm & term, const YCPList & optList, int argnr )
+{
+    // Parse options
+
+    bool debugLayout = false;
+
+    for ( int o=0; o < optList->size(); o++ )
+    {
+	if   ( optList->value(o)->isSymbol() && optList->value(o)->asSymbol()->symbol() == YUIOpt_debugLayout ) debugLayout = true;
+	else logUnknownOption( term, optList->value(o) );
+    }
+
+    YButtonBox * buttonBox = YUI::widgetFactory()->createButtonBox( parent );
+
+    for ( int buttonNo=argnr; buttonNo < term->size(); buttonNo++ )
+    {
+	YWidgetOpt opt;
+	YWidget * child = parseWidgetTreeTerm( buttonBox, opt, term->value( buttonNo )->asTerm() );
+	YPushButton * button = dynamic_cast<YPushButton *> (child);
+
+	if ( button && button->role() == YCustomButton && ! opt.customButton.value() && button->hasId() )
+	{
+	    // Try to guess something better from the widget ID
+
+	    string id = button->id()->toString();
+
+	    if ( id.size() > 0 && id[0] == '`' ) // get rid of backtick, if there is one
+		id = id.erase( 0, 1 ); // erase 1 character starting from pos. 0
+
+	    // STL strings don't have anything like strncasecmp()
+
+	    YButtonRole role = YCustomButton;
+
+	    if 		( startsWith( id, "ok"  	) )	role = YOKButton;
+	    else if 	( startsWith( id, "yes" 	) )	role = YOKButton;
+	    else if 	( startsWith( id, "continue" 	) )	role = YOKButton;
+	    else if 	( startsWith( id, "accept" 	) )	role = YOKButton;
+	    
+	    else if 	( startsWith( id, "cancel" 	) )	role = YCancelButton;
+	    else if 	( startsWith( id, "no" 		) )	role = YCancelButton;
+	    else if 	( startsWith( id, "apply" 	) )	role = YApplyButton;
+	    else if 	( startsWith( id, "help" 	) )	role = YHelpButton;
+
+	    if ( role != YCustomButton )
+	    {
+		button->setRole( role );
+		yuiMilestone() << "Guessed button role " << role
+			       << " for " << button << " from widget ID"
+			       << endl;
+	    }
+	    else
+	    {
+		yuiDebug() << "No guess for a button role for ID " << id
+			   << " of " << button
+			   << endl;
+	    }
+	}
+    }
+
+    try
+    {
+	buttonBox->sanityCheck();
+    }
+    catch ( YUIException & exception )
+    {
+	YUI_CAUGHT( exception);
+	ycperror( "Bad ButtonBox content" );
+	YUI_RETHROW( exception );
+    }
+
+    return buttonBox;
+}
+
+
+bool YCPDialogParser::startsWith( const string & str, const char * word )
+{
+    return strncasecmp( str.c_str(), word, strlen( word ) )== 0;
+}
+
+
+
+/**
  * @widgets	Label Heading
  * @short	Simple static text
  * @class	YLabel
@@ -1148,6 +1310,10 @@ YCPDialogParser::parseLogView( YWidget * parent, YWidgetOpt & opt,
  * @arg		string label
  * @option	default makes this button the dialogs default button
  * @option	helpButton automatically shows topmost `HelpText
+ * @option	okButton     assign the [OK] role to this button (see ButtonBox)
+ * @option	cancelButton assign the [Cancel] role to this button (see ButtonBox)
+ * @option	applyButton  assign the [Apply] role to this button (see ButtonBox)
+ * @option	customButton override any other button role assigned to this button
  * @usage	`PushButton( `id( `click ), `opt( `default, `hstretch ), "Click me" )
  * @examples	PushButton1.ycp PushButton2.ycp IconButton1.ycp
  *
@@ -1187,10 +1353,10 @@ YCPDialogParser::parsePushButton( YWidget * parent, YWidgetOpt & opt,
 				  const YCPTerm & term, const YCPList & optList, int argnr,
 				  bool isIconButton )
 {
-    string label;
-    string iconName;
-    bool   isDefaultButton = false;
-    bool   isHelpButton    = false;
+    string 	label;
+    string 	iconName;
+    bool   	isDefaultButton = false;
+    YButtonRole	role            = YCustomButton;
 
     if ( isIconButton )
     {
@@ -1223,19 +1389,24 @@ YCPDialogParser::parsePushButton( YWidget * parent, YWidgetOpt & opt,
 	{
 	    string sym = optList->value(o)->asSymbol()->symbol();
 
-	    if	    ( sym == YUIOpt_default    )	isDefaultButton = true;
-	    else if ( sym == YUIOpt_helpButton )	isHelpButton    = true;
+	    if	    ( sym == YUIOpt_default    	)	isDefaultButton = true;
+	    else if ( sym == YUIOpt_okButton	)	role = YOKButton;
+	    else if ( sym == YUIOpt_cancelButton)	role = YCancelButton;
+	    else if ( sym == YUIOpt_cancelButton)	role = YApplyButton;
+	    else if ( sym == YUIOpt_helpButton 	)	role = YHelpButton;
+	    else if ( sym == YUIOpt_customButton)	opt.customButton.setValue( true );
 	    else logUnknownOption( term, optList->value(o) );
 	}
 	else logUnknownOption( term, optList->value(o) );
     }
 
     YPushButton * button = YUI::widgetFactory()->createPushButton( parent, label );
+    button->setRole( role );
 
     if ( isDefaultButton )
 	button->setDefaultButton();
 
-    if ( isHelpButton )
+    if ( role == YHelpButton )
 	button->setHelpButton();
 
     if ( isIconButton )
