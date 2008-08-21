@@ -195,6 +195,9 @@ private:
 };
 
 
+std::ostream & operator<<( std::ostream & stream, YButtonRole role );
+
+
 typedef YPushButton YIconButton;
 
 

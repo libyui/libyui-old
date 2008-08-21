@@ -202,3 +202,19 @@ YPushButton::getProperty( const string & propertyName )
 }
 
 
+std::ostream & operator<<( std::ostream & stream, YButtonRole role )
+{
+    switch ( role )
+    {
+	case YOKButton:		stream << "YOKButton";		break;
+	case YApplyButton:	stream << "YApplyButton"; 	break;
+	case YCancelButton:	stream << "YCancelButton";	break;
+	case YHelpButton:	stream << "YHelpButton";	break;
+
+	default:
+	    stream << "<Undefined button role #" << (int) role << ">";
+	    break;
+    }
+
+    return stream;
+}
