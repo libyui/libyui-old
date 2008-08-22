@@ -1,4 +1,15 @@
 -------------------------------------------------------------------
+Fri Aug 22 18:07:10 CEST 2008 - sh@suse.de
+
+- Check environment variables for button order:
+    $DESKTOP_SESSION
+    $WINDOWMANAGER
+    $Y2_BUTTON_ORDER
+
+  (can be overridden with --gnome-button-order or --kde-button-order
+   in the Qt UI)
+
+-------------------------------------------------------------------
 Do 21. Aug 15:28:14 CEST 2008 - sh@suse.de
 
 - Added YButtonBox widget (fate #303446)
