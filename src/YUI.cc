@@ -25,6 +25,7 @@
 #include <fcntl.h>  	// fcntl()
 #include <errno.h>
 #include <pthread.h>
+#include <stdlib.h>	// getenv()
 
 #define YUILogComponent "ui"
 #include "YUILog.h"
@@ -35,7 +36,13 @@
 #include "YDialog.h"
 #include "YApplication.h"
 #include "YMacro.h"
+#include "YButtonBox.h"
+#include "YEnvVar.h"
 #include "YBuiltinCaller.h"
+
+// Environment variable to determine button order
+// (set to "KDE" or "GNOME" - case insensitive)
+#define ENV_BUTTON_ORDER "Y2_BUTTON_ORDER"
 
 
 
@@ -54,6 +61,8 @@ YUI::YUI( bool withThreads )
 {
     yuiMilestone() << "Creating UI " << ( withThreads ? "with" : "without" ) << " threads" << endl;
     _ui = this;
+    
+    setButtonOrderFromEnvironment();
 }
 
 
@@ -355,6 +364,100 @@ void YUI::uiThreadMainLoop()
 	    yuiError() << "No builtinCaller set" << endl;
 
 	signalYCPThread();
+    }
+}
+
+
+void YUI::setButtonOrderFromEnvironment()
+{
+    YButtonOrder buttonOrder    = YButtonBox::layoutPolicy().buttonOrder;
+    YButtonOrder oldButtonOrder = buttonOrder;
+
+    YEnvVar lastEnv;
+
+    //
+    // $DESKTOP_SESSION
+    //
+
+    YEnvVar env( "DESKTOP_SESSION" );
+    yuiDebug() << env << endl;
+
+    if ( env == "kde" ||
+	 env == "xfce"  )
+    {
+	buttonOrder = YKDEButtonOrder;
+	lastEnv = env;
+    }
+    else if ( env == "gnome" )
+    {
+	buttonOrder = YGnomeButtonOrder;
+	lastEnv = env;
+    }
+
+    //
+    // $WINDOWMANAGER
+    //
+
+    env = YEnvVar( "WINDOWMANAGER" );
+    yuiDebug() << env << endl;
+
+    if ( env.contains( "gnome" ) )
+    {
+	buttonOrder = YGnomeButtonOrder;
+	lastEnv = env;
+    }
+    else if ( env.contains( "kde" ) )
+    {
+	buttonOrder = YKDEButtonOrder;
+	lastEnv = env;
+    }
+
+
+    //
+    // $Y2_BUTTON_ORDER
+    //
+
+    env = YEnvVar( ENV_BUTTON_ORDER );
+    yuiDebug() << env << endl;
+
+    if ( env == "gnome" )
+    {
+	buttonOrder = YGnomeButtonOrder;
+	lastEnv = env;
+    }
+    else if ( env == "kde" )
+    {
+	buttonOrder = YKDEButtonOrder;
+	lastEnv = env;
+    }
+    else if ( ! env.value().empty() )
+    {
+	yuiWarning() << "Ignoring unknown value of " << env << endl;
+    }
+
+    
+    if ( buttonOrder != oldButtonOrder )
+    {
+	string buttonOrderStr;
+	
+	switch ( buttonOrder )
+	{
+	    case YKDEButtonOrder:
+		buttonOrderStr = "KDE";
+		YButtonBox::setLayoutPolicy( YButtonBox::kdeLayoutPolicy() );
+		break;
+		
+	    case YGnomeButtonOrder:
+		buttonOrderStr = "GNOME";
+		YButtonBox::setLayoutPolicy( YButtonBox::gnomeLayoutPolicy() );
+		break;
+
+	    // Intentionally omitting "default" branch so GCC can catch unhandled enums
+	}
+
+	yuiMilestone() << "Switching to " << buttonOrderStr
+		       << " button order because of " << lastEnv 
+		       << endl;
     }
 }
 

@@ -26,6 +26,7 @@ libyui_la_SOURCES =				\
 	YCommandLine.cc				\
 	YEvent.cc				\
 	YEventFilter.cc				\
+	YEnvVar.cc				\
 	YItem.cc				\
 	YMacro.cc				\
 	YProperty.cc				\
@@ -108,6 +109,7 @@ pkginclude_HEADERS =				\
 	YCommandLine.h				\
 	YEvent.h				\
 	YEventFilter.h				\
+	YEnvVar.h				\
 	YItem.h					\
 	YMenuItem.h				\
 	YMacro.h				\

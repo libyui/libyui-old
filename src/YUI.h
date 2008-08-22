@@ -280,6 +280,17 @@ protected:
      **/
     bool waitForYCPThread();
 
+    /**
+     * Set the button order (in YButtonBox widgets) from environment
+     * variables:
+     *
+     *     $Y2_BUTTON_ORDER="KDE"
+     *     $Y2_BUTTON_ORDER="Gnome"
+     *
+     * (all case insensitive)
+     **/
+    void setButtonOrderFromEnvironment();
+
 
     //
     // Data members
