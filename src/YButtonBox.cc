@@ -73,7 +73,7 @@ YButtonBox::~YButtonBox()
 
 
 void
-YButtonBox::setLayoutPolicy( YButtonBoxLayoutPolicy & layoutPolicy )
+YButtonBox::setLayoutPolicy( const YButtonBoxLayoutPolicy & layoutPolicy )
 {
     _layoutPolicy = layoutPolicy;
 }
@@ -174,20 +174,26 @@ YButtonBox::doLayout( int width, int height )
     {
 	if ( equalSizeButtons )
 	{
-	    // Try not enforcing the same width:
-	    //
-	    // If one button is very much larger than most others, that one
-	    // button will greatly distort the overall layout. If we simply cut
-	    // some pixels off every button, for sure that one very large
-	    // button will become unreadable. So let's try first with buttons
-	    // getting just the size they really need.
-	    //
-	    // Of course, we might still have cut some pixels off all buttons
-	    // if that also is too wide, but in that case we can't do very much
-	    // anyway.
+	    int buttonWidthWithoutMargins = maxChildSize( YD_HORIZ ) * buttons.size();
+
+	    if ( width < buttonWidthWithoutMargins )
+	    {
+		// The missing width can't be compensated by reducing margins and spacings.
+		// Try not enforcing the same width:
+		//
+		// If one button is very much larger than most others, that one
+		// button will greatly distort the overall layout. If we simply cut
+		// some pixels off every button, for sure that one very large
+		// button will become unreadable. So let's try first with buttons
+		// getting just the size they really need.
+		//
+		// Of course, we might still have cut some pixels off all buttons
+		// if that also is too wide, but in that case we can't do very much
+		// anyway.
 	    
-	    equalSizeButtons = false;
-	    prefWidth = preferredWidth( equalSizeButtons );
+		equalSizeButtons = false;
+		prefWidth = preferredWidth( equalSizeButtons );
+	    }
 	}
     }
 
@@ -281,6 +287,8 @@ YButtonBox::doLayout( int width, int height )
     //
     // Vertical layout
     //
+    
+    int buttonHeight = maxChildSize( YD_VERT );
 
     if ( height < prefHeight ) // Not enough vertical space
     {
@@ -300,14 +308,44 @@ YButtonBox::doLayout( int width, int height )
 	}
     }
 
+    if ( height < buttonHeight )
+    {
+	buttonHeight = height;
+    }
+
+    int y_pos = margins.top;
+
+    if ( height > prefHeight ) // Excess vertical space
+    {
+	// Distribute excess vertical space
+
+	int excessHeight = height - buttonHeight;
+	excessHeight -= margins.top;
+	excessHeight -= margins.bottom;
+
+	switch ( _layoutPolicy.alignment[ YD_VERT ] )
+	{
+	    case YAlignBegin:		// Align top
+	    case YAlignUnchanged:
+		break;
+
+	    case YAlignCenter:
+		y_pos += excessHeight / 2;
+		break;
+
+	    case YAlignEnd:		// Align bottom
+		y_pos += excessHeight;
+		break;
+	}
+    }
+	
 
     //
     // Set child widget positions and sizes from left to right
     //
 
-    int x_pos = margins.left;
+    int x_pos        = margins.left;
     int buttonWidth  = 0;
-    int buttonHeight = maxChildSize( YD_VERT );
 
     if ( equalSizeButtons )
     {
@@ -332,39 +370,6 @@ YButtonBox::doLayout( int width, int height )
 	{
 	    buttonWidth  = button->preferredWidth();
 	    buttonWidth -= widthLoss;
-	}
-
-	int y_pos = margins.top;
-
-	if ( buttonHeight + margins.top + margins.bottom > height )
-	{
-	    // Not enough vertical space - cut off button
-
-	    buttonHeight = height; // Top and bottom margins are already gone
-	    y_pos = 0;
-	}
-	else // Excess vertical space
-	{
-	    // Distribute excess vertical space
-
-	    int excessHeight = height - buttonHeight;
-	    excessHeight -= margins.top;
-	    excessHeight -= margins.bottom;
-
-	    switch ( _layoutPolicy.alignment[ YD_VERT ] )
-	    {
-		case YAlignBegin:	// Align top
-		case YAlignUnchanged:
-		    break;
-
-		case YAlignCenter:
-		    y_pos += excessHeight / 2;
-		    break;
-
-		case YAlignEnd:		// Align bottom
-		    y_pos += excessHeight;
-		    break;
-	    }
 	}
 
 	button->setSize( buttonWidth, buttonHeight );

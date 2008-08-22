@@ -175,7 +175,7 @@ public:
      * (with the desktop environment this application is running in), which is
      * the reason for having this widget class.
      **/
-    static void setLayoutPolicy( YButtonBoxLayoutPolicy & layoutPolicy );
+    static void setLayoutPolicy( const YButtonBoxLayoutPolicy & layoutPolicy );
 
     /**
      * Return the layout policy.
