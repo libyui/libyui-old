@@ -349,7 +349,21 @@ YCPDialogParser::parseWidgetTreeTerm( YWidget *		p,
 	if ( opt.autoShortcut.value()	)	w->setAutoShortcut( true );
 	if ( opt.isHStretchable.value()	)	w->setStretchable( YD_HORIZ, true );
 	if ( opt.isVStretchable.value()	)	w->setStretchable( YD_VERT,  true );
-	if ( opt.key_Fxx.value() > 0	)	w->setFunctionKey( opt.key_Fxx.value() );
+	if ( opt.key_Fxx.value() > 0	)
+	{
+	    YPushButton * button = dynamic_cast<YPushButton *> (w);
+	    YButtonRole oldRole = button ? button->role() : YCustomButton;
+	    w->setFunctionKey( opt.key_Fxx.value() );
+
+	    if ( button && oldRole != button->role() && opt.customButton.value() )
+	    {
+		// Application requested button role override
+		
+		yuiMilestone() << "Overriding button role for " << button
+			       << " to YCustomButton" << endl;
+		button->setRole( YCustomButton );
+	    }
+	}
     }
     else
     {
@@ -1068,10 +1082,11 @@ YCPDialogParser::parseButtonBox( YWidget * parent, YWidgetOpt & opt,
     for ( int buttonNo=argnr; buttonNo < term->size(); buttonNo++ )
     {
 	YWidgetOpt opt;
-	YWidget * child = parseWidgetTreeTerm( buttonBox, opt, term->value( buttonNo )->asTerm() );
+	YWidget     * child  = parseWidgetTreeTerm( buttonBox, opt, term->value( buttonNo )->asTerm() );
 	YPushButton * button = dynamic_cast<YPushButton *> (child);
+	YUI_CHECK_PTR( button );
 
-	if ( button && button->role() == YCustomButton && ! opt.customButton.value() && button->hasId() )
+	if ( button->role() == YCustomButton && ! opt.customButton.value() && button->hasId() )
 	{
 	    // Try to guess something better from the widget ID
 
@@ -1401,7 +1416,9 @@ YCPDialogParser::parsePushButton( YWidget * parent, YWidgetOpt & opt,
     }
 
     YPushButton * button = YUI::widgetFactory()->createPushButton( parent, label );
-    button->setRole( role );
+
+    if ( role != YCustomButton ) // The button constructor might have guessed something else
+	button->setRole( role );
 
     if ( isDefaultButton )
 	button->setDefaultButton();
