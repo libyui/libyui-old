@@ -145,6 +145,7 @@ YButtonRole YPushButton::role() const
 void YPushButton::setFunctionKey( int fkey_no )
 {
     YWidget::setFunctionKey( fkey_no );
+    YButtonRole oldRole = priv->role;
     
     switch ( functionKey() )	// base class method might have changed it
     {
@@ -152,6 +153,14 @@ void YPushButton::setFunctionKey( int fkey_no )
 	case 9:		priv->role = YCancelButton;	break;
 	case 1:		priv->role = YHelpButton;	break;
 	default:	break;
+    }
+
+    if ( priv->role != oldRole )
+    {
+	yuiMilestone() << "Guessing button role " << priv->role
+		       << " for " << this
+		       << " from function key F" << functionKey() 
+		       << endl;
     }
 }
 
@@ -206,6 +215,7 @@ std::ostream & operator<<( std::ostream & stream, YButtonRole role )
 {
     switch ( role )
     {
+	case YCustomButton:	stream << "YCustomButton";	break;
 	case YOKButton:		stream << "YOKButton";		break;
 	case YApplyButton:	stream << "YApplyButton"; 	break;
 	case YCancelButton:	stream << "YCancelButton";	break;

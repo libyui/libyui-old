@@ -306,7 +306,8 @@ YButtonBox::doLayout( int width, int height )
     //
 
     int x_pos = margins.left;
-    int buttonWidth = 0;
+    int buttonWidth  = 0;
+    int buttonHeight = maxChildSize( YD_VERT );
 
     if ( equalSizeButtons )
     {
@@ -334,7 +335,6 @@ YButtonBox::doLayout( int width, int height )
 	}
 
 	int y_pos = margins.top;
-	int buttonHeight = button->preferredHeight();
 
 	if ( buttonHeight + margins.top + margins.bottom > height )
 	{
