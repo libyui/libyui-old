@@ -61,8 +61,6 @@ YUI::YUI( bool withThreads )
 {
     yuiMilestone() << "Creating UI " << ( withThreads ? "with" : "without" ) << " threads" << endl;
     _ui = this;
-    
-    setButtonOrderFromEnvironment();
 }
 
 
