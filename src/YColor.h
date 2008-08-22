@@ -17,6 +17,7 @@
 /-*/
 
 #ifndef YColor_h
+#define YColor_h
 
 typedef unsigned char uchar;
 
@@ -79,7 +80,5 @@ private:
     bool _undef;
 };
 
-
-#define YColor_h
 
 #endif // YColor_h
