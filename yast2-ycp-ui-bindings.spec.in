@@ -19,7 +19,6 @@ Conflicts:	yast2-core < 2.16.38
 # libycp includes crypto built-ins
 BuildRequires:  libxcrypt-devel
 
-# YUIOpt_repoMgr value
 Requires:	yast2-libyui	   >= 2.17.6
 BuildRequires:	yast2-libyui-devel >= 2.17.6
 
