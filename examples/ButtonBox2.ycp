@@ -1,0 +1,124 @@
+// Demo for common ButtonBox-based dialogs
+{
+    void showDialog( term buttonBox )
+    {
+	UI::OpenDialog(
+		       `VBox(
+			     `Label( "Hello, World!" ),
+			     buttonBox
+			     )
+		       );
+	UI::UserInput();
+	UI::CloseDialog();
+	
+    }
+
+    
+    void okCancelDialog()
+    {
+	showDialog( `ButtonBox(
+			       `PushButton(`id(`ok    ), "&OK" ),
+			       `PushButton(`id(`cancel), "&Cancel" )
+			       )
+		    );
+    }
+
+    
+    void yesNoDialog()
+    {
+	showDialog( `ButtonBox(
+			       `PushButton(`id(`yes ), "&Yes" ),
+			       `PushButton(`id(`no  ), "&No" )
+			       )
+		    );
+    }
+
+    
+    void continueCancelDialog()
+    {
+	showDialog( `ButtonBox(
+			       `PushButton(`id(`continue ), "&Cancel" ),
+			       `PushButton(`id(`cancel   ), "C&ancel" )
+			       )
+		    );
+    }
+
+    
+    void okApplyCancelDialog()
+    {
+	showDialog( `ButtonBox(
+			       `PushButton(`id(`ok    ), "&OK"     ),
+			       `PushButton(`id(`apply ), "&Apply"  ),
+			       `PushButton(`id(`cancel), "&Cancel" )
+			       )
+		    );
+    }
+
+    
+    void okApplyCancelHelpDialog()
+    {
+	showDialog( `ButtonBox(
+			       `PushButton(`id(`ok    ), "&OK"     ),
+			       `PushButton(`id(`apply ), "&Apply"  ),
+			       `PushButton(`id(`cancel), "&Cancel" ),
+			       `PushButton(`id(`help  ), "&Help"   )
+			       )
+		    );
+    }
+
+    
+    void okApplyCancelCustomHelpDialog()
+    {
+	showDialog( `ButtonBox(
+			       `PushButton(`id(`ok      ), "&OK"     ),
+			       `PushButton(`id(`apply   ), "&Apply"  ),
+			       `PushButton(`id(`cancel  ), "&Cancel" ),
+			       `PushButton(`id(`custom1 ), "&Do Something" ),
+			       `PushButton(`id(`custom2 ), "Do &More" ),
+			       `PushButton(`id(`help    ), "&Help"    )
+			       )
+		    );
+    }
+
+
+
+    term buttons =
+	`VBox(
+	      `PushButton(`id(`okCancel       ), `opt(`hstretch), "&OK / Cancel" ),
+	      `PushButton(`id(`yesNo          ), `opt(`hstretch), "&Yes / No" ),
+	      `PushButton(`id(`continueCancel ), `opt(`hstretch), "C&ontinue / Cancel" ),
+	      `PushButton(`id(`okApply        ), `opt(`hstretch), "OK / &Apply / Cancel" ),
+	      `PushButton(`id(`okEtcHelp      ), `opt(`hstretch), "OK / Apply / Cancel / &Help" ),
+	      `PushButton(`id(`okCustom       ), `opt(`hstretch), "OK / Apply / Cancel / C&ustom / Help" )
+	      );
+    
+    UI::OpenDialog(
+		   `MarginBox( 1.0, 0.5,
+			       `VBox(
+				     `Heading( "ButtonBox Examples" ),
+				     `VSpacing( 0.5 ),
+				     `HVCenter( `HSquash( buttons ) ),
+				     `VSpacing( 0.5 ),
+				     `Right(`PushButton(`id(`close), "&Close" ) )
+				     )
+			       )
+		   );
+
+    symbol button = nil;
+
+    repeat
+    {
+	button = (symbol) UI::UserInput();
+	
+	if ( button == `okCancel       )	okCancelDialog();
+	if ( button == `yesNo	       )	yesNoDialog();
+	if ( button == `continueCancel )	continueCancelDialog();
+	if ( button == `okApply        )	okApplyCancelDialog();
+	if ( button == `okEtcHelp      )	okApplyCancelHelpDialog();
+	if ( button == `okCustom       )	okApplyCancelCustomHelpDialog();
+	
+    } until ( button == `close ||  // [Close] button
+	      button == `cancel ); // WM_CLOSE
+
+    UI::CloseDialog();
+}
