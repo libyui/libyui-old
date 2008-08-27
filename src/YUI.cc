@@ -384,12 +384,12 @@ void YUI::setButtonOrderFromEnvironment()
 	 env == "xfce"  )
     {
 	buttonOrder = YKDEButtonOrder;
-	lastEnv = env;
+	lastEnv     = env;
     }
     else if ( env == "gnome" )
     {
 	buttonOrder = YGnomeButtonOrder;
-	lastEnv = env;
+	lastEnv     = env;
     }
 
     //
@@ -402,12 +402,12 @@ void YUI::setButtonOrderFromEnvironment()
     if ( env.contains( "gnome" ) )
     {
 	buttonOrder = YGnomeButtonOrder;
-	lastEnv = env;
+	lastEnv     = env;
     }
     else if ( env.contains( "kde" ) )
     {
 	buttonOrder = YKDEButtonOrder;
-	lastEnv = env;
+	lastEnv     = env;
     }
 
 
@@ -421,12 +421,12 @@ void YUI::setButtonOrderFromEnvironment()
     if ( env == "gnome" )
     {
 	buttonOrder = YGnomeButtonOrder;
-	lastEnv = env;
+	lastEnv     = env;
     }
     else if ( env == "kde" )
     {
 	buttonOrder = YKDEButtonOrder;
-	lastEnv = env;
+	lastEnv     = env;
     }
     else if ( ! env.value().empty() )
     {
