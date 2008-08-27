@@ -2,15 +2,25 @@
 {
     void showDialog( term buttonBox )
     {
-	UI::OpenDialog(
-		       `VBox(
-			     `Label( "Hello, World!" ),
-			     buttonBox
-			     )
-		       );
-	UI::UserInput();
-	UI::CloseDialog();
-	
+	boolean success = (boolean)
+	    UI::OpenDialog(
+			   `VBox(
+				 `HVCenter( `Label( "Hello, World!" ) ),
+				 buttonBox
+				 )
+			   );
+
+	// Most YCP developers never use the return value of UI::OpenDialog().
+	// Many of them probably don't even know that it has a return value.
+	// 
+	// Used properly, that return value can be used to recover from error
+	// situations that would otherwise abort the program - like in this case.
+
+	if ( success )
+	{
+	    UI::UserInput();
+	    UI::CloseDialog();
+	}
     }
 
     
@@ -80,6 +90,42 @@
 		    );
     }
 
+    
+    void okDialog()
+    {
+	showDialog( `ButtonBox(
+			       `PushButton(`id(`ok    ), "&OK" )
+			       )
+		    );
+    }
+
+
+    void okRetryDialog()
+    {
+	// This will throw an error:
+	// If there is more than one button in a button box, one of them must
+	// have the [OK] role and one must have the [Cancel] role. 
+	
+	showDialog( `ButtonBox(
+			       `PushButton(`id(`ok    ), "&OK" ),
+			       `PushButton(`id(`retry ), "&Retry" )
+			       )
+		    );
+    }
+
+    
+    void retryCancelDialog()
+    {
+	// Explicitly assigning the [OK] role to the [Retry] button
+	
+	showDialog( `ButtonBox(
+			       `PushButton(`id(`retry ), `opt(`okButton), "&Retry" ),
+			       `PushButton(`id(`cancel), "&Cancel" )
+			       )
+		    );
+    }
+
+
 
 
     term buttons =
@@ -89,7 +135,10 @@
 	      `PushButton(`id(`continueCancel ), `opt(`hstretch), "C&ontinue / Cancel" ),
 	      `PushButton(`id(`okApply        ), `opt(`hstretch), "OK / &Apply / Cancel" ),
 	      `PushButton(`id(`okEtcHelp      ), `opt(`hstretch), "OK / Apply / Cancel / &Help" ),
-	      `PushButton(`id(`okCustom       ), `opt(`hstretch), "OK / Apply / Cancel / C&ustom / Help" )
+	      `PushButton(`id(`okCustom       ), `opt(`hstretch), "OK / Apply / Cancel / C&ustom / Help" ),
+	      `PushButton(`id(`okOnly         ), `opt(`hstretch), "O&K" ),
+	      `PushButton(`id(`okRetry        ), `opt(`hstretch), "OK / Re&try (Error!)" ),
+	      `PushButton(`id(`retryCancel    ), `opt(`hstretch), "&Retry / Cancel" )
 	      );
     
     UI::OpenDialog(
@@ -116,6 +165,9 @@
 	if ( button == `okApply        )	okApplyCancelDialog();
 	if ( button == `okEtcHelp      )	okApplyCancelHelpDialog();
 	if ( button == `okCustom       )	okApplyCancelCustomHelpDialog();
+	if ( button == `okOnly         )	okDialog();
+	if ( button == `okRetry        )	okRetryDialog();
+	if ( button == `retryCancel    )	retryCancelDialog();
 	
     } until ( button == `close ||  // [Close] button
 	      button == `cancel ); // WM_CLOSE
