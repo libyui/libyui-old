@@ -47,8 +47,8 @@
     void continueCancelDialog()
     {
 	showDialog( `ButtonBox(
-			       `PushButton(`id(`continue ), "&Cancel" ),
-			       `PushButton(`id(`cancel   ), "C&ancel" )
+			       `PushButton(`id(`continue ), "C&ontinue" ),
+			       `PushButton(`id(`cancel   ), "&Cancel" )
 			       )
 		    );
     }
