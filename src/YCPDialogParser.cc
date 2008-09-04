@@ -1069,15 +1069,16 @@ YCPDialogParser::parseButtonBox( YWidget * parent, YWidgetOpt & opt,
 {
     // Parse options
 
-    bool debugLayout = false;
+    bool relaxSanityCheck = false;
 
     for ( int o=0; o < optList->size(); o++ )
     {
-	if   ( optList->value(o)->isSymbol() && optList->value(o)->asSymbol()->symbol() == YUIOpt_debugLayout ) debugLayout = true;
+	if   ( optList->value(o)->isSymbol() && optList->value(o)->asSymbol()->symbol() == YUIOpt_relaxSanityCheck ) relaxSanityCheck = true;
 	else logUnknownOption( term, optList->value(o) );
     }
 
     YButtonBox * buttonBox = YUI::widgetFactory()->createButtonBox( parent );
+    YUI_CHECK_NEW( buttonBox );
 
     for ( int buttonNo=argnr; buttonNo < term->size(); buttonNo++ )
     {
@@ -1127,6 +1128,12 @@ YCPDialogParser::parseButtonBox( YWidget * parent, YWidgetOpt & opt,
 
     try
     {
+	if ( relaxSanityCheck )
+	{
+	    yuiMilestone() << "Relaxed sanity check for " << buttonBox << endl;
+	    buttonBox->setSanityCheckRelaxed( relaxSanityCheck );
+	}
+
 	buttonBox->sanityCheck();
     }
     catch ( YUIException & exception )
