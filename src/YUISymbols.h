@@ -216,6 +216,7 @@
 #define YUIOpt_okButton				"okButton"
 #define YUIOpt_outputField			"outputField"
 #define YUIOpt_plainText			"plainText"
+#define YUIOpt_relaxSanityCheck			"relaxSanityCheck"
 #define YUIOpt_repoMgr				"repoMgr"
 #define YUIOpt_repoMode				"repoMode"
 #define YUIOpt_scaleToFit			"scaleToFit"
