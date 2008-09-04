@@ -44,14 +44,16 @@ struct YButtonBoxPrivate
      * Constructor
      **/
     YButtonBoxPrivate()
-	: margins( YButtonBox::_defaultMargins )
+	: sanityCheckRelaxed( false )
+	, margins( YButtonBox::_defaultMargins )
 	{}
 
     //
     // Data members
     //
 
-    YButtonBoxMargins margins;
+    bool		sanityCheckRelaxed;
+    YButtonBoxMargins	margins;
 };
 
 
@@ -569,6 +571,20 @@ YButtonBox::findButton( YButtonRole role )
 
 
 void
+YButtonBox::setSanityCheckRelaxed( bool relaxed )
+{
+    priv->sanityCheckRelaxed = relaxed;
+}
+
+
+bool
+YButtonBox::sanityCheckRelaxed() const
+{
+    return priv->sanityCheckRelaxed;
+}
+
+
+void
 YButtonBox::sanityCheck()
 {
     YPushButton * okButton     = 0;
@@ -608,7 +624,7 @@ YButtonBox::sanityCheck()
 	}
     }
 
-    if ( childrenCount() > 1 )
+    if ( childrenCount() > 1 && ! sanityCheckRelaxed() )
     {
 	if ( ! okButton || ! cancelButton )
 	    YUI_THROW( YUIButtonRoleMismatchException( "Button role mismatch: Must have both [OK] and [Cancel] roles" ) );

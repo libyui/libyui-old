@@ -266,6 +266,33 @@ public:
     void sanityCheck();
 
     /**
+     * Relax the sanity check done in sanityCheck(): Do not enforce that there
+     * has to be a YOKButton and a YCancelButton if there is more than one
+     * button. 
+     *
+     * In very rare cases, it might be neccessary to have a less stringent
+     * sanity check: There are some very few legitimate cases for having a
+     * YButtonBox with multiple buttons, yet without a YCancelButton.
+     *
+     * Examples:
+     *
+     *     ...message...
+     *      <Countdown>
+     *      [OK] [Stop]
+     *
+     *     ...message...
+     *     [OK] [Details]
+     *
+     * In those cases, it makes sense to relax the sanity check.
+     **/
+    void setSanityCheckRelaxed( bool relax = true );
+
+    /**
+     * Return 'true' if sanity checks are currently relaxed, 'false' if not.
+     **/
+    bool sanityCheckRelaxed() const;
+
+    /**
      * Preferred width of the widget.
      *
      * Reimplemented from YWidget. This default method returns the sum of
