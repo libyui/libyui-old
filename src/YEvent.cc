@@ -27,7 +27,6 @@
 
 using std::string;
 
-
 unsigned long	YEvent::_nextSerial	= 0;
 int		YEvent::_activeEvents	= 0;
 
@@ -37,11 +36,6 @@ YEvent::YEvent( EventType eventType )
 {
     _dialog = YDialog::currentDialog( false ); // don't throw
     _serial = _nextSerial++;
-
-    if ( ++_activeEvents > 3 )
-    {
-	yuiError() << "Memory leak? " << _activeEvents << " active events!" << endl;
-    }
 }
 
 
