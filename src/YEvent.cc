@@ -27,12 +27,11 @@
 
 using std::string;
 
-unsigned long	YEvent::_nextSerial	= 0;
-int		YEvent::_activeEvents	= 0;
+unsigned long YEvent::_nextSerial = 0;
 
 
 YEvent::YEvent( EventType eventType )
-	: _eventType( eventType )
+    : _eventType( eventType )
 {
     _dialog = YDialog::currentDialog( false ); // don't throw
     _serial = _nextSerial++;
@@ -41,11 +40,21 @@ YEvent::YEvent( EventType eventType )
 
 YEvent::~YEvent()
 {
-    if ( --_activeEvents < 0 )
-    {
-	yuiError() << "FATAL: More events deleted than destroyed" << endl;
-	abort();
-    }
+    invalidate();
+}
+
+
+bool
+YEvent::isValid() const
+{
+    return _eventType != InvalidEvent;
+}
+
+
+void
+YEvent::invalidate()
+{
+    _eventType = InvalidEvent;
 }
 
 
@@ -62,6 +71,7 @@ YEvent::toString( EventType eventType )
 	case CancelEvent:		return "CancelEvent";
 	case TimeoutEvent:		return "TimeoutEvent";
 	case DebugEvent:		return "DebugEvent";
+	case InvalidEvent:		return "InvalidEvent";
 
 	// Intentionally omitting "default" branch so the compiler can
 	// detect unhandled enums
@@ -112,3 +122,20 @@ YKeyEvent::YKeyEvent( const string &	keySymbol,
 {
 }
 
+
+
+std::ostream &
+operator<<( std::ostream & stream, const YEvent * event )
+{
+    if ( event )
+    {
+	stream << YEvent::toString( event->eventType() )
+	       << " at " << hex << (void *) event << dec;
+    }
+    else
+    {
+	stream << "<NULL event>";
+    }
+
+    return stream;
+}

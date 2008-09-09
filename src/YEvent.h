@@ -21,6 +21,7 @@
 
 
 #include <string>
+#include <iosfwd>
 #include "YDialog.h"
 #include "YSimpleEventHandler.h"
 
@@ -47,7 +48,8 @@ public:
 	KeyEvent,
 	CancelEvent,
 	TimeoutEvent,
-	DebugEvent
+	DebugEvent,
+	InvalidEvent = 0x4242
     };
 
 
@@ -98,6 +100,11 @@ public:
     YDialog * dialog() const { return _dialog; }
 
     /**
+     * Check if this event is valid. Events become invalid in the destructor.
+     **/
+    bool isValid() const;
+
+    /**
      * Returns the character representation of an event type.
      **/
     static const char * toString( EventType eventType );
@@ -124,7 +131,12 @@ protected:
      * so dynamic_cast<> can be used.
      **/
     virtual ~YEvent();
-    
+
+    /**
+     * Mark this event as invalid. This cannot be undone.
+     **/
+    void invalidate();
+
 private:
     
     friend void YDialog::deleteEvent( YEvent * event );
@@ -140,7 +152,6 @@ private:
     YDialog *			_dialog;
 
     static unsigned long	_nextSerial;
-    static int			_activeEvents;
 };
 
 
@@ -340,6 +351,9 @@ protected:
      **/
     virtual ~YTimeoutEvent() {}
 };
+
+
+std::ostream & operator<<( std::ostream & stream, const YEvent * event );
 
 
 #endif // YEvent_h

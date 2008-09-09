@@ -48,7 +48,7 @@ void YSimpleEventHandler::clear()
     if ( _pendingEvent )
     {
 #if VERBOSE_EVENTS
-	yuiDebug() << "Clearing pending event: " << YEvent::toString( _pendingEvent->eventType() ) << endl;
+	yuiDebug() << "Clearing pending event: " << _pendingEvent << endl;
 #endif
 	deleteEvent( _pendingEvent );
     }
@@ -59,6 +59,10 @@ YEvent * YSimpleEventHandler::consumePendingEvent()
 {
     YEvent * event = _pendingEvent;
     _pendingEvent = 0;
+
+#if VERBOSE_EVENTS
+    yuiDebug() << "Consuming " << event << endl;
+#endif
 
     return event;
 }
@@ -75,7 +79,7 @@ void YSimpleEventHandler::sendEvent( YEvent * event )
     if ( eventsBlocked() )
     {
 #if VERBOSE_BLOCK
-	yuiDebug() << "Blocking " << YEvent::toString( event->eventType() ) << " event" << endl;
+	yuiDebug() << "Blocking " << event << endl;
 #endif
 	// Avoid memory leak: The event handler assumes ownership of the newly
 	// created event, so we have to clean it up here.
@@ -100,7 +104,7 @@ void YSimpleEventHandler::sendEvent( YEvent * event )
     }
 
 #if VERBOSE_EVENTS
-    yuiDebug() << "New pending event: " << YEvent::toString( event->eventType() ) << endl;
+    yuiDebug() << "New pending event: " << event << endl;
 #endif
 
     _pendingEvent = event;
@@ -136,5 +140,17 @@ void YSimpleEventHandler::deleteEvent( YEvent * event )
 	_pendingEvent = 0;
     
     if ( event )
-	delete event;
+    {
+	if ( event->isValid() )
+	{
+#if VERBOSE_EVENTS
+	    yuiDebug() << "Deleting " << event << endl;
+#endif
+	    delete event;
+	}
+	else
+	{
+	    yuiError() << "Attempt to delete invalid event " << event << endl;
+	}
+    }
 }

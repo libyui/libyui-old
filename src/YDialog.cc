@@ -27,7 +27,7 @@
 #include "YEvent.h"
 #include "YShortcutManager.h"
 #include "YPushButton.h"
-#include "YPushButton.h"
+#include "YButtonBox.h"
 
 #include "YUI.h"
 #include "YWidgetFactory.h"
@@ -41,6 +41,7 @@ using std::string;
 
 #define VERBOSE_DIALOGS			0
 #define VERBOSE_DISCARDED_EVENTS	0
+#define VERBOSE_EVENTS			0
 
 
 std::stack<YDialog *> YDialog::_dialogStack;
@@ -455,7 +456,19 @@ YDialog::deleteEvent( YEvent * event )
 	priv->lastEvent = 0;
 
     if ( event )
-	delete event;
+    {
+	if ( event->isValid() )
+	{
+#if VERBOSE_EVENTS
+	    yuiDebug() << "Deleting " << event << endl;
+#endif
+	    delete event;
+	}
+	else
+	{
+	    yuiError() << "Attempt to delete invalid event " << event << endl;
+	}
+    }
 }
 
 
@@ -595,7 +608,7 @@ YDialog::showText( const string & text, bool useRichText )
 	YLayoutBox  * vbox      = YUI::widgetFactory()->createVBox( minSize );
 	YUI::widgetFactory()->createRichText( vbox, text, ! useRichText );
 	YButtonBox  * buttonBox = YUI::widgetFactory()->createButtonBox( vbox );
-	YPushButton * okButton  = YUI::widgetFactory()->createPushButton( vbox, "&OK" );
+	YPushButton * okButton  = YUI::widgetFactory()->createPushButton( buttonBox, "&OK" );
 	okButton->setRole( YOKButton );
 	okButton->setDefaultButton();
 
