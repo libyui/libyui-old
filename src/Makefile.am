@@ -24,6 +24,7 @@ libyui_la_SOURCES =				\
 	YOptionalWidgetFactory.cc		\
 						\
 	YCommandLine.cc				\
+	YDialogSpy.cc				\
 	YEvent.cc				\
 	YEventFilter.cc				\
 	YEnvVar.cc				\
@@ -107,6 +108,7 @@ pkginclude_HEADERS =				\
 	YChildrenManager.h			\
 	YColor.h				\
 	YCommandLine.h				\
+	YDialogSpy.h				\
 	YEvent.h				\
 	YEventFilter.h				\
 	YEnvVar.h				\

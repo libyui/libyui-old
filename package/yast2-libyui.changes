@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Sep  9 17:05:23 CEST 2008 - sh@suse.de
+
+- Added YDialogSpy for interactive introspection of a widget tree
+- V 2.17.8 
+
+-------------------------------------------------------------------
 Tue Sep  9 16:21:35 CEST 2008 - sh@suse.de
 
 - Made YEvents more robust against attempts of duplicate deletion
