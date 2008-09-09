@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Sep  9 16:21:35 CEST 2008 - sh@suse.de
+
+- Made YEvents more robust against attempts of duplicate deletion
+- Stream output (logging) for YEvents 
+
+-------------------------------------------------------------------
 Thu Sep  4 14:47:46 CEST 2008 - sh@suse.de
 
 - Allow ButtonBox sanity check to be relaxed (bnc #422612)
