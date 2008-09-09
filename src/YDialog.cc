@@ -27,6 +27,7 @@
 #include "YEvent.h"
 #include "YShortcutManager.h"
 #include "YPushButton.h"
+#include "YPushButton.h"
 
 #include "YUI.h"
 #include "YWidgetFactory.h"
@@ -589,11 +590,13 @@ YDialog::showText( const string & text, bool useRichText )
 {
     try
     {
-	YDialog     * dialog   = YUI::widgetFactory()->createPopupDialog();
-	YAlignment  * minSize  = YUI::widgetFactory()->createMinSize( dialog, 45, 15 );
-	YLayoutBox  * vbox     = YUI::widgetFactory()->createVBox( minSize );
+	YDialog     * dialog    = YUI::widgetFactory()->createPopupDialog();
+	YAlignment  * minSize   = YUI::widgetFactory()->createMinSize( dialog, 45, 15 );
+	YLayoutBox  * vbox      = YUI::widgetFactory()->createVBox( minSize );
 	YUI::widgetFactory()->createRichText( vbox, text, ! useRichText );
-	YPushButton * okButton = YUI::widgetFactory()->createPushButton( vbox, "&OK" );
+	YButtonBox  * buttonBox = YUI::widgetFactory()->createButtonBox( vbox );
+	YPushButton * okButton  = YUI::widgetFactory()->createPushButton( vbox, "&OK" );
+	okButton->setRole( YOKButton );
 	okButton->setDefaultButton();
 
 	dialog->waitForEvent();
