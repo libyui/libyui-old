@@ -111,6 +111,7 @@ YButtonBox::gnomeLayoutPolicy()
     policy.equalSizeButtons      = true;
     policy.alignment[ YD_HORIZ ] = YAlignEnd;	// Align right
     policy.alignment[ YD_VERT  ] = YAlignBegin;	// Align top
+    policy.addExcessSpaceToHelpButtonExtraMargin = true;
 
     return policy;
 }
@@ -267,21 +268,28 @@ YButtonBox::doLayout( int width, int height )
     {
 	int excessWidth = width - prefWidth;
 
-	switch ( _layoutPolicy.alignment[ YD_HORIZ ] )
+	if ( _layoutPolicy.addExcessSpaceToHelpButtonExtraMargin && helpButton )
 	{
-	    case YAlignCenter:
-		margins.left  += excessWidth / 2;
-		margins.right += excessWidth / 2;
-		break;
+	    margins.helpButtonExtraSpacing += excessWidth;
+	}
+	else
+	{
+	    switch ( _layoutPolicy.alignment[ YD_HORIZ ] )
+	    {
+		case YAlignCenter:
+		    margins.left  += excessWidth / 2;
+		    margins.right += excessWidth / 2;
+		    break;
 
-	    case YAlignBegin:
-	    case YAlignUnchanged:
-		margins.right += excessWidth;
-		break;
+		case YAlignBegin:
+		case YAlignUnchanged:
+		    margins.right += excessWidth;
+		    break;
 
-	    case YAlignEnd:
-		margins.left  += excessWidth;
-		break;
+		case YAlignEnd:
+		    margins.left  += excessWidth;
+		    break;
+	    }
 	}
     }
 

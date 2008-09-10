@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Sep 10 17:15:52 CEST 2008 - sh@suse.de
+
+- Force [Help] button left-aligned in GNOME button order 
+
+-------------------------------------------------------------------
 Tue Sep  9 17:05:23 CEST 2008 - sh@suse.de
 
 - Added YDialogSpy for interactive introspection of a widget tree

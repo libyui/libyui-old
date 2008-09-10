@@ -37,6 +37,7 @@ struct YButtonBoxLayoutPolicy
     YButtonBoxLayoutPolicy()
 	: buttonOrder( YKDEButtonOrder )
 	, equalSizeButtons( false )
+	, addExcessSpaceToHelpButtonExtraMargin( false )
     {
 	alignment[ YD_HORIZ ] = YAlignCenter;
 	alignment[ YD_VERT  ] = YAlignBegin; 	// Align top
@@ -44,6 +45,7 @@ struct YButtonBoxLayoutPolicy
 
     YButtonOrder	buttonOrder;      // YKDEButtonOrder / YGnomeButtonOrder
     bool		equalSizeButtons; // Make all buttons the same size?
+    bool		addExcessSpaceToHelpButtonExtraMargin;
 
     // Alignment for the YButtonBox itself
     YAlignmentType 	alignment[ YUIAllDimensions ];
