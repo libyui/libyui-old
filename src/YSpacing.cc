@@ -90,3 +90,14 @@ int YSpacing::preferredHeight()
 }
 
 
+const char *
+YSpacing::widgetClass() const
+{
+    if ( priv->size > 0 )
+	return ( priv->dim == YD_HORIZ ) ? "YHSpacing" : "YVSpacing";
+
+    if ( stretchable( YD_HORIZ ) )	return "YHStretch";
+    if ( stretchable( YD_VERT  ) )	return "YVStretch";
+
+    return "YSpacing";
+}

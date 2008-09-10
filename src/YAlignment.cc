@@ -170,7 +170,7 @@ string YAlignment::backgroundPixmap() const
 void YAlignment::addChild( YWidget * child )
 {
     YSingleChildContainerWidget::addChild( child );
-    
+
     if ( minWidth()  > 0 )	child->setStretchable( YD_HORIZ, true );
     if ( minHeight() > 0 )	child->setStretchable( YD_VERT , true );
 }
@@ -192,7 +192,7 @@ int YAlignment::preferredWidth()
 
     int preferredWidth = firstChild()->preferredWidth();
     preferredWidth    += leftMargin() + rightMargin();
-	
+
     return max( minWidth(), preferredWidth );
 }
 
@@ -204,7 +204,7 @@ int YAlignment::preferredHeight()
 
     int preferredHeight = firstChild()->preferredHeight();
     preferredHeight    += topMargin() + bottomMargin();
-	
+
     return max( minHeight(), preferredHeight );
 }
 
@@ -321,7 +321,7 @@ int YAlignment::totalMargins( YUIDimension dim ) const
 void YAlignment::setBackgroundPixmap( const string & pixmapFileName )
 {
     string pixmap = pixmapFileName;
-    
+
     if ( pixmap.length() > 0 &&
 	 pixmap[0] != '/'  &&	// Absolute path?
 	 pixmap[0] != '.'    )	// Path relative to $CWD ?
@@ -331,4 +331,47 @@ void YAlignment::setBackgroundPixmap( const string & pixmapFileName )
     }
 
     priv->backgroundPixmap = pixmap;
+}
+
+
+const char *
+YAlignment::widgetClass() const
+{
+    string wClass = "YAlignment";
+    string subClass;
+
+    if      ( priv->alignment.hor == YAlignBegin 	)	subClass = "Left";
+    else if ( priv->alignment.hor == YAlignEnd		)	subClass = "Right";
+    else if ( priv->alignment.hor == YAlignCenter	)
+    {
+	if  ( priv->alignment.vert == YAlignCenter 	)	subClass = "HVCenter";
+	else							subClass = "HCenter";
+    }
+    else if ( priv->alignment.vert == YAlignBegin	)	subClass = "Top";
+    else if ( priv->alignment.vert == YAlignEnd		)	subClass = "Bottom";
+    else if ( priv->alignment.vert == YAlignCenter	)	subClass = "VCenter";
+
+    if ( priv->alignment.hor  == YAlignUnchanged &&
+	 priv->alignment.vert == YAlignUnchanged )
+    {
+	if ( priv->leftMargin   > 0 ||
+	     priv->rightMargin  > 0 ||
+	     priv->topMargin    > 0 ||
+	     priv->bottomMargin > 0 )
+	{
+	    wClass = "YMarginBox";
+	}
+
+	if ( priv->minWidth > 0 || priv->minHeight > 0 )
+	{
+	    if      ( priv->minWidth  == 0 )			wClass = "YMinHeight";
+	    else if ( priv->minHeight == 0 )			wClass = "YMinWidth";
+	    else						wClass = "YMinSize";
+	}
+    }
+
+    if ( ! subClass.empty() )
+	wClass += "_" + subClass;
+
+    return wClass.c_str();
 }

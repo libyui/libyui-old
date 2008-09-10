@@ -184,3 +184,10 @@ YInputField::saveUserInput( YMacroRecorder *macroRecorder )
     }
 }
 
+
+const char *
+YInputField::widgetClass() const
+{
+    if ( priv->passwordMode )	return "YPasswordField";
+    else			return "YInputField";
+}

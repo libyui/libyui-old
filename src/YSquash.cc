@@ -69,3 +69,12 @@ bool YSquash::stretchable( YUIDimension dim ) const
     return ! priv->squash[ dim ] && firstChild()->stretchable( dim );
 }
 
+
+const char *
+YSquash::widgetClass() const
+{
+    if      ( priv->squash.hor && priv->squash.vert )	return "YHVSquash";
+    else if ( priv->squash.hor  )			return "YHSquash";
+    else if ( priv->squash.vert )			return "YVSquash";
+    else						return "YSquash_NoSquash";
+}

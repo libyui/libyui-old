@@ -61,7 +61,7 @@ public:
      *
      * Reimplemented from YWidget.
      **/
-    virtual const char * widgetClass() const { return "YLabel"; }
+    virtual const char * widgetClass() const;
 
     /**
      * Return the text the widget displays.

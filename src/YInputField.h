@@ -61,7 +61,7 @@ public:
      * Return a descriptive name of this widget class for logging,
      * debugging etc.
      **/
-    virtual const char * widgetClass() const { return "YInputField"; }
+    virtual const char * widgetClass() const;
 
     /**
      * Get the current value (the text entered by the user or set from the

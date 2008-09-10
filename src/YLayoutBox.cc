@@ -749,3 +749,8 @@ YLayoutBox::doResize( sizeVector & width,
 }
 
 
+const char *
+YLayoutBox::widgetClass() const
+{
+    return primary() == YD_VERT ? "YVBox" : "YHBox";
+}

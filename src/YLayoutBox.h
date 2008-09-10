@@ -51,8 +51,7 @@ public:
      * Returns a descriptive name of this widget class for logging,
      * debugging etc.
      **/
-    virtual const char * widgetClass() const
-	{ return primary() == YD_VERT ? "YVBox" : "YHBox"; }
+    virtual const char * widgetClass() const;
 
     /**
      * Return the primary dimension, i.e., the dimension this LayoutBox lays
@@ -74,21 +73,6 @@ public:
      * Enable or disable layout debugging.
      **/
     void setDebugLayout( bool deb = true );
-
-    /**
-     * Minimum size the widget should have to make it look and feel
-     * nice, i.e. all of the widget's preferred size.
-     *
-     * For the "primary" dimension, this is the sum of the children's
-     * preferred sizes with respect to any specified weight ratios -
-     * i.e. the weights will always be respected. Children may be
-     * stretched as appropriate.
-     *
-     * For the "other" dimension, this is the maximum of the children's
-     * preferred sizes in that dimension.
-     *
-     * @param dim Dimension, either YD_HORIZ or YD_VERT
-     **/
 
     /**
      * Preferred size of the widget in the specified dimension.

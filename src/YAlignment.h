@@ -53,7 +53,7 @@ public:
      * Return a descriptive name of this widget class for logging,
      * debugging etc.
      **/
-    virtual const char * widgetClass() const { return "YAlignment"; }
+    virtual const char * widgetClass() const;
 
     /**
      * Return the alignment in the specified dimension.

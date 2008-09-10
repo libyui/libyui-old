@@ -58,7 +58,7 @@ public:
      * Return a descriptive name of this widget class for logging,
      * debugging etc.
      **/
-    virtual const char * widgetClass() const { return "YSpacing"; }
+    virtual const char * widgetClass() const;
 
     /**
      * Return the primary dimension of this Spacing/Stretch,

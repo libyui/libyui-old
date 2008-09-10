@@ -173,3 +173,13 @@ string YLabel::debugLabel() const
 
     return label;
 }
+
+
+
+const char *
+YLabel::widgetClass() const
+{
+    if      ( priv->isHeading     )	return "YLabel_Heading";
+    else if ( priv->isOutputField )	return "YLabel_OutputField";
+    else				return "YLabel";
+}
