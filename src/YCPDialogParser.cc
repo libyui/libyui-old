@@ -995,6 +995,7 @@ YCPDialogParser::parseLayoutBox( YWidget * parent, YWidgetOpt & opt,
  * @class	ButtonBox
  * @arg		term button1 the first button
  * @optarg	term button2 the second button (etc.)
+ * @option	relaxSanityCheck less stringent requirements for button roles
  * @usage	`ButtonBox(`PushButton( `id( `ok ), "OK" ), `PushButton( `id( `cancel ), "Cancel" ) )
  *
  * @examples	ButtonBox1.ycp
@@ -1053,8 +1054,14 @@ YCPDialogParser::parseLayoutBox( YWidget * parent, YWidgetOpt & opt,
  * Similarly, there are `opt(`cancelButton), `opt(`applyButton),
  * `opt(`helpButton).
  *
- * A ButtonBox with more than one button is required to have one okButton and
- * one cancelButton.
+ * By default, a ButtonBox with more than one button is required to have one
+ * okButton and one cancelButton.
+ * `opt(`relaxSanityCheck) relaxes those requirements: It does not check for
+ * one okButton and one cancelButton. This should be used very sparingly -- use
+ * your common sense. One Example where this is legitimate is a pop-up dialog
+ * with [OK] [Details] for error messages that can be explained in more
+ * detail. Most dialogs with more than just an [OK] or a [Close] button should
+ * have a [Cancel] button.
  *
  * ButtonBox widgets can have no other child widgets than PushButton widgets.
  * ButtonBox widgets are horizontally stretchable and vertically

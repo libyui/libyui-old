@@ -30,6 +30,7 @@
 #include "YDialog.h"
 #include "YLabel.h"
 #include "YPushButton.h"
+#include "YButtonBox.h"
 #include "YLayoutBox.h"
 
 using std::string;
@@ -46,9 +47,9 @@ void YCPErrorDialog::exceptionDialog( const string & headingText,
 	fac->createHeading( vbox, headingText );
 	fac->createLabel( vbox, exception.asString() );
 	fac->createLabel( vbox, "Check the log file!" );
-	YLayoutBox * buttonBox = fac->createHBox( vbox );
-	fac->createHStretch( buttonBox );
-	fac->createPushButton( buttonBox, "&Close" );
+	YButtonBox  * buttonBox   = fac->createButtonBox( vbox );
+	YPushButton * closeButton = fac->createPushButton( buttonBox, "&Close" );
+	closeButton->setRole( YOKButton );
 	dialog->open();
 
 	dialog->waitForEvent();
