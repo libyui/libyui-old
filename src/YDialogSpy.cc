@@ -114,6 +114,7 @@ YDialogSpy::YDialogSpy( YDialog * targetDialog )
     YAlignment * minSize = fac->createMinSize( vbox, 50, 20 );
 
     priv->widgetTree = fac->createTree( minSize, "Widget &Tree" );
+    priv->widgetTree->setNotify( true );
 
     YWidgetTreeItem * rootItem = new YWidgetTreeItem( targetDialog, true );
     YUI_CHECK_NEW( rootItem );
@@ -161,11 +162,21 @@ void YDialogSpy::exec()
 	if ( event )
 	{
 	    if ( event->widget() == priv->closeButton )
+	    {
+		priv->targetDialog->highlight( 0 );
 		return;
+	    }
 
 	    if ( event->widget() == priv->widgetTree )
 	    {
 		yuiDebug() << "Event from " << event->widget() << endl;
+		YWidgetTreeItem * item = (YWidgetTreeItem *) priv->widgetTree->selectedItem();
+		yuiDebug() << "Highlighting " << item << endl;
+		
+		if ( item )
+		{
+		    priv->targetDialog->highlight( item->widget() );
+		}
 	    }
 	}
     }

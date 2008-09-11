@@ -287,6 +287,19 @@ public:
     void removeEventFilter( YEventFilter * eventFilter );
 
     /**
+     * Highlight a child widget of this dialog. This is meant for debugging:
+     * YDialogSpy and similar uses.
+     *
+     * No more than one widget can be highlighted at any one time in the same
+     * dialog. Highlighting another widget un-highlights a previously
+     * highlighted widget. 0 means 'unhighlight the last highlighted widget,
+     * but don't highlight any other'.
+     *
+     * This default implementation does nothing. 
+     **/
+    virtual void highlight( YWidget * child ) {}
+
+    /**
      * Set this dialog's default button (the button that is activated when
      * the user hits [Return] anywhere in this dialog). 0 means no default
      * button.
