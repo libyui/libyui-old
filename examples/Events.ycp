@@ -14,7 +14,8 @@
      * @param	event	The event map to format
      * @return	html	HTML code for the formatted event
      **/
-    define string formatEvent( map<string, any> event ) ``{
+    string formatEvent( map<string, any> event )
+    {
 	string html = "<h3>Event:</h3><p>";
 y2milestone ("formatEvent(%1)", event);
 	foreach (string key, any value, event, ``{
@@ -27,7 +28,7 @@ y2milestone ("formatEvent(%1)", event);
     };
 
 
-    integer timeout = 20; // seconds
+    integer timeout = 7; // seconds
     string howto = sformat( "Use the \"Close\" button to quit. " 			+
 			    "All other widgets will only show the event.\n" 		+
 			    "After %1 seconds of inactivity a timeout event will occur.",
