@@ -683,7 +683,9 @@ YLayoutBox::calcSecondaryGeometry( int	 	newSize,
 	YWidget * child = *it;
 	int preferred = child->preferredSize( secondary() );
 
-	if ( child->stretchable( secondary() ) || newSize < preferred )
+	if ( child->stretchable( secondary() ) || newSize < preferred || preferred == 0 )
+	    // Also checking for preferred == 0 to make HSpacing / VSpacing visible in YDialogSpy:
+	    // Otherwise they would be 0 pixels wide or high, i.e. invisible
 	{
 	    childSize[i] = newSize;
 	    childPos [i] = 0L;
