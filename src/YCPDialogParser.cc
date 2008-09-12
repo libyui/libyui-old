@@ -339,8 +339,6 @@ YCPDialogParser::parseWidgetTreeTerm( YWidget *		p,
 	     * on the Weight's child, which is not what the application
 	     * programmer expects.
 	     */
-	    
-	    w->setWidgetName( id->toString() );
 	}
 
 	if ( opt.isDisabled.value() 	)	w->setDisabled();
