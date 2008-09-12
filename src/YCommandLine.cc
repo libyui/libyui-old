@@ -128,3 +128,15 @@ YCommandLine::replace( int index, const string & newArg )
     priv->args[ index ] = newArg;
 }
 
+
+int
+YCommandLine::find( const string & argName ) const
+{
+    for ( int i=0; i < argc(); i++ )
+    {
+	if ( priv->args[i] == argName )
+	    return i;
+    }
+
+    return -1;
+}

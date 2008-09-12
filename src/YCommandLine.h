@@ -99,6 +99,15 @@ public:
      **/
     void replace( int index, const string & arg );
 
+    /**
+     * Find a command line argument 'argName' ("-display" etc.).
+     * Notice that leading minus signs must be specified in 'argName'.
+     * Since argv[0] is the program name, the search starts from argv[1].
+     *
+     * Return the position of 'argName' (from 0 on) or -1 if not found.
+     **/
+    int find( const string & argName ) const;
+
     
 private:
 
