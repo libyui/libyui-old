@@ -87,7 +87,6 @@ struct YWidgetPrivate
     YBothDim<bool>		stretch;
     YBothDim<int>		weight;
     int				functionKey;
-    string			widgetName;
     string			helpText;
 };
 
@@ -331,18 +330,6 @@ void YWidget::setFunctionKey( int fkey_no )
 }
 
 
-string YWidget::widgetName() const
-{
-    return priv->widgetName;
-}
-
-
-void YWidget::setWidgetName( const string & name )
-{
-    priv->widgetName = name;
-}
-
-
 string YWidget::helpText() const
 {
     return priv->helpText;
@@ -406,17 +393,23 @@ YWidget::propertySet()
 	 * @property boolean Enabled 		enabled/disabled state of this widget
 	 * @property boolean Notify 		the current notify state (see also `opt( `notify ))
 	 * @property string  WidgetClass 	the widget class of this widget (YLabel, YPushButton, ...)
-	 * @property string  WidgetName		internal name for this widget (by default the string-ized ID)
-	 * @property string  HelpText		help text
 	 * @property string  DebugLabel		(possibly translated) text describing this widget for debugging
+	 * @property string  HelpText		help text
+	 * @property integer HWeight		horizontal layout weight (same as `HWeight(widget())
+	 * @property integer VWeight		vertical   layout weight (same as `VWeight(widget())
+	 * @property boolean HStretch		horizontally stretchable? (same as `opt(`hstretch))
+	 * @property boolean VStretch		vertically   stretchable? (same as `opt(`vstretch))
 	 **/
 
-	propSet.add( YProperty( YUIProperty_Enabled,		YBoolProperty	) );
-	propSet.add( YProperty( YUIProperty_Notify,		YBoolProperty	) );
+	propSet.add( YProperty( YUIProperty_Enabled,		YBoolProperty	 ) );
+	propSet.add( YProperty( YUIProperty_Notify,		YBoolProperty	 ) );
 	propSet.add( YProperty( YUIProperty_WidgetClass,	YStringProperty, true	) ); // read-only
 	propSet.add( YProperty( YUIProperty_DebugLabel,		YStringProperty, true	) ); // read-only
-	propSet.add( YProperty( YUIProperty_WidgetName,		YStringProperty ) );
-	propSet.add( YProperty( YUIProperty_HelpText,		YStringProperty ) );
+	propSet.add( YProperty( YUIProperty_HelpText,		YStringProperty  ) );
+	propSet.add( YProperty( YUIProperty_HWeight,		YIntegerProperty ) );
+	propSet.add( YProperty( YUIProperty_VWeight,		YIntegerProperty ) );
+	propSet.add( YProperty( YUIProperty_HStretch,		YBoolProperty    ) );
+	propSet.add( YProperty( YUIProperty_VStretch,		YBoolProperty    ) );
     }
 
     return propSet;
@@ -436,10 +429,13 @@ YWidget::setProperty( const std::string & propertyName, const YPropertyValue & v
 	throw;
     }
 
-    if      ( propertyName == YUIProperty_Enabled )	setEnabled( val.boolVal() );
-    else if ( propertyName == YUIProperty_Notify  )	setNotify ( val.boolVal() );
-    else if ( propertyName == YUIProperty_WidgetName )	setWidgetName( val.stringVal() );
+    if      ( propertyName == YUIProperty_Enabled  )	setEnabled( val.boolVal() );
+    else if ( propertyName == YUIProperty_Notify   )	setNotify ( val.boolVal() );
     else if ( propertyName == YUIProperty_HelpText )	setHelpText( val.stringVal() );
+    else if ( propertyName == YUIProperty_HWeight  )	setWeight( YD_HORIZ, val.integerVal() );
+    else if ( propertyName == YUIProperty_VWeight  )	setWeight( YD_VERT , val.integerVal() );
+    else if ( propertyName == YUIProperty_HStretch )	setStretchable( YD_HORIZ, val.boolVal() );
+    else if ( propertyName == YUIProperty_VStretch )	setStretchable( YD_VERT , val.boolVal() );
 
     return true; // success -- no special processing necessary
 }
@@ -461,9 +457,12 @@ YWidget::getProperty( const std::string & propertyName )
     if ( propertyName == YUIProperty_Enabled 		) return YPropertyValue( isEnabled() 	);
     if ( propertyName == YUIProperty_Notify  		) return YPropertyValue( notify()   	);
     if ( propertyName == YUIProperty_WidgetClass	) return YPropertyValue( widgetClass() 	);
-    if ( propertyName == YUIProperty_WidgetName		) return YPropertyValue( widgetName() 	);
     if ( propertyName == YUIProperty_HelpText		) return YPropertyValue( helpText() 	);
     if ( propertyName == YUIProperty_DebugLabel		) return YPropertyValue( debugLabel()	);
+    if ( propertyName == YUIProperty_HWeight		) return YPropertyValue( weight( YD_HORIZ ) );
+    if ( propertyName == YUIProperty_VWeight		) return YPropertyValue( weight( YD_VERT  ) );
+    if ( propertyName == YUIProperty_HStretch		) return YPropertyValue( stretchable( YD_HORIZ ) );
+    if ( propertyName == YUIProperty_VStretch		) return YPropertyValue( stretchable( YD_VERT  ) );
 
     return YPropertyValue( false ); // NOTREACHED
 }

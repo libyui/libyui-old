@@ -80,16 +80,6 @@ public:
     virtual string debugLabel() const;
 
     /**
-     * Return this widget's debugging name (if one was previously set).
-     **/
-    string widgetName() const;
-
-    /**
-     * Set a widget name for debugging.
-     **/
-    void setWidgetName( const string & name );
-
-    /**
      * Return the help text for this widget.
      **/
     string helpText() const;

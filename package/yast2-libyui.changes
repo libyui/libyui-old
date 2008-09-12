@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Sep 12 13:54:34 CEST 2008 - sh@suse.de
+
+- Now exporting more YWidget base class attributes as properties:
+  HWeight, VWeight, HStretch, VStretch 
+
+-------------------------------------------------------------------
 Thu Sep 11 15:42:18 CEST 2008 - sh@suse.de
 
 - Added highlighting for target dialog in YDialogSpy

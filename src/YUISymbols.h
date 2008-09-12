@@ -162,6 +162,8 @@
 #define YUIProperty_HelpText			"HelpText"
 #define YUIProperty_IconPath			"IconPath"
 #define YUIProperty_InputMaxLength		"InputMaxLength"
+#define YUIProperty_HWeight			"HWeight"
+#define YUIProperty_HStretch			"HStretch"
 #define YUIProperty_Item			"Item"
 #define YUIProperty_Items			"Items"
 #define YUIProperty_Label			"Label"
@@ -180,8 +182,9 @@
 #define YUIProperty_Value			"Value"
 #define YUIProperty_Values			"Values"
 #define YUIProperty_VisibleLines		"VisibleLines"
+#define YUIProperty_VWeight			"VWeight"
+#define YUIProperty_VStretch			"VStretch"
 #define YUIProperty_WidgetClass			"WidgetClass"
-#define YUIProperty_WidgetName			"WidgetName"
 
 
 // Widget and dialog options
