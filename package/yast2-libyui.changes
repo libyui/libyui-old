@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Sep 12 18:42:04 CEST 2008 - sh@suse.de
+
+- Improved resize behaviour of YDialogSpy 
+
+-------------------------------------------------------------------
 Fri Sep 12 16:12:49 CEST 2008 - sh@suse.de
 
 - Added widget properties to YDialogSpy

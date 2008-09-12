@@ -35,6 +35,17 @@
 #include <YReplacePoint.h>
 #include <YUI.h>
 
+#define TREE_VWEIGHT	40
+#define PROP_VWEIGHT	60
+
+#define DIA_HEIGHT	24
+
+#define TREE_HEIGHT	10
+#define TREE_WIDTH	50
+
+#define PROP_HEIGHT	12
+#define PROP_WIDTH	50
+
 
 /**
  * Custom tree item class to map tree items to widgets
@@ -42,8 +53,8 @@
 class YWidgetTreeItem: public YTreeItem
 {
 public:
-    YWidgetTreeItem( YWidget * 		widget,
-		     bool 		isOpen )
+    YWidgetTreeItem( YWidget *	widget,
+		     bool 	isOpen )
 	: YTreeItem( "", isOpen )
 	, _widget( widget )
     {
@@ -118,9 +129,11 @@ YDialogSpy::YDialogSpy( YDialog * targetDialog )
     YWidgetFactory * fac = YUI::widgetFactory();
 
     priv->spyDialog      = fac->createPopupDialog();
-    YLayoutBox * vbox    = fac->createVBox( priv->spyDialog );
+    YAlignment * diaMin	 = fac->createMinHeight( priv->spyDialog, DIA_HEIGHT );
+    YLayoutBox * vbox    = fac->createVBox( diaMin );
     
-    YAlignment * minSize = fac->createMinSize( vbox, 50, 20 );
+    YAlignment * minSize = fac->createMinSize( vbox, TREE_WIDTH, TREE_HEIGHT );
+    minSize->setWeight( YD_VERT, TREE_VWEIGHT );
     priv->widgetTree     = fac->createTree( minSize, "Widget &Tree" );
     priv->widgetTree->setNotify( true );
 
@@ -159,10 +172,11 @@ void YDialogSpy::showProperties()
     if ( ! propertiesShown() )
     {
 	priv->propReplacePoint->deleteChildren();
+	priv->propReplacePoint->setWeight( YD_VERT, PROP_VWEIGHT );
 
 	YWidgetFactory * fac = YUI::widgetFactory();
-	YAlignment * minSize = fac->createMinSize( priv->propReplacePoint, 30, 12 );
-	
+	YAlignment * minSize = fac->createMinSize( priv->propReplacePoint,
+						   PROP_WIDTH, PROP_HEIGHT );
 	YTableHeader * header = new YTableHeader();
 	YUI_CHECK_NEW( header );
 	header->addColumn( "Property" );
@@ -170,6 +184,7 @@ void YDialogSpy::showProperties()
 	header->addColumn( "Type" );
 	
 	priv->propTable = fac->createTable( minSize, header );
+	// priv->propTable->setKeepSorting( true );
 	
 	priv->propButton->setLabel( "<<< &Properties" );
 	priv->propReplacePoint->showChild();
@@ -183,6 +198,7 @@ void YDialogSpy::hideProperties()
     if ( propertiesShown() )
     {
 	priv->propReplacePoint->deleteChildren();
+	priv->propReplacePoint->setWeight( YD_VERT, 0 );
 	priv->propTable = 0;
 	YUI::widgetFactory()->createEmpty( priv->propReplacePoint );
 	
@@ -243,6 +259,7 @@ void YDialogSpy::showProperties( YWidget * widget )
 	}
 
 	priv->propTable->addItems( items );
+	priv->propTable->deselectAllItems();
     }
 }
 
@@ -271,6 +288,8 @@ void YDialogSpy::exec()
     {
 	bool updateProp = false;
 	YEvent * event = priv->spyDialog->waitForEvent();
+	yuiMilestone() << "dialog: " << priv->spyDialog->preferredHeight();
+	yuiMilestone() << "tree: " << priv->widgetTree->preferredHeight();
 
 	if ( event )
 	{
