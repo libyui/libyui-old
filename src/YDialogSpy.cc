@@ -25,12 +25,14 @@
 #include <YWidgetFactory.h>
 #include <YDialog.h>
 #include <YEvent.h>
+#include <YTable.h>
 #include <YTree.h>
 #include <YTreeItem.h>
 #include <YLayoutBox.h>
 #include <YAlignment.h>
 #include <YButtonBox.h>
 #include <YPushButton.h>
+#include <YReplacePoint.h>
 #include <YUI.h>
 
 
@@ -89,12 +91,18 @@ struct YDialogSpyPrivate
 	: targetDialog( 0 )
 	, spyDialog( 0 )
 	, widgetTree( 0 )
+	, propButton( 0 )
+	, propReplacePoint( 0 )
+	, propTable( 0 )
 	, closeButton( 0 )
 	{}
 
     YDialog *		targetDialog;	// Dialog that is being inspected
     YDialog *		spyDialog;	// Debug dialog that shows widget data
     YTree *		widgetTree;	// Tree widget to show widget hierarchy
+    YPushButton * 	propButton;
+    YReplacePoint *	propReplacePoint;
+    YTable *		propTable;
     YPushButton *	closeButton;
 };
 
@@ -109,11 +117,11 @@ YDialogSpy::YDialogSpy( YDialog * targetDialog )
     priv->targetDialog = targetDialog;
     YWidgetFactory * fac = YUI::widgetFactory();
 
-    priv->spyDialog = fac->createPopupDialog();
-    YLayoutBox * vbox = fac->createVBox( priv->spyDialog );
+    priv->spyDialog      = fac->createPopupDialog();
+    YLayoutBox * vbox    = fac->createVBox( priv->spyDialog );
+    
     YAlignment * minSize = fac->createMinSize( vbox, 50, 20 );
-
-    priv->widgetTree = fac->createTree( minSize, "Widget &Tree" );
+    priv->widgetTree     = fac->createTree( minSize, "Widget &Tree" );
     priv->widgetTree->setNotify( true );
 
     YWidgetTreeItem * rootItem = new YWidgetTreeItem( targetDialog, true );
@@ -122,8 +130,13 @@ YDialogSpy::YDialogSpy( YDialog * targetDialog )
     priv->widgetTree->addItem( rootItem );
     priv->widgetTree->rebuildTree();
 
+    YAlignment * alignment = fac->createLeft( vbox );
+    priv->propButton       = fac->createPushButton( alignment, "&Properties >>>" );
+    priv->propReplacePoint = fac->createReplacePoint( vbox );
+    fac->createEmpty( priv->propReplacePoint );
+
     YButtonBox * buttonBox = fac->createButtonBox( vbox );
-    priv->closeButton = fac->createPushButton( buttonBox, "&Close" );
+    priv->closeButton      = fac->createPushButton( buttonBox, "&Close" );
     priv->closeButton->setRole( YOKButton );
 }
 
@@ -132,6 +145,105 @@ YDialogSpy::~YDialogSpy()
 {
     if ( priv->spyDialog )
 	priv->spyDialog->destroy();
+}
+
+
+bool YDialogSpy::propertiesShown() const
+{
+    return priv->propTable != 0;
+}
+
+
+void YDialogSpy::showProperties()
+{
+    if ( ! propertiesShown() )
+    {
+	priv->propReplacePoint->deleteChildren();
+
+	YWidgetFactory * fac = YUI::widgetFactory();
+	YAlignment * minSize = fac->createMinSize( priv->propReplacePoint, 30, 12 );
+	
+	YTableHeader * header = new YTableHeader();
+	YUI_CHECK_NEW( header );
+	header->addColumn( "Property" );
+	header->addColumn( "Value" );
+	header->addColumn( "Type" );
+	
+	priv->propTable = fac->createTable( minSize, header );
+	
+	priv->propButton->setLabel( "<<< &Properties" );
+	priv->propReplacePoint->showChild();
+	priv->spyDialog->recalcLayout();
+    }
+}
+
+
+void YDialogSpy::hideProperties()
+{
+    if ( propertiesShown() )
+    {
+	priv->propReplacePoint->deleteChildren();
+	priv->propTable = 0;
+	YUI::widgetFactory()->createEmpty( priv->propReplacePoint );
+	
+	priv->propButton->setLabel( "&Properties >>>" );
+	priv->propReplacePoint->showChild();
+	priv->spyDialog->recalcLayout();
+    }
+}
+
+
+void YDialogSpy::showProperties( YWidget * widget )
+{
+    if ( ! priv->propTable )
+	return;
+
+    priv->propTable->deleteAllItems();
+
+    if ( widget )
+    {
+	YPropertySet propSet = widget->propertySet();
+	YItemCollection items;
+	items.reserve( propSet.size() );
+	
+	for ( YPropertySet::const_iterator it = propSet.propertiesBegin();
+	      it != propSet.propertiesEnd();
+	      ++it )
+	{
+	    YProperty      prop    = *it;
+	    YPropertyValue propVal = widget->getProperty( prop.name() );
+	    string         propValStr;
+
+	    switch ( prop.type() )
+	    {
+		case YStringProperty:
+		    propValStr = propVal.stringVal();
+		    break;
+
+		case YBoolProperty:
+		    propValStr = propVal.boolVal() ? "true" : "false";
+		    break;
+
+		case YIntegerProperty:
+		    {
+			std::ostringstream str;
+			str << propVal.integerVal();
+			propValStr = str.str();
+		    }
+		    break;
+
+		default:
+		    propValStr = "???";
+		    break;
+	    }
+	    
+	    YTableItem * item = new YTableItem( prop.name(), propValStr, prop.typeAsStr() );
+	    YUI_CHECK_NEW( item );
+	    items.push_back( item );
+	}
+
+	priv->propTable->addItems( items );
+    }
 }
 
 
@@ -157,25 +269,38 @@ void YDialogSpy::exec()
 
     while ( true )
     {
+	bool updateProp = false;
 	YEvent * event = priv->spyDialog->waitForEvent();
 
 	if ( event )
 	{
-	    if ( event->widget() == priv->closeButton )
+	    if ( event->widget()    == priv->closeButton ||
+		 event->eventType() == YEvent::CancelEvent ) // window manager "close window" button
 	    {
 		priv->targetDialog->highlight( 0 );
 		return;
 	    }
 
-	    if ( event->widget() == priv->widgetTree )
+	    if ( event->widget() == priv->propButton )
 	    {
-		yuiDebug() << "Event from " << event->widget() << endl;
+		if ( propertiesShown() )
+		    hideProperties();
+		else
+		{
+		    showProperties();
+		    updateProp = true;
+		}
+	    }
+	    
+	    if ( event->widget() == priv->widgetTree || updateProp )
+	    {
 		YWidgetTreeItem * item = (YWidgetTreeItem *) priv->widgetTree->selectedItem();
 		yuiDebug() << "Highlighting " << item << endl;
 		
 		if ( item )
 		{
 		    priv->targetDialog->highlight( item->widget() );
+		    showProperties( item->widget() );
 		}
 	    }
 	}

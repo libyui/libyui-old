@@ -22,6 +22,7 @@
 
 #include "ImplPtr.h"
 
+class YWidget;
 class YDialog;
 class YDialogSpyPrivate;
 
@@ -43,7 +44,22 @@ public:
      **/
     static void showDialogSpy( YDialog * dialog = 0 );
 
-    
+    /**
+     * Show the "Properties" sub-window.
+     **/
+    void showProperties();
+
+    /**
+     * Hide the "Properties" sub-window.
+     **/
+    void hideProperties();
+
+    /**
+     * Return 'true' if the "Properties" sub-window is currently shown,
+     * 'false' if not.
+     **/
+    bool propertiesShown() const;
+
 protected:
     /**
      * Constructor: Create a YDialogSpy for the specified dialog. 0 means "use
@@ -65,6 +81,11 @@ protected:
      **/
     void exec();
 
+    /**
+     * Show the properties of the specified widget if the "Properties"
+     * sub-window is currently shown.
+     **/
+    void showProperties( YWidget * widget );
 
 private:
 

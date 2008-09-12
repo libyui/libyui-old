@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Sep 12 16:12:49 CEST 2008 - sh@suse.de
+
+- Added widget properties to YDialogSpy
+- V 2.17.10 
+
+-------------------------------------------------------------------
 Fri Sep 12 13:54:34 CEST 2008 - sh@suse.de
 
 - Now exporting more YWidget base class attributes as properties:
