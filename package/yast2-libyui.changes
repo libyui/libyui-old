@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Sep 17 12:33:09 CEST 2008 - sh@suse.de
+
+- Fixed reverse layout (for Arabic, Hebrew) in YButtonBox 
+
+-------------------------------------------------------------------
 Fri Sep 12 18:42:04 CEST 2008 - sh@suse.de
 
 - Improved resize behaviour of YDialogSpy 

@@ -363,7 +363,8 @@ YButtonBox::doLayout( int width, int height )
 	buttonWidth -= widthLoss;
     }
 
-
+    bool reverseLayout = YUI::app()->reverseLayout();
+    
     for ( vector<YPushButton *>::iterator it = buttons.begin();
 	  it != buttons.end();
 	  ++it )
@@ -383,7 +384,11 @@ YButtonBox::doLayout( int width, int height )
 	}
 
 	button->setSize( buttonWidth, buttonHeight );
-	moveChild( button, x_pos, y_pos );
+
+	if ( reverseLayout )
+	    moveChild( button, width - x_pos - buttonWidth, y_pos );
+	else
+	    moveChild( button, x_pos, y_pos );
 
 	x_pos += buttonWidth;
 	x_pos += margins.spacing;
