@@ -89,10 +89,10 @@ YUINamespace::SetConsoleFont( const YCPString & console_magic,
 {
     if ( YUIComponent::ui() )
 	YCP_UI::SetConsoleFont( console_magic,
-						 font,
-						 screen_map,
-						 unicode_map,
-						 encoding );
+				font,
+				screen_map,
+				unicode_map,
+				encoding );
     return YCPVoid();
 }
 

@@ -127,9 +127,10 @@ YCPValue YCP_UI::HasSpecialWidget( const YCPSymbol & widget )
  * @usage SetLanguage( "en_GB" )
  */
 
-void YCP_UI::SetLanguage( const YCPString & language, const YCPString & encoding )
+void YCP_UI::SetLanguage( const YCPString & language, const YCPString & enc )
 {
-    YUI::app()->setLanguage( language->value(), encoding->value() );
+    string encoding = enc.isNull() ? "" : enc->value();
+    YUI::app()->setLanguage( language->value(), encoding);
 }
 
 

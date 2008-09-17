@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Sep 17 12:05:37 CEST 2008 - sh@suse.de
+
+- Fixed segfault in SetLanguage() without optional encoding 
+
+-------------------------------------------------------------------
 Fri Sep 12 16:43:04 CEST 2008 - sh@suse.de
 
 - Dropped obsolete widgetName()
