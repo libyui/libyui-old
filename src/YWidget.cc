@@ -52,8 +52,7 @@ struct YWidgetPrivate
      * Constructor
      **/
     YWidgetPrivate( YWidgetChildrenManager * manager, YWidget * parentWidget = 0 )
-	: magic( YWIDGET_MAGIC )
-	, childrenManager( manager )
+	: childrenManager( manager )
 	, parent( parentWidget )
 	, beingDestroyed( false )
 	, enabled( true )
@@ -74,7 +73,6 @@ struct YWidgetPrivate
     // Data members
     //
 
-    int 			magic;
     YWidgetChildrenManager *	childrenManager;
     YWidget *			parent;
     bool			beingDestroyed;
@@ -97,7 +95,8 @@ bool YWidget::_usedOperatorNew = false;
 
 
 YWidget::YWidget( YWidget * parent )
-    : priv( new YWidgetPrivate( new YWidgetChildrenRejector( this ), parent ) )
+    : _magic( YWIDGET_MAGIC )
+    , priv( new YWidgetPrivate( new YWidgetChildrenRejector( this ), parent ) )
 {
     YUI_CHECK_NEW( priv );
     YUI_CHECK_NEW( priv->childrenManager );
@@ -133,6 +132,7 @@ YWidget::~YWidget()
     // yuiDebug() << "Destructor of YWidget " << this << endl;
 
     deleteChildren();
+    YUI::ui()->deleteNotify( this );
 
     if ( parent() && ! parent()->beingDestroyed() )
 	parent()->removeChild( this );
@@ -234,14 +234,14 @@ YWidget::debugLabel() const
 bool
 YWidget::isValid() const
 {
-    return priv->magic == YWIDGET_MAGIC;
+    return _magic == YWIDGET_MAGIC;
 }
 
 
 void
 YWidget::invalidate()
 {
-    priv->magic = 0;
+    _magic = 0;
 }
 
 

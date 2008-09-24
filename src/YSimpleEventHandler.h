@@ -52,7 +52,7 @@ public:
      *
      * The UI assumes ownership of the event object that 'event' points to, so
      * the event MUST be created with new(). The UI is to take care to delete
-     * the event after it has been processed. 
+     * the event after it has been processed.
      *
      * If events are blocked (see blockEvents() ), the event sent with this
      * function will be ignored (but safely deleted - no memory leak).
@@ -84,6 +84,12 @@ public:
      * Returns the pending event or 0 if there is none.
      **/
     YEvent * consumePendingEvent();
+
+    /**
+     * Delete any pending events for the specified widget. This is useful
+     * mostly if the widget is about to be destroyed.
+     **/
+    void deletePendingEventsFor( YWidget * widget );
 
     /**
      * Clears any pending event (deletes the corresponding object).

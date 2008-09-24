@@ -123,6 +123,21 @@ YSimpleEventHandler::eventPendingFor( YWidget * widget ) const
 }
 
 
+void YSimpleEventHandler::deletePendingEventsFor( YWidget * widget )
+{
+    if ( ! _pendingEvent )
+	return;
+
+    YWidgetEvent * event = dynamic_cast<YWidgetEvent *> (_pendingEvent);
+
+    if ( event && event->widget() == widget && event->isValid() )
+    {
+	yuiDebug() << "Deleting " << _pendingEvent << endl;
+	deleteEvent( _pendingEvent );
+    }
+}
+
+
 void YSimpleEventHandler::blockEvents( bool block )
 {
 #if VERBOSE_BLOCK

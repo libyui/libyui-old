@@ -659,6 +659,7 @@ private:
     // Data Members
     //
 
+    int 			_magic; // should always be the first member
     ImplPtr<YWidgetPrivate>	priv;
     static YPropertySet		_propertySet;
     static bool			_usedOperatorNew;

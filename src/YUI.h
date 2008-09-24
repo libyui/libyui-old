@@ -166,9 +166,18 @@ public:
     /**
      * Returns 'true' if events are currently blocked.
      *
-     * Reimplent this if you reimplement blockEvents().
+     * Reimplement this if you reimplement blockEvents().
      **/
     virtual bool eventsBlocked() const { return _eventsBlocked; }
+
+    /**
+     * Notification that a widget is being deleted.
+     * This is called from the YWidget destructor.
+     *
+     * Derived classes can implement this for any clean-up actions such as
+     * deleting any events that might be pending for that widget.
+     **/
+    virtual void deleteNotify( YWidget * widget ) {}
 
     /**
      * Must be called after the constructor of the Qt/NCurses ui
