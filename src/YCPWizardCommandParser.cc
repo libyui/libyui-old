@@ -31,6 +31,7 @@ YCPWizardCommandParser::parseAndExecute( YWizard * wizard, const YCPTerm & cmd )
 {
     if ( isCommand( "SetHelpText	  ( string )", cmd ) )	{ wizard->setHelpText	( stringArg( cmd, 0 ) );		return true; }
     if ( isCommand( "SetDialogIcon	  ( string )", cmd ) )	{ wizard->setDialogIcon ( stringArg( cmd, 0 ) );		return true; }
+    if ( isCommand( "SetDialogTitle	  ( string )", cmd ) )	{ wizard->setDialogTitle( stringArg( cmd, 0 ) );		return true; }
     if ( isCommand( "SetDialogHeading	  ( string )", cmd ) )	{ wizard->setDialogHeading( stringArg( cmd, 0 ) );		return true; }
 
     if ( isCommand( "SetCurrentStep	  ( string )", cmd ) )	{ wizard->setCurrentStep( stringArg( cmd, 0 ) );		return true; }
