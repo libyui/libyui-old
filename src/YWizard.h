@@ -167,6 +167,12 @@ public:
     virtual void setDialogIcon( const string & iconName ) = 0;
 
     /**
+     * Set the dialog title shown in the window manager's title bar.
+       An empty string clears the current title.
+     **/
+    virtual void setDialogTitle( const string & titleText ) = 0;
+
+    /**
      * Set the dialog heading.
      **/
     virtual void setDialogHeading( const string & headingText ) = 0;
