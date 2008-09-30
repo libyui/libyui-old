@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Sep 30 16:27:20 CEST 2008 - tgoettlicher@suse.de
+
+- Added example: Wizard-SetDesktopTitle.ycp
+
+-------------------------------------------------------------------
 Fri Sep 26 15:54:34 CEST 2008 - tgoettlicher@suse.de
 
 - Fixed bnc #418443: Yast modules windows have no title 
