@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Oct  8 12:02:15 CEST 2008 - sh@suse.de
+
+- Export "y2debug" via UI::GetDisplayInfo() 
+
+-------------------------------------------------------------------
 Tue Sep 30 16:27:20 CEST 2008 - tgoettlicher@suse.de
 
 - Added example: Wizard-SetDesktopTitle.ycp

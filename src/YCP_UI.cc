@@ -1181,44 +1181,6 @@ YCPString YCP_UI::Glyph( const YCPSymbol & glyphSym )
  * @description
  * Gets information about the current display and the UI's capabilities.
  *
- * Example in Qt:
- * <code>
- * GetDisplayInfo() -> $[
- *	"Colors":65536,
- *	"DefaultHeight":735,
- *	"DefaultWidth":1176,
- *	"Depth":16,
- *	"HasAnimationSupport":true,
- *	"HasFullUtf8Support":true,
- *	"HasIconSupport":false,
- *	"HasImageSupport":true,
- *	"Height":1050,
- *	"LeftHandedMouse":false,
- *	"RichTextSupportsTable":true,
- *	"TextMode":false,
- *	"Width":1680
- * ]
- * </code>
- *
- * Example in ncurses:
- * <code>
- * GetDisplayInfo() -> $[
- *	"Colors":8,
- *	"DefaultHeight":54,
- *	"DefaultWidth":151,
- *	"Depth":-1,
- *	"HasAnimationSupport":false,
- *	"HasFullUtf8Support":true,
- *	"HasIconSupport":false,
- *	"HasImageSupport":false,
- *	"Height":54,
- *	"LeftHandedMouse":false,
- *	"RichTextSupportsTable":false,
- *	"TextMode":true,
- *	"Width":151
- * ]
- * </code>
- *
  * Function output might differ according to the system where called.
  *
  * @return map <string any>
@@ -1242,6 +1204,7 @@ YCPMap YCP_UI::GetDisplayInfo()
     info_map->add( YCPString( YUICap_HasFullUtf8Support		), YCPBoolean( app->hasFullUtf8Support()    ) );
     info_map->add( YCPString( YUICap_RichTextSupportsTable	), YCPBoolean( app->richTextSupportsTable() ) );
     info_map->add( YCPString( YUICap_LeftHandedMouse		), YCPBoolean( app->leftHandedMouse()	) );
+    info_map->add( YCPString( "y2debug"				), YCPBoolean( YUILog::debugLoggingEnabled() ) );
 
     return info_map;
 }
