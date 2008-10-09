@@ -76,7 +76,7 @@ YShortcutManager::checkShortcuts( bool autoResolve )
         // that primarily use non-ASCII characters (Russian, Greek, Chinese,
         // Japanese, Korean).
 	
-	yuiMilestone() << "Not enough widgets with valid shorctcut characters - no check" << endl;
+	yuiMilestone() << "Not enough widgets with valid shortcut characters - no check" << endl;
 	yuiDebug() << "Found " << validCount << " widgets with valid shortcut characters" << endl;
 	return;
     }
