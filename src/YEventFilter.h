@@ -44,6 +44,13 @@ class YEventFilterPrivate;
  * YDialog::waitForEvent(). The order in which event filters are called is
  * undefined.
  *
+ * YEventFilter objects should be created with 'new' (on the heap). Since an
+ * YEventFilter registers itself with its dialog, the dialog will delete it in
+ * its destructor if it still exists after all child widgets are deleted.
+ *
+ * Thus, it is safe to store a pointer to an YEventFilter until the
+ * corresponding dialog is deleted. After that, the pointer becomes invalid.
+ *
  * See YHelpButtonHandler in YDialog.cc for an example.
  **/
 class YEventFilter

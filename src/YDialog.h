@@ -377,6 +377,11 @@ protected:
     YEvent * callEventFilters( YEvent * event );
 
     /**
+     * Delete all (remaining) event filters.
+     **/
+    void deleteEventFilters();
+
+    /**
      * Stack holding all currently existing dialogs.
      **/
     static std::stack<YDialog *> _dialogStack;

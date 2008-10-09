@@ -82,7 +82,7 @@ public:
 	{}
 
     virtual ~YHelpButtonHandler() {}
-    
+
     YEvent * filter( YEvent * event )
     {
 	if ( event && event->widget() )
@@ -135,17 +135,14 @@ YDialog::~YDialog()
     if ( priv->lastEvent )
 	deleteEvent( priv->lastEvent );
 
-    //
-    // Delete event handlers
-    //
-    
-    for ( YEventFilterList::iterator it = priv->eventFilterList.begin();
-	  it != priv->eventFilterList.end();
-	  ++it )
-    {
-	yuiDebug() << "Deleting event filter " << hex << (*it) << dec << endl;
-	delete *it;
-    }
+    // The base class also deletes all children, but this should be done before
+    // the event filters are deleted to prevent duplicate event filter deletion
+    // from (a) child widget destructors and (b) here.
+    deleteChildren();
+
+    // Delete the remaining event filters: Those installed by this dialog and
+    // those installed by some child widget that are not deleted yet.
+    deleteEventFilters();
 
     if ( ! _dialogStack.empty() && _dialogStack.top() == this )
     {
@@ -190,6 +187,21 @@ YDialog::isTopmostDialog() const
     }
 
     return _dialogStack.top() == this;
+}
+
+
+void
+YDialog::deleteEventFilters()
+{
+    while ( ! priv->eventFilterList.empty() )
+    {
+	YEventFilter * filter = priv->eventFilterList.back();
+	
+#if VERBOSE_DIALOGS
+	yuiDebug() << "Deleting event filter " << hex << filter << dec << endl;
+#endif
+	delete filter;
+    }
 }
 
 
@@ -568,13 +580,10 @@ YDialog::removeEventFilter( YEventFilter * eventFilter )
 {
     YUI_CHECK_PTR( eventFilter );
 
-    if ( ! beingDestroyed() ) // Optimization: No need to remove in dialog destructor
-    {
 #if VERBOSE_DIALOGS
-	yuiDebug() << "Removing event filter " << hex << eventFilter << dec << endl;
+    yuiDebug() << "Removing event filter " << hex << eventFilter << dec << endl;
 #endif
-	priv->eventFilterList.remove( eventFilter );
-    }
+    priv->eventFilterList.remove( eventFilter );
 }
 
 

@@ -1,7 +1,9 @@
 -------------------------------------------------------------------
-Thu Oct  9 14:56:12 CEST 2008 - sh@suse.de
+Thu Oct  9 16:58:09 CEST 2008 - sh@suse.de
 
+- Prevent segfault when deleting YEventFilters in YDialog dtor 
 - Prevent segfault in YEventFilter with default args 
+- V 2.17.13
 
 -------------------------------------------------------------------
 Fri Sep 26 15:41:16 CEST 2008 - tgoettlicher@suse.de
