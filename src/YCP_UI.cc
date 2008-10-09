@@ -1204,7 +1204,7 @@ YCPMap YCP_UI::GetDisplayInfo()
     info_map->add( YCPString( YUICap_HasFullUtf8Support		), YCPBoolean( app->hasFullUtf8Support()    ) );
     info_map->add( YCPString( YUICap_RichTextSupportsTable	), YCPBoolean( app->richTextSupportsTable() ) );
     info_map->add( YCPString( YUICap_LeftHandedMouse		), YCPBoolean( app->leftHandedMouse()	) );
-    info_map->add( YCPString( "y2debug"				), YCPBoolean( YUILog::debugLoggingEnabled() ) );
+    info_map->add( YCPString( YUICap_y2debug			), YCPBoolean( YUILog::debugLoggingEnabled() ) );
 
     return info_map;
 }
