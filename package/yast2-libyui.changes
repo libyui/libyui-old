@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Oct  9 14:56:12 CEST 2008 - sh@suse.de
+
+- Prevent segfault in YEventFilter with default args 
+
+-------------------------------------------------------------------
 Fri Sep 26 15:41:16 CEST 2008 - tgoettlicher@suse.de
 
 - Fixed bnc #418443: Yast modules windows have no title

@@ -43,7 +43,7 @@ YEventFilter::YEventFilter( YDialog * dialog )
     if ( ! dialog )
 	priv->dialog = YDialog::currentDialog(); // throw if no dialog
 
-    dialog->addEventFilter( this );
+    priv->dialog->addEventFilter( this );
 }
 
 
