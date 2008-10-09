@@ -298,6 +298,7 @@
 #define YUICap_HasWizardDialogSupport		"HasWizardDialogSupport"
 #define YUICap_RichTextSupportsTable		"RichTextSupportsTable"
 #define YUICap_LeftHandedMouse			"LeftHandedMouse"
+#define YUICap_y2debug				"y2debug"
 
 
 
