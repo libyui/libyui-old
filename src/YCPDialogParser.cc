@@ -3363,7 +3363,7 @@ YCPDialogParser::parseTimeField( YWidget * parent, YWidgetOpt & opt,
  * This is not intended for general use - use the Wizard:: module instead which will use this
  * widget properly.
  *
- * A wizard widget always has ID `wizard.<p>
+ * A wizard widget always has ID `wizard.
  * The ID of the single replace point within the wizard is always `contents.
  *
  * @note This is a "special" widget, i.e. not all UIs necessarily support it.  Check
