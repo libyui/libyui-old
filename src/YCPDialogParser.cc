@@ -2576,6 +2576,7 @@ YCPDialogParser::parseIntField( YWidget * parent, YWidgetOpt & opt,
  * @option	summaryMode start with the "installation summary" filter view
  * @option	repoMode start with the "repositories" filter view
  * @option	repoMgr enable "Repository Manager" menu item
+ * @option	confirmUnsupported user has to confirm all unsupported (non-L3) packages
  * @usage	`PackageSelector()
  *
  * @examples	PackageSelector.ycp
@@ -2621,13 +2622,14 @@ YCPDialogParser::parsePackageSelector( YWidget * parent, YWidgetOpt & opt,
 	{
 	    string sym = optList->value(o)->asSymbol()->symbol();
 
-	    if	    ( sym == YUIOpt_youMode     ) 	modeFlags |= YPkg_OnlineUpdateMode;
-	    else if ( sym == YUIOpt_updateMode  ) 	modeFlags |= YPkg_UpdateMode;
-	    else if ( sym == YUIOpt_searchMode  ) 	modeFlags |= YPkg_SearchMode;
-	    else if ( sym == YUIOpt_summaryMode )	modeFlags |= YPkg_SummaryMode;
-	    else if ( sym == YUIOpt_repoMode	)	modeFlags |= YPkg_RepoMode;
-	    else if ( sym == YUIOpt_testMode 	)	modeFlags |= YPkg_TestMode;
-	    else if ( sym == YUIOpt_repoMgr 	)	modeFlags |= YPkg_RepoMgr;
+	    if	    ( sym == YUIOpt_youMode     	) 	modeFlags |= YPkg_OnlineUpdateMode;
+	    else if ( sym == YUIOpt_updateMode  	) 	modeFlags |= YPkg_UpdateMode;
+	    else if ( sym == YUIOpt_searchMode  	) 	modeFlags |= YPkg_SearchMode;
+	    else if ( sym == YUIOpt_summaryMode 	)	modeFlags |= YPkg_SummaryMode;
+	    else if ( sym == YUIOpt_repoMode		)	modeFlags |= YPkg_RepoMode;
+	    else if ( sym == YUIOpt_testMode 		)	modeFlags |= YPkg_TestMode;
+	    else if ( sym == YUIOpt_repoMgr 		)	modeFlags |= YPkg_RepoMgr;
+	    else if ( sym == YUIOpt_confirmUnsupported	)	modeFlags |= YPkg_ConfirmUnsupported;
 	    else logUnknownOption( term, optList->value(o) );
 	}
 	else logUnknownOption( term, optList->value(o) );
