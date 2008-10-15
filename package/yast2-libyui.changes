@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Wed Oct 15 15:11:42 CEST 2008 - sh@suse.de
+
+- Added `opt(`confirmUnsupported) for PackageSelector widget
+  (bnc #435479)
+- V 2.17.14 
+
+-------------------------------------------------------------------
 Thu Oct  9 16:58:09 CEST 2008 - sh@suse.de
 
 - Prevent segfault when deleting YEventFilters in YDialog dtor 
