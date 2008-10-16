@@ -10,7 +10,8 @@ noinst_PROGRAMS	=			\
 	ComboBox1-editable		\
 	SelectionBox1			\
 	SelectionBox2			\
-	SelectionBox3-many-items
+	SelectionBox3-many-items	\
+	Table-many-items
 
 
 HelloWorld_SOURCES		= HelloWorld.cc
@@ -30,4 +31,7 @@ SelectionBox2_LDADD		= -L$(top_srcdir)/src -lyui
 
 SelectionBox3_many_items_SOURCES= SelectionBox3-many-items.cc
 SelectionBox3_many_items_LDADD	= -L$(top_srcdir)/src -lyui
+
+Table_many_items_SOURCES	= Table-many-items.cc
+Table_many_items_LDADD		= -L$(top_srcdir)/src -lyui
 
