@@ -208,7 +208,12 @@ int main( int argc, char **argv )
 		YItem * item = table->selectedItem();
 
 		if ( item )
-		    valueField->setValue( item->label() );
+		{
+		    YTableItem * tableItem = dynamic_cast<YTableItem *> (item);
+
+		    if ( tableItem )
+			valueField->setValue( tableItem->label(1) );
+		}
 		else
 		    valueField->setValue( "<none>" );
 	    }
