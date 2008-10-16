@@ -1,4 +1,4 @@
-// Comprehensive SelectionBox example:
+// Performance stress test for SelectionBox: Add many items
 //
 // Replacing items, notify and immediate modes.
 //
