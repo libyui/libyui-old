@@ -23,7 +23,7 @@
 #include "YAlignment.h"
 #include "YEvent.h"
 
-#define ITEM_COUNT	300
+#define ITEM_COUNT	1000
 
 YItemCollection pizzaItems()
 {
