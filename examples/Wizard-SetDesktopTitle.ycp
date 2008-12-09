@@ -18,6 +18,6 @@
 
     Wizard::SetDesktopTitle("lan");	// use "lan" as an example 
 
-    UI::UserInput ();
-    UI::CloseDialog ();
+    Wizard::UserInput ();
+    Wizard::CloseDialog ();
 }
