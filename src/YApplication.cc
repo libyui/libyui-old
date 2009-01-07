@@ -189,8 +189,8 @@ YApplication::language( bool stripEncoding ) const
 string
 YApplication::glyph( const string & sym )
 {
-    if	    ( sym == YUIGlyph_ArrowLeft		)	return ( "<-"  );
-    else if ( sym == YUIGlyph_ArrowRight	)	return ( "->"  );
+    if	    ( sym == YUIGlyph_ArrowLeft		)	return ( reverseLayout() ? "->" : "<-"  );
+    else if ( sym == YUIGlyph_ArrowRight	)	return ( reverseLayout() ? "<-" : "->"  );
     else if ( sym == YUIGlyph_ArrowUp		)	return ( "^"   );
     else if ( sym == YUIGlyph_ArrowDown		)	return ( "v"   );
     else if ( sym == YUIGlyph_CheckMark		)	return ( "x"   );

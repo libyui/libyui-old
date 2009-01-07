@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Jan  7 16:41:13 CET 2009 - sh@suse.de
+
+- Fixed bnc #461617: Glyph ArrowLeft / ArrowRight in Arabic
+- V 2.17.15 
+
+-------------------------------------------------------------------
 Wed Oct 15 15:11:42 CEST 2008 - sh@suse.de
 
 - Added `opt(`confirmUnsupported) for PackageSelector widget
