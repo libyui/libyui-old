@@ -85,7 +85,7 @@ YCPTreeItemParser::parseTreeItem( YCPTreeItem * parent, const YCPValue & rawItem
 	item = new YCPTreeItem( parent,
 			        label,		// The real label
 				label,		// Use the label as ID, too
-				false );	// Not initially selected
+				false );	// Not initially open
     }
     else				// `item(...)
     {
