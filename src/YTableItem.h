@@ -97,7 +97,7 @@ public:
      * added, but in that case, YTable::cellChanged() needs to be called to
      * update the table display accordingly.
      **/
-    void addCell( YTableCell * cell );
+    void addCell( YTableCell * cell_disown );
 
     /**
      * Create a new cell and add it (even if both 'label' and

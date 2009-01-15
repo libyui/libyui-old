@@ -94,7 +94,7 @@ public:
      *
      * Reimplemented from YSelectionWidget.
      **/
-    virtual void addItem( YItem * item );
+    virtual void addItem( YItem * item_disown );
 
     /**
      * Delete all items.

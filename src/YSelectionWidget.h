@@ -86,7 +86,7 @@ public:
      * Derived classes can overwrite this function, but they should call this
      * base class function in the new implementation.
      **/
-    virtual void addItem( YItem * item );
+    virtual void addItem( YItem * item_disown );
 
     /**
      * Overloaded for convenience: Add an item by string.

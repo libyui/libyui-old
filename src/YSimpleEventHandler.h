@@ -59,7 +59,7 @@ public:
      *
      * It is an error to pass 0 for 'event'.
      **/
-    void sendEvent( YEvent * event );
+    void sendEvent( YEvent * event_disown );
 
     /**
      * Returns 'true' if there is any event pending for the specified widget.

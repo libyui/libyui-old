@@ -378,7 +378,7 @@ public:
      * languages, though, that can't use C++ pointers (e.g., YCP) it makes
      * sense to have widget IDs to identify widgets.
      **/
-    void setId( YWidgetID * newId );
+    void setId( YWidgetID * newId_disown );
 
     /**
      * Enable or disable this widget, i.e. make it accept or reject user input.
