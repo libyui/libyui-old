@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Jan 16 11:32:21 CET 2009 - kkaempf@suse.de
+
+- Fix bnc#427372 once more, YWidgetFactory:createTable was missing
+
+-------------------------------------------------------------------
 Thu Jan 15 12:10:27 CET 2009 - sh@suse.de
 
 - Fixed bnc #427372: Specify class ownership for SWIG bindings 
