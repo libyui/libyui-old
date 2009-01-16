@@ -272,6 +272,9 @@ protected:
     static YWidget * parseTimezoneSelector ( YWidget *parent, YWidgetOpt & opt, const YCPTerm & term,
 					     const YCPList & optList, int argnr );
 
+    static YWidget * parseGraph ( YWidget *parent, YWidgetOpt & opt, const YCPTerm & term,
+				  const YCPList & optList, int argnr );
+
     static YWidget * parseBusyIndicator( YWidget *parent, YWidgetOpt & opt,
 				       const YCPTerm & term, const YCPList & optList, int argnr );
     /**

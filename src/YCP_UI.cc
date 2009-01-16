@@ -99,6 +99,7 @@ YCPValue YCP_UI::HasSpecialWidget( const YCPSymbol & widget )
     else if ( symbol == YUISpecialWidget_Date			)	hasWidget = fact->hasDateField();
     else if ( symbol == YUISpecialWidget_Time			)	hasWidget = fact->hasTimeField();
     else if ( symbol == YUISpecialWidget_TimezoneSelector	)	hasWidget = fact->hasTimezoneSelector();
+    else if ( symbol == YUISpecialWidget_Graph			)	hasWidget = fact->hasGraph();
     else
     {
 	yuiError() << "HasSpecialWidget(): Unknown special widget: " << symbol << endl;

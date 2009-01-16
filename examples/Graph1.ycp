@@ -1,0 +1,25 @@
+// Graph1.ycp
+{
+    if (!UI::HasSpecialWidget(`Graph))
+    {
+        UI::OpenDialog(
+	    `VBox(
+		`Label("Error: This UI doesn't support the Graph widget!"),
+		`PushButton(`opt(`default), "&OK")
+		)
+	    );
+        UI::UserInput();
+        UI::CloseDialog();
+	return;
+    }
+
+    UI::OpenDialog(
+	`VBox(
+	    `HSpacing(60),
+	    `Graph("graph.dot", "dot"),
+	    `PushButton(`opt(`default), "&OK")
+	    )
+	);
+    UI::UserInput();
+    UI::CloseDialog();
+}

@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Jan 14 16:25:57 CET 2009 - aschnell@suse.de
+
+- added graph widget
+- V 2.18.2
+
+-------------------------------------------------------------------
 Wed Oct 15 15:12:38 CEST 2008 - sh@suse.de
 
 - Added `opt(`confirmUnsupported) for PackageSelector widget

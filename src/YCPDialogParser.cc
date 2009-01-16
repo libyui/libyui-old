@@ -89,6 +89,7 @@
 #include "YTree.h"
 #include "YWizard.h"
 #include "YTimezoneSelector.h"
+#include "YGraph.h"
 #include "YBusyIndicator.h"
 
 using std::string;
@@ -312,6 +313,7 @@ YCPDialogParser::parseWidgetTreeTerm( YWidget *		p,
     else if ( s == YUISpecialWidget_TimeField		)	w = parseTimeField		( p, opt, term, ol, n );
     else if ( s == YUISpecialWidget_Wizard		)	w = parseWizard			( p, opt, term, ol, n );
     else if ( s == YUISpecialWidget_TimezoneSelector	)	w = parseTimezoneSelector	( p, opt, term, ol, n );
+    else if ( s == YUISpecialWidget_Graph		)	w = parseGraph			( p, opt, term, ol, n );
     else
     {
 	YUI_THROW( YUIException( string( "Unknown widget type " ) + s.c_str() ) );
@@ -3451,7 +3453,6 @@ YWidget *
 YCPDialogParser::parseTimezoneSelector( YWidget * parent, YWidgetOpt & opt,
                                         const YCPTerm & term, const YCPList & optList, int argnr )
 {
-
     if ( term->size() - argnr != 2
 	 || !term->value(argnr)->isString()
          || !term->value(argnr+1)->isMap() )
@@ -3471,6 +3472,43 @@ YCPDialogParser::parseTimezoneSelector( YWidget * parent, YWidgetOpt & opt,
 
     return selector;
 }
+
+
+/**
+ * @widgets	Graph
+ * @short	graph
+ * @class	YGraph
+ *
+ * @usage	if ( HasSpecialWidget( `Graph ) {...
+ * 		    `Graph( "graph.dot", "dot" )
+ *
+ * @description
+ * An graph
+ *
+ * @note This is a "special" widget, i.e. not all UIs necessarily support it.  Check
+ * for availability with <tt>HasSpecialWidget(`Graph)</tt> before using it.
+ **/
+YWidget *
+YCPDialogParser::parseGraph( YWidget * parent, YWidgetOpt & opt,
+			     const YCPTerm & term, const YCPList & optList, int argnr )
+{
+    if ( term->size() - argnr != 2
+	 || !term->value(argnr)->isString()
+	 || !term->value(argnr+1)->isString() )
+    {
+	THROW_BAD_ARGS( term );
+    }
+
+    rejectAllOptions( term, optList );
+
+    string filename = term->value( argnr )->asString()->value();
+    string layoutAlgorithm = term->value( argnr+1 )->asString()->value();
+
+    YGraph * graph = YUI::optionalWidgetFactory()->createGraph( parent, filename, layoutAlgorithm );
+
+    return graph;
+}
+
 
 /**
  * @widget	BusyIndicator
