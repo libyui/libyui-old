@@ -71,6 +71,7 @@ libyui_la_SOURCES =				\
 	YMultiProgressMeter.cc			\
 	YMultiSelectionBox.cc			\
 	YPackageSelector.cc			\
+	YGraph.cc				\
 	YPartitionSplitter.cc			\
 	YProgressBar.cc				\
 	YPushButton.cc				\
@@ -118,6 +119,7 @@ pkginclude_HEADERS =				\
 	YMacroPlayer.h				\
 	YMacroRecorder.h			\
 	YPackageSelectorPlugin.h		\
+	YGraphPlugin.h				\
 	YProperty.h				\
 	YShortcut.h				\
 	YShortcutManager.h			\
@@ -162,6 +164,7 @@ pkginclude_HEADERS =				\
 	YMultiProgressMeter.h			\
 	YMultiSelectionBox.h			\
 	YPackageSelector.h			\
+	YGraph.h				\
 	YPartitionSplitter.h			\
 	YProgressBar.h				\
 	YPushButton.h				\

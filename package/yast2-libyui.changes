@@ -9,6 +9,12 @@ Thu Jan 15 12:10:27 CET 2009 - sh@suse.de
 - Fixed bnc #427372: Specify class ownership for SWIG bindings 
 
 -------------------------------------------------------------------
+Wed Jan 14 10:57:17 CET 2009 - aschnell@suse.de
+
+- added graph widget
+- V 2.18.2
+
+-------------------------------------------------------------------
 Wed Jan  7 16:41:13 CET 2009 - sh@suse.de
 
 - Fixed bnc #461617: Glyph ArrowLeft / ArrowRight in Arabic

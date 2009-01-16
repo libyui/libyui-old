@@ -240,3 +240,25 @@ YOptionalWidgetFactory::createTimezoneSelector( YWidget * parent,
 {
     THROW_UNSUPPORTED( "YTimezoneSelector" );
 }
+
+
+bool
+YOptionalWidgetFactory::hasGraph()
+{
+    return false;
+}
+
+
+YGraph *
+YOptionalWidgetFactory::createGraph( YWidget * parent, const string & filename,
+				     const string & layoutAlgorithm )
+{ 
+    THROW_UNSUPPORTED( "YGraph" );
+}
+
+
+YGraph *
+YOptionalWidgetFactory::createGraph( YWidget * parent, graph_t * graph )
+{ 
+    THROW_UNSUPPORTED( "YGraph" );
+}

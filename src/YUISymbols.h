@@ -144,6 +144,7 @@
 #define YUISpecialWidget_TimeField		"TimeField"
 #define YUISpecialWidget_Wizard			"Wizard"
 #define YUISpecialWidget_TimezoneSelector	"TimezoneSelector"
+#define YUISpecialWidget_Graph			"Graph"
 
 
 // Widget properties
@@ -159,6 +160,7 @@
 #define YUIProperty_Enabled			"Enabled"
 #define YUIProperty_ExpectedSize		"ExpectedSize"
 #define YUIProperty_Filename			"Filename"
+#define YUIProperty_Layout			"Layout"
 #define YUIProperty_HelpText			"HelpText"
 #define YUIProperty_IconPath			"IconPath"
 #define YUIProperty_InputMaxLength		"InputMaxLength"

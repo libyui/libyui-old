@@ -25,6 +25,7 @@
 
 #include "YTypes.h"
 #include "YWizard.h"
+#include "YGraph.h"
 
 using std::string;
 using std::vector;
@@ -121,6 +122,11 @@ public:
     virtual YTimezoneSelector *         createTimezoneSelector( YWidget * parent,
 								const string & pixmap, 
 								const map<string,string> & timezones );
+
+    virtual bool			hasGraph();
+    virtual YGraph *			createGraph( YWidget * parent, const string & filename,
+						     const string & layoutAlgorithm );
+    virtual YGraph *			createGraph( YWidget * parent, graph_t * graph );
 
 protected:
 
