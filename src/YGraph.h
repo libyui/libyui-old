@@ -21,7 +21,7 @@
 
 #include "YWidget.h"
 
-extern "C" 
+extern "C"
 {
     struct Agraph_t;
     typedef struct Agraph_t graph_t;
@@ -124,6 +124,11 @@ public:
      * classes only need to implement renderGraph().
      **/
     virtual void setGraph( graph_t * graph );
+
+    /**
+     * Return name of activated node.
+     */
+    virtual string activatedNode() const;
 
 protected:
 

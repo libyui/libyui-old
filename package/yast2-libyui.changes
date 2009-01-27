@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Jan 27 15:33:29 CET 2009 - aschnell@suse.de
+
+- extended YGraph for simple user-interaction
+- V 2.18.3
+
+-------------------------------------------------------------------
 Fri Jan 16 11:32:21 CET 2009 - kkaempf@suse.de
 
 - Fix bnc#427372 once more, YWidgetFactory:createTable was missing

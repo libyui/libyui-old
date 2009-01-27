@@ -96,6 +96,13 @@ YGraph::setLayoutAlgorithm( const string & layoutAlgorithm )
 }
 
 
+string
+YGraph::activatedNode() const
+{
+    return "";
+}
+
+
 const YPropertySet &
 YGraph::propertySet()
 {
@@ -106,9 +113,11 @@ YGraph::propertySet()
 	/*
 	 * @property string  Filename	name of the file describing the graph
 	 * @property string  Layout	layout-algorithm used from the graph
+	 * @property string  Item	activated node (read-only)
 	 */
 	propSet.add( YProperty( YUIProperty_Filename,		YStringProperty	 ) );
 	propSet.add( YProperty( YUIProperty_Layout,		YStringProperty	 ) );
+	propSet.add( YProperty( YUIProperty_Item,		YStringProperty	 ) );
 	propSet.add( YWidget::propertySet() );
     }
 
@@ -139,6 +148,7 @@ YGraph::getProperty( const string & propertyName )
 
     if      ( propertyName == YUIProperty_Filename	)	return YPropertyValue( filename() );
     else if ( propertyName == YUIProperty_Layout	)	return YPropertyValue( layoutAlgorithm() );
+    else if ( propertyName == YUIProperty_Item		)	return YPropertyValue( activatedNode() );
     else
     {
 	return YWidget::getProperty( propertyName );
