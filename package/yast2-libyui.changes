@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon Feb  9 11:43:42 CET 2009 - sh@suse.de
+
+- Added virtual destructor for YTableCell for better
+  NCFileSelection support 
+- V 2.18.4
+
+-------------------------------------------------------------------
 Tue Jan 27 15:33:29 CET 2009 - aschnell@suse.de
 
 - extended YGraph for simple user-interaction
