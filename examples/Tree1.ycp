@@ -2,54 +2,55 @@
 {
     UI::OpenDialog(
 	       `VBox(
-		     `Tree(`id(`dest_dir),
-				   "Select destination directory:",
-				   [
-				    `item(`id(`root), "/" , true,
-					  [
-					   `item(`id(`etc), "etc",
-						 [
-						  `item("opt"),
-						  `item("SuSEconfig"),
-						  `item("X11")
-						 ]
-						 ),
-					   `item("usr", false, 
-						 [
-						  "bin",
-						  "lib",
-						  `item("share",
-						       [
-							"man",
-							"info",
-							"emacs"
-							]
-						       ),
-						  `item(`id(`usr_local),"local"),
-						  `item("X11R6",
-							[
-							 "bin",
-							 "lib",
-							 "share",
-							 "man",
-							 "etc"
-							 ]
-							)
-						  ]
-						 ),
-					   `item(`id(`opt), "opt", true,
-						 [
-						  "kde",
-						  "netscape",
-						  "Office51"
-						  ]
-						 ),
-					   `item("home"),
-					   "work",
-					   `item(`id(`other), "<other>")
-					   ]
-					  )
-				   ] ),
+		     `MinSize( 30, 10,
+			       `Tree(`id(`dest_dir),
+				     "Select destination directory:",
+				     [
+				      `item(`id(`root), "/" , false,
+					    [
+					     `item(`id(`etc), "etc",
+						   [
+						    `item("opt"),
+						    `item("SuSEconfig"),
+						    `item("X11")
+						    ]
+						   ),
+					     `item("usr", false, 
+						   [
+						    "bin",
+						    "lib",
+						    `item("share",
+							  [
+							   "man",
+							   "info",
+							   "emacs"
+							   ]
+							  ),
+						    `item(`id(`usr_local),"local"),
+						    `item("X11R6",
+							  [
+							   "bin",
+							   "lib",
+							   "share",
+							   "man",
+							   "etc"
+							   ]
+							  )
+						    ]
+						   ),
+					     `item(`id(`opt), "opt", false,
+						   [
+						    "kde",
+						    "netscape",
+						    "Office51"
+						    ]
+						   ),
+					     `item("home", false),
+					     `item(`id(`other), "<other>")
+					     ]
+					    )
+				      ] )
+			       ),
 		     `HBox(
 			   `PushButton(`id(`sel_opt),		`opt(`hstretch), "/&opt" ),
 			   `PushButton(`id(`sel_usr),		`opt(`hstretch), "/&usr" ),
