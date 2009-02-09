@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Feb  9 11:52:05 CET 2009 - sh@suse.de
+
+- Require latest libyui in spec file (API change)
+- V 2.18.3 
+
+-------------------------------------------------------------------
 Wed Jan 14 16:25:57 CET 2009 - aschnell@suse.de
 
 - added graph widget
