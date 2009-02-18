@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Feb 18 14:17:41 CET 2009 - coolo@suse.de
+
+- fix compilation with gcc 4.4
+- V 2.18.5
+
+-------------------------------------------------------------------
 Mon Feb  9 11:43:42 CET 2009 - sh@suse.de
 
 - Added virtual destructor for YTableCell for better
