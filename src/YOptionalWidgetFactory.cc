@@ -235,7 +235,7 @@ bool YOptionalWidgetFactory::hasTimezoneSelector()
 
 YTimezoneSelector *
 YOptionalWidgetFactory::createTimezoneSelector( YWidget * parent,
-                                                const string & map,
+                                                const string & _map,
                                                 const map<string, string>& zones)
 {
     THROW_UNSUPPORTED( "YTimezoneSelector" );
