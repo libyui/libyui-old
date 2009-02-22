@@ -21,6 +21,7 @@
 
 #include <sstream>
 #include <string.h>	// strerror()
+#include <stdio.h>
 
 #define YUILogComponent "ui"
 #include "YUILog.h"
