@@ -42,8 +42,6 @@ YContextMenu::YContextMenu( )
 			false )	// enforceSingleSelection
     , priv( new YContextMenuPrivate() )
 {
-     yuiWarning() << "YContextMenu";
-
     YUI_CHECK_NEW( priv );
 }
 
