@@ -54,6 +54,7 @@ libyui_la_SOURCES =				\
 	YCheckBox.cc				\
 	YCheckBoxFrame.cc			\
 	YComboBox.cc				\
+	YContextMenu.cc				\
 	YDateField.cc				\
 	YDialog.cc				\
 	YDownloadProgress.cc			\
@@ -147,6 +148,7 @@ pkginclude_HEADERS =				\
 	YCheckBoxFrame.h			\
 	YCheckBox.h				\
 	YComboBox.h				\
+	YContextMenu.h				\
 	YDateField.h				\
 	YDialog.h				\
 	YDownloadProgress.h			\

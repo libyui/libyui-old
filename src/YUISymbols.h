@@ -27,6 +27,7 @@
 #define YUIBuiltin_AskForSaveFileName		"AskForSaveFileName"
 #define YUIBuiltin_Beep				"Beep"
 #define YUIBuiltin_BusyCursor			"BusyCursor"
+#define YUIBuiltin_OpenContextMenu		"OpenContextMenu"
 #define YUIBuiltin_ChangeWidget			"ChangeWidget"
 #define YUIBuiltin_CloseDialog			"CloseDialog"
 #define YUIBuiltin_DumpWidgetTree		"DumpWidgetTree"
@@ -145,12 +146,14 @@
 #define YUISpecialWidget_Wizard			"Wizard"
 #define YUISpecialWidget_TimezoneSelector	"TimezoneSelector"
 #define YUISpecialWidget_Graph			"Graph"
+#define YUISpecialWidget_ContextMenu		"ContextMenu"
 
 
 // Widget properties
 
 #define YUIProperty_Alive			"Alive"
 #define YUIProperty_Cell			"Cell"
+#define YUIProperty_ContextMenu			"ContextMenu"
 #define YUIProperty_CurrentBranch		"CurrentBranch"
 #define YUIProperty_CurrentButton		"CurrentButton"
 #define YUIProperty_CurrentItem			"CurrentItem"
@@ -199,6 +202,7 @@
 #define YUIOpt_cancelButton			"cancelButton"
 #define YUIOpt_centered				"centered"
 #define YUIOpt_confirmUnsupported		"confirmUnsupported"
+#define YUIOpt_contextMenu			"contextMenu"
 #define YUIOpt_customButton			"customButton"
 #define YUIOpt_debugLayout			"debugLayout"
 #define YUIOpt_decorated			"decorated"

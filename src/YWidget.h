@@ -455,6 +455,18 @@ public:
     bool notify() const;
 
     /**
+     * Sets the ContextMenu property
+     **/
+    void setContextMenu( bool contextMenu = true );
+
+    /**
+     * Returns whether the widget will send an event when the user 
+     * clicks selects the context menu e.g. via right click.
+     **/
+    bool contextMenu() const;
+
+
+    /**
      * Returns 'true' if this widget should send key events, i.e. if it has
      * `opt(`keyEvent) set.
      **/

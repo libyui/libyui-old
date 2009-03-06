@@ -58,7 +58,8 @@ public:
 	UnknownReason = 0,
 	Activated,
 	SelectionChanged,
-	ValueChanged
+	ValueChanged,
+	ContextMenuActivated
     };
 
 

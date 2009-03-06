@@ -22,6 +22,8 @@
 #include <string>
 #include "YUI.h"
 #include "ImplPtr.h"
+#include "YMenuItem.h"
+
 
 using std::string;
 
@@ -215,6 +217,18 @@ public:
 				       const string & headline ) = 0;
 
     /**
+     * Open a context menu for a widget
+     *
+     * 'itemCollection' describes the menu structure
+     *
+     * Returns true on success (otherwise false).
+     *
+     * Derived classes are free to overwrite this.
+     **/
+    virtual bool openContextMenu( const YItemCollection & itemCollection );
+
+
+    /**
      * Set the current product name ("openSUSE", "SLES", ...).
      * This name will be expanded in help texts when the &product; entity is
      * used. 
@@ -362,6 +376,7 @@ public:
 private:
 
     ImplPtr<YApplicationPrivate> priv;
+
 };
 
 #define YApplication_h

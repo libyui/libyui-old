@@ -204,6 +204,14 @@ YApplication::glyph( const string & sym )
     }
 }
 
+bool
+YApplication::openContextMenu( const YItemCollection & itemCollection )
+{
+    YUI_THROW( YUIUnsupportedWidgetException( "ContextMenu" ) ); 
+    return false;
+}
+
+
 
 int
 YApplication::deviceUnits( YUIDimension dim, float layoutUnits )

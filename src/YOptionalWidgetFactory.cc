@@ -262,3 +262,12 @@ YOptionalWidgetFactory::createGraph( YWidget * parent, graph_t * graph )
 { 
     THROW_UNSUPPORTED( "YGraph" );
 }
+
+
+bool
+YOptionalWidgetFactory::hasContextMenu()
+{
+    return false;
+}
+
+

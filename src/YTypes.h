@@ -59,7 +59,7 @@ enum YDialogType
 {
     YMainDialog,
     YPopupDialog,
-    YWizardDialog
+    YWizardDialog,
 };
 
 

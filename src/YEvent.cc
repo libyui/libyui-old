@@ -90,6 +90,7 @@ YEvent::toString( EventReason reason )
 	case Activated:			return "Activated";
 	case SelectionChanged:		return "SelectionChanged";
 	case ValueChanged:		return "ValueChanged";
+	case ContextMenuActivated:	return "ContextMenuActivated";
 
 	// Intentionally omitting "default" branch so the compiler can
 	// detect unhandled enums
