@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Mar  6 10:32:32 CET 2009 - tgoettlicher@suse.de
+
+- Added context menus
+- V 2.18.4
+
+-------------------------------------------------------------------
 Mon Feb  9 11:52:05 CET 2009 - sh@suse.de
 
 - Require latest libyui in spec file (API change)

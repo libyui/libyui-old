@@ -43,6 +43,7 @@
 #include "YCPItemParser.h"
 #include "YCPMacroPlayer.h"
 #include "YCPMacroRecorder.h"
+#include "YCPMenuItemParser.h"
 #include "YCPPropertyHandler.h"
 #include "YCPValueWidgetID.h"
 #include "YCPWizardCommandParser.h"
@@ -100,6 +101,7 @@ YCPValue YCP_UI::HasSpecialWidget( const YCPSymbol & widget )
     else if ( symbol == YUISpecialWidget_Time			)	hasWidget = fact->hasTimeField();
     else if ( symbol == YUISpecialWidget_TimezoneSelector	)	hasWidget = fact->hasTimezoneSelector();
     else if ( symbol == YUISpecialWidget_Graph			)	hasWidget = fact->hasGraph();
+    else if ( symbol == YUISpecialWidget_ContextMenu		)	hasWidget = fact->hasContextMenu();
     else
     {
 	yuiError() << "HasSpecialWidget(): Unknown special widget: " << symbol << endl;
@@ -543,6 +545,7 @@ YCPBoolean YCP_UI::OpenDialog( const YCPTerm & opts, const YCPTerm & dialogTerm 
 		    else if ( optList->value(o)->asSymbol()->symbol() == YUIOpt_warncolor )	colorMode  = YDialogWarnColor;
 		    else if ( optList->value(o)->asSymbol()->symbol() == YUIOpt_decorated ) 	{} // obsolete
 		    else if ( optList->value(o)->asSymbol()->symbol() == YUIOpt_centered  )	{} // obsolete
+
 		    else
 			yuiWarning() << "Unknown option " << opts->value(o) << " for OpenDialog" << endl;
 		}
@@ -1583,6 +1586,36 @@ YCPValue YCP_UI::evaluateCallback( const YCPTerm & term, bool to_wfm )
     return YCPVoid();
 }
 
+
+
+/**
+* @description
+* Opens a context menu when the users right clickes a widget 
+* 
+* 
+* Example: <tt>OpenContextMenu( `menu(
+* [ `item(`id(`folder), "&Entry1"  ),
+* `menu( "&Submenu1",
+* [ `item(`id(`text),
+* "&Entry2" ),
+* `item(`id(`image),
+* "&Entry3"     ) ]) ]  )); </tt>
+*
+* @param itemList list of menu items
+* @return bool  Returns true when the context menu was shown, on error 
+                (e.g. not supported by ui) false is returned.
+                
+*/
+YCPBoolean YCP_UI::OpenContextMenu ( const YCPTerm & term )
+{
+    YCPList itemList = term->value(0)->asList();
+ 
+    if ( YUI::app()->openContextMenu( YCPMenuItemParser::parseMenuItemList( itemList ) ) )
+	return YCPBoolean( true );
+    else
+	return YCPBoolean( false );
+}
+ 
 
 
 

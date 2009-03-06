@@ -56,6 +56,7 @@ public:
     static YCPValue 	HasSpecialWidget		( const YCPSymbol & widget );
     static void 	MakeScreenShot			( const YCPString & filename );
     static void 	NormalCursor			();
+    static YCPBoolean 	OpenContextMenu			( const YCPTerm & term );
     static YCPBoolean 	OpenDialog			( const YCPTerm & opts, const YCPTerm & dialogTerm );
     static void 	PlayMacro			( const YCPString & filename );
     static void 	PostponeShortcutCheck		();

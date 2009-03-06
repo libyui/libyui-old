@@ -300,6 +300,9 @@ public:
     /* TYPEINFO: boolean () */
     YCPBoolean TextMode();
 
+    /* TYPEINFO: boolean (term) */	
+    YCPBoolean OpenContextMenu( const YCPTerm & term );
+
 
     
     YCPValue

@@ -215,6 +215,16 @@ YUINamespace::ChangeWidget( const YCPSymbol & widget_id, const YCPSymbol & prope
 	return YCPVoid();
 }
 
+YCPBoolean
+YUINamespace::OpenContextMenu( const YCPTerm & term )
+{
+    if ( YUIComponent::ui() )
+	return YCP_UI::OpenContextMenu( term );
+    else
+	return YCPBoolean( false );
+}
+
+
 
 YCPValue
 YUINamespace::ChangeWidget( const YCPTerm & widget_id, const YCPSymbol & property, const YCPValue & new_value )
