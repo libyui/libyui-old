@@ -126,7 +126,8 @@ public:
     virtual void setGraph( graph_t * graph );
 
     /**
-     * Return name of activated node.
+     * Return name of activated node. Activation can happen due to e.g. single
+     * right mouse click (context menu) or double left mouse click.
      */
     virtual string activatedNode() const;
 
@@ -146,6 +147,7 @@ protected:
 private:
 
     ImplPtr<YGraphPrivate> priv;
+
 };
 
 
