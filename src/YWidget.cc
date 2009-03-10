@@ -57,7 +57,7 @@ struct YWidgetPrivate
 	, beingDestroyed( false )
 	, enabled( true )
 	, notify( false )
-	, contextMenu( false )
+	, notifyContextMenu( false )
 	, sendKeyEvents( false )
 	, autoShortcut( false )
 	, toolkitWidgetRep( 0 )
@@ -79,7 +79,7 @@ struct YWidgetPrivate
     bool			beingDestroyed;
     bool			enabled;
     bool			notify;
-    bool			contextMenu;
+    bool			notifyContextMenu;
     bool 			sendKeyEvents;
     bool 			autoShortcut;
     void *			toolkitWidgetRep;
@@ -394,7 +394,7 @@ YWidget::propertySet()
 	/**
 	 * @property boolean Enabled 		enabled/disabled state of this widget
 	 * @property boolean Notify 		the current notify state (see also `opt( `notify ))
-	 * @property boolean ContextMenu	the current contextmenu state (see also `opt( `contextMenu ))
+	 * @property boolean ContextMenu	the current contextmenu state (see also `opt( `notifyContextMenu ))
 	 * @property string  WidgetClass 	the widget class of this widget (YLabel, YPushButton, ...)
 	 * @property string  DebugLabel		(possibly translated) text describing this widget for debugging
 	 * @property string  HelpText		help text
@@ -459,7 +459,7 @@ YWidget::getProperty( const std::string & propertyName )
 
     if ( propertyName == YUIProperty_Enabled 		) return YPropertyValue( isEnabled() 	);
     if ( propertyName == YUIProperty_Notify  		) return YPropertyValue( notify()   	);
-    if ( propertyName == YUIProperty_ContextMenu	) return YPropertyValue( contextMenu() 	);
+    if ( propertyName == YUIProperty_ContextMenu	) return YPropertyValue( notifyContextMenu() );
     if ( propertyName == YUIProperty_WidgetClass	) return YPropertyValue( widgetClass() 	);
     if ( propertyName == YUIProperty_HelpText		) return YPropertyValue( helpText() 	);
     if ( propertyName == YUIProperty_DebugLabel		) return YPropertyValue( debugLabel()	);
@@ -515,9 +515,9 @@ void YWidget::setNotify( bool notify )
 }
 
 
-void YWidget::setContextMenu( bool contextMenu )
+void YWidget::setNotifyContextMenu( bool notifyContextMenu )
 {
-    priv->contextMenu = contextMenu;
+    priv->notifyContextMenu = notifyContextMenu;
 }
 
 
@@ -527,9 +527,9 @@ bool YWidget::notify() const
 }
 
 
-bool YWidget::contextMenu() const
+bool YWidget::notifyContextMenu() const
 {
-    return priv->contextMenu;
+    return priv->notifyContextMenu;
 }
 
 

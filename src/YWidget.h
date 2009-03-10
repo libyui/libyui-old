@@ -455,15 +455,15 @@ public:
     bool notify() const;
 
     /**
-     * Sets the ContextMenu property
+     * Sets the notifyContextMenu property
      **/
-    void setContextMenu( bool contextMenu = true );
+    void setNotifyContextMenu( bool notifyContextMenu = true );
 
     /**
      * Returns whether the widget will send an event when the user 
      * clicks selects the context menu e.g. via right click.
      **/
-    bool contextMenu() const;
+    bool notifyContextMenu() const;
 
 
     /**
