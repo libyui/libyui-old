@@ -144,9 +144,9 @@ YCPDialogParser::parseWidgetTreeTerm( YWidget *		p,
      *				( if `opt( `notify ) is set for that SelectionBox ).
      *				Only widgets with this option set are affected.
      *
-     * @option	contextMenu	Make this widget to send an event when the context menu is requested
+     * @option	notifyContextMenu Make this widget to send an event when the context menu is requested
      *				e.g. when the user clicks right mouse button
-     *				( if `opt( `contextMenu ) is set for that SelectionBox ).
+     *				( if `opt( `notifyContextMenu ) is set for that SelectionBox ).
      *				Only widgets with this option set are affected.
      *
      * @option	disabled	Set this widget insensitive, i.e. disable any user interaction.
@@ -196,7 +196,7 @@ YCPDialogParser::parseWidgetTreeTerm( YWidget *		p,
 	{
 	    string sym = rawopt->value(o)->asSymbol()->symbol();
 	    if	    ( sym == YUIOpt_notify	) opt.notifyMode.setValue( true );
-	    else if ( sym == YUIOpt_contextMenu	) opt.contextMenu.setValue( true );
+	    else if ( sym == YUIOpt_notifyContextMenu) opt.notifyContextMenu.setValue( true );
 	    else if ( sym == YUIOpt_disabled	) opt.isDisabled.setValue( true );
 	    else if ( sym == YUIOpt_hstretch	) opt.isHStretchable.setValue( true );
 	    else if ( sym == YUIOpt_vstretch	) opt.isVStretchable.setValue( true );
@@ -351,7 +351,7 @@ YCPDialogParser::parseWidgetTreeTerm( YWidget *		p,
 
 	if ( opt.isDisabled.value() 	)	w->setDisabled();
 	if ( opt.notifyMode.value() 	)	w->setNotify( true );
-	if ( opt.contextMenu.value() 	)	w->setContextMenu( true );
+	if ( opt.notifyContextMenu.value())	w->setNotifyContextMenu( true );
 	if ( opt.keyEvents.value()	)	w->setSendKeyEvents( true );
 	if ( opt.autoShortcut.value()	)	w->setAutoShortcut( true );
 	if ( opt.isHStretchable.value()	)	w->setStretchable( YD_HORIZ, true );

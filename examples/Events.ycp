@@ -42,7 +42,7 @@ y2milestone ("formatEvent(%1)", event);
 	"chef de cuisine <a href=\"mailto:giuseppe@mafia.it\">Giuseppe</a>.</p>";
 
 
-    term delivery	= `Tree(`id(`delivery_service ), `opt(`notify, `contextMenu), "&Delivery Service",
+    term delivery	= `Tree(`id(`delivery_service ), `opt(`notify, `notifyContextMenu), "&Delivery Service",
 				[
 				 `item(`id(`europe), "Europe", true,
 				       [
@@ -81,7 +81,7 @@ y2milestone ("formatEvent(%1)", event);
 				 ]
 				);
 			   
-    term pizza		= `SelectionBox(`id(`pizza), `opt(`notify,`immediate, `contextMenu), "Pi&zza",
+    term pizza		= `SelectionBox(`id(`pizza), `opt(`notify,`immediate, `notifyContextMenu), "Pi&zza",
 					[
 					 `item(`id(`napoli 	), "Napoli"      	),
 					 `item(`id(`funghi 	), "Funghi"		),
@@ -92,7 +92,7 @@ y2milestone ("formatEvent(%1)", event);
 					 ]
 					);
 
-    term toppings	= `MultiSelectionBox(`id(`toppings), `opt(`notify, `contextMenu), "To&ppings",
+    term toppings	= `MultiSelectionBox(`id(`toppings), `opt(`notify, `notifyContextMenu), "To&ppings",
 					     [
 					      `item( `id(`cheese   	), "Cheese"	, true  ),
 					      `item( `id(`tomatoes 	), "Tomatoes"	, true  ),
@@ -103,7 +103,7 @@ y2milestone ("formatEvent(%1)", event);
 					      ]
 					     );
 
-    term drink		= `Table(`id(`drink), `opt(`notify, `immediate, `multiSelection, `contextMenu), `header( "Drink", "Contents" ),
+    term drink		= `Table(`id(`drink), `opt(`notify, `immediate, `multiSelection, `notifyContextMenu), `header( "Drink", "Contents" ),
 				 [
 				  `item(`id(`coke),	"Coca Cola",		"Caffeine" 	),
 				  `item(`id(`sprite),	"Sprite",		""		),

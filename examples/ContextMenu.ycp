@@ -33,7 +33,7 @@
 
     UI::OpenDialog(
 	`VBox( 
-	    `SelectionBox( `id(`sport), `opt(`notify,`immediate, `contextMenu),
+	    `SelectionBox( `id(`sport), `opt(`notify,`immediate, `notifyContextMenu),
 		"Select your sport:",
 		[
 		    "Swimming",

@@ -120,7 +120,7 @@ struct YWidgetOpt
 
     YBoolOpt isDisabled;
     YBoolOpt notifyMode;
-    YBoolOpt contextMenu;
+    YBoolOpt notifyContextMenu;
     YBoolOpt isHStretchable;
     YBoolOpt isVStretchable;
     YBoolOpt autoShortcut;
