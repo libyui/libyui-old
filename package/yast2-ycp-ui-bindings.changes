@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Wed Mar 11 16:08:18 CET 2009 - kmachalkova@suse.cz
+
+- Do not abort in DumpWidgetTree function if there is no dialog 
+  on the stack (log warning instead)
+- V 2.18.5  
+
+-------------------------------------------------------------------
 Fri Mar  6 10:32:32 CET 2009 - tgoettlicher@suse.de
 
 - Added context menus

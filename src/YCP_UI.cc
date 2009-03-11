@@ -1063,7 +1063,15 @@ void YCP_UI::MakeScreenShot( const YCPString & filename )
 
 void YCP_UI::DumpWidgetTree()
 {
-    YDialog::currentDialog()->dumpDialogWidgetTree();
+    // Do not abort() the whole thing just because some sloppy
+    // YCP client does not know how to close dialogs (#483942)
+    // After all, this is a debugging function
+    YDialog *currentDialog = YDialog::currentDialog(false);
+
+    if (currentDialog) 
+        currentDialog->dumpDialogWidgetTree();
+    else
+	yuiWarning() << "No dialog exists :( Nothing to dump." << endl;
 }
 
 /**
