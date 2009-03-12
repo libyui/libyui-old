@@ -16,14 +16,15 @@
     UI::OpenDialog(
 	`VBox(
 	    `HSpacing(60),
-	    `Graph(`id(`graph), "graph.dot", "dot"),
+	    `Graph(`id(`graph), "graph1.gv", "dot"),
 	    `PushButton(`id(`close), `opt(`default), "&Close")
 	    )
 	);
 
     while (true)
     {
-	any widget = UI::UserInput();
+	symbol widget = (symbol) UI::UserInput();
+
 	if (widget == `close || widget == `cancel)
 	    break;
     }

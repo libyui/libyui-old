@@ -1,0 +1,14 @@
+digraph G
+{
+    node [style="filled", fontname="Helvetica"];
+
+    A;
+    B;
+    C;
+    D;
+
+    A -> C;
+    A -> D;
+    B -> C;
+    B -> D;
+}

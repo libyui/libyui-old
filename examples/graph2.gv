@@ -1,5 +1,7 @@
 digraph G
 {
+    node [style="filled", fillcolor="yellow", fontname="Helvetica"];
+
     A;
     B;
     C;
