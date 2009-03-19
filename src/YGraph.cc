@@ -117,7 +117,7 @@ YGraph::propertySet()
 	 */
 	propSet.add( YProperty( YUIProperty_Filename,		YStringProperty	 ) );
 	propSet.add( YProperty( YUIProperty_Layout,		YStringProperty	 ) );
-	propSet.add( YProperty( YUIProperty_Item,		YStringProperty	 ) );
+	propSet.add( YProperty( YUIProperty_Item,		YStringProperty, true ) );
 	propSet.add( YWidget::propertySet() );
     }
 
