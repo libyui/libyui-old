@@ -1,0 +1,50 @@
+// Example for a RichText widget
+{
+    import "String";
+
+    UI::OpenDialog( `opt(`defaultsize),
+		    `VBox(
+              `Label( "HTML text or text in <pre>...</pre> tags" ),
+			  `RichText (`id(`text), "" ),
+              `Label( "Plain text (`opt(`plainText))" ),
+			  `RichText (`id(`plaintext), `opt(`plainText), "" ),
+			  `HBox(
+				`PushButton( `id(`load), "&Load File" ),
+				`PushButton( `id(`close), "&Close" )
+				)
+			  )
+		    );
+    any button = nil;
+    string name = "";
+    string text = "";
+    
+    repeat
+    {
+	button = UI::UserInput();
+
+	if ( button == `load )
+	{
+	    name =  UI::AskForExistingFile( ".", "*.txt *orig", "Select text file" );
+	    string text = (string) SCR::Read(.target.string, name );
+
+	    if ( text == nil)
+	    {
+		text = "";
+	    }
+	    
+	    if ( regexpmatch( text, "</.*>" ) )
+		// HTML text (or RichText)
+      		UI::ChangeWidget( `id(`text), `Value,
+				  text );
+	    else
+		// plain text
+		UI::ChangeWidget( `id(`text), `Value,
+				  "<pre>" +  String::EscapeTags(text) + "</pre>");
+
+	    UI::ChangeWidget( `id(`plaintext), `Value, text);
+	}
+    }
+    until ( button == `close );
+    
+    UI::CloseDialog();
+}

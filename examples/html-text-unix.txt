@@ -1,0 +1,16 @@
+<h3>RichText example</h3>
+<p>This is a <i>RichText</i> widget.</p>
+<p>It's very much like <i>HTML</i>, but not quite as powerful.</p>
+<p><b>bold</b> and <i>italic</i> you can rely on.</p>
+<p>
+<font color=blue>colored    </font>
+<font color=red>    text    </font>
+<font color=green>  might   </font>
+<font color=magenta>    or  </font>
+</p>
+<p>The product name is automatically replaced by the UI.
+Use the special macro <b>&amp;product;</b> for that.
+</p>
+<p>
+The current product name is <b>&product;</b>.
+</p>
