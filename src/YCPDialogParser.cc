@@ -1428,7 +1428,7 @@ YCPDialogParser::parsePushButton( YWidget * parent, YWidgetOpt & opt,
 	    if	    ( sym == YUIOpt_default    	)	isDefaultButton = true;
 	    else if ( sym == YUIOpt_okButton	)	role = YOKButton;
 	    else if ( sym == YUIOpt_cancelButton)	role = YCancelButton;
-	    else if ( sym == YUIOpt_cancelButton)	role = YApplyButton;
+	    else if ( sym == YUIOpt_applyButton)	role = YApplyButton;
 	    else if ( sym == YUIOpt_helpButton 	)	role = YHelpButton;
 	    else if ( sym == YUIOpt_customButton)	opt.customButton.setValue( true );
 	    else logUnknownOption( term, optList->value(o) );
