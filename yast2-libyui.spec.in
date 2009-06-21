@@ -20,7 +20,12 @@ Summary:	YaST2 - User Interface Engine
 Provides:	%{_libdir}/libyui.so.3.0.0
 
 %description
--
+This is the YaST2 user interface engine that provides the abstraction
+from graphical user interfaces (Qt, Gtk) and text based user interfaces
+(ncurses).
+
+This can be used independently of YaST2 for generic (C++) applications.
+This package has very few dependencies.
 
 @HEADER-DEVEL@
 Summary:	YaST2 - User Interface Engine
@@ -30,8 +35,12 @@ Requires:	libstdc++-devel
 Requires:	boost-devel
 
 %description devel
--
+This is the development package for the YaST2 user interface engine
+that provides the abstraction from graphical user interfaces (Qt, Gtk)
+and text based user interfaces (ncurses).
 
+This can be used independently of YaST2 for generic (C++) applications.
+This package has very few dependencies.
 
 @PREP@
 
