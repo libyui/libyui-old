@@ -16,14 +16,14 @@ Conflicts:	yast2-core < 2.16.38
 # libyui ImplPtr
 BuildRequires:	boost-devel
 
-Summary:	-
+Summary:	YaST2 - User Interface Engine
 Provides:	%{_libdir}/libyui.so.3.0.0
 
 %description
 -
 
 @HEADER-DEVEL@
-Summary:	-
+Summary:	YaST2 - User Interface Engine
 
 Requires:	glibc-devel
 Requires:	libstdc++-devel
