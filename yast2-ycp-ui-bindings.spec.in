@@ -30,7 +30,9 @@ Summary:	YaST2 - YCP Bindings for the YaST2 User Interface Engine
 Provides:	@plugindir@/libpy2UI.so.2.0.0
 
 %description
--
+This package makes the generic YaST2 user interface engine available
+for YCP applications (YCP is the scripting language in which most YaST2
+modules are written).
 
 @HEADER-DEVEL@
 Summary:	YaST2 - YCP Bindings for the YaST2 User Interface Engine
@@ -44,8 +46,9 @@ Requires:	libxcrypt-devel
 Requires:	yast2-devtools
 
 %description devel
--
-
+This is the development package that makes the generic YaST2 user
+interface engine available for YCP applications (YCP is the scripting
+language in which most YaST2 modules are written).
 
 @PREP@
 
