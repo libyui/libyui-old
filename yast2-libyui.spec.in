@@ -2,6 +2,7 @@
 
 
 @HEADER@
+Group:	System/YaST
 License: GPL v2 or later
 Source1:	yast2-libyui-rpmlintrc
 
