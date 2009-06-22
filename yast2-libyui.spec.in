@@ -2,6 +2,7 @@
 
 
 @HEADER@
+License: GPL v2 or later
 Source1:	yast2-libyui-rpmlintrc
 
 BuildRequires:	gcc-c++
