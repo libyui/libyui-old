@@ -2,6 +2,7 @@
 
 
 @HEADER@
+License: GPL v2 or later
 
 
 BuildRequires:	gcc-c++
