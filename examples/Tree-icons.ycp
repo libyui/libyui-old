@@ -6,7 +6,7 @@
                      `Tree(`id(`mod),
 			   "Modules",
 			   [
-			    `item(`id( "country" ), `icon( "yast-yast-language.png" ), "Localization", true,
+			    `item(`id( "country" ), `icon( "yast-language.png" ), "Localization", true,
 				  [
 				   `item(`id( "keyboard"   ), `icon( "yast-keyboard.png"   ), "Keyboard"   ),
 				   `item(`id( "timezone"   ), `icon( "yast-timezone.png"   ), "Time zone"  )
