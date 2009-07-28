@@ -10,19 +10,24 @@
 
 YIconLoader::YIconLoader()
 {
-    addIconPath(FALLBACK_ICON_PATH);
+    addIconSearchPath(FALLBACK_ICON_PATH);
 }
 
 YIconLoader::~YIconLoader()
 {
 }
 
-void YIconLoader::addBasePath( string path)
+void YIconLoader::setIconBasePath( string path)
 {
-    iconBasePath = path;
+    _iconBasePath = path;
 }
 
-void YIconLoader::addIconPath( string path )
+string YIconLoader::iconBasePath() const
+{
+    return _iconBasePath;
+}
+
+void YIconLoader::addIconSearchPath( string path )
 {
     icon_dirs.push_front( path );
 }
@@ -38,12 +43,17 @@ string YIconLoader::findIcon( string name )
     if (name[0] == '/')
         return name;
 
+    string fullPath;
+
     // Look in global search path
-    string fullPath = iconBasePath + name;
-    if ( fileExists ( fullPath ) )
+    if ( !_iconBasePath.empty () )
     {
-	yuiMilestone() << "Found " << name << " in global search path" << endl;
-	return fullPath;
+	fullPath = _iconBasePath + name;
+        if ( fileExists ( fullPath ) )
+	{
+	    yuiMilestone() << "Found " << name << " in global search path" << endl;
+	    return fullPath;
+	}
     }
 
     // Now search the fallback dirs

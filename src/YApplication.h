@@ -23,6 +23,7 @@
 #include "YUI.h"
 #include "ImplPtr.h"
 #include "YMenuItem.h"
+#include  "YIconLoader.h"
 
 
 using std::string;
@@ -75,6 +76,8 @@ public:
      * Set the icon base path.
      **/
     virtual void setIconBasePath( const string & newIconBasePath );
+
+    YIconLoader *iconLoader();
 
     /**
      * Return the default function key number for a widget with the specified

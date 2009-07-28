@@ -42,10 +42,10 @@ struct YApplicationPrivate
 	, reverseLayout( false )
 	{}
     
-    string		iconBasePath;
     string		productName;
     bool		reverseLayout;
     YFunctionKeyMap	defaultFunctionKey;
+    YIconLoader*	iconLoader;
 };
 
 
@@ -53,6 +53,7 @@ YApplication::YApplication()
     : priv( new YApplicationPrivate() )
 {
     YUI_CHECK_NEW( priv );
+    priv->iconLoader = new YIconLoader();
 }
 
 
@@ -77,14 +78,20 @@ YApplication::findWidget( YWidgetID * id, bool doThrow ) const
 string
 YApplication::iconBasePath() const
 {
-    return priv->iconBasePath;
+    return priv->iconLoader->iconBasePath();
 }
 
 
 void
 YApplication::setIconBasePath( const string & newIconBasePath )
 {
-    priv->iconBasePath = newIconBasePath;
+    priv->iconLoader->setIconBasePath ( newIconBasePath );
+}
+
+YIconLoader *
+YApplication::iconLoader() 
+{
+   return priv->iconLoader;
 }
 
 void

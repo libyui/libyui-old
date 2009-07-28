@@ -16,12 +16,17 @@ public:
 
     string findIcon( string name );
 
-    void addBasePath( string path );
-    void addIconPath( string path );
+    //FIXME: these two are here for compatibility reasons
+    // deprecate them in due course and treat base path just 
+    // like any other search path
+    void setIconBasePath( string path );
+    string iconBasePath() const;
+
+    void addIconSearchPath( string path );
 
 private:
 
-    string iconBasePath;
+    string _iconBasePath;
     list <string> icon_dirs;
 
     bool fileExists( string fname );
