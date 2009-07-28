@@ -1,12 +1,30 @@
+// PushButton with icons (relative path)
 {
-    // Build a dialog with one icon button.
-    // Wait until that button is clicked,
-    // then close the dialog and terminate.
+	UI::OpenDialog (
+		`VBox (
+			`Heading( "YaST2 Mini Control Center" ),
+			`IconButton (`id ("keyboard "), "yast-keyboard.png", "Keyboard"),
+			`IconButton (`id ("mouse"    ), "yast-mouse.png",    "Mouse"),
+			`IconButton (`id ("timezone" ), "yast-timezone.png", "Time zone"),
+			`IconButton (`id ("lan"      ), "yast-lan.png",      "Network"),
+			`IconButton (`id ("sw_single"), "yast-software.png", "Software")
+			)
+		);
 
-    UI::OpenDialog(
-		   `IconButton( "icons/22x22/apps/yast-users.png", "&OK" )
-		   );
+	any ret = nil;
 
-    UI::UserInput();
-    UI::CloseDialog();
+	do
+	{
+	    ret =  UI::UserInput();
+
+	    if (ret != `cancel)
+	    {
+	        UI::OpenDialog (`Label ("Running " +  (string) ret + "..."));
+	        sleep (4000);
+	        UI::CloseDialog();
+	    }
+
+	} while ( ret != `cancel);
+
+	UI::CloseDialog();
 }
