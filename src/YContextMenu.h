@@ -10,36 +10,36 @@
 |							 (C) SuSE GmbH |
 \----------------------------------------------------------------------/
 
-  File:		YMenuButton.h
+  File:		YContextMenu.h
 
   Author:	Stefan Hundhammer <sh@suse.de>
 
 /-*/
 
-#ifndef YMenuButton_h
-#define YMenuButton_h
+#ifndef YContextMenu_h
+#define YContextMenu_h
 
 #include "YSelectionWidget.h"
 #include "YMenuItem.h"
 
 class YMenuItem;
-class YMenuButtonPrivate;
+class YContextMenuPrivate;
 
 
 /**
- * MenuButton: Similar to PushButton, but with several actions: Upon clicking
- * on a MenuButton (or activating it with the keyboard), a pop-up menu opens
+ * ContextMenu: Similar to PushButton, but with several actions: Upon clicking
+ * on a ContextMenu (or activating it with the keyboard), a pop-up menu opens
  * where the user can activate an action. Menu items in that pop-up menu can
  * have submenus (that will pop up in separate pop-up menus).
  *
  * Internally, this widget is more similar to the Tree widget. The difference
  * is that it does not keep a "selected" status, but triggers an action right
- * away, just like a PushButton. Like PushButton, MenuButton sends an event
+ * away, just like a PushButton. Like PushButton, ContextMenu sends an event
  * right away when the user selects an item (clicks on a menu item or activates
  * it with the keyboard). Items that have a submenu never send an event, they
  * simply open their submenu when activated.
  **/
-class YMenuButton : public YSelectionWidget
+class YContextMenu : public YSelectionWidget
 {
 protected:
     /**
@@ -48,25 +48,25 @@ protected:
      * 'label' is the user-visible text on the button (not above it like all
      * other SelectionWidgets).
      **/
-    YMenuButton( YWidget * parent, const string & label );
+    YContextMenu();
 
 public:
     /**
      * Destructor.
      **/
-    virtual ~YMenuButton();
+    virtual ~YContextMenu();
      
     /**
      * Returns a descriptive name of this widget class for logging,
      * debugging etc.
      **/
-    virtual const char * widgetClass() const { return "YMenuButton"; }
+    virtual const char * widgetClass() const { return "YContextMenu"; }
 
     /**
      * Rebuild the displayed menu tree from the internally stored YMenuItems.
      *
      * The application should call this (once) after all items have been added
-     * with addItem(). YMenuButton::addItems() calls this automatically.
+     * with addItem(). YContextMenu::addItems() calls this automatically.
      *
      * Derived classes are required to implement this.
      **/
@@ -89,7 +89,7 @@ public:
      * delete it in its destructor.
      *
      * This reimplementation will an index to the item that is unique for all
-     * items in this MenuButton. That index can be used later with
+     * items in this ContextMenu. That index can be used later with
      * findMenuItem() to find the item by that index.
      *
      * Reimplemented from YSelectionWidget.
@@ -108,7 +108,7 @@ public:
      * there are duplicates in the respective menu level.
      *
      * This has to be called after all items are added, but before rebuildMenuTree()
-     * (see above). YMenuButton::addItems() calls this automatically.
+     * (see above). YContextMenu::addItems() calls this automatically.
      **/
     void resolveShortcutConflicts();
 
@@ -172,8 +172,8 @@ private:
     void assignUniqueIndex( YItemIterator begin, YItemIterator end );
 
 
-    ImplPtr<YMenuButtonPrivate> priv;
+    ImplPtr<YContextMenuPrivate> priv;
 };
 
 
-#endif // YMenuButton_h
+#endif // YContextMenu_h

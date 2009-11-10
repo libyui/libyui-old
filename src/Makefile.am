@@ -29,6 +29,7 @@ libyui_la_SOURCES =				\
 	YEventFilter.cc				\
 	YEnvVar.cc				\
 	YItem.cc				\
+	YIconLoader.cc				\
 	YMacro.cc				\
 	YProperty.cc				\
 	YShortcut.cc				\
@@ -54,6 +55,7 @@ libyui_la_SOURCES =				\
 	YCheckBox.cc				\
 	YCheckBoxFrame.cc			\
 	YComboBox.cc				\
+	YContextMenu.cc				\
 	YDateField.cc				\
 	YDialog.cc				\
 	YDownloadProgress.cc			\
@@ -71,6 +73,7 @@ libyui_la_SOURCES =				\
 	YMultiProgressMeter.cc			\
 	YMultiSelectionBox.cc			\
 	YPackageSelector.cc			\
+	YGraph.cc				\
 	YPartitionSplitter.cc			\
 	YProgressBar.cc				\
 	YPushButton.cc				\
@@ -113,11 +116,13 @@ pkginclude_HEADERS =				\
 	YEventFilter.h				\
 	YEnvVar.h				\
 	YItem.h					\
+	YIconLoader.h				\
 	YMenuItem.h				\
 	YMacro.h				\
 	YMacroPlayer.h				\
 	YMacroRecorder.h			\
 	YPackageSelectorPlugin.h		\
+	YGraphPlugin.h				\
 	YProperty.h				\
 	YShortcut.h				\
 	YShortcutManager.h			\
@@ -145,6 +150,7 @@ pkginclude_HEADERS =				\
 	YCheckBoxFrame.h			\
 	YCheckBox.h				\
 	YComboBox.h				\
+	YContextMenu.h				\
 	YDateField.h				\
 	YDialog.h				\
 	YDownloadProgress.h			\
@@ -162,6 +168,7 @@ pkginclude_HEADERS =				\
 	YMultiProgressMeter.h			\
 	YMultiSelectionBox.h			\
 	YPackageSelector.h			\
+	YGraph.h				\
 	YPartitionSplitter.h			\
 	YProgressBar.h				\
 	YPushButton.h				\

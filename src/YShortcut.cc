@@ -138,7 +138,7 @@ YShortcut::setShortcut( char newShortcut )
 
     if ( newShortcut != YShortcut::None )
     {
-	char findme[] = { tolower( newShortcut ), toupper( newShortcut ), 0 };
+	char findme[] = { (char)tolower( newShortcut ), (char)toupper( newShortcut ), 0 };
 	string::size_type pos = str.find_first_of( findme );
 
 	if ( pos == string::npos )
@@ -317,7 +317,7 @@ YItemShortcut::setShortcut( char newShortcut )
 
     if ( newShortcut != YShortcut::None )
     {
-	char findme[] = { tolower( newShortcut ), toupper( newShortcut ), 0 };
+	char findme[] = { (char)tolower( newShortcut ), (char)toupper( newShortcut ), 0 };
 	string::size_type pos = str.find_first_of( findme );
 
 	if ( pos == string::npos )

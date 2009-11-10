@@ -27,6 +27,7 @@
 #define YUIBuiltin_AskForSaveFileName		"AskForSaveFileName"
 #define YUIBuiltin_Beep				"Beep"
 #define YUIBuiltin_BusyCursor			"BusyCursor"
+#define YUIBuiltin_OpenContextMenu		"OpenContextMenu"
 #define YUIBuiltin_ChangeWidget			"ChangeWidget"
 #define YUIBuiltin_CloseDialog			"CloseDialog"
 #define YUIBuiltin_DumpWidgetTree		"DumpWidgetTree"
@@ -144,12 +145,15 @@
 #define YUISpecialWidget_TimeField		"TimeField"
 #define YUISpecialWidget_Wizard			"Wizard"
 #define YUISpecialWidget_TimezoneSelector	"TimezoneSelector"
+#define YUISpecialWidget_Graph			"Graph"
+#define YUISpecialWidget_ContextMenu		"ContextMenu"
 
 
 // Widget properties
 
 #define YUIProperty_Alive			"Alive"
 #define YUIProperty_Cell			"Cell"
+#define YUIProperty_ContextMenu			"ContextMenu"
 #define YUIProperty_CurrentBranch		"CurrentBranch"
 #define YUIProperty_CurrentButton		"CurrentButton"
 #define YUIProperty_CurrentItem			"CurrentItem"
@@ -159,6 +163,7 @@
 #define YUIProperty_Enabled			"Enabled"
 #define YUIProperty_ExpectedSize		"ExpectedSize"
 #define YUIProperty_Filename			"Filename"
+#define YUIProperty_Layout			"Layout"
 #define YUIProperty_HelpText			"HelpText"
 #define YUIProperty_IconPath			"IconPath"
 #define YUIProperty_InputMaxLength		"InputMaxLength"
@@ -217,6 +222,7 @@
 #define YUIOpt_multiSelection			"multiSelection"
 #define YUIOpt_noAutoEnable			"noAutoEnable"
 #define YUIOpt_notify				"notify"
+#define YUIOpt_notifyContextMenu		"notifyContextMenu"
 #define YUIOpt_okButton				"okButton"
 #define YUIOpt_outputField			"outputField"
 #define YUIOpt_plainText			"plainText"

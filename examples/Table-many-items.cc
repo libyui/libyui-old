@@ -22,6 +22,7 @@
 #include "YPushButton.h"
 #include "YAlignment.h"
 #include "YEvent.h"
+#include <stdio.h>
 
 #define ITEM_COUNT	1000
 

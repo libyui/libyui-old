@@ -235,8 +235,39 @@ bool YOptionalWidgetFactory::hasTimezoneSelector()
 
 YTimezoneSelector *
 YOptionalWidgetFactory::createTimezoneSelector( YWidget * parent,
-                                                const string & map,
+                                                const string & _map,
                                                 const map<string, string>& zones)
 {
     THROW_UNSUPPORTED( "YTimezoneSelector" );
 }
+
+
+bool
+YOptionalWidgetFactory::hasGraph()
+{
+    return false;
+}
+
+
+YGraph *
+YOptionalWidgetFactory::createGraph( YWidget * parent, const string & filename,
+				     const string & layoutAlgorithm )
+{ 
+    THROW_UNSUPPORTED( "YGraph" );
+}
+
+
+YGraph *
+YOptionalWidgetFactory::createGraph( YWidget * parent, graph_t * graph )
+{ 
+    THROW_UNSUPPORTED( "YGraph" );
+}
+
+
+bool
+YOptionalWidgetFactory::hasContextMenu()
+{
+    return false;
+}
+
+

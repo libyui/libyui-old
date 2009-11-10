@@ -86,7 +86,7 @@ public:
      * Derived classes can overwrite this function, but they should call this
      * base class function in the new implementation.
      **/
-    virtual void addItem( YItem * item );
+    virtual void addItem( YItem * item_disown );
 
     /**
      * Overloaded for convenience: Add an item by string.
@@ -217,14 +217,20 @@ public:
 
     /**
      * Return the full path + file name for the specified icon name.
-     *
+     * If iconBasePath is non-empty, it is prepended to the icon name.
+     * Otherwise, YUI::yApp()->iconLoader() and its icon search paths  
+     * is used find the icon in one of them 
+     * 
      * If 'iconName' is empty, this will return an empty string.
      **/
     string iconFullPath( const string & iconName ) const;
     
     /**
      * Return the full path + file name for the icon of the specified item.
-     *
+     * If iconBasePath is non-empty, it is prepended to the item's iconName.
+     * Otherwise, YUI::yApp()->iconLoader() and its icon search paths  
+     * is used find the icon in one of them 
+     * 
      * If 'item' does not have an iconName specified, this will return an empty
      * string.
      **/

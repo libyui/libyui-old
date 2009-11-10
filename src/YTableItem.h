@@ -97,7 +97,7 @@ public:
      * added, but in that case, YTable::cellChanged() needs to be called to
      * update the table display accordingly.
      **/
-    void addCell( YTableCell * cell );
+    void addCell( YTableCell * cell_disown );
 
     /**
      * Create a new cell and add it (even if both 'label' and
@@ -234,8 +234,13 @@ public:
 	, _column ( column )
         {}
 
-    // No virtual destructor. This saves a vtable for this class since there
-    // are no other virtual methods either.
+    /**
+     * Destructor. Not strictly needed inside this class, but useful for
+     * derived classes. Since this is the only virtual method of this class,
+     * the cost of this is a vtable for this class and a pointer to the vtable
+     * in each instance.
+     **/
+    virtual ~YTableCell() {}
 
     /**
      * Return this cells's label. This is what the user sees in a dialog, so

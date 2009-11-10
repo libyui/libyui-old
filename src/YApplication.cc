@@ -42,10 +42,10 @@ struct YApplicationPrivate
 	, reverseLayout( false )
 	{}
     
-    string		iconBasePath;
     string		productName;
     bool		reverseLayout;
     YFunctionKeyMap	defaultFunctionKey;
+    YIconLoader*	iconLoader;
 };
 
 
@@ -53,6 +53,7 @@ YApplication::YApplication()
     : priv( new YApplicationPrivate() )
 {
     YUI_CHECK_NEW( priv );
+    priv->iconLoader = new YIconLoader();
 }
 
 
@@ -77,14 +78,20 @@ YApplication::findWidget( YWidgetID * id, bool doThrow ) const
 string
 YApplication::iconBasePath() const
 {
-    return priv->iconBasePath;
+    return priv->iconLoader->iconBasePath();
 }
 
 
 void
 YApplication::setIconBasePath( const string & newIconBasePath )
 {
-    priv->iconBasePath = newIconBasePath;
+    priv->iconLoader->setIconBasePath ( newIconBasePath );
+}
+
+YIconLoader *
+YApplication::iconLoader() 
+{
+   return priv->iconLoader;
 }
 
 void
@@ -203,6 +210,14 @@ YApplication::glyph( const string & sym )
 	return "";
     }
 }
+
+bool
+YApplication::openContextMenu( const YItemCollection & itemCollection )
+{
+    YUI_THROW( YUIUnsupportedWidgetException( "ContextMenu" ) ); 
+    return false;
+}
+
 
 
 int

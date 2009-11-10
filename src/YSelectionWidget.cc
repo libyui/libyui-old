@@ -126,7 +126,7 @@ string YSelectionWidget::iconFullPath( const string & iconName ) const
 	if ( priv->iconBasePath.empty() ||
 	     priv->iconBasePath[0] != '/' )
 	{
-	    fullPath = YUI::yApp()->iconBasePath();
+	    return YUI::yApp()->iconLoader()->findIcon( iconName );
 	}
 
 	fullPath += priv->iconBasePath + "/" + iconName;

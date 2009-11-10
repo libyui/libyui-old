@@ -378,7 +378,7 @@ public:
      * languages, though, that can't use C++ pointers (e.g., YCP) it makes
      * sense to have widget IDs to identify widgets.
      **/
-    void setId( YWidgetID * newId );
+    void setId( YWidgetID * newId_disown );
 
     /**
      * Enable or disable this widget, i.e. make it accept or reject user input.
@@ -453,6 +453,18 @@ public:
      * return.
      **/
     bool notify() const;
+
+    /**
+     * Sets the notifyContextMenu property
+     **/
+    void setNotifyContextMenu( bool notifyContextMenu = true );
+
+    /**
+     * Returns whether the widget will send an event when the user 
+     * clicks selects the context menu e.g. via right click.
+     **/
+    bool notifyContextMenu() const;
+
 
     /**
      * Returns 'true' if this widget should send key events, i.e. if it has

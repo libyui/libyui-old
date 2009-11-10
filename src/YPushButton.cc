@@ -129,39 +129,63 @@ void YPushButton::setHelpButton( bool helpButton )
     priv->role = YHelpButton;
 }
 
-
+/* setRole can try to guess function key, but only if there isn't a selected
+   function key already
+*/
 void YPushButton::setRole( YButtonRole role )
 {
-    priv->role = role;
+	priv->role = role;
+	int old_function_key = functionKey();
+	if (!hasFunctionKey()) // otherwise function key was already determined
+	{
+		switch (priv->role)
+		{
+			case YOKButton:     YWidget::setFunctionKey( 10 );  break;
+			case YCancelButton: YWidget::setFunctionKey( 9 );   break;
+			case YApplyButton:  YWidget::setFunctionKey( 10 );  break;
+			case YHelpButton:   YWidget::setFunctionKey( 1 );   break;
+			default: break;
+		}
+		if ( functionKey() != old_function_key )
+		{
+			yuiMilestone() << "Guessing function key F" << functionKey()
+			       << " for " << this
+			       << " from button role " << priv->role
+			       << endl;
+		}
+	}
 }
-
 
 YButtonRole YPushButton::role() const
 {
     return priv->role;
 }
 
-
+/* setFunctionKey (besides setting the function key) should try to guess button
+   role, but only if button role is not yet determined.
+*/
 void YPushButton::setFunctionKey( int fkey_no )
 {
     YWidget::setFunctionKey( fkey_no );
     YButtonRole oldRole = priv->role;
     
-    switch ( functionKey() )	// base class method might have changed it
-    {
-	case 10:	priv->role = YOKButton;		break;
-	case 9:		priv->role = YCancelButton;	break;
-	case 1:		priv->role = YHelpButton;	break;
-	default:	break;
-    }
-
-    if ( priv->role != oldRole )
-    {
-	yuiMilestone() << "Guessing button role " << priv->role
-		       << " for " << this
-		       << " from function key F" << functionKey() 
-		       << endl;
-    }
+	if (priv->role == YCustomButton) // otherwise role was already determined
+	{
+		switch ( functionKey() )	// base class method might have changed it
+		{
+			case 10:    priv->role = YOKButton;     break;
+			case 9:     priv->role = YCancelButton; break;
+			case 1:     priv->role = YHelpButton;   break;
+			default:    break;
+		}
+		if ( priv->role != oldRole )
+		{
+			yuiMilestone() << "Guessing button role " << priv->role
+			       << " for " << this
+			       << " from function key F" << functionKey() 
+			       << endl;
+		}
+	}
 }
 
 
