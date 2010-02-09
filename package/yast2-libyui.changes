@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Feb  9 17:32:06 CET 2010 - tgoettlicher@suse.de
+
+- added license headers
+
+-------------------------------------------------------------------
 Tue Jul 28 17:22:58 CEST 2009 - kmachalkova@suse.cz
 
 - Search for icons in several possible directories (using 
