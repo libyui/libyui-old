@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Feb 10 17:25:22 CET 2010 - tgoettlicher@suse.de
+
+- added license headers
+
+-------------------------------------------------------------------
 Wed Mar 11 16:08:18 CET 2009 - kmachalkova@suse.cz
 
 - Do not abort in DumpWidgetTree function if there is no dialog 
