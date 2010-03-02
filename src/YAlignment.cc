@@ -254,8 +254,8 @@ void YAlignment::setSize( int newWidth, int newHeight )
     YBothDim<int> newChildSize;
     YBothDim<int> newChildPos;
 
-
-    for ( YUIDimension dim = YD_HORIZ; dim <= YD_VERT; dim = (YUIDimension) (dim+1) )
+    YUIDimension dim = YD_HORIZ;
+    while ( true ) // only toggle
     {
 	int childPreferredSize = firstChild()->preferredSize( dim );
 	int preferredSize      = childPreferredSize + totalMargin[ dim ];
@@ -317,6 +317,12 @@ void YAlignment::setSize( int newWidth, int newHeight )
 	}
 
 	newChildPos[ dim ] += offset[ dim ];
+
+	// we need to get out of this loop after the second run
+	if (dim == YD_HORIZ)
+	  dim = YD_VERT;
+	else
+	  break;
     }
 
     firstChild()->setSize( newChildSize.hor, newChildSize.vert );
