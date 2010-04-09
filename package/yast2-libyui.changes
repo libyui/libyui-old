@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Apr  9 17:29:14 CEST 2010 - tgoettlicher@suse.de
+
+- Fixed endless loop in layout algorithm  (bnc #558699)
+- V 2.19.1
+
+-------------------------------------------------------------------
 Tue Mar  2 12:38:32 UTC 2010 - coolo@novell.com
 
 - Fixing undefined behaviour that triggers a crash with

@@ -623,6 +623,8 @@ YLayoutBox::calcPrimaryGeometry( int		newSize,
 
 	// Distribute loss
 
+	int oldTooSmall = tooSmall;
+	int oldLoserCount = loserCount;
 	while ( tooSmall > 0 && loserCount > 0 )
 	{
 	    if ( debugLayout() )
@@ -675,6 +677,16 @@ YLayoutBox::calcPrimaryGeometry( int		newSize,
 				 << endl;
 		}
 	    }
+
+	    if ( oldTooSmall == tooSmall && 
+                 oldLoserCount == loserCount )
+	    {
+		yuiWarning() << "Preventing endless loop while layout space distribution. Break." << endl;
+		break;
+	    }
+	
+	    oldTooSmall = tooSmall;
+	    oldLoserCount = loserCount;
 	}
 
 
