@@ -117,7 +117,7 @@ public:
      * automatically add themselves to their parent, so applications will
      * normally not have to call this function.
      **/
-    virtual void addChild( YItem * child );
+    virtual void addChild( YItem * item_disown );
 
     /**
      * Delete all child items.
