@@ -1,0 +1,175 @@
+FLUENDO MP3 PLUG-IN FOR GSTREAMER COMMERCIAL LICENSE 
+AGREEMENT BY FLUENDO, S.A. (“FLUENDO”)
+
+IMPORTANT – READ CAREFULLY
+THE FOLLOWING LICENSE AGREEMENT AS AMENDED FROM TIME TO TIME AND
+AVAILABLE WITH THIS PACKAGE (THE “LICENSE AGREEMENT”)GOVERNS THE 
+DOWNLOADING, INSTALLATION AND/OR USE OF FLUENDO’S PROPRIETARY SOFTWARE 
+“MP3 PLUG-IN FOR GSTREAMER”, INCLUDING ANY COMPONENTS, 
+COPIES, UPDATES,ENHANCEMENTS, UPGRADES OR SUBSEQUENT VERSIONS THEREOF 
+THAT MAY BE RELEASED BY FLUENDO (COLLECTIVELY, THE “SOFTWARE”) AND ANY 
+ACCOMPANYING MANUALS, HELP FILES AND DOCUMENTATION (THE "DOCUMENTATION").  
+PLEASE READ THE TERMS AND CONDITIONS OF THIS LICENSE AGREEMENT AS BY
+DOWNLOADING, USING AND/OR INSTALLING THE SOFTWARE YOU (THE “LICENSEE”)
+CONSENT AND AGREE TO BE BOUND BY ALL OF THE TERMS AND CONDITIONS OF THIS
+LICENSE AGREEMENT. YOU MAY DOWNLOAD, INSTALL AND/OR USE THE SOFTWARE
+SUBJECT TO THOSE TERMS AND CONDITIONS AND TO ANY APPLICABLE LAW, BEING
+SOLELY LIABLE FOR ANY BREACH THEREOF. IF YOU DO NOT AGREE TO THIS
+LICENSE AGREEMENT, FLUENDO DOES NOT GRANT ANY LICENSE TO YOU FOR THE
+SOFTWARE AND YOU MAY NOT DOWNLOAD, INSTALL OR USE THE SOFTWARE.
+
+GRANT OF LICENSE AND RESTRICTIONS
+1. Subject to the Licensee’s acceptance and continued compliance with
+   this License Agreement, Fluendo hereby grants the   
+   Licensee a non-exclusive, non-transferable limited license to install,   
+   use or otherwise benefit from the functionality of the Software in the   
+   manner and for the purposes described in the Documentation, on a per   
+   computer basis.   
+
+2. Except as expressly authorized by Fluendo in writing, it is forbidden to: 
+   (i)   decompile, reverse engineer, disassemble or decode the Software
+         or any copy, adaptation, transcription or merged portion of the
+         Software; 
+   (ii)  attempt to ascertain the source code of the Software or any of its
+         components by any means, nor modify, adapt, translate or create
+         derivative works based on the Software; 
+   (iii) tamper or interfere with the functionality, delivery or operation
+         of the Software while using or installing it; 
+   (iv)  sell, resell, rent, lease, distribute, transfer, assign, sublicense
+         or otherwise deal with the Software, its components, the Documentation
+         or any of the rights granted under this License Agreement; 
+   (v)   duplicate, reproduce or copy (except for reasonable backup purposes)
+         the Software or the Documentation; or 
+   (vi)  export or re-export the Software, directly or indirectly, into any
+         country prohibited by law.
+
+3. It is prohibited to modify, remove, suppress, or in any other way make
+   inconspicuous the copyright, digital fingerprints, watermarks,
+   identification labels, legal notices contained within the Software or
+   other technical protection devices or data identifying Fluendo’s or its
+   licensors rights in the Software, its files or its components.
+
+4. No right is granted herein to any third party to use the Software, to
+   the Licensee to use the Software for any third party, or to the Licensee
+   to utilize the Software for any purpose whatsoever not described herein. 
+
+OWNERSHIP
+5. Save for the right to use the Software and the Documentation
+   expressly provided for in this License Agreement, the Licensee agrees
+   and acknowledges that all title to and rights in the Software, its
+   components, structure, databases, source code or design, and in the
+   Documentation, including without limitation all copyright trademarks,
+   trade secrets, patents, and all other intellectual or industrial
+   property rights and other confidential or proprietary information
+   contained therein remain the property of Fluendo or its licensors.
+
+LIABILITY
+6. TO THE MAXIMUM EXTENT PERMITTED BY LAW, AND PROVIDED THAT LIABILITY   
+   SHALL NOT BE EXCLUDED OR LIMITED IN RESPECT OF MALICIOUS INTENT OR GROSS   
+   NEGLIGENCE, FLUENDO HEREBY EXCLUDES ALL LIABILITY IN RESPECT OF:   
+
+a) ANY LOSS, DAMAGES, CLAIMS OR COSTS WHATSOEVER INCLUDING ANY
+   CONSEQUENTIAL, INDIRECT OR INCIDENTAL DAMAGES, ANY LOST PROFITS OR LOST
+   SAVINGS, ANY DAMAGES RESULTING FROM BUSINESS INTERRUPTION, OR CLAIMS BY
+   A THIRD PARTY, EVEN IF A FLUENDO REPRESENTATIVE HAS BEEN ADVISED OF THE
+   POSSIBILITY OF SUCH LOSS, DAMAGES, CLAIMS OR COSTS.
+b) DAMAGES, CLAIMS OR LIABILITIES ARISING OUT OF ANY OF THE FOLLOWING:
+   (i)   THE CONTENT (INCLUDING WITHOUT LIMITATION ITS NATURE OR ANY
+         INTELLECTUAL PROPERTY RIGHTS THEREIN) AND/OR ANY OTHER DATA, IMAGES,
+         VIDEOS OR SOUNDS WHATSOEVER THAT THE LICENSEE MAY ACCESS OR TRANSMIT
+         USING THE SOFTWARE;
+   (ii)  LIABILITY TO ANY EMPLOYER, PRINCIPAL, CLIENT, LESSOR OR PROVIDER OF
+         COMPUTER EQUIPMENT OR FACILITIES, ARISING OUT OF THE INSTALLATION OF OR
+         USE OF THE SOFTWARE;
+   (iii) ANY CHARGES WHICH THE LICENSEE MAY INCUR TO ANY TELECOMMUNICATIONS
+         SERVICE OR NETWORK.
+
+7. FLUENDO EXPRESSLY EXCLUDES ALL LIABILITY IN CONNECTION WITH ANY THIRD
+   PARTY APPLICATIONS OR THIRD PARTY COMPONENTS THAT MAY BE INCLUDED WITHIN
+   THE SOFTWARE, OR YOUR USE THEREOF.
+
+8. TO THE MAXIMUM EXTENT PERMITTED BY LAW, FLUENDO’S AGGREGATE LIABILITY
+   AND THAT OF ITS AFFILIATES AND SUPPLIERS UNDER OR IN CONNECTION WITH
+   THIS LICENSE AGREEMENT WILL BE LIMITED IN ANY CASE TO THE AMOUNT PAID
+   FOR THE SOFTWARE, IF ANY, OR, IF HIGHER, TO THE MINIMUM AMOUNT
+   STIPULATED BY A COMPULSORY LAW.
+
+INDEMNITY
+9. BY DOWNLOADING, INSTALLING, USING OR UNINSTALLING THE SOFTWARE, THE
+   LICENSEE HEREBY AGREES TO, AT ITS OWN EXPENSE, INDEMNIFY, DEFEND AND
+   HOLD HARMLESS FLUENDO, ITS PARENTS, SUBSIDIARIES AND AFFILIATES, ITS
+   BUSINESS PARTNERS, AND ITS AND THEIR RESPECTIVE DIRECTORS, OFFICERS,
+   EMPLOYEES AND AGENTS FROM AND AGAINST ANY AND ALL LOSSES, DAMAGES,
+   INJURIES, CAUSES OF ACTION, CLAIMS, DEMANDS AND EXPENSES, INCLUDING
+   LEGAL FEES AND EXPENSES, OF WHATEVER KIND OR NATURE ARISING OUT OF,
+   RELATING TO OR RESULTING FROM ANY CLAIM ARISING FROM OR RELATING TO (I)
+   ANY BREACH BY THE LICENSEE OF THIS LICENSE AGREEMENT; OR (II) THE
+   LICENSEE’S DOWNLOAD, INSTALLATION, USE OR UNINSTALLATION OF THE
+   SOFTWARE.
+
+TERMINATION
+10. This grant of license begins upon acceptance by the Licensee, either
+    expressly or through use or possession of the Software, and shall
+    continue until terminated as provided in this License Agreement.
+
+11. The Licensee may terminate this License Agreement at any time by
+    uninstalling the Software and destroying all copies of the Software.
+    Upon any termination, the Licensee agrees to uninstall the Software and
+    return or destroy all copies of the Software, the Documentation, and all
+    other associated materials.
+
+12. The Licensee’s failure to comply with any of the terms and conditions
+    of this License Agreement terminates the Licensee’s right to use the 
+    Software and/or the Documentation, and the Licensee will not receive a 
+    refund.
+
+CONFIDENTIALITY
+13. The Software, the Documentation, the terms of this License Agreement
+    and any other related material or data disclosed by Fluendo to the
+    Licensee will be confidential (“Confidential Information”) and the
+    Licensee will not disclose such Confidential Information in any form to
+    any third party without the express written consent of Fluendo, except
+    to the extent that such information: (a) is previously known to the
+    Licensee; (b) becomes publicly known or independently generated through
+    no breach of this obligation; (c) is acquired by the Licensee from a
+    third party which was not under an obligation to Fluendo not to disclose
+    such information; or (d) is required to be disclosed by a court or
+    regulatory or legislative order or provision.
+
+14. The Licensee will keep the Software and the Documentation in
+    confidence in perpetuity, will take all measures necessary to protect
+    and maintain the confidential and proprietary character of the Software
+    and the Documentation, and will indemnify Fluendo from all losses and
+    damages resulting from unauthorized or improper disclosure,
+    dissemination or use of the Software or the Documentation, as a result,
+    in whole or in part, of the Licensee’s action or inaction.
+
+GENERAL
+15. This License Agreement contains the entire agreement between the
+    Licensee and Fluendo with respect to the subject matter hereof and
+    supersedes all prior agreements, negotiations, representations of any
+    kind and proposals, written and oral, relating to its subject matter.
+
+16. If any provision of this License Agreement is declared by a court of
+    competent jurisdiction to be invalid, illegal or unenforceable, such
+    provision shall be severed from this License Agreement and the other
+    provisions shall remain in full force and effect.
+    
+17. All notices given by either party to the other pursuant to this
+    License Agreement shall be in writing and delivered at its principal
+    place of business by fax or delivery service (in either case with
+    acknowledgement of receipt).
+
+18. The waiver or failure of Fluendo to exercise in any respect any
+    rights provided for in this License Agreement shall not be deemed a
+    waiver of any actual or further right under this License Agreement.
+
+19. This License Agreement shall be governed by and construed in
+    accordance with the laws of Spain, and the parties submit to the
+    exclusive jurisdiction of the Courts and Tribunals of Barcelona in
+    connection with all matters arising under this License Agreement.
+
+FLUENDO, S.A.
+C.I.F.: A-64001217
+World Trade Center Edificio Norte, 2 pl.
+08039 Barcelona
