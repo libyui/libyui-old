@@ -155,7 +155,7 @@ YDialogSpy::YDialogSpy( YDialog * targetDialog )
     
     YAlignment * minSize = fac->createMinSize( vbox, TREE_WIDTH, TREE_HEIGHT );
     minSize->setWeight( YD_VERT, TREE_VWEIGHT );
-    priv->widgetTree     = fac->createTree( minSize, "Widget &Tree" );
+    priv->widgetTree     = fac->createTree( minSize, "Widget &Tree", false );
     priv->widgetTree->setNotify( true );
 
     YWidgetTreeItem * rootItem = new YWidgetTreeItem( targetDialog, true );

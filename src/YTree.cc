@@ -57,11 +57,9 @@ struct YTreePrivate
 };
 
 
-
-
-YTree::YTree( YWidget * parent, const string & label )
+YTree::YTree( YWidget * parent, const string & label, bool multiSelection )
     : YSelectionWidget( parent, label,
-			true ) // enforceSingleSelection
+			! multiSelection ) 
     , priv( new YTreePrivate() )
 {
     YUI_CHECK_NEW( priv );
@@ -117,6 +115,7 @@ YTree::propertySet()
 	 * @property map<ItemID>	OpenItems 	Map of IDs of all open items - can only be queried, not set
 	 * @property string  		Label		Caption above the tree
 	 * @property string  		IconPath	Base path for icons
+         * @property bool               MultiSelection  Flag: User can select multiple items (read-only)
 	 */
 	propSet.add( YProperty( YUIProperty_Value,		YOtherProperty	 ) );
 	propSet.add( YProperty( YUIProperty_CurrentItem,	YOtherProperty	 ) );
@@ -125,7 +124,10 @@ YTree::propertySet()
 	propSet.add( YProperty( YUIProperty_OpenItems,		YOtherProperty	 ) );
 	propSet.add( YProperty( YUIProperty_Label,		YStringProperty	 ) );
 	propSet.add( YProperty( YUIProperty_IconPath,		YStringProperty	 ) );
+        propSet.add( YProperty( YUIProperty_SelectedItems,      YOtherProperty   ) );
+        propSet.add( YProperty( YUIProperty_MultiSelection,     YBoolProperty,   true ) ); // read-only
 	propSet.add( YWidget::propertySet() );
+
     }
 
     return propSet;
@@ -142,8 +144,10 @@ YTree::setProperty( const string & propertyName, const YPropertyValue & val )
     else if ( propertyName == YUIProperty_CurrentBranch )	return false; // Needs special handling
     else if ( propertyName == YUIProperty_Items 	)	return false; // Needs special handling
     else if ( propertyName == YUIProperty_OpenItems 	)	return false; // Needs special handling
+    else if ( propertyName == YUIProperty_SelectedItems )       return false; // Needs special handling
     else if ( propertyName == YUIProperty_Label		)	setLabel( val.stringVal() );
     else if ( propertyName == YUIProperty_IconPath 	)	setIconBasePath( val.stringVal() );
+
     else
     {
 	return YWidget::setProperty( propertyName, val );
@@ -165,9 +169,16 @@ YTree::getProperty( const string & propertyName )
     else if ( propertyName == YUIProperty_OpenItems 	)	return YPropertyValue( YOtherProperty );
     else if ( propertyName == YUIProperty_Label		)	return YPropertyValue( label() );
     else if ( propertyName == YUIProperty_IconPath	)	return YPropertyValue( iconBasePath() );
+    else if ( propertyName == YUIProperty_SelectedItems )       return YPropertyValue( YOtherProperty );
     else
     {
 	return YWidget::getProperty( propertyName );
     }
+}
+
+bool
+YTree::hasMultiSelection() const
+{
+    return ! YSelectionWidget::enforceSingleSelection();
 }
 

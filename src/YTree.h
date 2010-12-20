@@ -62,14 +62,20 @@ class YTreePrivate;
  * (*) Not all UIs (in particular not text-based UIs) support displaying icons,
  * so an icon should never be an exclusive means to display any kind of
  * information.
+
+ * 'multiSelection' indicates whether or not the user can select multiple
+ * items at the same time. This can only be set in the constructor.
  **/
+
+
 class YTree : public YSelectionWidget
 {
 protected:
     /**
      * Constructor.
      **/
-    YTree( YWidget * parent, const string & label );
+//    YTree( YWidget * parent, const string & label, bool multiSelection = false );
+    YTree( YWidget * parent, const string & label, bool multiSelection);
 
 public:
     /**
@@ -164,6 +170,14 @@ public:
      * Inherited from YWidget.
      **/
     const char * userInputProperty() { return YUIProperty_CurrentItem; }
+
+
+    /**
+     * Return 'true' if the user can select multiple items  at the same time
+     **/
+    bool hasMultiSelection() const;
+
+
 
 private:
 

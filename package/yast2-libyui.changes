@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Dec 20 16:44:56 CET 2010 - tgoettlicher@suse.de
+
+- Added support for check boxes in tree widgets
+- V 2.19.2
+
+-------------------------------------------------------------------
 Fri Apr  9 17:29:14 CEST 2010 - tgoettlicher@suse.de
 
 - Fixed endless loop in layout algorithm  (bnc #558699)
