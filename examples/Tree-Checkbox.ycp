@@ -1,0 +1,34 @@
+// Tree with icons
+{
+    UI::OpenDialog(
+               `VBox(
+                     `Heading( "YaST2 Mini Control Center" ),
+                     `Tree(`id(`mod), `opt(`multiSelection ),
+			   "Modules",
+			   [
+			    `item(`id( "country" ), `icon( "yast-yast-language.png" ), "Localization",  true,
+				  [
+				   `item(`id( "keyboard"   ), `icon( "yast-keyboard.png"   ), "Keyboard"   ),
+				   `item(`id( "timezone"   ), `icon( "yast-timezone.png"   ), "Time zone"  )
+				   ]
+				  ),
+			    `item(`id( "mouse"      ), `icon( "yast-mouse.png"      ), "Mouse"      ),
+			    `item(`id( "lan"        ), `icon( "yast-lan.png"        ), "Network"    ),
+			    `item(`id( `xmas ), `icon( "yast-software.png"   ), "Merry X-Mas"   ),
+			    `item(`id( `newyear  ), `icon( "yast-software.png"   ), "Happy New Year"   )
+			    ] ),
+                     `PushButton(`id(`ok), `opt(`default), "&OK")
+                     )
+               );
+
+    UI::ChangeWidget(`mod, `SelectedItems, [`xmas, `newyear ] );
+
+    any id = nil;
+
+    repeat
+    {
+      id = UI::TimeoutUserInput(300);
+      list selected_items = (list) UI::QueryWidget( `id(`mod), `SelectedItems );
+      y2warning( "Selected items: %1", selected_items );
+    } until (id == `ok);
+}
