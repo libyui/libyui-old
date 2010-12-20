@@ -138,6 +138,7 @@ YCPPropertyHandler::setComplexProperty( YWidget *		widget,
     {
 	if ( trySetMultiSelectionBoxSelectedItems( widget, val ) )	return true;
 	if ( trySetTableSelectedItems( widget, val ) )			return true;
+	if ( trySetTreeSelectedItems( widget, val ) )			return true;
     }
 
     y2error( "Can't handle property %s::%s - not changing anything",
@@ -207,6 +208,7 @@ YCPPropertyHandler::getComplexProperty( YWidget * widget, const string & propert
     {
 	val = tryGetMultiSelectionBoxSelectedItems( widget );	if ( ! val.isNull() ) return val;
 	val = tryGetTableSelectedItems( widget );		if ( ! val.isNull() ) return val;
+	val = tryGetTreeSelectedItems( widget );		if ( ! val.isNull() ) return val;
     }
     else if ( propertyName == YUIProperty_OpenItems )
     {
@@ -684,6 +686,13 @@ YCPPropertyHandler::trySetTableSelectedItems( YWidget * widget, const YCPValue &
 
 
 bool
+YCPPropertyHandler::trySetTreeSelectedItems( YWidget * widget, const YCPValue & val )
+{
+    return trySetSelectionWidgetSelectedItems<YTree, YCPTreeItem>( widget, val );
+}
+
+
+bool
 YCPPropertyHandler::trySetMultiSelectionBoxCurrentItem( YWidget * widget, const YCPValue & val )
 {
     YMultiSelectionBox * multiSelBox = dynamic_cast<YMultiSelectionBox *> (widget);
@@ -1002,6 +1011,13 @@ YCPPropertyHandler::tryGetTableSelectedItems( YWidget * widget )
 {
     return tryGetSelectionWidgetSelectedItems<YTable, YCPTableItem>( widget );
 }
+
+YCPValue
+YCPPropertyHandler::tryGetTreeSelectedItems( YWidget * widget )
+{
+    return tryGetSelectionWidgetSelectedItems<YTree, YCPTreeItem>( widget );
+}
+
 
 
 YCPValue

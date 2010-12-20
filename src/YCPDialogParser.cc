@@ -2139,6 +2139,7 @@ YCPDialogParser::parseComboBox( YWidget * parent, YWidgetOpt & opt,
  *		and opening subtrees. If the UI cannot handle this, all
  *		subtrees will always be open.
  *
+ * @option	multiSelection	user can select multiple items at once 
  * @option	immediate	make `notify trigger immediately when the selected item changes
  * @usage	`Tree( `id( `treeID ), "treeLabel", [ "top1", "top2", "top3" ] );
  * @examples	Tree1.ycp
@@ -2180,16 +2181,18 @@ YCPDialogParser::parseTree( YWidget * parent, YWidgetOpt & opt,
     }
 
     bool immediate  = false;
+    bool multiSelection = false;
 
     for ( int o=0; o < optList->size(); o++ )
     {
 	if ( optList->value(o)->isSymbol() && optList->value(o)->asSymbol()->symbol() == YUIOpt_immediate )	immediate  = true;
+        else if ( optList->value(o)->isSymbol() && optList->value(o)->asSymbol()->symbol() == YUIOpt_multiSelection ) multiSelection = true;
 	else logUnknownOption( term, optList->value(o) );
     }
 
     string label = term->value ( argnr )->asString()->value();
 
-    YTree * tree = YUI::widgetFactory()->createTree( parent, label );
+    YTree * tree = YUI::widgetFactory()->createTree( parent, label, multiSelection );
 
     if ( numArgs > 1 )
     {

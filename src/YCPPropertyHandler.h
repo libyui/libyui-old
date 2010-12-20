@@ -126,6 +126,7 @@ protected:
     static bool trySetRadioButtonGroupCurrentButton	( YWidget * widget, const YCPValue & val );
     static bool trySetMultiSelectionBoxSelectedItems	( YWidget * widget, const YCPValue & val );
     static bool trySetTableSelectedItems		( YWidget * widget, const YCPValue & val );
+    static bool trySetTreeSelectedItems			( YWidget * widget, const YCPValue & val );
     static bool trySetMultiSelectionBoxCurrentItem	( YWidget * widget, const YCPValue & val );
     static bool trySetMultiProgressMeterValues		( YWidget * widget, const YCPValue & val );
     static bool trySetBarGraphValues			( YWidget * widget, const YCPValue & val );
@@ -146,6 +147,7 @@ protected:
     static YCPValue tryGetRadioButtonGroupCurrentButton	( YWidget * widget );
     static YCPValue tryGetMultiSelectionBoxSelectedItems( YWidget * widget );
     static YCPValue tryGetTableSelectedItems		( YWidget * widget );
+    static YCPValue tryGetTreeSelectedItems		( YWidget * widget );
     static YCPValue tryGetMultiSelectionBoxCurrentItem	( YWidget * widget );
     static YCPValue tryGetTreeOpenItems			( YWidget * widget );
     static YCPValue tryGetTreeCurrentBranch		( YWidget * widget );
