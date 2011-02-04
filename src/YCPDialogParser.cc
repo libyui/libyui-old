@@ -2199,7 +2199,7 @@ YCPDialogParser::parseTree( YWidget * parent, YWidgetOpt & opt,
 	YCPList itemList = term->value( argnr+1 )->asList();
 	tree->addItems( YCPTreeItemParser::parseTreeItemList( itemList ) );
 
-	if ( tree->hasItems() )
+	if ( tree->hasItems() ) && !multiSelection )
 	    tree->selectItem( tree->firstItem() );
     }
 

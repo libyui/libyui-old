@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Feb  4 14:58:29 CET 2011 - tgoettlicher@suse.de
+
+- Fixed selection of check boxes in tree widgets (bnc #669138)
+- V 2.20.1
+
+-------------------------------------------------------------------
 Thu Feb  3 15:09:13 CET 2011 - tgoettlicher@suse.de
 
 - V 2.20.0
