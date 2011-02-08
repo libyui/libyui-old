@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Feb  8 12:16:30 CET 2011 - tgoettlicher@suse.de
+
+- Added support for currentItem to tree widget
+- V 2.20.1
+
+-------------------------------------------------------------------
 Thu Feb  3 15:05:30 CET 2011 - tgoettlicher@suse.de
 
 - V 2.20.0

@@ -178,6 +178,17 @@ public:
     bool hasMultiSelection() const;
 
 
+    /**
+     * Return the the item that currently has the keyboard focus
+     * or 0 if no item currently has the keyboard focus.
+     *
+     * Notice that for a MultiSelectionBox the current item is not necessarily
+     * selected, i.e., its check box may or may not be checked.
+     *
+     * Derived classes are required to implement this function.
+     **/
+    virtual YTreeItem * currentItem() = 0;
+
 
 private:
 
