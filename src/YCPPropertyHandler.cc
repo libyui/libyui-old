@@ -192,7 +192,7 @@ YCPPropertyHandler::getComplexProperty( YWidget * widget, const string & propert
     else if ( propertyName == YUIProperty_CurrentItem )
     {
 	val = tryGetSelectionBoxValue	( widget );	if ( ! val.isNull() ) return val;
-	val = tryGetTreeValue		( widget );	if ( ! val.isNull() ) return val;
+	val = tryGetTreeCurrentItem	( widget );	if ( ! val.isNull() ) return val;
 	val = tryGetTableValue		( widget );	if ( ! val.isNull() ) return val;
 	val = tryGetComboBoxValue	( widget );	if ( ! val.isNull() ) return val;
 	val = tryGetDumbTabValue	( widget );	if ( ! val.isNull() ) return val;
@@ -1258,6 +1258,31 @@ YCPPropertyHandler::tryGetTableItems( YWidget * widget )
 
     return YCPTableItemWriter::itemList( table->itemsBegin(), table->itemsEnd() );
 }
+
+YCPValue
+YCPPropertyHandler::tryGetTreeCurrentItem( YWidget * widget )
+{
+    YTree * tree = dynamic_cast<YTree *> (widget);
+
+    if ( ! tree )
+        return YCPNull();
+
+    YItem * currentItem = tree->currentItem();
+
+    if ( tree )
+    {
+        YCPTreeItem * item = dynamic_cast<YCPTreeItem *> (currentItem);
+
+        if ( item )
+            return item->id();
+        else
+            y2error( "Item is not a YCPItem: \"%s\"", currentItem->label().c_str() );
+    }
+
+    return YCPVoid();
+
+}
+
 
 
 YCPValue

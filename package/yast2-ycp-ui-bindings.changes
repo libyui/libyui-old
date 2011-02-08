@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Feb  8 12:17:41 CET 2011 - tgoettlicher@suse.de
+
+- Added support for currentItem to tree widget
+- V 2.20.2
+
+-------------------------------------------------------------------
 Sun Feb  6 10:00:59 UTC 2011 - coolo@novell.com
 
 - fix syntax error

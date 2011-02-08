@@ -160,6 +160,8 @@ protected:
     static YCPValue tryGetSelectionWidgetItems		( YWidget * widget );
     static YCPValue tryGetBarGraphValues		( YWidget * widget );
     static YCPValue tryGetBarGraphLabels		( YWidget * widget );
+    static YCPValue tryGetTreeCurrentItem               ( YWidget * widget );
+
 
 
     /**
