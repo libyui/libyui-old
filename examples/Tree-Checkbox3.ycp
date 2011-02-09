@@ -1,0 +1,44 @@
+{
+    import "Label";
+ 
+    list items = [
+        `item (`id ("a"), "a", false, []),
+        `item (`id ("x"), "x", true, [
+            `item (`id ("y"), "y", false, []),
+            `item (`id ("z"), "z", false, []),
+        ]),
+    ];
+ 
+    term contents = `HBox (`VSpacing (20), `VBox (`HSpacing(70),
+            `VSpacing (0.2),
+            //`Tree (`id(`tree), `opt(`notify, `immediate, `multiSelection),  "tree", items),
+            `Tree (`id(`tree), `opt(`notify, `multiSelection),  "tree", items),
+            //`Tree (`id(`tree), `opt(`notify),  "tree", items),
+            `HBox (
+                `PushButton (`id (`ok), `opt (`default), Label::OKButton()),
+                `PushButton(`id (`cancel), `opt (`key_F9), Label::CancelButton())
+            ),
+            `VSpacing (0.2)
+        ));
+ 
+    UI::OpenDialog (`opt (`decorated), contents);
+    UI::ChangeWidget (`tree, `CurrentItem, nil);
+    while (true)
+    {
+        map event       = UI::WaitForEvent ();
+        any ret         = event["ID"]:nil;
+        if (ret == `tree)
+        {
+            string current = (string) UI::QueryWidget (`id(`tree),`CurrentItem);
+            y2internal ("current: %1", current);
+        }
+ 
+        if (ret == `ok || ret == `cancel)
+            break;
+    }
+    string current = (string) UI::QueryWidget (`id(`tree),`CurrentItem);
+    y2internal ("current before leaving: %1", current);
+
+    UI::CloseDialog ();
+}
+ 
