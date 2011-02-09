@@ -1268,16 +1268,10 @@ YCPPropertyHandler::tryGetTreeCurrentItem( YWidget * widget )
         return YCPNull();
 
     YItem * currentItem = tree->currentItem();
+    YCPTreeItem * item = dynamic_cast<YCPTreeItem *> (currentItem);
 
-    if ( tree )
-    {
-        YCPTreeItem * item = dynamic_cast<YCPTreeItem *> (currentItem);
-
-        if ( item )
-            return item->id();
-        else
-            y2error( "Item is not a YCPItem: \"%s\"", currentItem->label().c_str() );
-    }
+    if ( item )
+        return item->id();
 
     return YCPVoid();
 
