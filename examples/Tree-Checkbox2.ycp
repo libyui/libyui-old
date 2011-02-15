@@ -14,8 +14,8 @@
 				  ),
 			    `item(`id( "mouse"      ), `icon( "yast-mouse.png"      ), "Mouse"      ),
 			    `item(`id( "lan"        ), `icon( "yast-lan.png"        ), "Network"    ),
-			    `item(`id( `xmas ), `icon( "yast-software.png"   ), "Merry X-Mas"   ),
-			    `item(`id( `newyear  ), `icon( "yast-software.png"   ), "Happy New Year"   )
+			    `item(`id( "xmas" ), `icon( "yast-software.png"   ), "Merry X-Mas"   ),
+			    `item(`id( "newyear"  ), `icon( "yast-software.png"   ), "Happy New Year"   )
 			    ] ),
                      `HBox(`PushButton(`id(`ok), `opt(`default), "&OK"),
                            `PushButton(`id(`deselect), "&Log selected" )
@@ -23,7 +23,7 @@
                      )
                );
 
-    UI::ChangeWidget(`mod, `SelectedItems, ["keyboard", `xmas, `newyear ] );
+    UI::ChangeWidget(`mod, `SelectedItems, ["keyboard", "xmas", "newyear" ] );
     any id = nil;
 
     repeat
@@ -31,5 +31,7 @@
       id = UI::UserInput();
       list selected_items = (list) UI::QueryWidget( `id(`mod), `SelectedItems );
       y2milestone( "Selected items: %1", selected_items );
+      string current = (string) UI::QueryWidget( `id(`mod), `CurrentItem );
+      y2milestone( "Current item: %1", current );
     } until (id == `ok);
 }
