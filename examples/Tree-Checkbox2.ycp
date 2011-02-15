@@ -25,13 +25,14 @@
 
     UI::ChangeWidget(`mod, `SelectedItems, ["keyboard", "xmas", "newyear" ] );
     any id = nil;
-
+    string current = (string) UI::QueryWidget( `id(`mod), `CurrentItem );
+    y2milestone( "Current item: %1", current );
     repeat
     {
       id = UI::UserInput();
       list selected_items = (list) UI::QueryWidget( `id(`mod), `SelectedItems );
       y2milestone( "Selected items: %1", selected_items );
-      string current = (string) UI::QueryWidget( `id(`mod), `CurrentItem );
+      current = (string) UI::QueryWidget( `id(`mod), `CurrentItem );
       y2milestone( "Current item: %1", current );
     } until (id == `ok);
 }
