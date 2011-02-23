@@ -10,7 +10,7 @@
  
     term contents = `HBox (`VSpacing (20), `VBox (`HSpacing(70),
             `VSpacing (0.2),
-            `MultiSelectionBox (`id(`tree), `opt(`notify),  "tree", items),
+            `MultiSelectionBox (`id(`multisel), `opt(`notify),  "Multiselection", items),
             `HBox (
                 `PushButton (`id (`ok), `opt (`default), Label::OKButton()),
                 `PushButton(`id (`cancel), `opt (`key_F9), Label::CancelButton())
@@ -19,21 +19,28 @@
         ));
  
     UI::OpenDialog (`opt (`decorated), contents);
-    UI::ChangeWidget (`tree, `CurrentItem, nil);
+    UI::ChangeWidget (`multisel, `CurrentItem, nil);
+
+    UI::ChangeWidget(`multisel, `SelectedItems, ["a", "x" ] );
+    UI::ChangeWidget(`multisel, `SelectedItems, ["y", "z" ] );
+
+    list selected_items = (list) UI::QueryWidget( `id(`multisel), `SelectedItems );
+    y2milestone( "Selected items: %1", selected_items );
+    y2milestone( "Current item: %1", (string) UI::QueryWidget (`id(`multisel),`CurrentItem)); 
     while (true)
     {
         map event       = UI::WaitForEvent ();
         any ret         = event["ID"]:nil;
-        if (ret == `tree)
+        if (ret == `multisel)
         {
-            string current = (string) UI::QueryWidget (`id(`tree),`CurrentItem);
+            string current = (string) UI::QueryWidget (`id(`multisel),`CurrentItem);
             y2internal ("current: %1", current);
         }
  
         if (ret == `ok || ret == `cancel)
             break;
     }
-    string current = (string) UI::QueryWidget (`id(`tree),`CurrentItem);
+    string current = (string) UI::QueryWidget (`id(`multisel),`CurrentItem);
     y2internal ("current before leaving: %1", current );
     UI::CloseDialog ();
 }
