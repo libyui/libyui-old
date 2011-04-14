@@ -74,6 +74,8 @@ public:
      **/
     static void loadPlugin( const string & name, bool withThreads = false );
 
+    static bool pluginExists( const string & pluginBaseName );
+
 private:
     YUILoader()  {}
     ~YUILoader() {}

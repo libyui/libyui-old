@@ -45,11 +45,6 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 
 #include "YUIPlugin.h"
 
-
-#define PLUGIN_PREFIX "libpy2"
-#define PLUGIN_SUFFIX ".so.2"
-
-
 using std::string;
 
 
