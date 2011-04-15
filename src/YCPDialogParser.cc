@@ -2173,7 +2173,7 @@ YCPDialogParser::parseTree( YWidget * parent, YWidgetOpt & opt,
 {
     int numArgs = term->size() - argnr;
 
-    if ( numArgs < 1 || numArgs > 2
+    if ( numArgs < 1 || numArgs > 3
 	 || ! term->value( argnr )->isString()
 	 || ( numArgs >= 2 && ! term->value( argnr+1 )->isList() ) )
     {
@@ -2182,17 +2182,19 @@ YCPDialogParser::parseTree( YWidget * parent, YWidgetOpt & opt,
 
     bool immediate  = false;
     bool multiSelection = false;
+    bool recursiveSelection = false;
 
     for ( int o=0; o < optList->size(); o++ )
     {
-	if ( optList->value(o)->isSymbol() && optList->value(o)->asSymbol()->symbol() == YUIOpt_immediate )	immediate  = true;
-        else if ( optList->value(o)->isSymbol() && optList->value(o)->asSymbol()->symbol() == YUIOpt_multiSelection ) multiSelection = true;
+	if ( optList->value(o)->isSymbol() && optList->value(o)->asSymbol()->symbol() == YUIOpt_immediate )	          immediate  = true;
+        else if ( optList->value(o)->isSymbol() && optList->value(o)->asSymbol()->symbol() == YUIOpt_multiSelection )     multiSelection = true;
+        else if ( optList->value(o)->isSymbol() && optList->value(o)->asSymbol()->symbol() == YUIOpt_recursiveSelection ) recursiveSelection = true;
 	else logUnknownOption( term, optList->value(o) );
     }
 
     string label = term->value ( argnr )->asString()->value();
 
-    YTree * tree = YUI::widgetFactory()->createTree( parent, label, multiSelection );
+    YTree * tree = YUI::widgetFactory()->createTree( parent, label, multiSelection, recursiveSelection );
 
     if ( numArgs > 1 )
     {
