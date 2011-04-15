@@ -69,7 +69,8 @@ protected:
      **/
     YSelectionWidget( YWidget *		parent,
 		      const string & 	label,
-		      bool 		enforceSingleSelection );
+		      bool 		enforceSingleSelection,
+		      bool              recurisveSelection = false );
 
 public:
     /**
@@ -299,6 +300,11 @@ protected:
      * Return 'true' if this base class should enforce single selection.
      **/
     bool enforceSingleSelection() const;
+
+    /**
+     * Return 'true' if this base class should select children recursively.
+     **/
+    bool recursiveSelection() const;
 
     /**
      * Recursively try to find the first selected item between iterators

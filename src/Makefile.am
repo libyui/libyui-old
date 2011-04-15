@@ -14,7 +14,7 @@ AM_CPPFLAGS = -DLOCALEDIR=\"${localedir1}\"
 lib_LTLIBRARIES = libyui.la
 
 
-libyui_la_LDFLAGS = -version-info 3:0:0 -Wl,--no-undefined
+libyui_la_LDFLAGS = -version-info 4:0:0 -Wl,--no-undefined
 libyui_la_LIBADD = -lpthread -ldl
 
 libyui_la_SOURCES =				\

@@ -57,9 +57,10 @@ struct YTreePrivate
 };
 
 
-YTree::YTree( YWidget * parent, const string & label, bool multiSelection )
+YTree::YTree( YWidget * parent, const string & label, bool multiSelection, bool recursiveSelection )
     : YSelectionWidget( parent, label,
-			! multiSelection ) 
+			! multiSelection,
+			recursiveSelection ) 
     , priv( new YTreePrivate() )
 {
     YUI_CHECK_NEW( priv );

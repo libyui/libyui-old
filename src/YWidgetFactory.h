@@ -122,7 +122,7 @@ public:
     virtual YRadioButton *	createRadioButton	( YWidget * parent, const string & label, bool isChecked = false )	= 0;
     virtual YComboBox *		createComboBox		( YWidget * parent, const string & label, bool editable	 = false )	= 0;
     virtual YSelectionBox * 	createSelectionBox	( YWidget * parent, const string & label )				= 0;
-    virtual YTree *		createTree		( YWidget * parent, const string & label, bool multiselection = false ) = 0;
+    virtual YTree *		createTree		( YWidget * parent, const string & label, bool multiselection = false, bool recursiveselection = false ) = 0;
     virtual YTable *		createTable		( YWidget * parent, YTableHeader * header_disown, bool multiSelection = false  ) = 0;
     virtual YProgressBar *	createProgressBar	( YWidget * parent, const string & label, int maxValue = 100 )		= 0;
     virtual YRichText *		createRichText		( YWidget * parent, const string & text = string(), bool plainTextMode = false )	= 0;

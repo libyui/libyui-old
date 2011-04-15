@@ -74,8 +74,7 @@ protected:
     /**
      * Constructor.
      **/
-//    YTree( YWidget * parent, const string & label, bool multiSelection = false );
-    YTree( YWidget * parent, const string & label, bool multiSelection);
+    YTree( YWidget * parent, const string & label, bool multiSelection, bool recursiveSelection);
 
 public:
     /**
@@ -176,7 +175,6 @@ public:
      * Return 'true' if the user can select multiple items  at the same time
      **/
     bool hasMultiSelection() const;
-
 
     /**
      * Return the the item that currently has the keyboard focus

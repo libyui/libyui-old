@@ -19,7 +19,7 @@ Conflicts:	yast2-core < 2.16.38
 BuildRequires:	boost-devel
 
 Summary:	YaST2 - User Interface Engine
-Provides:	%{_libdir}/libyui.so.3.0.0
+Provides:	%{_libdir}/libyui.so.4.0.0
 
 %description
 This is the YaST2 user interface engine that provides the abstraction

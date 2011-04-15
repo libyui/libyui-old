@@ -50,13 +50,16 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 struct YSelectionWidgetPrivate
 {
     YSelectionWidgetPrivate( const string &	label,
-			     bool	    	enforceSingleSelection )
+			     bool	    	enforceSingleSelection,
+			     bool 		recursiveSelection )
 	: label( label )
 	, enforceSingleSelection( enforceSingleSelection )
+        , recursiveSelection ( recursiveSelection )
 	{}
 
     string		label;
     bool		enforceSingleSelection;
+    bool		recursiveSelection;
     string		iconBasePath;
     YItemCollection	itemCollection;
 };
@@ -66,9 +69,10 @@ struct YSelectionWidgetPrivate
 
 YSelectionWidget::YSelectionWidget( YWidget * 		parent,
 				    const string & 	label,
-				    bool		enforceSingleSelection )
+				    bool		enforceSingleSelection ,
+			     	    bool 		recursiveSelection )
     : YWidget( parent )
-    , priv( new YSelectionWidgetPrivate( label, enforceSingleSelection ) )
+    , priv( new YSelectionWidgetPrivate( label, enforceSingleSelection, recursiveSelection ) )
 {
     YUI_CHECK_NEW( priv );
 }
@@ -115,6 +119,12 @@ bool YSelectionWidget::enforceSingleSelection() const
 {
     return priv->enforceSingleSelection;
 }
+
+bool YSelectionWidget::recursiveSelection() const
+{
+    return priv->recursiveSelection;
+}
+
 
 
 void YSelectionWidget::setEnforceSingleSelection( bool enforceSingleSelection )
@@ -401,6 +411,17 @@ void YSelectionWidget::selectItem( YItem * item, bool selected )
 
 	if ( oldSelectedItem )
 	    oldSelectedItem->setSelected( false );
+    }
+
+
+    if ( recursiveSelection() && item->hasChildren() )
+    {
+        for ( YItemIterator it = item->childrenBegin(); it != item->childrenEnd(); ++it )
+	{
+	    YItem * item = *it;
+            selectItem(item, selected );
+            item->setSelected( selected );
+        }
     }
 
     item->setSelected( selected );

@@ -265,6 +265,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #define YUIOpt_youMode				"youMode"
 #define YUIOpt_zeroHeight			"zeroHeight"
 #define YUIOpt_zeroWidth			"zeroWidth"
+#define YUIOpt_recursiveSelection		"recursiveSelection"
 
 #define YUIOpt_key_F1				"key_F1"
 #define YUIOpt_key_F2				"key_F2"

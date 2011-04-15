@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Apr 15 16:14:13 CEST 2011 - tgoettlicher@suse.de
+
+- Added support for recursive selection in tree widgets
+- V 2.20.3
+
+-------------------------------------------------------------------
 Fri Feb 11 11:41:53 CET 2011 - tgoettlicher@suse.de
 
 - Fixed segfault for currentItem on tree widget
