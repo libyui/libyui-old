@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Apr 19 12:13:02 CEST 2011 - tgoettlicher@suse.de
+
+- version bump
+- V 2.21.1
+
+-------------------------------------------------------------------
 Fri Apr 15 16:18:41 CEST 2011 - tgoettlicher@suse.de
 
 - Added support for recursive selection in tree widgets
