@@ -1,0 +1,84 @@
+// Tree with recursive multi selection
+{
+
+    string formatEvent( map<string, any> event )
+    {
+        string html = "Event:";
+        foreach (string key, any value, event, ``{
+            html = html + " " + key + ": " + tostring (value) + "";
+        });
+
+        return html;
+    };
+
+
+
+    UI::OpenDialog(
+               `VBox(
+                     `Heading( "YaST2 Mini Control Center" ),
+                     `Tree(`id(`mod), `opt(`multiSelection, `notify, `immediate, `recursiveSelection),
+                           "Modules",
+                           [
+
+                            `item(`id( "unselected"      ), "Unseleted"      ),
+                            `item(`id( "country" ), "Localization",  true,
+                                  [
+                                   `item(`id( "keyboard"   ), "Keyboard"   ),
+                                   `item(`id( "timezone"   ), "Time zone", true,
+                                        [  `item(`id( `europe ), "Europe"  ),
+                                           `item(`id( `asia   ), "Asia"    )
+                                        ]  )
+                                   ]
+                                  ),
+                            `item(`id( `mouse      ), "Mouse"      ),
+                            `item(`id( `lan        ), "Network"    ),
+                            `item(`id( `xmas ), "Merry X-Mas"   ),
+                            `item(`id( `newyear  ), "Happy New Year"   )
+                            ] ),
+                     `PushButton(`id(`ok), `opt(`default), "&OK")
+                     )
+               );
+
+    UI::ChangeWidget(`mod, `SelectedItems, [`lan, `mouse ] );
+    UI::ChangeWidget(`mod, `SelectedItems, [`xmas, `newyear ] );
+
+    list selected_items = (list) UI::QueryWidget( `id(`mod), `SelectedItems );
+    y2warning( "Selected items: %1", selected_items );
+
+
+    any id = nil;
+
+  map <string, any> event = $[];
+
+
+    repeat
+    {
+      event = UI::WaitForEvent( 1000 * 100 );
+
+      if( event["EventReason"]:nil == "SelectionChanged" )
+      {
+          y2error( "Selection Changed Event" );
+      }
+
+      if( event["EventReason"]:nil == "ValueChanged" )
+      {
+          y2error( "Value Changed Event" );
+      }
+
+      if ( event["EventType"]:nil == "TimeoutEvent" ) 
+      {
+
+          y2error( "Timeout Event" );
+      }
+
+       if ( event != nil )
+        {
+            y2error( formatEvent( event ) );
+        }
+
+      id = event["ID"]:nil ;
+      y2milestone("Selected items: %1", (list)UI::QueryWidget(`id(`mod), `SelectedItems ));
+
+    } until (id == `ok);
+}
+
