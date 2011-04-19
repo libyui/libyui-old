@@ -75,6 +75,10 @@ YSelectionWidget::YSelectionWidget( YWidget * 		parent,
     , priv( new YSelectionWidgetPrivate( label, enforceSingleSelection, recursiveSelection ) )
 {
     YUI_CHECK_NEW( priv );
+
+    if ( enforceSingleSelection && recursiveSelection )
+	YUI_THROW( YUIException( "recursiveSelection is only available for multiSelection Widgets."));
+
 }
 
 

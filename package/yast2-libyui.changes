@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Apr 19 12:09:27 CEST 2011 - tgoettlicher@suse.de
+
+- Don't allow recursive selection for non-multiselection widgets
+- V 2.21.1
+
+-------------------------------------------------------------------
 Fri Apr 15 16:14:13 CEST 2011 - tgoettlicher@suse.de
 
 - Added support for recursive selection in tree widgets
