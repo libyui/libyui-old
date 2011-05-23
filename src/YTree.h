@@ -1,3 +1,24 @@
+/**************************************************************************
+Copyright (C) 2000 - 2010 Novell, Inc.
+All Rights Reserved.
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along
+with this program; if not, write to the Free Software Foundation, Inc.,
+51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+
+**************************************************************************/
+
+
 /*---------------------------------------------------------------------\
 |								       |
 |		       __   __	  ____ _____ ____		       |
@@ -41,14 +62,19 @@ class YTreePrivate;
  * (*) Not all UIs (in particular not text-based UIs) support displaying icons,
  * so an icon should never be an exclusive means to display any kind of
  * information.
+
+ * 'multiSelection' indicates whether or not the user can select multiple
+ * items at the same time. This can only be set in the constructor.
  **/
+
+
 class YTree : public YSelectionWidget
 {
 protected:
     /**
      * Constructor.
      **/
-    YTree( YWidget * parent, const string & label );
+    YTree( YWidget * parent, const string & label, bool multiSelection, bool recursiveSelection);
 
 public:
     /**
@@ -143,6 +169,24 @@ public:
      * Inherited from YWidget.
      **/
     const char * userInputProperty() { return YUIProperty_CurrentItem; }
+
+
+    /**
+     * Return 'true' if the user can select multiple items  at the same time
+     **/
+    bool hasMultiSelection() const;
+
+    /**
+     * Return the the item that currently has the keyboard focus
+     * or 0 if no item currently has the keyboard focus.
+     *
+     * Notice that for a MultiSelectionBox the current item is not necessarily
+     * selected, i.e., its check box may or may not be checked.
+     *
+     * Derived classes are required to implement this function.
+     **/
+    virtual YTreeItem * currentItem() = 0;
+
 
 private:
 

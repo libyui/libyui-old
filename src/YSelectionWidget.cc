@@ -1,3 +1,24 @@
+/**************************************************************************
+Copyright (C) 2000 - 2010 Novell, Inc.
+All Rights Reserved.
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along
+with this program; if not, write to the Free Software Foundation, Inc.,
+51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+
+**************************************************************************/
+
+
 /*---------------------------------------------------------------------\
 |								       |
 |		       __   __	  ____ _____ ____		       |
@@ -29,13 +50,16 @@
 struct YSelectionWidgetPrivate
 {
     YSelectionWidgetPrivate( const string &	label,
-			     bool	    	enforceSingleSelection )
+			     bool	    	enforceSingleSelection,
+			     bool 		recursiveSelection )
 	: label( label )
 	, enforceSingleSelection( enforceSingleSelection )
+        , recursiveSelection ( recursiveSelection )
 	{}
 
     string		label;
     bool		enforceSingleSelection;
+    bool		recursiveSelection;
     string		iconBasePath;
     YItemCollection	itemCollection;
 };
@@ -45,11 +69,16 @@ struct YSelectionWidgetPrivate
 
 YSelectionWidget::YSelectionWidget( YWidget * 		parent,
 				    const string & 	label,
-				    bool		enforceSingleSelection )
+				    bool		enforceSingleSelection ,
+			     	    bool 		recursiveSelection )
     : YWidget( parent )
-    , priv( new YSelectionWidgetPrivate( label, enforceSingleSelection ) )
+    , priv( new YSelectionWidgetPrivate( label, enforceSingleSelection, recursiveSelection ) )
 {
     YUI_CHECK_NEW( priv );
+
+    if ( enforceSingleSelection && recursiveSelection )
+	YUI_THROW( YUIException( "recursiveSelection is only available for multiSelection Widgets."));
+
 }
 
 
@@ -94,6 +123,12 @@ bool YSelectionWidget::enforceSingleSelection() const
 {
     return priv->enforceSingleSelection;
 }
+
+bool YSelectionWidget::recursiveSelection() const
+{
+    return priv->recursiveSelection;
+}
+
 
 
 void YSelectionWidget::setEnforceSingleSelection( bool enforceSingleSelection )
@@ -380,6 +415,17 @@ void YSelectionWidget::selectItem( YItem * item, bool selected )
 
 	if ( oldSelectedItem )
 	    oldSelectedItem->setSelected( false );
+    }
+
+
+    if ( recursiveSelection() && item->hasChildren() )
+    {
+        for ( YItemIterator it = item->childrenBegin(); it != item->childrenEnd(); ++it )
+	{
+	    YItem * item = *it;
+            selectItem(item, selected );
+            item->setSelected( selected );
+        }
     }
 
     item->setSelected( selected );

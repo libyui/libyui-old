@@ -1,4 +1,57 @@
 -------------------------------------------------------------------
+Tue Apr 19 12:09:27 CEST 2011 - tgoettlicher@suse.de
+
+- Don't allow recursive selection for non-multiselection widgets
+- V 2.21.1
+
+-------------------------------------------------------------------
+Fri Apr 15 16:14:13 CEST 2011 - tgoettlicher@suse.de
+
+- Added support for recursive selection in tree widgets
+- V 2.20.3
+
+-------------------------------------------------------------------
+Fri Feb 11 11:41:53 CET 2011 - tgoettlicher@suse.de
+
+- Fixed segfault for currentItem on tree widget
+- V 2.20.2
+
+-------------------------------------------------------------------
+Tue Feb  8 12:16:30 CET 2011 - tgoettlicher@suse.de
+
+- Added support for currentItem to tree widget
+- V 2.20.1
+
+-------------------------------------------------------------------
+Thu Feb  3 15:05:30 CET 2011 - tgoettlicher@suse.de
+
+- V 2.20.0
+
+-------------------------------------------------------------------
+Mon Dec 20 16:44:56 CET 2010 - tgoettlicher@suse.de
+
+- Added support for check boxes in tree widgets
+- V 2.19.2
+
+-------------------------------------------------------------------
+Fri Apr  9 17:29:14 CEST 2010 - tgoettlicher@suse.de
+
+- Fixed endless loop in layout algorithm  (bnc #558699)
+- V 2.19.1
+
+-------------------------------------------------------------------
+Tue Mar  2 12:38:32 UTC 2010 - coolo@novell.com
+
+- Fixing undefined behaviour that triggers a crash with
+  gcc 4.5 (bnc#582088)
+- V 2.19.0
+
+-------------------------------------------------------------------
+Tue Feb  9 17:32:06 CET 2010 - tgoettlicher@suse.de
+
+- added license headers
+
+-------------------------------------------------------------------
 Tue Jul 28 17:22:58 CEST 2009 - kmachalkova@suse.cz
 
 - Search for icons in several possible directories (using 
@@ -269,3 +322,4 @@ Thu Feb 21 14:39:37 CET 2008 - sh@suse.de
 - Package split off from yast2-core 
 - V 2.16.37
 
+-------------------------------------------------------------------

@@ -1,3 +1,25 @@
+/**************************************************************************
+Copyright (C) 2000 - 2010 Novell, Inc.
+All Rights Reserved.
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along
+with this program; if not, write to the Free Software Foundation, Inc.,
+51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+
+**************************************************************************/
+
+
+
 /*---------------------------------------------------------------------\
 |								       |
 |		       __   __	  ____ _____ ____		       |
@@ -35,11 +57,10 @@ struct YTreePrivate
 };
 
 
-
-
-YTree::YTree( YWidget * parent, const string & label )
+YTree::YTree( YWidget * parent, const string & label, bool multiSelection, bool recursiveSelection )
     : YSelectionWidget( parent, label,
-			true ) // enforceSingleSelection
+			! multiSelection,
+			recursiveSelection ) 
     , priv( new YTreePrivate() )
 {
     YUI_CHECK_NEW( priv );
@@ -95,6 +116,7 @@ YTree::propertySet()
 	 * @property map<ItemID>	OpenItems 	Map of IDs of all open items - can only be queried, not set
 	 * @property string  		Label		Caption above the tree
 	 * @property string  		IconPath	Base path for icons
+         * @property bool               MultiSelection  Flag: User can select multiple items (read-only)
 	 */
 	propSet.add( YProperty( YUIProperty_Value,		YOtherProperty	 ) );
 	propSet.add( YProperty( YUIProperty_CurrentItem,	YOtherProperty	 ) );
@@ -103,7 +125,10 @@ YTree::propertySet()
 	propSet.add( YProperty( YUIProperty_OpenItems,		YOtherProperty	 ) );
 	propSet.add( YProperty( YUIProperty_Label,		YStringProperty	 ) );
 	propSet.add( YProperty( YUIProperty_IconPath,		YStringProperty	 ) );
+        propSet.add( YProperty( YUIProperty_SelectedItems,      YOtherProperty   ) );
+        propSet.add( YProperty( YUIProperty_MultiSelection,     YBoolProperty,   true ) ); // read-only
 	propSet.add( YWidget::propertySet() );
+
     }
 
     return propSet;
@@ -120,8 +145,10 @@ YTree::setProperty( const string & propertyName, const YPropertyValue & val )
     else if ( propertyName == YUIProperty_CurrentBranch )	return false; // Needs special handling
     else if ( propertyName == YUIProperty_Items 	)	return false; // Needs special handling
     else if ( propertyName == YUIProperty_OpenItems 	)	return false; // Needs special handling
+    else if ( propertyName == YUIProperty_SelectedItems )       return false; // Needs special handling
     else if ( propertyName == YUIProperty_Label		)	setLabel( val.stringVal() );
     else if ( propertyName == YUIProperty_IconPath 	)	setIconBasePath( val.stringVal() );
+
     else
     {
 	return YWidget::setProperty( propertyName, val );
@@ -143,9 +170,16 @@ YTree::getProperty( const string & propertyName )
     else if ( propertyName == YUIProperty_OpenItems 	)	return YPropertyValue( YOtherProperty );
     else if ( propertyName == YUIProperty_Label		)	return YPropertyValue( label() );
     else if ( propertyName == YUIProperty_IconPath	)	return YPropertyValue( iconBasePath() );
+    else if ( propertyName == YUIProperty_SelectedItems )       return YPropertyValue( YOtherProperty );
     else
     {
 	return YWidget::getProperty( propertyName );
     }
+}
+
+bool
+YTree::hasMultiSelection() const
+{
+    return ! YSelectionWidget::enforceSingleSelection();
 }
 

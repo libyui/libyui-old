@@ -1,3 +1,24 @@
+/**************************************************************************
+Copyright (C) 2000 - 2010 Novell, Inc.
+All Rights Reserved.
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along
+with this program; if not, write to the Free Software Foundation, Inc.,
+51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+
+**************************************************************************/
+
+
 /*---------------------------------------------------------------------\
 |								       |
 |		       __   __	  ____ _____ ____		       |
@@ -101,7 +122,7 @@ public:
     virtual YRadioButton *	createRadioButton	( YWidget * parent, const string & label, bool isChecked = false )	= 0;
     virtual YComboBox *		createComboBox		( YWidget * parent, const string & label, bool editable	 = false )	= 0;
     virtual YSelectionBox * 	createSelectionBox	( YWidget * parent, const string & label )				= 0;
-    virtual YTree *		createTree		( YWidget * parent, const string & label )				= 0;
+    virtual YTree *		createTree		( YWidget * parent, const string & label, bool multiselection = false, bool recursiveselection = false ) = 0;
     virtual YTable *		createTable		( YWidget * parent, YTableHeader * header_disown, bool multiSelection = false  ) = 0;
     virtual YProgressBar *	createProgressBar	( YWidget * parent, const string & label, int maxValue = 100 )		= 0;
     virtual YRichText *		createRichText		( YWidget * parent, const string & text = string(), bool plainTextMode = false )	= 0;
