@@ -174,8 +174,8 @@ void YCPMacroRecorder::recordYcpCodeLocation()
 	const CallFrame * frame = callStack.back();
 	string functionName;
 
-	if ( frame && frame->called_function.find( "Wizard::UserInput" ) == string::npos  )
-	    functionName = frame->called_function;
+	if ( frame && frame->function->entry()->toString().find( "Wizard::UserInput" ) == string::npos  )
+	    functionName = frame->function->entry()->toString();
 
 	if ( frame )
 	{

@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Aug 16 17:23:11 CEST 2011 - tgoettlicher@suse.de
+
+- fixed bnc #711760: yast2 segfaults in second stage
+- V 2.21.2
+
+-------------------------------------------------------------------
 Tue Apr 19 12:13:02 CEST 2011 - tgoettlicher@suse.de
 
 - version bump
