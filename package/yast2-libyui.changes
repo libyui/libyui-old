@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Nov 16 14:06:41 CET 2011 - tgoettlicher@suse.de
+
+- Fixed bnc#713343: YaST ncurses help screen is too small
+- Version: 2.21.2
+
+-------------------------------------------------------------------
 Tue Apr 19 12:09:27 CEST 2011 - tgoettlicher@suse.de
 
 - Don't allow recursive selection for non-multiselection widgets

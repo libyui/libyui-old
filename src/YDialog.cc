@@ -631,10 +631,23 @@ YDialog::callEventFilters( YEvent * event )
 void
 YDialog::showText( const string & text, bool useRichText )
 {
+
+    // set help text dialog size to 80% of topmost dialogi, respectively 45x15 (default)
+
+    unsigned int dialogWidth  = 45;
+    unsigned int dialogHeight = 15;
+
+    if ( ! _dialogStack.empty() )
+    {
+	YDialog * dialog = _dialogStack.top();
+        dialogWidth  = (unsigned int) ( (float) dialog->preferredWidth()  * 0.8 );
+        dialogHeight = (unsigned int) ( (float) dialog->preferredHeight() * 0.8 );
+    }
+
     try
     {
 	YDialog     * dialog    = YUI::widgetFactory()->createPopupDialog();
-	YAlignment  * minSize   = YUI::widgetFactory()->createMinSize( dialog, 45, 15 );
+	YAlignment  * minSize   = YUI::widgetFactory()->createMinSize( dialog, dialogWidth, dialogHeight );
 	YLayoutBox  * vbox      = YUI::widgetFactory()->createVBox( minSize );
 	YUI::widgetFactory()->createRichText( vbox, text, ! useRichText );
 	YButtonBox  * buttonBox = YUI::widgetFactory()->createButtonBox( vbox );
