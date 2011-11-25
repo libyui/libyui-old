@@ -7,6 +7,7 @@ License: GPL-2.0+
 Source1:	yast2-libyui-rpmlintrc
 
 BuildRequires:	gcc-c++
+BuildRequires:  libtool
 BuildRequires:	yast2-devtools
 
 # autodocs + docbook docs
