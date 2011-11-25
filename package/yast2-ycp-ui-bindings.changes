@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Nov 25 12:27:04 UTC 2011 - coolo@suse.com
+
+- add libtool as buildrequire to avoid implicit dependency
+
+-------------------------------------------------------------------
 Tue Aug 16 17:23:11 CEST 2011 - tgoettlicher@suse.de
 
 - fixed bnc #711760: yast2 segfaults in second stage
