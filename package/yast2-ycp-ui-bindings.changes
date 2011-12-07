@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Dec  7 10:06:22 UTC 2011 - coolo@suse.com
+
+- fix license to be in spdx.org format
+
+-------------------------------------------------------------------
 Fri Nov 25 12:27:04 UTC 2011 - coolo@suse.com
 
 - add libtool as buildrequire to avoid implicit dependency

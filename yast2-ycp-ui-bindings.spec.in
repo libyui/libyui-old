@@ -3,7 +3,7 @@
 
 @HEADER@
 Group:	System/YaST
-License: GPL-v2.0+
+License:        GPL-2.0+
 
 
 BuildRequires:	gcc-c++
