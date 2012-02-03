@@ -1,0 +1,25 @@
+{
+
+    any button = nil;
+
+
+    UI::OpenDialog(
+	       `VBox(
+		     `LogView(`id(`log),
+			      "Log View ",
+			      15,	// visible lines
+			      0),	// lines to store
+		     `PushButton(`id(`ok), "&OK")
+		     )
+	       );
+
+    repeat
+    {
+        string line = tostring(random(100));
+        UI::ChangeWidget(`id(`log), `LastLine, line );
+        button = UI::TimeoutUserInput(100);
+
+    } until ( button == `ok );
+
+    UI::CloseDialog();
+}
