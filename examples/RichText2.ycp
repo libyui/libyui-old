@@ -4,8 +4,9 @@
 		`VBox(
 		      `RichText(`opt(`plainText),
 				"This is a RichText in   plainText   mode.\n"
-				+"No HTML tags are supported here, but line breaks\n"
-				+"are output literally - as are HTML tags like <b> or <i> or &product;."
+				+"No HTML \t\ttags\tare\tsupported\there, tabs\tand\tline\tbreaks\n"
+				+"are output literally \n"
+                                +"as are HTML tags like <b> or <i> or &product;."
 				),
 		      `PushButton(`opt(`default), "&OK")
 		      )
