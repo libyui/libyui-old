@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Mar 16 11:10:12 CET 2012 - tgoettlicher@suse.de
+
+- Fixed untranslated rpm package groups (bnc #722325)
+- V 2.21.2
+
+-------------------------------------------------------------------
 Tue Apr 19 12:09:27 CEST 2011 - tgoettlicher@suse.de
 
 - Don't allow recursive selection for non-multiselection widgets
