@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Mar 16 10:56:18 CET 2012 - tgoettlicher@suse.de
+
+- Fixed bnc#722325: untranslated rpm groups
+- Version: 2.21.3
+
+-------------------------------------------------------------------
 Fri Nov 25 12:22:06 UTC 2011 - coolo@suse.com
 
 - add libtool as buildrequire to avoid implicit dependency

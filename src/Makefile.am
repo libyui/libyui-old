@@ -9,7 +9,7 @@ AM_CXXFLAGS =					\
 	-DPLUGINDIR=\"${plugindir}\"		\
 	-fmessage-length=0
 
-AM_CPPFLAGS = -DLOCALEDIR=\"${localedir1}\"
+AM_CPPFLAGS = -DLOCALEDIR=\"${localedir}\"
 
 lib_LTLIBRARIES = libyui.la
 
