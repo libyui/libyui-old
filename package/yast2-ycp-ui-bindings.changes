@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon Mar 26 14:36:12 UTC 2012 - jreidinger@suse.com
+
+- removed libxcrypt-devel from buildrequires (aschnell)
+- add more examples (gs)
+-  2.21.3
+
+-------------------------------------------------------------------
 Wed Dec  7 10:06:22 UTC 2011 - coolo@suse.com
 
 - fix license to be in spdx.org format
