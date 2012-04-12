@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Apr 12 14:23:02 CEST 2012 - tgoettlicher@suse.de
+
+- Fix build with gcc 4.7.
+
+-------------------------------------------------------------------
 Fri Mar 16 10:56:18 CET 2012 - tgoettlicher@suse.de
 
 - Fixed bnc#722325: untranslated rpm groups

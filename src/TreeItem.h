@@ -251,7 +251,7 @@ public:
 	    // Insert as first child
 
 	    newChild->setNext( firstChild() );
-	    setFirstChild( newChild );
+	    this->setFirstChild( newChild );
 	}
 	else
 	{
