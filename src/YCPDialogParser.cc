@@ -3498,8 +3498,8 @@ YCPDialogParser::parseTimezoneSelector( YWidget * parent, YWidgetOpt & opt,
     string pixmap = term->value( argnr )->asString()->value();
     map<string,string> zones;
     YCPMap secondArg = term->value( argnr+1 )->asMap();
-    for ( YCPMapIterator it = secondArg.begin(); it != secondArg.end(); ++it )
-        zones[ it.key()->asString()->value() ] = it.value()->asString()->value();
+    for ( YCPMap::const_iterator it = secondArg.begin(); it != secondArg.end(); ++it )
+        zones[ it->first->asString()->value() ] = it->second->asString()->value();
 
     YTimezoneSelector * selector = YUI::optionalWidgetFactory()->createTimezoneSelector( parent, pixmap, zones );
 

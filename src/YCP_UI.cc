@@ -1512,12 +1512,12 @@ YCPValue YCP_UI::AskForSaveFileName( const YCPString & startWith,
  */
 void YCP_UI::SetFunctionKeys( const YCPMap & new_fkeys )
 {
-    for ( YCPMapIterator it = new_fkeys->begin(); it != new_fkeys->end(); ++it )
+    for ( YCPMap::const_iterator it = new_fkeys->begin(); it != new_fkeys->end(); ++it )
     {
-	if ( it.key()->isString() && it.value()->isInteger() )
+	if ( it->first->isString() && it->second->isInteger() )
 	{
-	    string label = YShortcut::cleanShortcutString( it.key()->asString()->value() );
-	    int	   fkey  = it.value()->asInteger()->value();
+	    string label = YShortcut::cleanShortcutString( it->first->asString()->value() );
+	    int	   fkey  = it->second->asInteger()->value();
 
 	    if ( fkey > 0 && fkey <= 24 )
 	    {
@@ -1534,7 +1534,7 @@ void YCP_UI::SetFunctionKeys( const YCPMap & new_fkeys )
 	{
 	    ycperror( "SetFunctionKeys(): Invalid map element: "
 		      "Expected <string>: <integer>, not %s: %s",
-		      it.key()->toString().c_str(), it.value()->toString().c_str() );
+		      it->first->toString().c_str(), it->second->toString().c_str() );
 	}
     }
 }
