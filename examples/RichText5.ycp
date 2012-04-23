@@ -2,7 +2,7 @@
 {
     UI::OpenDialog( `opt(`defaultsize),
 		`VBox(
-		      `RichText( "<pre>\--- /.snapshots/4/snapshot/var/lib/zypp/RequestedLocales\t2011-12-08 17:09:23.312007703 +0800<br>+++ /.snapshots/5/snapshot/var/lib/zypp/RequestedLocales\t2011-12-08 18:39:35.461081330 +0800<br>@@ -1,4 +1,4 @@<br>-# zypp::RequestedLocales generated Thu 08 Dec 2011 05:09:23 PM WST<br>+# zypp::RequestedLocales generated Do 08 Dez 2011 18:39:35 WST<br> #<br>-de_DE<br>+en_US<br> #<br></pre>"
+		      `RichText( "<pre>\t\t\t\t--- /.snapshots/4/snapshot/var/lib/zypp/RequestedLocales\t2011-12-08 17:09:23.312007703 +0800<br><br>+++ /.snapshots/5/snapshot/var/lib/zypp/RequestedLocales\t2011-12-08 18:39:35.461081330 +0800<br>@@ -1,4 +1,4 @@<br>-# zypp::RequestedLocales generated Thu 08 Dec 2011 05:09:23 PM WST<br>+# zypp::RequestedLocales generated Do 08\tDez\t2011\t18:39:35\tWST<br> #<br>-de_DE<br>+en_US<br> #<br></pre><p>Formfeed test:\fHere it should be ignored.</p><pre>After the next word\fshould be a newline.</pre>"
 				 ),
 		      `PushButton(`opt(`default), "&OK")
 		      )
