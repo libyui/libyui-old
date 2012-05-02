@@ -632,7 +632,7 @@ void
 YDialog::showText( const string & text, bool useRichText )
 {
 
-    // set help text dialog size to 80% of topmost dialogi, respectively 45x15 (default)
+    // set help text dialog size to 80% of topmost dialog, respectively 45x15 (default)
 
     unsigned int dialogWidth  = 45;
     unsigned int dialogHeight = 15;
@@ -642,6 +642,13 @@ YDialog::showText( const string & text, bool useRichText )
 	YDialog * dialog = _dialogStack.top();
         dialogWidth  = (unsigned int) ( (float) dialog->preferredWidth()  * 0.8 );
         dialogHeight = (unsigned int) ( (float) dialog->preferredHeight() * 0.8 );
+    }
+
+    // limit dialog to a reasonable size
+    if ( dialogWidth > 80 || dialogHeight > 25 )
+    {
+	dialogWidth = 80;
+	dialogHeight = 25;
     }
 
     try
