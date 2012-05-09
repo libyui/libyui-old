@@ -9,7 +9,13 @@
 				       `item(`id(1), "ěščřžýáíˇ",	6),
 				       `item(`id(2), "ěšřž",		nil),
 				       `item(`id(3), "Änderßßß",	8),
-				       `item(`id(4), "完時",		12)
+				       `item(`id(4), "完時",		12),
+                                        `item(`id(5), "Zoo",            25),
+                                        `item(`id(6), "Žčř",            6),
+                                        `item(`id(7), "ášř",            8),
+                                        `item(`id(8), "Álklsd",         7),
+                                        `item(`id(9), "Alphaphet",      15),
+                                        `item(`id(10), "an",             1)              
 				       ]
 				      )
 			       ),
