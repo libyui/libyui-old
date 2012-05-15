@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Tue May 15 11:00:49 CEST 2012 - tgoettlicher@suse.de
+
+- Renamed yast2-libyui to libyui and made it independed 
+  from YaST (merged GSOC project)
+- Version: 2.21.5
+
+-------------------------------------------------------------------
 Wed May  2 16:45:38 CEST 2012 - tgoettlicher@suse.de
 
 - Fixed bnc#753784: YaST help dialogs appear fullscreen
