@@ -98,7 +98,7 @@ libyui_la_SOURCES =				\
 
 
 
-pkgincludedir = $(includedir)/yui
+pkgincludedir = /usr/include/yui
 
 pkginclude_HEADERS =				\
 	YUI.h					\
