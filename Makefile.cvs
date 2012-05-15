@@ -2,12 +2,10 @@
 # Makefile.cvs
 #
 
-LIB = $(shell y2tool get-lib)
-
 PREFIX = /usr
 
 configure: all
-	./configure --prefix=$(PREFIX) --libdir=$(PREFIX)/$(LIB)
+	./configure --prefix=$(PREFIX) 
 
 all:
 	y2tool y2autoconf
