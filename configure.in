@@ -1,0 +1,42 @@
+AC_INIT(src/YUI.h)
+
+VERSION=`cat ./VERSION`
+RPMNAME=`cat ./RPMNAME`
+
+AM_INIT_AUTOMAKE(libyui, $VERSION)
+AM_CONFIG_HEADER(config.h)
+
+AC_DISABLE_STATIC
+
+AC_PROG_CXX
+AC_PROG_LIBTOOL
+AM_PROG_LIBTOOL
+
+AC_PREFIX_DEFAULT(/usr)
+
+CFLAGS="${CFLAGS} -Wall -Wformat=2 -Wmissing-prototypes"
+
+CXXFLAGS="${CXXFLAGS} -std=gnu++0x -DHAVE_CXX0X -Wall -Wformat=2 -Wnon-virtual-dtor"
+
+docdir=\${prefix}/share/doc/packages/libyui
+includedir=\${prefix}/include/
+pkgconfigdir=\${libdir}/pkgconfig
+plugindir=\${libdir}/yui/
+themedir=\${prefix}/share/YaST2/theme/ 
+
+AC_SUBST(VERSION)
+AC_SUBST(RPMNAME)
+AC_SUBST(docdir)
+AC_SUBST(includedir)
+AC_SUBST(pkgconfigdir)
+AC_SUBST(plugindir)
+AC_SUBST(themedir)
+
+AC_OUTPUT(
+        Makefile
+        src/Makefile
+	cmake/Makefile
+        examples/Makefile
+        package/libyui.spec:libyui.spec.in
+	libyui.pc:libyui.pc.in
+)
