@@ -2,12 +2,13 @@
 
 
 @HEADER@
-Group:		System/Libraries
-License:	GPL-2.0
-Source1:	libyui-rpmlintrc
+Group:	System/YaST
+License: GPL-2.0+
+Source1:	yast2-libyui-rpmlintrc
 
 BuildRequires:	gcc-c++
 BuildRequires:  libtool
+BuildRequires:	yast2-devtools
 
 # autodocs + docbook docs
 BuildRequires:	doxygen
@@ -18,30 +19,30 @@ Conflicts:	yast2-core < 2.16.38
 # libyui ImplPtr
 BuildRequires:	boost-devel
 
-Summary:	LibYUI - User Interface Engine
+Summary:	YaST2 - User Interface Engine
 Provides:	%{_libdir}/libyui.so.4.0.0
 
 %description
-This is the LibYUI user interface engine that provides the abstraction
+This is the YaST2 user interface engine that provides the abstraction
 from graphical user interfaces (Qt, Gtk) and text based user interfaces
 (ncurses).
 
-This can be used independently of LibYUI for generic (C++) applications.
+This can be used independently of YaST2 for generic (C++) applications.
 This package has very few dependencies.
 
 @HEADER-DEVEL@
-Summary:	LibYUI - User Interface Engine
+Summary:	YaST2 - User Interface Engine
 
 Requires:	glibc-devel
 Requires:	libstdc++-devel
 Requires:	boost-devel
 
 %description devel
-This is the development package for the LibYUI user interface engine
+This is the development package for the YaST2 user interface engine
 that provides the abstraction from graphical user interfaces (Qt, Gtk)
 and text based user interfaces (ncurses).
 
-This can be used independently of LibYUI for generic (C++) applications.
+This can be used independently of YaST2 for generic (C++) applications.
 This package has very few dependencies.
 
 @PREP@

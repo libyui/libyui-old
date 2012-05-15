@@ -20,22 +20,22 @@ ELSE ( DEFINED  LIB )
   IF (CMAKE_SIZEOF_VOID_P MATCHES "8")
     SET( LIB_SUFFIX "64" )
   ENDIF(CMAKE_SIZEOF_VOID_P MATCHES "8")
-  SET ( LIB_INSTALL_DIR "${CMAKE_INSTALL_PREFIX}/lib" )
+  SET ( LIB_INSTALL_DIR "${CMAKE_INSTALL_PREFIX}/lib${LIB_SUFFIX}" )
 ENDIF ( DEFINED  LIB )
 MESSAGE(STATUS "Libraries will be installed in ${LIB_INSTALL_DIR}" )
 
-SET(UI_PLUGIN_DIR ${LIB_INSTALL_DIR}/yui)
+SET(UI_PLUGIN_DIR ${LIB_INSTALL_DIR}/YaST2/plugin)
 
 FIND_PATH(LIBYUI_INCLUDE_DIR YWidget.h
-  ${CMAKE_INSTALL_PREFIX}/include/yui
-  /usr/include/yui
-  /usr/local/include/yui
+  ${CMAKE_INSTALL_PREFIX}/include/YaST2/yui
+  /usr/include/YaST2/yui
+  /usr/local/include/YaST2/yui
 )
 
 FIND_LIBRARY(LIBYUI_LIBRARY NAMES yui
   PATHS
   ${LIB_INSTALL_DIR}
-  /usr/lib
+  /usr/local/lib
 )
 
 if(LIBYUI_INCLUDE_DIR AND LIBYUI_LIBRARY AND UI_PLUGIN_DIR)
