@@ -70,7 +70,7 @@ mkdir -p "$RPM_BUILD_ROOT"@logdir@
 %defattr(-,root,root)
 %{_libdir}/lib*.so
 %{_libdir}/lib*.la
-@includedir@
+${prefix}/include
 @pkgconfigdir@/@RPMNAME@.pc
 %dir %{_datadir}/cmake
 %dir %{_datadir}/cmake/Modules
