@@ -14,9 +14,8 @@ oldincludedir=@oldincludedir@
 infodir=@infodir@
 mandir=@mandir@
 
-yast2dir=@yast2dir@
-ybindir=@ybindir@
-
 Name: @RPMNAME@
 Version: @VERSION@
-Description: YaST2 package "@RPMNAME@"
+Description: @RPMNAME@ - GUI-abstraction library
+Libs: -lyui
+Cflags: -I${includedir}

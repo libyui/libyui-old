@@ -1,14 +1,17 @@
-@HEADER-COMMENT@
+#
+# spec file for package libyui (Version @VERSION@)
+#
+# norootforbuild
 
-
-@HEADER@
-Group:	System/Libraries
-License: GPL-2.0
-Source1:	libyui-rpmlintrc
+Name:    libyui 
+Version: @VERSION@
+Release: 0
+License: GPL v2
+Group:	 System/Libraries
+Source:  libyui-%{version}.tar.bz2
+Source1: libyui-rpmlintrc
 
 BuildRequires:	gcc-c++
-BuildRequires:  libtool
-BuildRequires:	yast2-devtools
 
 # autodocs + docbook docs
 BuildRequires:	doxygen
@@ -19,60 +22,77 @@ Conflicts:	yast2-core < 2.16.38
 # libyui ImplPtr
 BuildRequires:	boost-devel
 
-Summary:	YUI - User Interface Engine
-Provides:	%{_libdir}/libyui.so.4.0.0
+Provides:	yast2-libyui = %{version}
+Obsoletes:	yast2-libyui < %{version}
+
+Summary:	YaST2 - User Interface Engine
 
 %description
-This is the YUI user interface engine that provides the abstraction
-from graphical user interfaces (Qt, Gtk) and text based user interfaces
+This is the user interface engine that provides the abstraction from 
+graphical user interfaces (Qt, Gtk) and text based user interfaces
 (ncurses).
 
-This can be used independently of YUI for generic (C++) applications.
-This package has very few dependencies.
+Originally developed for YaST, it can now be used independently of 
+YaST for generic (C++) applications. This package has very few 
+dependencies.
 
-@HEADER-DEVEL@
-Summary:	YUI - User Interface Engine
+%package devel
+Summary:	YaST2 - User Interface Engine header filews
+Group:	Development/Languages/C and C++
 
 Requires:	glibc-devel
 Requires:	libstdc++-devel
 Requires:	boost-devel
 
 %description devel
-This is the development package for the YUI user interface engine
+This is the development package for libyui user interface engine
 that provides the abstraction from graphical user interfaces (Qt, Gtk)
 and text based user interfaces (ncurses).
 
-This can be used independently of YaST2 for generic (C++) applications.
+This can be used independently of YaST for generic (C++) applications.
 This package has very few dependencies.
 
-@PREP@
+%prep
+%setup -n %{name}-%{version}
 
-@BUILD@
+%build
 
-@INSTALL@
-mkdir -p "$RPM_BUILD_ROOT"@logdir@
+export CFLAGS="$RPM_OPT_FLAGS -DNDEBUG"
+export CXXFLAGS="$RPM_OPT_FLAGS -DNDEBUG"
+
+./bootstrap.sh
+%{?suse_update_config:%{suse_update_config -f}}
+./configure --libdir=%{_libdir} --prefix=%{_prefix} --mandir=%{_mandir}
+make %{?jobs:-j%jobs}
+
+%install
+make install DESTDIR="$RPM_BUILD_ROOT"
+
+mkdir -p "$RPM_BUILD_ROOT"%{_vardir}/log/YaST2
 %perl_process_packlist
 
-@CLEAN@
+%clean
+rm -rf "$RPM_BUILD_ROOT"
 
-%post
-%run_ldconfig
+%post -p /sbin/ldconfig
 
-%postun
-%run_ldconfig
+%postun -p /sbin/ldconfig
 
 %files
 %defattr(-,root,root)
 
 %{_libdir}/lib*.so.*
+%dir %doc %{_prefix}/share/doc/packages/libyui/
 
 %files devel
 %defattr(-,root,root)
 %{_libdir}/lib*.so
 %{_libdir}/lib*.la
-${prefix}/include
-@pkgconfigdir@/@RPMNAME@.pc
+%{_prefix}/include/yui
+%{_libdir}/pkgconfig/libyui.pc
 %dir %{_datadir}/cmake
 %dir %{_datadir}/cmake/Modules
 %{_datadir}/cmake/Modules/*
-%doc @docdir@
+%doc %{_prefix}/share/doc/packages/libyui/examples
+
+%changelog
