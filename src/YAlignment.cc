@@ -372,7 +372,7 @@ void YAlignment::setBackgroundPixmap( const string & pixmapFileName )
 	 pixmap[0] != '/'  &&	// Absolute path?
 	 pixmap[0] != '.'    )	// Path relative to $CWD ?
     {
-	// Prepend theme dir ("/usr/share/YaST2/theme/current/")
+	// Prepend theme dir ("/usr/share/libyui/theme/")
 	pixmap = pixmap.insert( 0, string( THEMEDIR "/" ) );
     }
 

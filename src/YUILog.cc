@@ -315,7 +315,7 @@ struct YUILogPrivate
     {
 	pthread_t thisThread = pthread_self();
 
-	// Search backwards: Slight optimization for the YaST2 UI.
+	// Search backwards: Slight optimization for the UI.
 	// The UI thread does the most logging, but it is created after the
 	// main thread.
 

@@ -2,9 +2,9 @@
 //
 // Compile with:
 //
-//     g++ -I/usr/include/YaST2/yui -lyui ComboBox1.cc -o ComboBox1
+//     g++ -I/usr/include/yui -lyui ComboBox1.cc -o ComboBox1
 // or
-//     g++ -I/usr/include/YaST2/yui -lyui -DEDITABLE ComboBox1.cc -o ComboBox1
+//     g++ -I/usr/include/yui -lyui -DEDITABLE ComboBox1.cc -o ComboBox1
 //
 // for an editable ComboBox.
 

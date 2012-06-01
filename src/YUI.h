@@ -78,7 +78,7 @@ class YMacroRecorder;
 
 
 /**
- * Abstract base class of a YaST2 user interface.
+ * Abstract base class of a libYUI user interface.
  **/
 class YUI
 {

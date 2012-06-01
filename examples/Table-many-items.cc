@@ -4,7 +4,7 @@
 //
 // Compile with:
 //
-//     g++ -I/usr/include/YaST2/yui -lyui Table-many-items.cc -o Table-many-items
+//     g++ -I/usr/include/yui -lyui Table-many-items.cc -o Table-many-items
 
 
 #include <time.h>

@@ -4,7 +4,7 @@
 //
 // Compile with:
 //
-//     g++ -I/usr/include/YaST2/yui -lyui SelectionBox2.cc -o SelectionBox2
+//     g++ -I/usr/include/yui -lyui SelectionBox2.cc -o SelectionBox2
 
 #define YUILogComponent "example"
 #include "YUILog.h"

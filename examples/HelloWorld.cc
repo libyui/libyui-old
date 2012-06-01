@@ -2,7 +2,7 @@
 //
 // Compile with:
 //
-//     g++ -I/usr/include/YaST2/yui -lyui HelloWorld.cc -o HelloWorld
+//     g++ -I/usr/include/yui -lyui HelloWorld.cc -o HelloWorld
 
 #include "YUI.h"
 #include "YWidgetFactory.h"

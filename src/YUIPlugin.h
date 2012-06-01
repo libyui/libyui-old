@@ -76,7 +76,7 @@ public:
 
     /**
      * Constructor: Load the specified plugin library
-     * from the standard UI plugin directory (/usr/lib/YaST2/plugin).
+     * from the standard UI plugin directory (/usr/lib/yui/).
      **/
     YUIPlugin( const char * pluginLibBaseName );
 

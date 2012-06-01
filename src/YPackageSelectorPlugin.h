@@ -74,7 +74,7 @@ class YPackageSelectorPlugin: public YUIPlugin
 protected:
     /**
      * Constructor: Load the specified plugin library
-     * from the standard UI plugin directory (/usr/lib/YaST2/plugin).
+     * from the standard UI plugin directory (/usr/lib/yui/).
      **/
     YPackageSelectorPlugin( const char * pluginLibBaseName )
 	: YUIPlugin( pluginLibBaseName ) {}

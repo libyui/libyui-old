@@ -178,7 +178,7 @@ public:
      *
      * This parent method should be called first in the overwritten method to
      * ensure path expansion is done as specified (prepend the theme path
-     * ("/usr/share/YaST2/theme/current/") if the path doesn't start with "/"
+     * ("/usr/share/libyui/theme/") if the path doesn't start with "/"
      * or ".").
      **/
     virtual void setBackgroundPixmap( const string & pixmapFileName );
