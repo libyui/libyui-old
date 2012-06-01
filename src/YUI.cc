@@ -298,7 +298,8 @@ void YUI::shutdownThreads()
 void YUI::signalUIThread()
 {
     static char arbitrary = 42;
-    (void) write ( pipe_to_ui[1], & arbitrary, 1 );
+    if ( write ( pipe_to_ui[1], & arbitrary, 1 ) == -1 )
+	yuiError() <<  "Writing byte to UI thread failed" << endl;
 
 #if VERBOSE_COMM
     yuiDebug() << "Wrote byte to UI thread" << endl;
@@ -337,7 +338,8 @@ bool YUI::waitForUIThread()
 void YUI::signalYCPThread()
 {
     static char arbitrary;
-    (void) write( pipe_from_ui[1], & arbitrary, 1 );
+    if ( write( pipe_from_ui[1], & arbitrary, 1 ) == -1 )
+	yuiError() <<  "Writing byte to YCP thread failed" << endl;
 
 #if VERBOSE_COMM
     yuiDebug() << "Wrote byte to YCP thread" << endl;
