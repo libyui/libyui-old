@@ -56,7 +56,7 @@ struct YRichTextPrivate
 	, autoScrollDown ( false )
 	, shrinkable( false )
 	{}
-    
+
     string	text;
     bool	plainTextMode;
     bool	autoScrollDown;
@@ -71,7 +71,7 @@ YRichText::YRichText( YWidget * parent, const string & text, bool plainTextMode 
     , priv( new YRichTextPrivate( text, plainTextMode ) )
 {
     YUI_CHECK_NEW( priv );
-    
+
     setDefaultStretchable( YD_HORIZ, true );
     setDefaultStretchable( YD_VERT,  true );
 }
@@ -179,4 +179,3 @@ YRichText::getProperty( const string & propertyName )
 	return YWidget::getProperty( propertyName );
     }
 }
-

@@ -5,7 +5,7 @@
 PREFIX = /usr
 
 configure: all
-	./configure --prefix=$(PREFIX) 
+	./configure --prefix=$(PREFIX)
 
 all:
 	y2tool y2autoconf

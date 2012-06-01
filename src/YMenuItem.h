@@ -100,7 +100,7 @@ public:
 private:
 
     // Disable unwanted base class methods
-    
+
     bool isOpen() const  { return false; }
     void setOpen( bool ) {}
 };

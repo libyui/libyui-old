@@ -55,7 +55,7 @@ void YIconLoader::addIconSearchPath( string path )
 
 string YIconLoader::findIcon( string name )
 {
-    // No extension -> add some 
+    // No extension -> add some
     string::size_type loc = name.find(".png");
     if ( loc == string::npos )
 	name += ".png";
@@ -83,14 +83,14 @@ string YIconLoader::findIcon( string name )
     while( listIt != icon_dirs.end() )
     {
 	// Something like relative path
-	if ( name.find('/') != string::npos ) 
+	if ( name.find('/') != string::npos )
             fullPath = *listIt +  name;
 	// No '/' chars, just the name -> use '22x22/apps' fallback
-	else 
+	else
 	   fullPath = *listIt + "22x22/apps/" + name;
 
         if ( fileExists( fullPath ) )
-	{	
+	{
 	    yuiMilestone() << "Found " << name << " in " <<  *listIt << " search path" << endl;
 	    return fullPath;
 	}

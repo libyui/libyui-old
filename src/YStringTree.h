@@ -85,7 +85,7 @@ public:
      * If 'delimiter' is 0, 'content' is not split but used 'as is'.  Items are
      * automatically sorted alphabetically. Pathname components are
      * automatically translated using the textdomain specified in the
-     * constructor. 
+     * constructor.
      *
      * Returns the tree node for this branch - either newly created or the
      * existing one.
@@ -157,11 +157,11 @@ public:
 
     /**
      * Returns the textdomain used internally for translation of pathname
-     * components. 
+     * components.
      **/
     const char * textdomain() const { return _textdomain.c_str(); }
 
-    
+
     /**
      * Set the textdomain used internally for translation of pathname
      * components.
@@ -177,8 +177,8 @@ public:
      * translated text or the original if there is no translation.
      **/
     string translate( const string & orig );
-    
-    
+
+
 protected:
 
     /**

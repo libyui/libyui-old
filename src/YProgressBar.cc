@@ -55,7 +55,7 @@ struct YProgressBarPrivate
 	    if ( maxValue < 1 )
 		maxValue = 1;
 	}
-    
+
     string	label;
     int 	maxValue;
     int		value;
@@ -71,7 +71,7 @@ YProgressBar::YProgressBar( YWidget * 		parent,
     , priv( new YProgressBarPrivate( label, maxValue ) )
 {
     YUI_CHECK_NEW( priv );
-    
+
     setDefaultStretchable( YD_HORIZ, true );
     setStretchable( YD_VERT, false );
 }
@@ -111,10 +111,10 @@ void YProgressBar::setValue( int newValue )
 {
     if ( newValue < 0 )
 	newValue = 0;
-    
+
     if ( newValue > priv->maxValue )
 	newValue = priv->maxValue;
-    
+
     priv->value = newValue;
 }
 
@@ -167,4 +167,3 @@ YProgressBar::getProperty( const string & propertyName )
 	return YWidget::getProperty( propertyName );
     }
 }
-

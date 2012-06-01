@@ -60,7 +60,7 @@ public:
      * Destructor.
      **/
     virtual ~YProgressBar();
-    
+
     /**
      * Returns a descriptive name of this widget class for logging,
      * debugging etc.

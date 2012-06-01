@@ -114,4 +114,3 @@ YTableHeader::alignment( int column ) const
     else
 	return YAlignBegin;
 }
-

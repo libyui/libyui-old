@@ -28,7 +28,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 
 using namespace std;
 
-class YIconLoader 
+class YIconLoader
 {
 public:
 
@@ -38,7 +38,7 @@ public:
     string findIcon( string name );
 
     //FIXME: these two are here for compatibility reasons
-    // deprecate them in due course and treat base path just 
+    // deprecate them in due course and treat base path just
     // like any other search path
     void setIconBasePath( string path );
     string iconBasePath() const;

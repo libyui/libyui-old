@@ -206,4 +206,3 @@ YIntField::getProperty( const string & propertyName )
 	return YWidget::getProperty( propertyName );
     }
 }
-

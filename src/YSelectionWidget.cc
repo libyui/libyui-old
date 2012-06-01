@@ -97,7 +97,7 @@ void YSelectionWidget::deleteAllItems()
 	YItem * item = *it;
 	++it;
 	delete item;
-	
+
 	// No need to check for item->hasChildren() and iterate recursively
 	// over the children: The item will take care of its children in its
 	// destructor.
@@ -157,7 +157,7 @@ string YSelectionWidget::iconFullPath( const string & iconName ) const
     {
 	if ( iconName[0] == '/' )
 	    return iconName;
-	
+
 	if ( priv->iconBasePath.empty() ||
 	     priv->iconBasePath[0] != '/' )
 	{
@@ -189,7 +189,7 @@ void YSelectionWidget::addItem( YItem * item )
 	YUI_THROW( YUIException( "Item already owned by parent item -"
 				 " call addItem() only for toplevel items!" ) );
     }
-    
+
     // Add the new item to the item list
 
     priv->itemCollection.push_back( item );
@@ -344,7 +344,7 @@ YSelectionWidget::findSelectedItem( YItemConstIterator begin,
     for ( YItemConstIterator it = begin; it != end; ++it )
     {
 	const YItem * item = *it;
-	
+
 	if ( item->selected() )
 	    return *it;
 
@@ -382,7 +382,7 @@ YSelectionWidget::findSelectedItems( YItemCollection &	selectedItems,
     for ( YItemConstIterator it = begin; it != end; ++it )
     {
 	YItem * item = *it;
-	
+
 	if ( item->selected() )
 	    selectedItems.push_back( item );
 
@@ -447,7 +447,7 @@ YSelectionWidget::itemsContain( YItem *			wantedItem,
     for ( YItemConstIterator it = begin; it != end; ++it )
     {
 	const YItem * item = *it;
-	
+
 	if ( item == wantedItem )
 	    return true;
 
@@ -502,7 +502,7 @@ YSelectionWidget::findItem( const string &	wantedItemLabel,
     for ( YItemConstIterator it = begin; it != end; ++it )
     {
 	YItem * item = *it;
-	
+
 	if ( item->label() == wantedItemLabel )
 	    return item;
 

@@ -49,7 +49,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 // Threshold of widgets with valid shortcut characters below which no shortcut
 // check is performed at all. This might regularly occur for languages that
 // primarily use non-ASCII characters (Russian, Greek, Chinese, Japanese,
-// Korean). 
+// Korean).
 #define MIN_VALID_PERCENT	50
 
 // Return the number of elements of an array of any type
@@ -80,7 +80,7 @@ YShortcutManager::checkShortcuts( bool autoResolve )
     findShortcutWidgets( _dialog->childrenBegin(), _dialog->childrenEnd() );
 
     int validCount = 0;
-    
+
     for ( unsigned i=0; i < _shortcutList.size(); i++ )
     {
 	if ( _shortcutList[i]->hasValidShortcutChar() )
@@ -96,12 +96,12 @@ YShortcutManager::checkShortcuts( bool autoResolve )
         // characters ([A-Za-z0-9]). This might regularly occur for languages
         // that primarily use non-ASCII characters (Russian, Greek, Chinese,
         // Japanese, Korean).
-	
+
 	yuiMilestone() << "Not enough widgets with valid shortcut characters - no check" << endl;
 	yuiDebug() << "Found " << validCount << " widgets with valid shortcut characters" << endl;
 	return;
     }
-    
+
 
     // Initialize wanted character counters
     for ( int i=0; i < DIM( _wanted ); i++ )
@@ -130,7 +130,7 @@ YShortcutManager::checkShortcuts( bool autoResolve )
 	    {
 		shortcut->setConflict();
 		_conflictCount++;
-		
+
 		yuiMilestone() << "Shortcut conflict: '" << shortcut->preferred()
 			       << "' used for " << shortcut->widget()
 			       << endl;
@@ -308,7 +308,7 @@ YShortcutManager::resolveConflict( YShortcut * shortcut )
 		       << shortcut->widget()
 		       << " - assigning no shortcut"
 		       << endl;
-	
+
 	shortcut->clearShortcut();
 	shortcut->setConflict( false );
     }
@@ -423,6 +423,3 @@ YShortcutManager::findShortcutWidgets( YWidgetListConstIterator begin,
 	}
     }
 }
-
-
-

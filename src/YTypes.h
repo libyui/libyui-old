@@ -87,7 +87,7 @@ enum YDialogType
 
 enum YDialogColorMode
 {
-    YDialogNormalColor,	// Default 
+    YDialogNormalColor,	// Default
     YDialogInfoColor,	// Brighter colors
     YDialogWarnColor	// Very bright Warning colors
 };
@@ -110,7 +110,7 @@ enum YButtonOrder
     YKDEButtonOrder,	// [OK] [Apply] [Cancel] [Custom1] [Custom2] [Help]
 			// [Yes] [No]
 			// [Continue] [Cancel]
-    
+
     YGnomeButtonOrder	// [Help] [Custom1] [Custom2] [Apply] [Cancel] [OK]
 			// [No] [Yes]
 			// [Cancel] [Continue]

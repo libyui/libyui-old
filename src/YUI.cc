@@ -106,7 +106,7 @@ YUI::~YUI()
 
 	YMacro::deleteRecorder();
 	YMacro::deletePlayer();
-	
+
 	_ui = 0;
 	uiDeleted = true;
     }
@@ -454,18 +454,18 @@ void YUI::setButtonOrderFromEnvironment()
 	yuiWarning() << "Ignoring unknown value of " << env << endl;
     }
 
-    
+
     if ( buttonOrder != oldButtonOrder )
     {
 	string buttonOrderStr;
-	
+
 	switch ( buttonOrder )
 	{
 	    case YKDEButtonOrder:
 		buttonOrderStr = "KDE";
 		YButtonBox::setLayoutPolicy( YButtonBox::kdeLayoutPolicy() );
 		break;
-		
+
 	    case YGnomeButtonOrder:
 		buttonOrderStr = "GNOME";
 		YButtonBox::setLayoutPolicy( YButtonBox::gnomeLayoutPolicy() );
@@ -475,7 +475,7 @@ void YUI::setButtonOrderFromEnvironment()
 	}
 
 	yuiMilestone() << "Switching to " << buttonOrderStr
-		       << " button order because of " << lastEnv 
+		       << " button order because of " << lastEnv
 		       << endl;
     }
 }
@@ -541,7 +541,7 @@ YUITerminator::~YUITerminator()
  *
  * This is particularly important for the NCurses UI so the terminal settings
  * are properly restored.
- **/ 
+ **/
 static YUITerminator uiTerminator;
 
 

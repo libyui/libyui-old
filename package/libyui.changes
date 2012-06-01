@@ -82,8 +82,8 @@ Tue Feb  9 17:32:06 CET 2010 - tgoettlicher@suse.de
 -------------------------------------------------------------------
 Tue Jul 28 17:22:58 CEST 2009 - kmachalkova@suse.cz
 
-- Search for icons in several possible directories (using 
-  /usr/share/icons/hicolor as fallback) - holds for everything 
+- Search for icons in several possible directories (using
+  /usr/share/icons/hicolor as fallback) - holds for everything
   derived from SelectionWidget (FaTE #306356)
 - V 2.18.8
 
@@ -114,7 +114,7 @@ Wed Feb 18 14:17:41 CET 2009 - coolo@suse.de
 Mon Feb  9 11:43:42 CET 2009 - sh@suse.de
 
 - Added virtual destructor for YTableCell for better
-  NCFileSelection support 
+  NCFileSelection support
 - V 2.18.4
 
 -------------------------------------------------------------------
@@ -131,7 +131,7 @@ Fri Jan 16 11:32:21 CET 2009 - kkaempf@suse.de
 -------------------------------------------------------------------
 Thu Jan 15 12:10:27 CET 2009 - sh@suse.de
 
-- Fixed bnc #427372: Specify class ownership for SWIG bindings 
+- Fixed bnc #427372: Specify class ownership for SWIG bindings
 
 -------------------------------------------------------------------
 Wed Jan 14 10:57:17 CET 2009 - aschnell@suse.de
@@ -149,13 +149,13 @@ Wed Oct 15 15:11:42 CEST 2008 - sh@suse.de
 
 - Added `opt(`confirmUnsupported) for PackageSelector widget
   (bnc #435479)
-- V 2.17.14 
+- V 2.17.14
 
 -------------------------------------------------------------------
 Thu Oct  9 16:58:09 CEST 2008 - sh@suse.de
 
-- Prevent segfault when deleting YEventFilters in YDialog dtor 
-- Prevent segfault in YEventFilter with default args 
+- Prevent segfault when deleting YEventFilters in YDialog dtor
+- Prevent segfault in YEventFilter with default args
 - V 2.17.13
 
 -------------------------------------------------------------------
@@ -168,58 +168,58 @@ Fri Sep 26 15:41:16 CEST 2008 - tgoettlicher@suse.de
 Wed Sep 24 18:26:06 CEST 2008 - sh@suse.de
 
 - Improved robustness against already-deleted widgets (bnc #421794)
-- V 2.17.11 
+- V 2.17.11
 
 -------------------------------------------------------------------
 Wed Sep 17 12:33:09 CEST 2008 - sh@suse.de
 
-- Fixed reverse layout (for Arabic, Hebrew) in YButtonBox 
+- Fixed reverse layout (for Arabic, Hebrew) in YButtonBox
 
 -------------------------------------------------------------------
 Fri Sep 12 18:42:04 CEST 2008 - sh@suse.de
 
-- Improved resize behaviour of YDialogSpy 
+- Improved resize behaviour of YDialogSpy
 
 -------------------------------------------------------------------
 Fri Sep 12 16:12:49 CEST 2008 - sh@suse.de
 
 - Added widget properties to YDialogSpy
-- V 2.17.10 
+- V 2.17.10
 
 -------------------------------------------------------------------
 Fri Sep 12 13:54:34 CEST 2008 - sh@suse.de
 
 - Now exporting more YWidget base class attributes as properties:
-  HWeight, VWeight, HStretch, VStretch 
+  HWeight, VWeight, HStretch, VStretch
 
 -------------------------------------------------------------------
 Thu Sep 11 15:42:18 CEST 2008 - sh@suse.de
 
 - Added highlighting for target dialog in YDialogSpy
-- V 2.17.9 
+- V 2.17.9
 
 -------------------------------------------------------------------
 Wed Sep 10 17:15:52 CEST 2008 - sh@suse.de
 
-- Force [Help] button left-aligned in GNOME button order 
+- Force [Help] button left-aligned in GNOME button order
 
 -------------------------------------------------------------------
 Tue Sep  9 17:05:23 CEST 2008 - sh@suse.de
 
 - Added YDialogSpy for interactive introspection of a widget tree
-- V 2.17.8 
+- V 2.17.8
 
 -------------------------------------------------------------------
 Tue Sep  9 16:21:35 CEST 2008 - sh@suse.de
 
 - Made YEvents more robust against attempts of duplicate deletion
-- Stream output (logging) for YEvents 
+- Stream output (logging) for YEvents
 
 -------------------------------------------------------------------
 Thu Sep  4 14:47:46 CEST 2008 - sh@suse.de
 
 - Allow ButtonBox sanity check to be relaxed (bnc #422612)
-- V 2.17.7 
+- V 2.17.7
 
 -------------------------------------------------------------------
 Thu Aug 21 15:28:14 CEST 2008 - sh@suse.de
@@ -243,7 +243,7 @@ Fri Jul 11 16:29:47 CEST 2008 - sh@suse.de
 Tue Jul  8 18:57:10 CEST 2008 - sh@suse.de
 
 - Enable keyboard shortcuts for YDumbTab widgets (fate #304890)
-- V 2.17.3 
+- V 2.17.3
 
 -------------------------------------------------------------------
 Wed Jun 18 18:49:41 CEST 2008 - sh@suse.de
@@ -257,13 +257,13 @@ Wed Jun 11 19:49:36 CEST 2008 - sh@suse.de
 
 - Introduced YUITerminator to make sure the UI is properly shut
   down in all cases, regardless if called from YCP or plain C++
-- V 2.17.1 
+- V 2.17.1
 
 -------------------------------------------------------------------
 Wed May 28 14:31:31 CEST 2008 - sh@suse.de
 
 - Added YWizard::wizardMode() for bnc #393040
-- V 2.16.48 
+- V 2.16.48
 
 -------------------------------------------------------------------
 Wed Apr 30 14:50:36 CEST 2008 - lslezak@suse.cz
@@ -275,7 +275,7 @@ Wed Apr 30 14:50:36 CEST 2008 - lslezak@suse.cz
 -------------------------------------------------------------------
 Wed Apr 23 15:57:16 CEST 2008 - sh@suse.de
 
-- Fixed segfault when discarding events from foreign dialogs 
+- Fixed segfault when discarding events from foreign dialogs
   (bnc #382771)
 - V 2.16.46
 
@@ -283,37 +283,37 @@ Wed Apr 23 15:57:16 CEST 2008 - sh@suse.de
 Wed Apr 16 12:24:44 CEST 2008 - sh@suse.de
 
 - Deleting events is now automatically handled by YDialog.
-  Simply remove all "delete event" calls. 
+  Simply remove all "delete event" calls.
 - Introduced uiThreadDestructor() (bnc #346987)
-- V 2.16.45 
+- V 2.16.45
 
 -------------------------------------------------------------------
 Mon Apr 14 16:38:12 CEST 2008 - sh@suse.de
 
 - Added dialog type YWizardDialog for main dialogs that will
   contain a wizard (equivalent to YMainDialog if
-  YApplication::hasWizardDialogSupport() returns false) 
+  YApplication::hasWizardDialogSupport() returns false)
 - V 2.16.44
 
 -------------------------------------------------------------------
 Fri Apr 11 18:17:05 CEST 2008 - sh@suse.de
 
 - Reverted last changes - sub-wizards seem to be a dead end
-- V 2.16.43 
+- V 2.16.43
 
 -------------------------------------------------------------------
 Thu Apr 10 19:51:35 CEST 2008 - sh@suse.de
 
 - Added support for docked sub-wizards
-- V 2.16.42 
+- V 2.16.42
 
 -------------------------------------------------------------------
 Thu Apr  3 15:03:35 CEST 2008 - sh@suse.de
 
-- Added YPushButton::setHelpButton() and isHelpButton() 
+- Added YPushButton::setHelpButton() and isHelpButton()
 - Automatically show topmost YWidget::helpText() when a help button
   is activated
-- V 2.16.41 
+- V 2.16.41
 
 -------------------------------------------------------------------
 Tue Apr  1 17:49:15 CEST 2008 - sh@suse.de
@@ -325,7 +325,7 @@ Tue Apr  1 17:49:15 CEST 2008 - sh@suse.de
 Thu Mar 20 19:17:19 CET 2008 - sh@suse.de
 
 - Added standard file logger (when used independently of YaST2)
-- V 2.16.40 
+- V 2.16.40
 
 -------------------------------------------------------------------
 Wed Mar  5 17:08:42 CET 2008 - sh@suse.de
@@ -336,18 +336,18 @@ Wed Mar  5 17:08:42 CET 2008 - sh@suse.de
 -------------------------------------------------------------------
 Tue Mar  4 13:48:08 CET 2008 - sh@suse.de
 
-- Conflict with yast2-core < 2.16.38 (before pkg split) 
+- Conflict with yast2-core < 2.16.38 (before pkg split)
 
 -------------------------------------------------------------------
 Tue Feb 26 18:29:05 CET 2008 - sh@suse.de
 
 - Added cmake support for dependent packages
-- V 2.16.38 
+- V 2.16.38
 
 -------------------------------------------------------------------
 Thu Feb 21 14:39:37 CET 2008 - sh@suse.de
 
-- Package split off from yast2-core 
+- Package split off from yast2-core
 - V 2.16.37
 
 -------------------------------------------------------------------

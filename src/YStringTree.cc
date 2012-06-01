@@ -66,7 +66,7 @@ YStringTree::addBranch( const string &		content,
 			YStringTreeItem * 	parent )
 {
     YStringTreeItem * node = 0;
-    
+
     if ( ! parent )
 	parent = _root;
 
@@ -146,7 +146,7 @@ YStringTree::completePath( const YStringTreeItem * item,
 			   bool startWithDelimiter )
 {
     string path;
-    
+
     if ( item )
     {
 	path = translated ? item->value().trans() : item->value().orig();
@@ -156,11 +156,11 @@ YStringTree::completePath( const YStringTreeItem * item,
 	    string parentPath = translated ?
 		item->parent()->value().translation() :
 		item->parent()->value().orig();
-	    
+
 	    path = parentPath + delimiter + path;
 	    item = item->parent();
 	}
-	    
+
     }
 
     if ( startWithDelimiter )
@@ -177,14 +177,14 @@ YStringTree::path( const YStringTreeItem * item,
 {
     if ( ! item )
 	return YTransText( "", "" );
-    
+
     YTransText path = item->value();
 
     while ( item->parent() && item->parent() != _root )
     {
 	path.setOrig       ( item->parent()->value().orig()  + delimiter + path.orig() );
 	path.setTranslation( item->parent()->value().trans() + delimiter + path.trans() );
-	    
+
 	item = item->parent();
     }
 
@@ -230,9 +230,3 @@ YStringTree::logBranch( YStringTreeItem * branch, string indentation )
 	printf( "%s<NULL>\n", indentation.c_str() );
     }
 }
-
-
-
-
-
-

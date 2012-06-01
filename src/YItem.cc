@@ -46,4 +46,3 @@ with this program; if not, write to the Free Software Foundation, Inc.,
  * No item will ever be added to this collection.
  **/
 YItemCollection YItem::_noChildren;
-

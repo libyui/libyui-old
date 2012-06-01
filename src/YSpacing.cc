@@ -49,7 +49,7 @@ struct YSpacingPrivate
 	: dim( dim )
 	, size( size )
 	{}
-    
+
     YUIDimension	dim;
     int			size;
 };

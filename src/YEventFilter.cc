@@ -49,7 +49,7 @@ struct YEventFilterPrivate
     YEventFilterPrivate( YDialog * dialog )
 	: dialog( dialog )
 	{}
-    
+
     YDialog * dialog;
 };
 

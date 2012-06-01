@@ -73,4 +73,3 @@ public:
 
 
 #endif // YReplacePoint_h
-

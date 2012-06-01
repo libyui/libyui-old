@@ -34,4 +34,3 @@ SelectionBox3_many_items_LDADD	= -L$(top_srcdir)/src -lyui
 
 Table_many_items_SOURCES	= Table-many-items.cc
 Table_many_items_LDADD		= -L$(top_srcdir)/src -lyui
-

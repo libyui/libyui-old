@@ -87,13 +87,13 @@ const YPropertySet &
 YFrame::propertySet()
 {
     static YPropertySet propSet;
-    
+
     if ( propSet.isEmpty() )
     {
 	/*
 	 * @property string  Label	the text on the frame
 	 */
-	
+
 	propSet.add( YProperty( YUIProperty_Label,	YStringProperty	) );
 	propSet.add( YWidget::propertySet() );
     }
@@ -112,7 +112,7 @@ YFrame::setProperty( const string & propertyName, const YPropertyValue & val )
     {
 	return YWidget::setProperty( propertyName, val );
     }
-    
+
     return true; // success -- no special processing necessary
 }
 
@@ -128,4 +128,3 @@ YFrame::getProperty( const string & propertyName )
 	return YWidget::getProperty( propertyName );
     }
 }
-

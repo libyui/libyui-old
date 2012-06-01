@@ -60,7 +60,7 @@ struct YLabelPrivate
 	, isOutputField( isOutputField )
 	, useBoldFont( false )
 	{}
-    
+
     string	text;
     bool	isHeading;
     bool	isOutputField;
@@ -125,7 +125,7 @@ const YPropertySet &
 YLabel::propertySet()
 {
     static YPropertySet propSet;
-    
+
     if ( propSet.isEmpty() )
     {
 	/*
@@ -133,7 +133,7 @@ YLabel::propertySet()
 	 * @property string Value 	the label text (alias for Label)
 	 * @property string Text	the label text (alias for Label)
 	 */
-	
+
 	propSet.add( YProperty( YUIProperty_Label,	YStringProperty	) );
 	propSet.add( YProperty( YUIProperty_Value,	YStringProperty	) );
 	propSet.add( YProperty( YUIProperty_Text,	YStringProperty	) );
@@ -179,7 +179,7 @@ YLabel::getProperty( const string & propertyName )
 string YLabel::debugLabel() const
 {
     string label = text();
-    
+
     if ( label.size() > MAX_DEBUG_LABEL_LEN )
     {
 	label.resize( MAX_DEBUG_LABEL_LEN );

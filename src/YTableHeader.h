@@ -82,7 +82,7 @@ public:
 
     /**
      * Return 'true' if this table header has a column no. 'column'
-     * (counting from 0 on).  
+     * (counting from 0 on).
      **/
     bool hasColumn( int column ) const;
 
@@ -98,7 +98,7 @@ public:
 
 
 private:
-    
+
     ImplPtr<YTableHeaderPrivate> priv;
 };
 

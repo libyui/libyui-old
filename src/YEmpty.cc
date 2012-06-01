@@ -72,4 +72,3 @@ int YEmpty::preferredHeight()
 {
     return 0;
 }
-

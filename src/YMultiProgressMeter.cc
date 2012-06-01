@@ -53,11 +53,11 @@ struct YMultiProgressMeterPrivate
 	, maxValues( maxValues )
     {
 	// Make currentValues as large as maxValues
-	// and initialize each element with 0 
-	currentValues = vector<float>( maxValues.size(), 0.0 );    
+	// and initialize each element with 0
+	currentValues = vector<float>( maxValues.size(), 0.0 );
     }
-    
-    
+
+
     YUIDimension	dim;
     vector<float>	maxValues;
     vector<float>	currentValues;
@@ -129,10 +129,10 @@ float YMultiProgressMeter::currentValue( int segment ) const
 void YMultiProgressMeter::setCurrentValue( int segment, float value )
 {
     YUI_CHECK_INDEX( segment, 0, (int) priv->currentValues.size() );
-	
+
     if ( value < 0.0 )			// Allow -1 etc. as marker values
 	value = 0.0;
-	
+
     if ( value > maxValue( segment ) ) // Don't complain (beware of rounding errors)
 	value = maxValue( segment );
 
@@ -195,5 +195,3 @@ YMultiProgressMeter::getProperty( const string & propertyName )
 	return YWidget::getProperty( propertyName );
     }
 }
-
-

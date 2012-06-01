@@ -141,7 +141,7 @@ public:
     virtual const YPropertySet & propertySet();
 
 protected:
-    
+
     /**
      * Return an iterator that points to the first RadioButton of this button
      * group.
@@ -150,10 +150,10 @@ protected:
      * of the group, so don't confuse this with YWidget::widgetsBegin().
      **/
     YRadioButtonListConstIterator radioButtonsBegin() const;
-    
+
     /**
      * Return an iterator that points behind the last RadioButton of this
-     * button group. 
+     * button group.
      **/
     YRadioButtonListConstIterator radioButtonsEnd() const;
 
@@ -162,7 +162,7 @@ protected:
      **/
     int radioButtonsCount() const;
 
-    
+
 private:
 
     ImplPtr<YRadioButtonGroupPrivate> priv;

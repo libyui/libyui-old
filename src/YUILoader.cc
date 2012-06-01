@@ -64,9 +64,9 @@ void YUILoader::loadUI( bool withThreads )
     {
 	string wantedGUI;
 
-	if ( haveQt && !wantGtk)	
+	if ( haveQt && !wantGtk)
 	   wantedGUI = YUIPlugin_Qt;
-	else if ( haveGtk && !wantQt )	
+	else if ( haveGtk && !wantQt )
 	   wantedGUI = YUIPlugin_Gtk;
 
 	try
@@ -78,15 +78,15 @@ void YUILoader::loadUI( bool withThreads )
 	{
 	    YUI_CAUGHT( ex );
 	}
-	
+
     }
 
     if ( isatty( STDOUT_FILENO ) )
-    { 
+    {
 	//
 	// NCurses UI
 	//
-	
+
 	try
 	{
 	    loadPlugin( YUIPlugin_NCurses, withThreads );

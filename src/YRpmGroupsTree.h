@@ -76,13 +76,13 @@ public:
      **/
     std::string rpmGroup( const YStringTreeItem * node )
 	{ return origPath( node, '/', false ); }
-    
+
     /**
      * Returns the complete translated RPM group tag string for 'node'.
      **/
     std::string translatedRpmGroup( const YStringTreeItem * node )
 	{ return translatedPath( node, '/', false ); }
-    
+
     /**
      * Add a predefined set of RPM groups
      **/

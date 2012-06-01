@@ -168,7 +168,7 @@ public:
      *
      * (1) This file name is only relevant as long as the standard logger
      *     function is used. Custom logger functions may or may not use this
-     *     file name. 
+     *     file name.
      *
      * (2) No attempt is made to do anything fancy with the log file like log
      *     file rotation when a certain file size is reached. Applications that
@@ -229,7 +229,7 @@ public:
     static YUIDebugLoggingEnabledFunction debugLoggingEnabledHook();
 
     /**
-     * Return the base name without path from a file name with path.  
+     * Return the base name without path from a file name with path.
      **/
     static string basename( const string & fileNameWithPath );
 

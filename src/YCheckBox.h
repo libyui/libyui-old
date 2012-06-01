@@ -63,7 +63,7 @@ protected:
      * Constructor.
      **/
     YCheckBox( YWidget * parent, const string & label );
-    
+
 public:
     /**
      * Destructor.
@@ -85,7 +85,7 @@ public:
      *
      * YCheckBox_dont_care	tri-state: CheckBox is greyed out,
      *				neither checked nor unchecked
-     * 
+     *
      * The user cannot set YCheckBox_dont_care directly. This status is always
      * only set from the outside, usually because a setting cannot be clearly
      * determined. For example, a checkbox
@@ -123,12 +123,12 @@ public:
      * Simplified access to tri-state ("don't care").
      **/
     bool dontCare() { return value() == YCheckBox_dont_care; }
-    
+
     /**
      * Simplified access to setting tri-state ("don't care").
      **/
     void setDontCare() { setValue( YCheckBox_dont_care ); }
-    
+
     /**
      * Get the label (the text on the CheckBox).
      **/

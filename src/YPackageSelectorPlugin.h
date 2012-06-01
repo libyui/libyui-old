@@ -72,7 +72,7 @@ public:
      * Derived classes need to implement this.
      *
      * This might return 0 if the plugin lib could not be loaded or if the
-     * appropriate symbol could not be located in the plugin lib. 
+     * appropriate symbol could not be located in the plugin lib.
      **/
     virtual YPackageSelector * createPackageSelector( YWidget * parent, long modeFlags = 0 ) = 0;
 };

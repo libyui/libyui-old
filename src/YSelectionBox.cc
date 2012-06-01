@@ -52,7 +52,7 @@ struct YSelectionBoxPrivate
 	: shrinkable( false )
 	, immediateMode( false )
 	{}
-    
+
     bool shrinkable;
     bool immediateMode;
 };
@@ -166,4 +166,3 @@ YSelectionBox::getProperty( const string & propertyName )
 	return YWidget::getProperty( propertyName );
     }
 }
-

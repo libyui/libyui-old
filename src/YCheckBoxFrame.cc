@@ -155,7 +155,7 @@ YCheckBoxFrame::setProperty( const string & propertyName, const YPropertyValue &
     {
 	return YWidget::setProperty( propertyName, val );
     }
-    
+
     return true; // success -- no special processing necessary
 }
 
@@ -172,4 +172,3 @@ YCheckBoxFrame::getProperty( const string & propertyName )
 	return YWidget::getProperty( propertyName );
     }
 }
-

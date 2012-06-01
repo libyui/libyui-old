@@ -291,7 +291,7 @@ public:
     /**
      * Relax the sanity check done in sanityCheck(): Do not enforce that there
      * has to be a YOKButton and a YCancelButton if there is more than one
-     * button. 
+     * button.
      *
      * In very rare cases, it might be neccessary to have a less stringent
      * sanity check: There are some very few legitimate cases for having a

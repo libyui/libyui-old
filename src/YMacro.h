@@ -108,14 +108,14 @@ public:
 
     /**
      * Return 'true' if a macro is currently being played.
-     **/ 
+     **/
     static bool playing();
 
     /**
      * Return the current macro recorder or 0 if there is none.
      **/
     static YMacroRecorder * recorder() { return _recorder; }
-    
+
     /**
      * Return the current macro player or 0 if there is none.
      **/

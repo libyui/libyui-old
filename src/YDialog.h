@@ -315,7 +315,7 @@ public:
      * highlighted widget. 0 means 'unhighlight the last highlighted widget,
      * but don't highlight any other'.
      *
-     * This default implementation does nothing. 
+     * This default implementation does nothing.
      **/
     virtual void highlight( YWidget * child ) {}
 

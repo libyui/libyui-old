@@ -50,7 +50,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 class YMacroPlayer
 {
     friend class YMacro;
-    
+
 protected:
     /**
      * Constructor
@@ -75,7 +75,7 @@ public:
 
     /**
      * Return 'true' if a macro is currently being played.
-     **/ 
+     **/
     virtual bool playing() const = 0;
 };
 

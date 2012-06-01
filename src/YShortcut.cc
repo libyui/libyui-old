@@ -344,7 +344,7 @@ YItemShortcut::setShortcut( char newShortcut )
 	if ( pos == string::npos )
 	{
 	    yuiError() << "Can't find '<< " << newShortcut
-		       << "' in item " 
+		       << "' in item "
 		       << " \"" << cleanShortcutString() << "\""
 		       << endl;
 
@@ -363,7 +363,5 @@ YItemShortcut::setShortcut( char newShortcut )
     _shortcutStringCached	= false;
     _cleanShortcutStringCached	= false;
     _shortcut = newShortcut;
-     
+
 }
-
-

@@ -207,7 +207,7 @@ public:
      **/
     bool hasChildren() const
 	{ return childrenManager()->hasChildren(); }
-    
+
     /**
      * Returns the first child or 0 if there is none.
      * Useful mostly for children managers that handle only one child.
@@ -481,7 +481,7 @@ public:
     void setNotifyContextMenu( bool notifyContextMenu = true );
 
     /**
-     * Returns whether the widget will send an event when the user 
+     * Returns whether the widget will send an event when the user
      * clicks selects the context menu e.g. via right click.
      **/
     bool notifyContextMenu() const;

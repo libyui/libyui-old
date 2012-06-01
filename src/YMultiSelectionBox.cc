@@ -53,7 +53,7 @@ struct YMultiSelectionBoxPrivate
     YMultiSelectionBoxPrivate()
 	: shrinkable( false )
 	{}
-    
+
     bool shrinkable;
 };
 
@@ -65,7 +65,7 @@ YMultiSelectionBox::YMultiSelectionBox( YWidget * parent, const string & label )
     , priv( new YMultiSelectionBoxPrivate )
 {
     YUI_CHECK_NEW( priv );
-    
+
     setDefaultStretchable( YD_HORIZ, true );
     setDefaultStretchable( YD_VERT,  true );
 
@@ -157,4 +157,3 @@ YMultiSelectionBox::saveUserInput( YMacroRecorder *macroRecorder )
     macroRecorder->recordWidgetProperty( this, YUIProperty_CurrentItem   );
     macroRecorder->recordWidgetProperty( this, YUIProperty_SelectedItems );
 }
-

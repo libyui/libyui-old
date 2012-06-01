@@ -226,5 +226,3 @@ YUIBadPropertyArgException::dumpOn( ostream & str ) const
 	       << msg()
 	       << endl;
 }
-
-

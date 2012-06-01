@@ -217,7 +217,7 @@ public:
      * Reimplemented from YWidget.
      **/
     virtual const YPropertySet & propertySet();
-    
+
     /**
      * The name of the widget property that will return user input.
      * Inherited from YWidget.

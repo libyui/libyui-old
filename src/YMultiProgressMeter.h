@@ -92,7 +92,7 @@ public:
      * Destructor.
      **/
     virtual ~YMultiProgressMeter();
-    
+
     /**
      * Return a descriptive name of this widget class for logging,
      * debugging etc.
@@ -101,14 +101,14 @@ public:
 
     /**
      * Return the orientation of the MultiProgressBar.
-     **/ 
+     **/
     YUIDimension dimension() const;
-    
+
     /**
      * Return 'true' if the orientation is horizontal.
      **/
     bool horizontal() const;
-    
+
     /**
      * Return 'true' if the orientation is vertical.
      **/
@@ -171,7 +171,7 @@ public:
      * Reimplemented from YWidget.
      **/
     virtual const YPropertySet & propertySet();
-    
+
     /**
      * Notification that values have been updated and the widget needs to be
      * redisplayed. Derived classes need to reimplement this.
@@ -182,7 +182,7 @@ public:
 private:
 
     ImplPtr<YMultiProgressMeterPrivate> priv;
-    
+
 };
 
 

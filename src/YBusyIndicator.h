@@ -61,7 +61,7 @@ public:
      * Destructor.
      **/
     virtual ~YBusyIndicator();
-    
+
     /**
      * Returns a descriptive name of this widget class for logging,
      * debugging etc.
@@ -103,7 +103,7 @@ public:
 
     /**
      * Send a keep alive message to prevent BusyIndicator from changing
-     * to 'stalled' state. 
+     * to 'stalled' state.
      *
      * Derived classes should reimplement this, but they should call this
      * base class method at the end of the overloaded function.

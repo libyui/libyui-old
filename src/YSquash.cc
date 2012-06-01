@@ -45,16 +45,16 @@ struct YSquashPrivate
 {
     /**
      * Constructor.
-     **/ 
+     **/
     YSquashPrivate( bool horSquash, bool vertSquash )
     {
 	squash.hor  = horSquash;
 	squash.vert = vertSquash;
     }
-    
+
     YBothDim<bool> squash;
 };
-    
+
 
 YSquash::YSquash( YWidget * parent, bool horSquash, bool vertSquash )
     : YSingleChildContainerWidget( parent )
@@ -86,7 +86,7 @@ bool YSquash::stretchable( YUIDimension dim ) const
 {
     if ( ! hasChildren() )
 	return false;
-    
+
     return ! priv->squash[ dim ] && firstChild()->stretchable( dim );
 }
 

@@ -136,9 +136,9 @@ public:
      **/
     static void ensureUICreated();
 
-    
+
 protected:
-    
+
     /**
      * Create the widget factory that provides all the createXY() methods for
      * standard (mandatory, i.e. non-optional) widgets.
@@ -163,7 +163,7 @@ protected:
      **/
     virtual YApplication * createApplication() = 0;
 
-    
+
 public:
 
     /**
@@ -374,7 +374,7 @@ protected:
     bool _eventsBlocked;
 
 private:
-    
+
     static YUI * _ui;
 };
 

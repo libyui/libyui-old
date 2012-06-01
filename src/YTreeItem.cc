@@ -122,4 +122,3 @@ void YTreeItem::setOpen( bool open )
 {
     _isOpen = open;
 }
-

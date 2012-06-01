@@ -153,7 +153,7 @@ public:
     // Children management stubs.
     //
     // Derived classes that can handle child items should reimplement those
-    // functions.  
+    // functions.
     // The following default implementations don't do anything with children;
     // they act as if this item didn't have any children.
     //

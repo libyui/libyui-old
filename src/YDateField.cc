@@ -75,4 +75,3 @@ YDateField::~YDateField()
  * @property string  Value	the date (the field's contents) as "YYYY-MM-DD"
  * @property string  Label	caption above the input field
  */
-

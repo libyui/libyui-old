@@ -256,7 +256,7 @@ public:
     /**
      * Set the current product name ("openSUSE", "SLES", ...).
      * This name will be expanded in help texts when the &product; entity is
-     * used. 
+     * used.
      *
      * Derived classes can overwrite this method, but they should call this
      * base class method in the new implementation.
@@ -322,7 +322,7 @@ public:
      **/
     virtual void beep() {}
 
-    
+
     //
     // NCurses (text mode) specific
     //

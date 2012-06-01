@@ -212,12 +212,12 @@ protected:
      * Save the widget's user input to a macro recorder.
      *
      * Reimplemented from YWidget because only radio buttons that are on (no
-     * more than one per radio box) are recorded. 
+     * more than one per radio box) are recorded.
      **/
     virtual void saveUserInput( YMacroRecorder *macroRecorder );
 
 private:
-    
+
     ImplPtr<YRadioButtonPrivate> priv;
 };
 

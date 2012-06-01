@@ -61,7 +61,7 @@ public:
      * Destructor.
      **/
     virtual ~YFrame();
-    
+
     /**
      * Returns a descriptive name of this widget class for logging,
      * debugging etc.
@@ -72,7 +72,7 @@ public:
      * Change the frame label.
      *
      * Derived classes should overwrite this, but call this base class function
-     * in the overwritten function. 
+     * in the overwritten function.
      **/
     virtual void setLabel( const string & newLabel );
 
@@ -114,7 +114,7 @@ public:
      **/
     virtual const YPropertySet & propertySet();
 
-    
+
 private:
 
     ImplPtr<YFramePrivate> priv;
@@ -122,4 +122,3 @@ private:
 
 
 #endif // YFrame_h
-

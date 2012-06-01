@@ -65,7 +65,7 @@ public:
      * Destructor.
      **/
     virtual ~YDumbTab();
-    
+
     /**
      * Returns a descriptive name of this widget class for logging,
      * debugging etc.
@@ -84,12 +84,12 @@ public:
 
     /**
      * Notification that any shortcut of any item was changed by the shortcut
-     * conflict manager. 
+     * conflict manager.
      *
      * Derived classes should reimplement this.
      **/
     virtual void shortcutChanged() {}
-    
+
     /**
      * Set a property.
      * Reimplemented from YWidget.
@@ -154,16 +154,16 @@ public:
 
     /**
      * Descriptive label for debugging. Derived from this widget's only child
-     * (if there is one). 
+     * (if there is one).
      **/
     virtual string debugLabel() const;
-    
+
 private:
 
     // Disable unwanted base class methods
     string label() const;
     virtual void setLabel( const string & newLabel ) {};
-    
+
 
     ImplPtr<YDumbTabPrivate> priv;
 };

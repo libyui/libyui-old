@@ -27,7 +27,7 @@ YItemCollection pizzaItems()
 {
     YItemCollection items;
     yuiMilestone() << "Creating item collection" << endl;
-    
+
     for ( int i=1; i<= ITEM_COUNT; i++ )
     {
 	char name[80];
@@ -36,7 +36,7 @@ YItemCollection pizzaItems()
     }
 
     yuiMilestone() << "Item collection created" << endl;
-    
+
     return items;
 }
 
@@ -188,7 +188,7 @@ int main( int argc, char **argv )
 		      event->widget() == valueButton )
 	    {
 		yuiMilestone() << "Event widget: " << event->widget() << endl;
-		
+
 		YItem * item = selBox->selectedItem();
 
 		if ( item )

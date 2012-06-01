@@ -30,19 +30,19 @@ YItemCollection pizzaItems()
 {
     YItemCollection items;
     yuiMilestone() << "Creating item collection" << endl;
-    
+
     for ( int i=1; i<= ITEM_COUNT; i++ )
     {
 	char no[10];
 	sprintf( no, "%04d", i );
-	
+
 	char name[80];
 	sprintf( name, "Pizza #%05d", i );
 	items.push_back( new YTableItem( no, name ) );
     }
 
     yuiMilestone() << "Item collection created" << endl;
-    
+
     return items;
 }
 
@@ -86,7 +86,7 @@ int main( int argc, char **argv )
     YUI_CHECK_NEW( header );
     header->addColumn( "No", YAlignEnd );
     header->addColumn( "Dish" 	);
-    
+
     YTable * table = YUI::widgetFactory()->createTable( minSize, header );
     table->addItems( pastaItems() );
 
@@ -159,12 +159,12 @@ int main( int argc, char **argv )
 	    {
 		table->deleteAllItems();
 		YItemCollection items = pizzaItems();
-		
+
 		yuiMilestone() << "Adding pizza items..." << endl;
 		time_t startTime = time(0);
 		table->addItems( items );
 		time_t elapsed = time(0) - startTime;
-		
+
 		yuiMilestone() << "Pizza items added; elapsed time: " << elapsed << " sec" << endl;
 	    }
 	    else if ( event->widget() == clearButton )
@@ -205,7 +205,7 @@ int main( int argc, char **argv )
 		      event->widget() == valueButton )
 	    {
 		yuiMilestone() << "Event widget: " << event->widget() << endl;
-		
+
 		YItem * item = table->selectedItem();
 
 		if ( item )

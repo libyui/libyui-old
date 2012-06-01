@@ -123,7 +123,7 @@ public:
      * base class function in the overloaded function.
      **/
     virtual void setInvertAutoEnable( bool invertAutoEnable );
-    
+
     /**
      * Handle enabling/disabling of child widgets based on 'isChecked' (the
      * current status of the check box) and autoEnable() and
@@ -198,4 +198,3 @@ private:
 
 
 #endif // YCheckBoxFrame_h
-

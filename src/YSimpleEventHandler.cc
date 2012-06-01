@@ -175,7 +175,7 @@ void YSimpleEventHandler::deleteEvent( YEvent * event )
 {
     if ( event == _pendingEvent )
 	_pendingEvent = 0;
-    
+
     if ( event )
     {
 	if ( event->isValid() )

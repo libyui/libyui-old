@@ -163,4 +163,3 @@ YPropertySet::propertiesEnd() const
 {
     return _properties.end();
 }
-

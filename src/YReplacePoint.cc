@@ -51,5 +51,3 @@ void YReplacePoint::showChild()
 {
     // NOP
 }
-
-

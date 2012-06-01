@@ -60,7 +60,7 @@ YUIPlugin::YUIPlugin( const char * pluginLibBaseName )
     if ( ! _pluginLibHandle )
     {
 	_errorMsg = dlerror();
-	
+
 	yuiError() << "Could not load UI plugin \"" << pluginLibBaseName
 		   << "\": " << _errorMsg
 		   << endl;
@@ -71,7 +71,7 @@ YUIPlugin::YUIPlugin( const char * pluginLibBaseName )
 YUIPlugin::~YUIPlugin()
 {
     // This intentionally does NOT call unload(): This would be
-    // counterproductive for almost all use cases of this class. 
+    // counterproductive for almost all use cases of this class.
 }
 
 
@@ -101,12 +101,12 @@ void * YUIPlugin::locateSymbol( const char * symbol )
 {
     if ( ! _pluginLibHandle )
 	return 0;
-    
+
     void * addr = dlsym( _pluginLibHandle, symbol );
 
     if ( ! addr )
     {
-	yuiError() << "Could not locate symbol \"" << symbol 
+	yuiError() << "Could not locate symbol \"" << symbol
 		   << "\" in " << pluginLibFullPath()
 		   << endl;
     }
@@ -131,4 +131,3 @@ string YUIPlugin::errorMsg() const
 {
     return _errorMsg;
 }
-

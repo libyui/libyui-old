@@ -66,7 +66,7 @@ public:
      * Destructor.
      **/
     virtual ~YTimeField();
-    
+
     /**
      * Returns a descriptive name of this widget class for logging,
      * debugging etc.
@@ -74,7 +74,7 @@ public:
     virtual const char * widgetClass() const { return "YTimeField"; }
 
 private:
-    
+
     ImplPtr<YTimeFieldPrivate> priv;
 };
 

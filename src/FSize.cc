@@ -125,7 +125,7 @@ std::string FSize::form( const Unit unit_r, unsigned fw, unsigned prec, const bo
 	    fw, prec, ( double( _size ) / factor( unit_r ) ) );
 
   string ret( buffer );
-  
+
   if ( showunit )
     ret += string(" ") + unit( unit_r );
 
@@ -145,4 +145,3 @@ std::string FSize::asString() const
 {
   return form();
 }
-

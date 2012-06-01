@@ -76,7 +76,7 @@ public:
      * Destructor.
      **/
     virtual ~YContextMenu();
-     
+
     /**
      * Returns a descriptive name of this widget class for logging,
      * debugging etc.
@@ -169,7 +169,7 @@ protected:
      * Returns 0 if there is no such item.
      **/
     YMenuItem * findMenuItem( int index );
-    
+
     /**
      * Recursively find the first menu item with the specified index
      * from iterator 'begin' to iterator 'end'.
@@ -180,7 +180,7 @@ protected:
 
     /**
      * Alias for findMenuItem(). Reimplemented to ensure consistent behaviour
-     * with YSelectionWidget::itemAt(). 
+     * with YSelectionWidget::itemAt().
      **/
     YMenuItem * itemAt( int index )
 	{ return findMenuItem( index ); }

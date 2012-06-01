@@ -75,7 +75,7 @@ public:
      * Returns the YWidget this shortcut data belong to.
      **/
     YWidget * widget() const { return _widget; }
-    
+
     /**
      * Returns the textual representation of the widget class of the widget
      * this shortcut data belongs to.
@@ -162,7 +162,7 @@ public:
      * as a shortcut character.
      **/
     bool hasValidShortcutChar();
-    
+
     /**
      * Static function: Returns the character used for marking keyboard
      * shortcuts.
@@ -204,7 +204,7 @@ public:
      **/
     static string getShortcutString( const YWidget * widget );
 
-    
+
 protected:
 
     /**
@@ -212,20 +212,20 @@ protected:
      * that contains "&" to designate a shortcut.
      **/
     virtual string getShortcutString();
-    
+
 
     // Data members
-    
+
     YWidget *	_widget;
     string	_shortcutString;
     bool	_shortcutStringCached;
-    
+
     string	_cleanShortcutString;
     bool	_cleanShortcutStringCached;
-    
+
     int		_preferred;	// int to enable initializing with invalid char (-1)
     int		_shortcut;	// int to enable initializing with invalid char (-1)
-    
+
     bool	_conflict;
     bool	_isButton;
     bool	_isWizardButton;

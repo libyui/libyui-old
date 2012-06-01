@@ -709,7 +709,7 @@ private:
  *   manager's children list.
  *
  * - Child widget of wrong type added to a container widget, e.g., anything
- *   other than a YPushButton added to a YButtonBox.  
+ *   other than a YPushButton added to a YButtonBox.
  **/
 template<class YWidget> class YUIInvalidChildException: public YUIException
 {
@@ -893,7 +893,7 @@ class YUICantLoadAnyUIException: public YUIException
 {
 public:
     YUICantLoadAnyUIException()
-	: YUIException( "No $DISPLAY and stdout is not a tty" ) 
+	: YUIException( "No $DISPLAY and stdout is not a tty" )
 	{}
 
     virtual ~YUICantLoadAnyUIException() throw()

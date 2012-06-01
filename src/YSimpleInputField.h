@@ -62,7 +62,7 @@ public:
      * Destructor.
      **/
     virtual ~YSimpleInputField();
-    
+
     /**
      * Get the current value (the text entered by the user or set from the
      * outside) of this input field.
@@ -144,7 +144,7 @@ public:
 
 
 private:
-    
+
     ImplPtr<YSimpleInputFieldPrivate> priv;
 };
 

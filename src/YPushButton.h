@@ -141,7 +141,7 @@ public:
      **/
     virtual void setFunctionKey( int fkey_no );
 
-    
+
     /**
      * Returns 'true' if this is a "Help" button.
      *

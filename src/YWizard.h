@@ -131,7 +131,7 @@ public:
      **/
     virtual const char * widgetClass() const { return "YWizard"; }
 
-    
+
     //
     // Wizard basics
     //
@@ -141,7 +141,7 @@ public:
      * YWizardMode_Standard, YWizardMode_Steps, YWizardMode_Tree
      **/
     YWizardMode wizardMode() const;
-    
+
     /**
      * Return the wizard buttons or 0 if there is no such button.
      *
@@ -176,7 +176,7 @@ public:
      * The default implementation simply calls button->setLabel( newLabel ).
      **/
     virtual void setButtonLabel( YPushButton * button, const string & newLabel );
-    
+
     /**
      * Set the help text.
      **/
@@ -198,11 +198,11 @@ public:
      **/
     virtual void setDialogHeading( const string & headingText ) = 0;
 
-    
+
     //
     // Steps handling
     //
-    
+
     /**
      * Add a step for the steps panel on the side bar.
      * This only adds the step to the internal list of steps.
@@ -234,11 +234,11 @@ public:
      **/
     virtual void updateSteps() = 0;
 
-    
+
     //
     // Tree handling
     //
-    
+
     /**
      * Add a tree item. If "parentID" is an empty string, it will be a root
      * item. 'text' is the text that will be displayed in the tree, 'id' the ID
@@ -265,11 +265,11 @@ public:
      **/
     virtual void deleteTreeItems() = 0;
 
-    
+
     //
     // Menu handling
     //
-    
+
     /**
      * Add a menu to the menu bar. If the menu bar is not visible yet, it will
      * be made visible. 'text' is the user-visible text for the menu bar
@@ -315,7 +315,7 @@ public:
     //
     // Misc
     //
-    
+
     /**
      * Hide an existing "Release Notes" button.
      **/
@@ -338,7 +338,7 @@ public:
     //
     // Property handling
     //
-    
+
     /**
      * Get a property.
      * Reimplemented from YWidget.

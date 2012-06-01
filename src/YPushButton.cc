@@ -60,7 +60,7 @@ struct YPushButtonPrivate
 	, isHelpButton( false )
 	, role( YCustomButton )
 	{}
-    
+
     string	label;
     bool	isDefaultButton;
     bool	setDefaultButtonRecursive;
@@ -83,7 +83,7 @@ YPushButton::YPushButton( YWidget * parent, const string & label )
 YPushButton::~YPushButton()
 {
     YDialog * dialog = findDialog();
-    
+
     if ( dialog && dialog->defaultButton() == this )
     {
 	dialog->setDefaultButton( 0 );
@@ -117,11 +117,11 @@ void YPushButton::setDefaultButton( bool isDefaultButton )
     {
 	// Prevent endless recursion if dialog->setDefaultButton()
 	// calls this function again
-	
+
 	priv->setDefaultButtonRecursive = true;
 
 	YDialog * dialog = findDialog();
-    
+
 	if ( dialog )
 	{
 	    if ( isDefaultButton )
@@ -132,7 +132,7 @@ void YPushButton::setDefaultButton( bool isDefaultButton )
 		    dialog->setDefaultButton( 0 );
 	    }
 	}
-	
+
 	priv->setDefaultButtonRecursive = false;
     }
 }
@@ -189,7 +189,7 @@ void YPushButton::setFunctionKey( int fkey_no )
 {
     YWidget::setFunctionKey( fkey_no );
     YButtonRole oldRole = priv->role;
-    
+
 	if (priv->role == YCustomButton) // otherwise role was already determined
 	{
 		switch ( functionKey() )	// base class method might have changed it
@@ -203,7 +203,7 @@ void YPushButton::setFunctionKey( int fkey_no )
 		{
 			yuiMilestone() << "Guessing button role " << priv->role
 			       << " for " << this
-			       << " from function key F" << functionKey() 
+			       << " from function key F" << functionKey()
 			       << endl;
 		}
 	}

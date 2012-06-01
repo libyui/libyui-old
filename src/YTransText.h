@@ -96,7 +96,7 @@ public:
      * Return the translation.
      **/
     const std::string & translation()	const { return _translation;	}
-    
+
     /**
      * Return the translation.
      * ( alias, just as a shortcut )
@@ -125,19 +125,19 @@ public:
      **/
     bool operator> ( const YTransText & other ) const
 	{ return _translation > other.translation(); }
-    
+
     /**
      * operator== : Compares translations.
      **/
     bool operator== ( const YTransText & other ) const
 	{ return _translation == other.translation(); }
-    
-    
+
+
 private:
-    
+
     std::string	_orig;
     std::string	_translation;
-    
+
 };
 
 

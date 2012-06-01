@@ -254,11 +254,11 @@ struct YPerThreadLogInfo
 	return pthread_equal( otherThreadHandle, this->threadHandle );
     }
 
-    
+
     //
     // Data members
     //
-    
+
     pthread_t		threadHandle;
     YUILogBuffer	logBuffer;
     ostream 		logStream;
@@ -371,7 +371,7 @@ YUILog::setLogFileName( const string & logFileName )
 	logStream.close();
 
     bool success = true;
-    
+
     if ( logFileName.empty() ) // log to stderr again
     {
 	stdLogStream = &cerr;
@@ -532,12 +532,12 @@ string
 YUILog::basename( const string & fileNameWithPath )
 {
     std::size_t lastSlashPos = fileNameWithPath.find_last_of( '/' );
-    
+
     string fileName =
 	( lastSlashPos == string::npos ) ?
 	fileNameWithPath :
 	fileNameWithPath.substr( lastSlashPos+1 );
-    
+
     return fileName;
 }
 
@@ -558,10 +558,10 @@ stdLogger( YUILogLevel_t	logLevel,
 	case YUI_LOG_DEBUG:
 	    if ( ! YUILog::debugLoggingEnabled() )
 		return;
-	    
+
 	    logLevelStr = "dbg";
 	    break;
-	    
+
 	case YUI_LOG_MILESTONE:	logLevelStr = "_M_";	break;
 	case YUI_LOG_WARNING:	logLevelStr = "WRN";	break;
 	case YUI_LOG_ERROR:	logLevelStr = "ERR";	break;

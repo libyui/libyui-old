@@ -152,7 +152,7 @@ YDialogSpy::YDialogSpy( YDialog * targetDialog )
     priv->spyDialog      = fac->createPopupDialog();
     YAlignment * diaMin	 = fac->createMinHeight( priv->spyDialog, DIA_HEIGHT );
     YLayoutBox * vbox    = fac->createVBox( diaMin );
-    
+
     YAlignment * minSize = fac->createMinSize( vbox, TREE_WIDTH, TREE_HEIGHT );
     minSize->setWeight( YD_VERT, TREE_VWEIGHT );
     priv->widgetTree     = fac->createTree( minSize, "Widget &Tree", false );
@@ -203,10 +203,10 @@ void YDialogSpy::showProperties()
 	header->addColumn( "Property" );
 	header->addColumn( "Value" );
 	header->addColumn( "Type" );
-	
+
 	priv->propTable = fac->createTable( minSize, header );
 	// priv->propTable->setKeepSorting( true );
-	
+
 	priv->propButton->setLabel( "<<< &Properties" );
 	priv->propReplacePoint->showChild();
 	priv->spyDialog->recalcLayout();
@@ -222,7 +222,7 @@ void YDialogSpy::hideProperties()
 	priv->propReplacePoint->setWeight( YD_VERT, 0 );
 	priv->propTable = 0;
 	YUI::widgetFactory()->createEmpty( priv->propReplacePoint );
-	
+
 	priv->propButton->setLabel( "&Properties >>>" );
 	priv->propReplacePoint->showChild();
 	priv->spyDialog->recalcLayout();
@@ -242,7 +242,7 @@ void YDialogSpy::showProperties( YWidget * widget )
 	YPropertySet propSet = widget->propertySet();
 	YItemCollection items;
 	items.reserve( propSet.size() );
-	
+
 	for ( YPropertySet::const_iterator it = propSet.propertiesBegin();
 	      it != propSet.propertiesEnd();
 	      ++it )
@@ -273,7 +273,7 @@ void YDialogSpy::showProperties( YWidget * widget )
 		    propValStr = "???";
 		    break;
 	    }
-	    
+
 	    YTableItem * item = new YTableItem( prop.name(), propValStr, prop.typeAsStr() );
 	    YUI_CHECK_NEW( item );
 	    items.push_back( item );
@@ -331,12 +331,12 @@ void YDialogSpy::exec()
 		    updateProp = true;
 		}
 	    }
-	    
+
 	    if ( event->widget() == priv->widgetTree || updateProp )
 	    {
 		YWidgetTreeItem * item = (YWidgetTreeItem *) priv->widgetTree->selectedItem();
 		yuiDebug() << "Highlighting " << item << endl;
-		
+
 		if ( item )
 		{
 		    priv->targetDialog->highlight( item->widget() );

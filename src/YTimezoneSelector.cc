@@ -112,4 +112,3 @@ YTimezoneSelector::getProperty( const string & propertyName )
     if ( propertyName == YUIProperty_CurrentItem )    return YPropertyValue( currentZone() );
     return YWidget::getProperty( propertyName );
 }
-

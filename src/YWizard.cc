@@ -110,7 +110,7 @@ void
 YWizard::setButtonLabel( YPushButton * button, const string & label )
 {
     // FIXME: Throw exception? ( YUI_CHECK_PTR() )
-    
+
     if ( button )
 	button->setLabel( label );
     else

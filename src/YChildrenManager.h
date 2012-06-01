@@ -67,9 +67,9 @@ public:
      **/
     virtual ~YChildrenManager() {}
 
-    
+
     typedef std::list<T *> ChildrenList;
-    
+
     /**
      * Check if there are any children.
      **/
@@ -102,7 +102,7 @@ public:
      **/
     typename ChildrenList::const_reverse_iterator rbegin() const
 	{ return _children.rbegin(); }
-    
+
     /**
      * Return a reverse iterator that points before the first child.
      **/
@@ -140,7 +140,7 @@ public:
 
     /**
      * Remove all children. This only removes the children from the children
-     * manager's list; it does not delete them. 
+     * manager's list; it does not delete them.
      **/
     virtual void clear()
 	{ _children.clear(); }
@@ -176,7 +176,7 @@ protected:
 template<class T> class YSingleChildManager: public YChildrenManager<T>
 {
 public:
-    
+
     YSingleChildManager( T * containerParent )
 	: YChildrenManager<T>( containerParent )
 	{}

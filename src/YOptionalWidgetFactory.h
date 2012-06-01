@@ -141,7 +141,7 @@ public:
 
     virtual bool                        hasTimezoneSelector();
     virtual YTimezoneSelector *         createTimezoneSelector( YWidget * parent,
-								const string & pixmap, 
+								const string & pixmap,
 								const map<string,string> & timezones );
 
     virtual bool			hasGraph();

@@ -56,7 +56,7 @@ struct YInputFieldPrivate
 	, shrinkable( false )
 	, inputMaxLength( -1 )
 	{}
-    
+
     string 	label;
     bool	passwordMode;
     bool	shrinkable;

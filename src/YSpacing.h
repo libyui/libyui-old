@@ -75,7 +75,7 @@ public:
      * Destructor.
      **/
     virtual ~YSpacing();
-    
+
     /**
      * Return a descriptive name of this widget class for logging,
      * debugging etc.
@@ -118,7 +118,7 @@ public:
      **/
     virtual int preferredHeight();
 
-    
+
 private:
 
     ImplPtr<YSpacingPrivate> priv;

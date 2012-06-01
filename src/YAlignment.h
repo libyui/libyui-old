@@ -78,9 +78,9 @@ public:
 
     /**
      * Return the alignment in the specified dimension.
-     **/ 
+     **/
     YAlignmentType alignment( YUIDimension dim ) const;
-    
+
     /**
      * Return the left margin in pixels, the distance between the left edge of
      * this alignment and the left edge of the child widget.
@@ -210,9 +210,9 @@ public:
     /**
      * Set the current size and move the child widget according to its
      * alignment.
-     * 
+     *
      * Derived classes should reimplement this, but call this base class
-     * function in their own implementation. 
+     * function in their own implementation.
      **/
     virtual void setSize( int newWidth, int newHeight );
 
@@ -224,4 +224,3 @@ protected:
 
 
 #endif // YAlignment_h
-

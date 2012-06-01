@@ -223,7 +223,7 @@ public:
     virtual void saveUserInput( YMacroRecorder *macroRecorder );
 
 private:
-    
+
     ImplPtr<YInputFieldPrivate> priv;
 };
 

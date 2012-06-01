@@ -53,5 +53,3 @@ YPackageSelector::YPackageSelector( YWidget * parent, long modeFlags )
     setDefaultStretchable( YD_HORIZ, true );
     setDefaultStretchable( YD_VERT,  true );
 }
-
-

@@ -138,7 +138,7 @@ public:
 
 
 protected:
-    
+
     /**
      * Set the dialog this event belongs to.
      **/
@@ -149,7 +149,7 @@ protected:
      * YDialog::deleteEvent(). The associated dialog will take care of this
      * event and delete it when appropriate.
      *
-     * This desctructor is virtual to force a polymorph object 
+     * This desctructor is virtual to force a polymorph object
      * so dynamic_cast<> can be used.
      **/
     virtual ~YEvent();
@@ -160,7 +160,7 @@ protected:
     void invalidate();
 
 private:
-    
+
     friend void YDialog::deleteEvent( YEvent * event );
     friend void YSimpleEventHandler::deleteEvent( YEvent * event );
 
@@ -209,11 +209,11 @@ protected:
      **/
     virtual ~YWidgetEvent() {}
 
-    
+
     //
     // Data members
     //
-    
+
     YWidget * 	_widget;
     EventReason	_reason;
 };
@@ -248,7 +248,7 @@ public:
     YWidget * focusWidget() const { return _focusWidget; }
 
 protected:
-    
+
     /**
      * Protected destructor - events can only be deleted via
      * YDialog::deleteEvent(). The associated dialog will take care of this
@@ -256,7 +256,7 @@ protected:
      **/
     virtual ~YKeyEvent() {}
 
-    
+
     //
     // Data members
     //
@@ -296,7 +296,7 @@ public:
     string id() const { return _id; }
 
 protected:
-    
+
     /**
      * Protected destructor - events can only be deleted via
      * YDialog::deleteEvent(). The associated dialog will take care of this
@@ -304,7 +304,7 @@ protected:
      **/
     virtual ~YMenuEvent() {}
 
-    
+
     //
     // Data members
     //
@@ -324,7 +324,7 @@ public:
 
     YCancelEvent() : YEvent( CancelEvent ) {}
 
-    
+
 protected:
     /**
      * Protected destructor - events can only be deleted via
@@ -344,7 +344,7 @@ class YDebugEvent: public YEvent
 public:
 
     YDebugEvent() : YEvent( DebugEvent ) {}
-    
+
 protected:
     /**
      * Protected destructor - events can only be deleted via
@@ -364,7 +364,7 @@ class YTimeoutEvent: public YEvent
 public:
 
     YTimeoutEvent() : YEvent( TimeoutEvent ) {}
-    
+
 protected:
     /**
      * Protected destructor - events can only be deleted via

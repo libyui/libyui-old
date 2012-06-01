@@ -214,7 +214,7 @@ YButtonBox::doLayout( int width, int height )
 		// Of course, we might still have cut some pixels off all buttons
 		// if that also is too wide, but in that case we can't do very much
 		// anyway.
-	    
+
 		equalSizeButtons = false;
 		prefWidth = preferredWidth( equalSizeButtons );
 	    }
@@ -318,7 +318,7 @@ YButtonBox::doLayout( int width, int height )
     //
     // Vertical layout
     //
-    
+
     int buttonHeight = maxChildSize( YD_VERT );
 
     if ( height < prefHeight ) // Not enough vertical space
@@ -369,7 +369,7 @@ YButtonBox::doLayout( int width, int height )
 		break;
 	}
     }
-	
+
 
     //
     // Set child widget positions and sizes from left to right
@@ -385,7 +385,7 @@ YButtonBox::doLayout( int width, int height )
     }
 
     bool reverseLayout = YUI::app()->reverseLayout();
-    
+
     for ( vector<YPushButton *>::iterator it = buttons.begin();
 	  it != buttons.end();
 	  ++it )

@@ -124,6 +124,6 @@ operator<<( std::ostream & stream, const YEnvVar env )
 	else
 	    stream << "$" << env.name() << ": <not set>";
     }
-    
+
     return stream;
 }

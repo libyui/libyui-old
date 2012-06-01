@@ -55,7 +55,7 @@ struct YBusyIndicatorPrivate
 	, alive	(true)
 	{
 	}
-    
+
     string	label;
     int 	timeout;
     bool	alive;
@@ -72,7 +72,7 @@ YBusyIndicator::YBusyIndicator( YWidget * 		parent,
     , priv( new YBusyIndicatorPrivate( label, timeout, alive ) )
 {
     YUI_CHECK_NEW( priv );
-    
+
     setDefaultStretchable( YD_HORIZ, true );
     setStretchable( YD_VERT, false );
 }
@@ -106,7 +106,7 @@ void YBusyIndicator::setTimeout( int newTimeout )
 {
     if ( newTimeout < 1 )
 	newTimeout = 1;
-    
+
     priv->timeout = newTimeout;
 }
 
@@ -118,7 +118,7 @@ void YBusyIndicator::setAlive( bool alive )
 
 bool YBusyIndicator::alive() const
 {
-    return priv->alive; 
+    return priv->alive;
 }
 
 const YPropertySet &
@@ -173,4 +173,3 @@ YBusyIndicator::getProperty( const string & propertyName )
 	return YWidget::getProperty( propertyName );
     }
 }
-

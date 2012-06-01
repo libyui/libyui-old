@@ -490,7 +490,7 @@ YLayoutBox::calcPrimaryGeometry( int		newSize,
 		if ( childSize[i] < child->preferredSize( primary() ) )
 		{
 		    yuiDebug() << "Layout running out of space: "
-			       << "Resizing child widget #" 		<< i << " ("<< child 
+			       << "Resizing child widget #" 		<< i << " ("<< child
 			       << ") below its preferred size of "	<< child->preferredSize( primary() )
 			       << " to " 				<< childSize[i]
 			       << endl;
@@ -678,13 +678,13 @@ YLayoutBox::calcPrimaryGeometry( int		newSize,
 		}
 	    }
 
-	    if ( oldTooSmall == tooSmall && 
+	    if ( oldTooSmall == tooSmall &&
                  oldLoserCount == loserCount )
 	    {
 		yuiWarning() << "Preventing endless loop while layout space distribution. Break." << endl;
 		break;
 	    }
-	
+
 	    oldTooSmall = tooSmall;
 	    oldLoserCount = loserCount;
 	}

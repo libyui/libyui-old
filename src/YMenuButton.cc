@@ -51,7 +51,7 @@ struct YMenuButtonPrivate
     YMenuButtonPrivate()
 	: nextSerialNo( 0 )
 	{}
-    
+
     int nextSerialNo;
 };
 
@@ -99,7 +99,7 @@ YMenuButton::assignUniqueIndex( YItemIterator begin, YItemIterator end )
     for ( YItemIterator it = begin; it != end; ++it )
     {
 	YItem * item = *it;
-	
+
 	item->setIndex( ++(priv->nextSerialNo) );
 
 	if ( item->hasChildren() )
@@ -216,4 +216,3 @@ YMenuButton::getProperty( const string & propertyName )
 	return YWidget::getProperty( propertyName );
     }
 }
-

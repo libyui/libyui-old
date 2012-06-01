@@ -122,5 +122,3 @@ void YMacro::deletePlayer()
     if ( _player )
 	delete _player;
 }
-
-

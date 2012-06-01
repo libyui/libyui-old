@@ -63,7 +63,7 @@ YSlider::YSlider( YWidget *		parent,
     , priv( new YSliderPrivate() )
 {
     YUI_CHECK_NEW( priv );
-    
+
     setDefaultStretchable( YD_HORIZ, true );
     setStretchable( YD_VERT, false );
 }
@@ -85,4 +85,3 @@ YSlider::~YSlider()
  * @property integer MaxValue		the maximum value
  * @property string  Label		caption above the slider
  */
-

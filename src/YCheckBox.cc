@@ -51,7 +51,7 @@ struct YCheckBoxPrivate
 	: label( label )
 	, useBoldFont( false )
 	{}
-    
+
     string	label;
     bool	useBoldFont;
 };
@@ -99,14 +99,14 @@ const YPropertySet &
 YCheckBox::propertySet()
 {
     static YPropertySet propSet;
-    
+
     if ( propSet.isEmpty() )
     {
 	/*
 	 * @property boolean Value 	the on/off state; nil for "don't care" (tristate)
 	 * @property string  Label	the text on the CheckBox
 	 */
-	
+
 	propSet.add( YProperty( YUIProperty_Value,	YOtherProperty	) );
 	propSet.add( YProperty( YUIProperty_Label,	YStringProperty	) );
 	propSet.add( YWidget::propertySet() );
@@ -144,4 +144,3 @@ YCheckBox::getProperty( const string & propertyName )
 	return YWidget::getProperty( propertyName );
     }
 }
-

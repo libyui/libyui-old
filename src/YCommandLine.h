@@ -65,7 +65,7 @@ public:
     /**
      * Return the number of arguments in the command line.
      * Remember that the command itself (the binary of the process) is
-     * included, so a value of 1 (not 0!) means "no additional arguments". 
+     * included, so a value of 1 (not 0!) means "no additional arguments".
      **/
     int argc() const;
 
@@ -81,7 +81,7 @@ public:
      * Alias for argc() for those who like a more C++ -like syntax.
      **/
     int size() const { return argc(); }
-    
+
     /**
      * Return command line argument no. 'index' (from 0 on).
      *
@@ -94,7 +94,7 @@ public:
      *
      * for ( int i=0; i < cmdLine.argc(); i++ )
      *     cout << cmdLine[i]  << endl;
-     * 
+     *
      * This might throw an YUIIndexOutOfRangeException.
      **/
     string operator[]( int index ) const
@@ -128,7 +128,7 @@ public:
      **/
     int find( const string & argName ) const;
 
-    
+
 private:
 
     ImplPtr<YCommandLinePrivate> priv;

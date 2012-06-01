@@ -273,14 +273,14 @@ YOptionalWidgetFactory::hasGraph()
 YGraph *
 YOptionalWidgetFactory::createGraph( YWidget * parent, const string & filename,
 				     const string & layoutAlgorithm )
-{ 
+{
     THROW_UNSUPPORTED( "YGraph" );
 }
 
 
 YGraph *
 YOptionalWidgetFactory::createGraph( YWidget * parent, graph_t * graph )
-{ 
+{
     THROW_UNSUPPORTED( "YGraph" );
 }
 
@@ -290,5 +290,3 @@ YOptionalWidgetFactory::hasContextMenu()
 {
     return false;
 }
-
-

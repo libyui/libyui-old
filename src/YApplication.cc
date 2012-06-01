@@ -62,7 +62,7 @@ struct YApplicationPrivate
 	: productName( "openSUSE" )
 	, reverseLayout( false )
 	{}
-    
+
     string		productName;
     bool		reverseLayout;
     YFunctionKeyMap	defaultFunctionKey;
@@ -110,7 +110,7 @@ YApplication::setIconBasePath( const string & newIconBasePath )
 }
 
 YIconLoader *
-YApplication::iconLoader() 
+YApplication::iconLoader()
 {
    return priv->iconLoader;
 }
@@ -176,7 +176,7 @@ void
 YApplication::setLanguage( const string & language, const string & encoding )
 {
     string lang = language;
-    
+
     if ( ! encoding.empty() )
     {
 	lang += ".";
@@ -185,7 +185,7 @@ YApplication::setLanguage( const string & language, const string & encoding )
 
     setenv( "LANG", lang.c_str(), 1 );  // 1 : replace
     setlocale( LC_NUMERIC, "C" );	// but always format numbers with "."
-    
+
     yuiMilestone() <<  "Setting language to " << lang << endl;
 }
 
@@ -197,7 +197,7 @@ YApplication::language( bool stripEncoding ) const
 
     if ( ! lang_env )
 	return "";
-    
+
     string lang( lang_env );
 
     if ( stripEncoding )
@@ -235,7 +235,7 @@ YApplication::glyph( const string & sym )
 bool
 YApplication::openContextMenu( const YItemCollection & itemCollection )
 {
-    YUI_THROW( YUIUnsupportedWidgetException( "ContextMenu" ) ); 
+    YUI_THROW( YUIUnsupportedWidgetException( "ContextMenu" ) );
     return false;
 }
 
@@ -262,4 +262,3 @@ YApplication::runInTerminal ( const string & module )
 
     return -1;
 }
-

@@ -74,7 +74,7 @@ public:
      * Reimplemented from YWidget.
      **/
     virtual int preferredHeight();
-    
+
     /**
      * Set the new size of the widget.
      * In this case, the size of the single child is set.

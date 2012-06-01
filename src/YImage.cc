@@ -56,7 +56,7 @@ struct YImagePrivate
 	zeroSize.vert = false;
     }
 
-    
+
     string		imageFileName;
     bool		animated;
     YBothDim<bool>	zeroSize;
@@ -124,6 +124,3 @@ void YImage::setAutoScale( bool autoScale )
 {
     priv->autoScale = autoScale;
 }
-
-
-

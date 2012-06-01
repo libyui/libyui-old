@@ -71,7 +71,7 @@ public:
      * Destructor.
      **/
     virtual ~YLogView();
-    
+
     /**
      * Returns a descriptive name of this widget class for logging,
      * debugging etc.
@@ -214,7 +214,7 @@ protected:
      **/
     virtual void displayLogText( const string & text ) = 0;
 
-    
+
 private:
 
     /**

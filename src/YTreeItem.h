@@ -129,7 +129,7 @@ public:
      * children visible) by default.
      *
      * Notice that this will always return 'false' for tree items without
-     * children.  
+     * children.
      **/
     bool isOpen() const;
 

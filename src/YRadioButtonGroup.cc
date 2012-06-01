@@ -138,7 +138,7 @@ const YPropertySet &
 YRadioButtonGroup::propertySet()
 {
     static YPropertySet propSet;
-    
+
     if ( propSet.isEmpty() )
     {
 	/*
@@ -182,5 +182,3 @@ YRadioButtonGroup::getProperty( const string & propertyName )
 	return YWidget::getProperty( propertyName );
     }
 }
-
-

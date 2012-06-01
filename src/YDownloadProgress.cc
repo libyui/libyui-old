@@ -57,7 +57,7 @@ struct YDownloadProgressPrivate
 	, filename( filename )
 	, expectedSize( expectedSize )
 	{}
-    
+
     string	label;
     string	filename;
     YFileSize_t	expectedSize;
@@ -72,7 +72,7 @@ YDownloadProgress::YDownloadProgress( YWidget * 	parent,
     , priv( new YDownloadProgressPrivate( label, filename, expectedSize ) )
 {
     YUI_CHECK_NEW( priv );
-    
+
     setDefaultStretchable( YD_HORIZ, true );
     setStretchable( YD_VERT, false );
 }

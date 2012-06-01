@@ -76,7 +76,7 @@ public:
      * Return the green component (0: none, 255: bright green).
      **/
     uchar green() const { return _green; }
-    
+
     /**
      * Return the blue component (0: none, 255: bright blue).
      **/
@@ -91,9 +91,9 @@ public:
      * Return 'true' if this color is defined.
      **/
     bool isDefined() const { return ! _undef; }
-    
+
 private:
-    
+
     uchar _red;
     uchar _green;
     uchar _blue;

@@ -66,7 +66,7 @@ struct YRadioButtonPrivate
     //
     // Data members
     //
-    
+
     string		label;
     YRadioButtonGroup * radioButtonGroup;
     bool		useBoldFont;
@@ -128,14 +128,14 @@ const YPropertySet &
 YRadioButton::propertySet()
 {
     static YPropertySet propSet;
-    
+
     if ( propSet.isEmpty() )
     {
 	/*
 	 * @property boolean Value 	the on/off state of the RadioButton
 	 * @property string  Label	the text on the RadioButton
 	 */
-	
+
 	propSet.add( YProperty( YUIProperty_Value,	YBoolProperty	) );
 	propSet.add( YProperty( YUIProperty_Label,	YStringProperty	) );
 	propSet.add( YWidget::propertySet() );
@@ -219,4 +219,3 @@ YRadioButton::saveUserInput( YMacroRecorder *macroRecorder )
 	macroRecorder->recordWidgetProperty( this, YUIProperty_Value );
     }
 }
-

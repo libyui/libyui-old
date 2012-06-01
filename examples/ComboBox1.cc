@@ -120,7 +120,7 @@ int main( int argc, char **argv )
 		    //
 		    // While it is possible to use YComboBox::value() and
 		    // YComboBox::setValue(), this is not the idea behind it.
-		    
+
 		    YItem * item = comboBox->selectedItem();
 
 		    if ( item )

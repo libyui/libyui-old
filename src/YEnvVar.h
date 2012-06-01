@@ -75,25 +75,25 @@ public:
 
     /**
      * Return 'true' if the environment variable is set and the value is
-     * 'str'. 
+     * 'str'.
      **/
     bool isEqual( const string & str, bool caseSensitive = false ) const;
 
     /**
      * Case-insensitive comparison (shortcut for isEqual() ):
      * Return 'true' if the environment variable is set and the value is
-     * 'str'. 
+     * 'str'.
      **/
     bool operator==( const string & str ) const
 	{ return isEqual( str ); }
-    
+
     /**
      * Return 'true' if the environment variable is set and the value contains
      * 'str'.
      **/
     bool contains( const string & str, bool caseSensitive = false ) const;
 
-    
+
 private:
 
     string _name;

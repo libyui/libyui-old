@@ -91,7 +91,7 @@ public:
 
     /**
      * Aliases for text().
-     **/ 
+     **/
     string value() const { return text(); }
     string label() const { return text(); }
 
@@ -173,12 +173,12 @@ public:
 
     /**
      * Returns a descriptive label of this widget instance for debugging.
-     * 
+     *
      * Reimplemented from YWidget since a YLabel doesn't have a shortcut
-     * property.  
+     * property.
      **/
     virtual string debugLabel() const;
-    
+
 private:
 
     ImplPtr<YLabelPrivate> priv;

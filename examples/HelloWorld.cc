@@ -16,7 +16,7 @@ int main( int argc, char **argv )
     YLayoutBox * vbox   = YUI::widgetFactory()->createVBox( dialog );
     YUI::widgetFactory()->createLabel     ( vbox, "Hello, World!" );
     YUI::widgetFactory()->createPushButton( vbox, "&OK" );
-    
+
     dialog->waitForEvent();
     dialog->destroy();
 }

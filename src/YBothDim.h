@@ -78,7 +78,7 @@ public:
     /**
      * operator[] for alternative access via  myVar[ YD_HORIZ ]
      * Please note that this returns a non-const reference, so this can be used
-     * as an lvalue (e.g., in assignments) 
+     * as an lvalue (e.g., in assignments)
      **/
     T & operator[]( YUIDimension dim )
     {
@@ -88,9 +88,9 @@ public:
 	    case YD_VERT:	return vert;
 	    default:		YUI_THROW( YUIInvalidDimensionException() );
 	}
-	
+
 	// never reached (but gcc will complain otherwise)
-	return hor; 
+	return hor;
     }
 
     /**
@@ -104,9 +104,9 @@ public:
 	    case YD_VERT:	return vert;
 	    default:		YUI_THROW( YUIInvalidDimensionException() );
 	}
-	
+
 	// never reached (but gcc will complain otherwise)
-	return hor; 
+	return hor;
     }
 };
 

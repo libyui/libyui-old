@@ -55,7 +55,7 @@ struct YMultiLineEditPrivate
 	, inputMaxLength( -1 )
 	, defaultVisibleLines( DEFAULT_VISIBLE_LINES )
 	{}
-    
+
     string	label;
     int		inputMaxLength;
     int		defaultVisibleLines;
@@ -69,7 +69,7 @@ YMultiLineEdit::YMultiLineEdit( YWidget * parent, const string & label )
     , priv( new YMultiLineEditPrivate( label ) )
 {
     YUI_CHECK_NEW( priv );
-    
+
     setDefaultStretchable( YD_HORIZ, true );
     setDefaultStretchable( YD_VERT,  true );
 }
@@ -169,4 +169,3 @@ YMultiLineEdit::getProperty( const string & propertyName )
 	return YWidget::getProperty( propertyName );
     }
 }
-

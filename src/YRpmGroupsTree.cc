@@ -294,8 +294,3 @@ YRpmGroupsTree::addFallbackRpmGroups()
     logTree();
 #endif
 }
-
-
-
-
-

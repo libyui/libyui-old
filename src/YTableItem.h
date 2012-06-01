@@ -183,7 +183,7 @@ public:
      * Just for debugging.
      **/
     string label() const { return label(0); }
-    
+
 private:
 
     // Disable unwanted base class methods. They don't make sense in this
@@ -232,7 +232,7 @@ public:
     /**
      * Constructor with label and optional icon name for cells that don't have
      * a parent item yet (that will be added to a parent later with
-     * setParent()). 
+     * setParent()).
      **/
     YTableCell( const string & label, const string & iconName = "" )
         : _label( label )
@@ -304,8 +304,8 @@ public:
 
     /**
      * Return this cell's column no. (counting from 0on) or -1 if it doesn't
-     * have a parent yet. 
-     **/ 
+     * have a parent yet.
+     **/
     int column() const { return _column; }
 
     /**
