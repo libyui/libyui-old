@@ -649,7 +649,7 @@ YLayoutBox::calcPrimaryGeometry( int		newSize,
 	    if ( debugLayout() )
 	    {
 		yuiWarning() << "Distributing insufficient space of " << tooSmall
-			     << " amoung " << loserCount << " losers"
+			     << " among " << loserCount << " losers"
 			     << endl;
 	    }
 
