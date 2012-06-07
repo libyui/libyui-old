@@ -58,6 +58,7 @@
 /-*/
 
 #include "YSettings.h"
+#include "YUIException.h"
 
 #define YUILogComponent "ui"
 #include "YUILog.h"
@@ -96,6 +97,7 @@ void YSettings::setProgSubDir( string directory )
   {
     yuiMilestone () << "Can't set progSubDir to \"" << directory << "\"" << endl;
     yuiMilestone () << "It is locked to: \"" << progSubDir << "\"" << endl;
+    YUI_THROW ( YUIException ( "progSubDir is locked to: \"" + progSubDir + "\"" ) );
   }
 }
 

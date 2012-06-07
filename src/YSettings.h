@@ -80,7 +80,8 @@ public:
      * This can be used to set a subdir beneath PLUGINDIR or THEMEDIR,
      * where your program stores a custom plugin or theme.
      *
-     * Once this is set, it can't be altered.
+     * Once this is set, it can't be altered. If you do so although an
+     * exception will be thrown.
      **/
     static void setProgSubDir ( std::string directory );
     /**
