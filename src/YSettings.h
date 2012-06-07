@@ -62,8 +62,6 @@
 
 #include <string>
 
-using namespace std;
-
 /**
  * Settings for libyui
  *
@@ -84,11 +82,11 @@ public:
      *
      * Once this is set, it can't be altered.
      **/
-    static void setProgSubDir ( string directory );
+    static void setProgSubDir ( std::string directory );
     /**
      * Returns the value of your program's subdir.
      **/
-    static string getProgSubDir ();
+    static std::string getProgSubDir ();
     /**
      * Destroys the YSettings object.
      **/
@@ -96,7 +94,7 @@ public:
 
 private:
     static YSettings * _instance;
-    static string progSubDir;
+    static std::string progSubDir;
     YSettings ();
     YSettings ( const YSettings& );
     ~YSettings ();
