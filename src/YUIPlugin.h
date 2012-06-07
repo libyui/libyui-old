@@ -60,9 +60,6 @@
 #ifndef YUIPlugin_h
 #define YUIPlugin_h
 
-#define PLUGIN_PREFIX "libpy2"
-#define PLUGIN_SUFFIX ".so.2"
-
 #include <string>
 using std::string;
 
