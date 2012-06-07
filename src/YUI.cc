@@ -126,8 +126,6 @@ YUI::~YUI()
 	YMacro::deleteRecorder();
 	YMacro::deletePlayer();
 
-	YSettings::access () -> deleteSettings ();
-
 	_ui = 0;
 	uiDeleted = true;
     }
