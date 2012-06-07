@@ -65,8 +65,6 @@
 #include "YTypes.h"
 #include "YSettings.h"
 
-using std::string;
-
 class YApplication;
 class YWidget;
 class YWidgetFactory;
