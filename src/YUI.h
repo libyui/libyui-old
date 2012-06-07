@@ -63,6 +63,7 @@
 #include <string>
 
 #include "YTypes.h"
+#include "YSettings.h"
 
 using std::string;
 
