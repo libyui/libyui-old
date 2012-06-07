@@ -75,7 +75,7 @@ YPath::YPath ( string directory, string filename )
 {
   yuiMilestone () << "Looking for " << filename << endl;
 
-  bool isThemeDir = ! strcmp ( directory.c_str(), THEMEDIR );
+  bool isThemeDir = ! directory.compare ( THEMEDIR );
   string progSubDir;
   string themeSubDir = "";
   vector<string> dirList;
@@ -95,22 +95,21 @@ YPath::YPath ( string directory, string filename )
   dirList.push_back ( directory + "/" + progSubDir );
   dirList.push_back ( directory );
 
-  for ( vector<string>::iterator x=dirList.begin () ; x!=dirList.end () && fullPath.compare ( "" ) == 0 ; ++x )
+  for ( vector<string>::iterator x = dirList.begin () ; x != dirList.end () && fullPath.compare ( "" ) == 0 ; ++x )
   {
     yuiMilestone () << "scanning subdir: " << *x << endl;
 
     vector<string> fileList = lsDir( *x );
     fullList.push_back( *x );
 
-    for ( vector<string>::iterator i=fileList.begin () ; i!=fileList.end () && fullPath.compare ( "" ) == 0 ; ++i )
+    for ( vector<string>::iterator i = fileList.begin () ; i != fileList.end () && fullPath.compare ( "" ) == 0 ; ++i )
     {
-      if ( strcmp( ( *i ).c_str (), "." ) &&
-	strcmp( ( *i ).c_str (), ".." ) )
+      if ( *i != "." && *i != ".." )		// filter out parent and curdir
       {
 	stringstream fullname;
 	fullname << directory << "/" << ( *i );
 
-	if ( strcmp( ( *i ).c_str (), filename.c_str () ) )
+	if ( *i == filename )
 	  fullPath = fullname.str ();
 	else
 	{
@@ -137,14 +136,14 @@ vector<string> YPath::lsDir( string directory )
   DIR *dir;
   struct dirent *ent;
 
-  if (( dir = opendir( directory.c_str() ) ) != NULL )
+  if ( ( dir = opendir( directory.c_str () ) ) != NULL )
   {
     yuiMilestone() << "Looking in " << directory << endl;
 
-    while( ( ent = readdir( dir ) ) != NULL )
-      fileList.push_back( ent -> d_name );
+    while ( ( ent = readdir ( dir ) ) != NULL )
+      fileList.push_back ( ent -> d_name );
 
-    closedir( dir );
+    closedir ( dir );
   }
   else
     yuiMilestone() << "\"" << directory << "\" does NOT exist." << endl;
@@ -157,20 +156,19 @@ string YPath::lookRecursive( string directory, string filename, vector<string> f
   vector<string> fileList = lsDir( directory );
   string file = "";
 
-  for ( vector<string>::iterator i=fileList.begin() ; i!=fileList.end() && ! strcmp( file.c_str(), "" ) ; ++i )
+  for ( vector<string>::iterator i = fileList.begin() ; i != fileList.end() && file.compare ( "" ) == 0 ; ++i )
   {
-    if ( strcmp( ( *i ).c_str(), "." ) &&
-      strcmp( ( *i ).c_str(), ".." ) )
+    if ( *i != "." && *i != ".." )            // filter out parent and curdir
     {
       stringstream fullname;
       fullname << directory << "/" << ( *i );
 
-      if ( ! strcmp( ( *i ).c_str(), filename.c_str() ) )
-	file = fullname.str();
+      if ( *i == filename )
+	file = fullname.str ();
       else
       {
-	fullList.push_back( fullname.str() );
-	file = lookRecursive( fullname.str(), filename, fullList );
+	fullList.push_back ( fullname.str() );
+	file = lookRecursive ( fullname.str(), filename, fullList );
       }
     }
   }
@@ -184,5 +182,5 @@ string YPath::path()
 
 string YPath::dir()
 {
-  return fullPath.substr( 0, fullPath.rfind( "/" ) );
+  return fullPath.substr ( 0, fullPath.rfind( "/" ) );
 }
