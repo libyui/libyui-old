@@ -59,11 +59,15 @@
 #include <stdlib.h>		// getenv()
 #include <unistd.h>		// isatty()a
 #include <sys/stat.h>
+#include <string.h>
 
 #include "YCommandLine.h"
 #include "YUILoader.h"
 #include "YUIPlugin.h"
 #include "YUIException.h"
+#include "YPath.h"
+
+#include "config.h"
 
 
 void YUILoader::loadUI( bool withThreads )
@@ -88,16 +92,18 @@ void YUILoader::loadUI( bool withThreads )
 	else if ( haveGtk && !wantQt )
 	   wantedGUI = YUIPlugin_Gtk;
 
-	try
+	if ( strcmp( wantedGUI.c_str(), "" ) )
 	{
-	    loadPlugin( wantedGUI, withThreads );
-	    return;
+	   try
+	   {
+	      loadPlugin( wantedGUI, withThreads );
+	      return;
+	   }
+	   catch ( YUIException & ex)
+	   {
+	      YUI_CAUGHT( ex );
+	   }
 	}
-	catch ( YUIException & ex)
-	{
-	    YUI_CAUGHT( ex );
-	}
-
     }
 
     if ( isatty( STDOUT_FILENO ) )
@@ -147,13 +153,13 @@ void YUILoader::loadPlugin( const string & name, bool withThreads )
 bool YUILoader::pluginExists( const string & pluginBaseName )
 {
     struct stat fileinfo;
-    string fullPath;
+    string pluginName = PLUGIN_PREFIX;
 
-    fullPath.append( PLUGINDIR "/" ); // from -DPLUGINDIR in Makefile.am
-    fullPath.append( PLUGIN_PREFIX );
-    fullPath.append( pluginBaseName );
-    fullPath.append( PLUGIN_SUFFIX );
+    pluginName.append( pluginBaseName );
+    pluginName.append( PLUGIN_SUFFIX );
 
-    return stat( fullPath.c_str(), &fileinfo) == 0;
+    YPath plugin ( PLUGINDIR, pluginName );
+
+    return stat( plugin.path().c_str(), &fileinfo) == 0;
 
 }

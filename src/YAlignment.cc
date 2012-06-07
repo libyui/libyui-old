@@ -62,6 +62,9 @@
 
 #include "YAlignment.h"
 #include "YBothDim.h"
+#include "YPath.h"
+
+#include "config.h"
 
 
 using std::min;
@@ -372,8 +375,11 @@ void YAlignment::setBackgroundPixmap( const string & pixmapFileName )
 	 pixmap[0] != '/'  &&	// Absolute path?
 	 pixmap[0] != '.'    )	// Path relative to $CWD ?
     {
-	// Prepend theme dir ("/usr/share/libyui/theme/")
-	pixmap = pixmap.insert( 0, string( THEMEDIR "/" ) );
+	// Prepend theme dir
+
+	YPath pix( THEMEDIR, pixmap );
+
+	pixmap = pix.path();
     }
 
     priv->backgroundPixmap = pixmap;

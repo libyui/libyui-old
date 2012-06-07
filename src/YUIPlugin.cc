@@ -63,9 +63,11 @@
 #include "YUILog.h"
 
 #include "YUIPlugin.h"
+#include "YPath.h"
+
+#include "config.h"
 
 using std::string;
-
 
 YUIPlugin::YUIPlugin( const char * pluginLibBaseName )
 {
@@ -105,14 +107,14 @@ YUIPlugin::unload()
 string
 YUIPlugin::pluginLibFullPath() const
 {
-    string fullPath;
 
-    fullPath.append( PLUGINDIR "/" ); // from -DPLUGINDIR in Makefile.am
-    fullPath.append( PLUGIN_PREFIX );
-    fullPath.append( _pluginLibBaseName );
-    fullPath.append( PLUGIN_SUFFIX );
+    string pluginName = PLUGIN_PREFIX;
+    pluginName.append( _pluginLibBaseName );
+    pluginName.append( PLUGIN_SUFFIX );
 
-    return fullPath;
+    YPath plugin( PLUGINDIR, pluginName );
+
+    return plugin.path();
 }
 
 
