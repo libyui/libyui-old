@@ -59,6 +59,8 @@
 
 #include "YRpmGroupsTree.h"
 
+#include "config.h"
+
 #define TEXTDOMAIN "rpm-groups"
 
 
