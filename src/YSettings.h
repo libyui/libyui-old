@@ -88,10 +88,6 @@ public:
      * Returns the value of your program's subdir.
      **/
     static std::string getProgSubDir ();
-    /**
-     * Destroys the YSettings object.
-     **/
-    static void deleteSettings ();
 
 private:
     static YSettings * _instance;

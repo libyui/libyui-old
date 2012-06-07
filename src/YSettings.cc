@@ -105,12 +105,3 @@ string YSettings::getProgSubDir ()
 {
   return progSubDir;
 }
-
-void YSettings::deleteSettings ()
-{
-  if( NULL != _instance )
-  {
-    delete _instance;
-    _instance = NULL;
-  }
-}
