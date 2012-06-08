@@ -82,7 +82,6 @@ YSettings::YSettings()
 
 YSettings::~YSettings ()
 {
-  deleteSettings ();
 }
 
 void YSettings::setProgSubDir( string directory )
