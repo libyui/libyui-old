@@ -1,0 +1,69 @@
+#
+# spec file for package @PROJECTNAME@ (Version @@varpfx@_VERSION@)
+#
+# norootforbuild
+
+Name:		@PROJECTNAME@-doc
+Version:	@VERSION@
+Release:	0
+License:	GPL-2.0
+Source:		@PROJECTNAME@-%{version}.tar.bz2
+Group:		Documentation/HTML
+
+BuildArch:	noarch
+
+BuildRequires:  doxygen
+BuildRequires:  fdupes
+BuildRequires:  graphviz-gnome
+BuildRequires:  texlive-latex
+@BuildRequires@
+
+Obsoletes:	@PROJECTNAME@-doc < %{version}
+
+URL:		@SPEC_URL@
+Summary:	@PROJECTNAME_UC@ documentation
+
+%description
+@SPEC_DESCRIPTION@
+
+This package provides the documentation. (HTML & PDF)
+
+
+%prep
+
+
+%setup -n @PROJECTNAME@-%{version}
+
+
+%build
+
+export CFLAGS="$RPM_OPT_FLAGS -DNDEBUG"
+export CXXFLAGS="$RPM_OPT_FLAGS -DNDEBUG"
+
+mkdir build
+cd build
+cmake .. \
+	-DDOC_DIR=%{_docdir} \
+	-DDOCS_ONLY=ON
+
+make %{?jobs:-j%jobs} docs
+
+
+%install
+cd build
+make install DESTDIR="$RPM_BUILD_ROOT"
+
+%fdupes -s $RPM_BUILD_ROOT/%_docdir/@PROJECTNAME@
+
+%perl_process_packlist
+
+
+%clean
+rm -rf "$RPM_BUILD_ROOT"
+
+
+%files
+%defattr(-,root,root)
+%doc %{_docdir}/@PROJECTNAME@
+
+%changelog

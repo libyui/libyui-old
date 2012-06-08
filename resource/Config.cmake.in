@@ -1,0 +1,21 @@
+#  Config file for @PROJECTNAME@
+#  It defines the following variables
+#  @PROJECTNAME_UC@_INCLUDE_DIRS - include directories for @PROJECTNAME@
+#  @PROJECTNAME_UC@_LIBRARIES    - libraries to link against
+#  @PROJECTNAME_UC@_PREFIX       - prefix where @PROJECTNAME@ is installed
+
+# Compute paths
+set(@PROJECTNAME_UC@_PREFIX "@PREFIX@")
+get_filename_component(@PROJECTNAME_UC@_CMAKE_DIR "${CMAKE_CURRENT_LIST_FILE}" PATH)
+if(EXISTS "${@PROJECTNAME_UC@_CMAKE_DIR}/CMakeCache.txt")
+   # In build tree
+   include("${@PROJECTNAME_UC@_CMAKE_DIR}/@PROJECTNAME_UC@BuildTreeSettings.cmake")
+else()
+   set(@PROJECTNAME_UC@_INCLUDE_DIRS "${@PROJECTNAME_UC@_CMAKE_DIR}/@CONF_REL_INCLUDE_DIR@")
+endif()
+
+# Our library dependencies (contains definitions for IMPORTED targets)
+include("${@PROJECTNAME_UC@_CMAKE_DIR}/@PROJECTNAME_UC@LibraryDepends.cmake")
+
+# These are IMPORTED targets created by @PROJECTNAME_UC@LibraryDepends.cmake
+set(@PROJECTNAME_UC@_LIBRARIES @TARGETLIB@)
