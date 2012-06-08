@@ -1,0 +1,23 @@
+INCLUDE_DIRECTORIES( "${CMAKE_CURRENT_SOURCE_DIR}" "${PROJECT_SOURCE_DIR}/src" )
+
+SET( EXAMPLES_LIST
+  ComboBox1
+  ComboBox1-editable
+  HelloWorld
+  SelectionBox1
+  SelectionBox2
+  SelectionBox3-many-items
+  Table-many-items
+)
+
+FOREACH( EXAMPLE ${EXAMPLES_LIST} )
+  IF( ENABLE_EXAMPLES )
+    ADD_EXECUTABLE ( ${EXAMPLE} ${EXAMPLE}.cc )
+    TARGET_LINK_LIBRARIES( ${EXAMPLE} ${TARGETLIB} )
+  ENDIF( ENABLE_EXAMPLES )
+
+  INSTALL(
+    FILES "${EXAMPLE}.cc"
+    DESTINATION "${INSTALL_DOC_DIR_PREFIX}/examples"
+  )
+ENDFOREACH( EXAMPLE ${EXAMPLES_LIST} )
