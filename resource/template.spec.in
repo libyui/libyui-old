@@ -1,0 +1,108 @@
+#
+# spec file for package @PROJECTNAME@ (Version @@varpfx@_VERSION@)
+#
+# norootforbuild
+
+Name:		@PROJECTNAME@
+Version:	@VERSION@
+Release:	0
+License:	GPL-2.0
+Source:		@PROJECTNAME@-%{version}.tar.bz2
+Group:		System/Libraries
+
+@BuildRequires@
+URL:		@SPEC_URL@
+Summary:	@SPEC_SUMMARY@
+
+%description
+@SPEC_DESCRIPTION@
+
+%package -n @PROJECTNAME@@SONAME_MAJOR@
+
+Group:		System/Libraries
+
+@Conflicts@
+@Provides@
+@Obsoletes@
+URL:		@SPEC_URL@
+Summary:	@PROJECTNAME_UC@ - @SPEC_SUMMARY@
+
+%description -n @PROJECTNAME@@SONAME_MAJOR@
+@SPEC_DESCRIPTION@
+
+
+%package devel
+
+Group:		Development/Languages/C and C++
+
+@DEVEL_Requires@
+@DEVEL_Provides@
+URL:		@SPEC_URL@
+Summary:	@PROJECTNAME_UC@ header files
+
+%description devel
+@SPEC_DESCRIPTION@
+
+This can be used independently of YaST for generic (C++) applications.
+This package has very few dependencies.
+
+
+%prep
+%setup -n @PROJECTNAME@-%{version}
+
+
+%build
+
+export CFLAGS="$RPM_OPT_FLAGS -DNDEBUG"
+export CXXFLAGS="$RPM_OPT_FLAGS -DNDEBUG"
+
+mkdir build
+cd build
+
+%if %{?_with_debug:1}%{!?_with_debug:0}
+cmake .. \
+	-DPREFIX=%{_prefix} \
+	-DLIB_DIR=%{_lib} \
+	-DCMAKE_BUILD_TYPE=RELWITHDEBINFO \
+	-DENABLE_STATIC=ON
+%else
+cmake .. \
+	-DPREFIX=%{_prefix} \
+	-DLIB_DIR=%{_lib} \
+	-DCMAKE_BUILD_TYPE=RELEASE \
+	-DENABLE_STATIC=ON
+%endif
+
+make %{?jobs:-j%jobs}
+
+
+%install
+cd build
+make install DESTDIR="$RPM_BUILD_ROOT"
+
+
+%perl_process_packlist
+
+
+%clean
+rm -rf "$RPM_BUILD_ROOT"
+
+%post -n @PROJECTNAME@@SONAME_MAJOR@ -p /sbin/ldconfig
+
+%postun -n @PROJECTNAME@@SONAME_MAJOR@ -p /sbin/ldconfig
+
+%files -n @PROJECTNAME@@SONAME_MAJOR@
+%defattr(-,root,root)
+
+%{_libdir}@SPEC_LIBDIR@/lib*.so.*
+
+%files devel
+%defattr(-,root,root)
+%{_libdir}@SPEC_LIBDIR@/lib*.so
+%{_libdir}@SPEC_LIBDIR@/lib*.a
+%{_prefix}/include/yui
+%{_libdir}/pkgconfig/@PROJECTNAME@.pc
+%{_libdir}/cmake/@PROJECTNAME@
+%doc %{_docdir}/@PROJECTNAME@
+
+%changelog

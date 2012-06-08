@@ -1,0 +1,21 @@
+#
+# Makefile.cvs
+#
+
+all: configure
+
+configure: clean
+	mkdir build ; \
+	cd build ; \
+	cmake -DCMAKE_BUILD_TYPE=RELEASE ..
+
+install: configure
+	cd build ; \
+	make && make install
+
+reconf:
+	cd build ; \
+	cmake rebuild_cache
+
+clean:
+	rm -rf build

@@ -1,6 +1,6 @@
 /*************************************************************************************************************
 
- Copyright (C) 2012 Björn Esser
+ Copyright (C) 2000 - 2010 Novell, Inc.   All Rights Reserved.
 
  This program is free software; you can redistribute it and/or modify it under the terms of the GNU General
  Public License as published by the Free Software Foundation; either version 2 of the License, or (at your
@@ -48,59 +48,16 @@
  /////////////////////////////////////////////////////////////////////////////////////////////////////////////
  /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-
 /*-/
 
-  File:		YSettings.cc
+  File:  config.h
 
-  Author:	Björn Esser <bjoern.esser@gmail.com>
+  Author: Björn Esser <bjoern.esser@gmail.com>
 
 /-*/
 
-#include "YSettings.h"
-#include "YUIException.h"
-
-#define YUILogComponent "ui"
-#include "YUILog.h"
-
-using namespace std;
-
-YSettings * YSettings::_instance = 0;
-string YSettings::progSubDir = "";
-
-YSettings * YSettings::access ()
-{
-  if ( ! _instance )
-    _instance = new YSettings ();
-  return _instance;
-}
-
-YSettings::YSettings()
-{
-  progSubDir = "";
-}
-
-YSettings::~YSettings ()
-{
-}
-
-void YSettings::setProgSubDir( string directory )
-{
-  if ( progSubDir.compare ( "" ) == 0 )
-  {
-    progSubDir = directory;
-    yuiMilestone () << "Set progSubDir to \"" << directory << "\"" << endl;
-    yuiMilestone () << "progSubDir is now locked." << endl;
-  }
-  else
-  {
-    yuiMilestone () << "Can't set progSubDir to \"" << directory << "\"" << endl;
-    yuiMilestone () << "It is locked to: \"" << progSubDir << "\"" << endl;
-    YUI_THROW ( YUIException ( "progSubDir is locked to: \"" + progSubDir + "\"" ) );
-  }
-}
-
-string YSettings::getProgSubDir ()
-{
-  return progSubDir;
-}
+#define LOCALEDIR	"@PREFIX@/@DATAROOTDIR@/locale"
+#define PLUGINDIR	"@PREFIX@/@FULL_PLUGIN_DIR@"
+#define THEMEDIR	"@PREFIX@/@THEME_DIR@"
+#define PLUGIN_PREFIX	"lib@baselib@-"
+#define PLUGIN_SUFFIX	".so.@@varpfx@_SONAME_MAJOR@"
