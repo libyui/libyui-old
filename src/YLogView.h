@@ -79,10 +79,10 @@ protected:
      * constraints), 'maxLines' specifies how many lines (always the last ones)
      * to keep in the log. 0 for 'maxLines' means "keep all lines".
      **/
-    YLogView( YWidget * 	parent,
-	      const string &	label,
-	      int 		visibleLines,
-	      int 		maxLines );
+    YLogView( YWidget * 		parent,
+	      const std::string &	label,
+	      int 			visibleLines,
+	      int 			maxLines );
 
 public:
 
@@ -100,7 +100,7 @@ public:
     /**
      * Return the label (the caption above the log text).
      **/
-    string label() const;
+    std::string label() const;
 
     /**
      * Set the label (the caption above the log text).
@@ -108,7 +108,7 @@ public:
      * Derived classes are free to reimplement this, but they should call this
      * base class method at the end of the overloaded function.
      **/
-    virtual void setLabel( const string & label );
+    virtual void setLabel( const std::string & label );
 
     /**
      * Return the number of visible lines.
@@ -148,23 +148,23 @@ public:
      * Return the entire log text as one large string of concatenated lines
      * delimited with newlines.
      **/
-    string logText() const;
+    std::string logText() const;
 
     /**
      * Set (replace) the entire log text and trigger a display update.
      **/
-    void setLogText( const string & text )
+    void setLogText( const std::string & text )
 	{ clearText(); appendLines( text ); }
 
     /**
      * Return the last log line.
      **/
-    string lastLine() const;
+    std::string lastLine() const;
 
     /**
      * Append one or more lines to the log text and trigger a display update.
      **/
-    void appendLines( const string & text );
+    void appendLines( const std::string & text );
 
     /**
      * Clear the log text and trigger a display update.
@@ -186,7 +186,7 @@ public:
      * 'false' if that value requires special handling (not in error cases:
      * those are covered by exceptions).
      **/
-    virtual bool setProperty( const string & propertyName,
+    virtual bool setProperty( const std::string & propertyName,
 			      const YPropertyValue & val );
 
     /**
@@ -195,7 +195,7 @@ public:
      *
      * This method may throw YUIPropertyExceptions.
      **/
-    virtual YPropertyValue getProperty( const string & propertyName );
+    virtual YPropertyValue getProperty( const std::string & propertyName );
 
     /**
      * Return this class's property set.
@@ -210,14 +210,14 @@ public:
      *
      * Reimplemented from YWidget.
      **/
-    virtual string shortcutString() const { return label(); }
+    virtual std::string shortcutString() const { return label(); }
 
     /**
      * Set the string of this widget that holds the keyboard shortcut.
      *
      * Reimplemented from YWidget.
      **/
-    virtual void setShortcutString( const string & str )
+    virtual void setShortcutString( const std::string & str )
 	{ setLabel( str ); }
 
 
@@ -231,7 +231,7 @@ protected:
      *
      * Derived classes are required to implement this.
      **/
-    virtual void displayLogText( const string & text ) = 0;
+    virtual void displayLogText( const std::string & text ) = 0;
 
 
 private:
@@ -239,7 +239,7 @@ private:
     /**
      * Append one single line to the log text.
      **/
-    void appendLine( const string & line );
+    void appendLine( const std::string & line );
 
     /**
      * Trigger a re-display of the log text.

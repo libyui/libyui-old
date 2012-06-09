@@ -59,8 +59,8 @@
 #include "YTreeItem.h"
 
 
-YTreeItem::YTreeItem( const string &	label,
-		      bool 		isOpen )
+YTreeItem::YTreeItem( const std::string &	label,
+		      bool			isOpen )
     : YItem( label )
     , _parent( 0 )
     , _isOpen( isOpen )
@@ -68,9 +68,9 @@ YTreeItem::YTreeItem( const string &	label,
 }
 
 
-YTreeItem::YTreeItem( const string &	label,
-		      const string & 	iconName,
-		      bool 		isOpen )
+YTreeItem::YTreeItem( const std::string &	label,
+		      const std::string &	iconName,
+		      bool			isOpen )
     : YItem( label, iconName )
     , _parent( 0 )
     , _isOpen( isOpen )
@@ -78,9 +78,9 @@ YTreeItem::YTreeItem( const string &	label,
 }
 
 
-YTreeItem::YTreeItem( YTreeItem *	parent,
-		      const string &	label,
-		      bool 		isOpen )
+YTreeItem::YTreeItem( YTreeItem *		parent,
+		      const std::string &	label,
+		      bool			isOpen )
     : YItem( label )
     , _parent( parent )
     , _isOpen( isOpen )
@@ -90,10 +90,10 @@ YTreeItem::YTreeItem( YTreeItem *	parent,
 }
 
 
-YTreeItem::YTreeItem( YTreeItem *	parent,
-		      const string & 	label,
-		      const string & 	iconName,
-		      bool 		isOpen )
+YTreeItem::YTreeItem( YTreeItem *		parent,
+		      const std::string &	label,
+		      const std::string &	iconName,
+		      bool			isOpen )
     : YItem( label, iconName )
     , _parent( parent )
     , _isOpen( isOpen )

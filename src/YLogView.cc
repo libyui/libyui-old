@@ -65,23 +65,23 @@
 #include "YLogView.h"
 
 
-typedef std::deque<string>                      StringDeque;
-typedef std::deque<string>::iterator            StringDequeIterator;
-typedef std::deque<string>::const_iterator      StringDequeConstIterator;
+typedef std::deque<std::string>                      StringDeque;
+typedef std::deque<std::string>::iterator            StringDequeIterator;
+typedef std::deque<std::string>::const_iterator      StringDequeConstIterator;
 
 
 
 struct YLogViewPrivate
 {
-    YLogViewPrivate( const string & label, int visibleLines, int maxLines )
+    YLogViewPrivate( const std::string & label, int visibleLines, int maxLines )
         : label( label )
         , visibleLines( visibleLines )
         , maxLines( maxLines )
         {}
 
-    string      label;
-    int         visibleLines;
-    int         maxLines;
+    std::string	label;
+    int		visibleLines;
+    int		maxLines;
 
     StringDeque logText;
 };
@@ -89,7 +89,7 @@ struct YLogViewPrivate
 
 
 
-YLogView::YLogView( YWidget * parent, const string & label, int visibleLines, int maxLines )
+YLogView::YLogView( YWidget * parent, const std::string & label, int visibleLines, int maxLines )
     : YWidget( parent )
     , priv( new YLogViewPrivate( label, visibleLines, maxLines ) )
 {
@@ -106,7 +106,7 @@ YLogView::~YLogView()
 }
 
 
-string
+std::string
 YLogView::label() const
 {
     return priv->label;
@@ -114,7 +114,7 @@ YLogView::label() const
 
 
 void
-YLogView::setLabel( const string & label )
+YLogView::setLabel( const std::string & label )
 {
     priv->label = label;
 }
@@ -155,10 +155,10 @@ YLogView::setMaxLines( int newMaxLines )
 }
 
 
-string
+std::string
 YLogView::logText() const
 {
-    string text;
+    std::string text;
 
     for ( StringDequeConstIterator it = priv->logText.begin();
           it != priv->logText.end();
@@ -181,7 +181,7 @@ YLogView::logText() const
 }
 
 
-string
+std::string
 YLogView::lastLine() const
 {
     if ( priv->logText.empty() )
@@ -192,11 +192,11 @@ YLogView::lastLine() const
 
 
 void
-YLogView::appendLines( const string & newText )
+YLogView::appendLines( const std::string & newText )
 {
-    string              text    = newText;
-    string::size_type   from    = 0;
-    string::size_type   to      = 0;
+    std::string			text	= newText;
+    std::string::size_type	from	= 0;
+    std::string::size_type	to	= 0;
 
 
     // Split the text into single lines
@@ -205,7 +205,7 @@ YLogView::appendLines( const string & newText )
     {
         from = to;
         to   = text.find( '\n', from );
-        if ( to == string::npos )               // no more newline
+        if ( to == std::string::npos )               // no more newline
             to = text.size();
         else
             to++;                               // include the newline
@@ -225,7 +225,7 @@ YLogView::appendLines( const string & newText )
 
 
 void
-YLogView::appendLine( const string & line )
+YLogView::appendLine( const std::string & line )
 {
     priv->logText.push_back( line );
 
@@ -266,11 +266,11 @@ YLogView::propertySet()
     if ( propSet.isEmpty() )
     {
         /*
-         * @property string  Value              All log lines.
-         * @property string  LastLine           The last log line(s). Use this to append lines.
-         * @property integer VisibleLines       Number of lines to display. Call RecalcLayout() afterwards.
-         * @property integer MaxLines           Number of lines to store (0 for all).
-         * @property string  Label              Caption above the log text
+         * @property std::string	Value		All log lines.
+         * @property std::string	LastLine	The last log line(s). Use this to append lines.
+         * @property integer		VisibleLines	Number of lines to display. Call RecalcLayout() afterwards.
+         * @property integer		MaxLines	Number of lines to store (0 for all).
+         * @property std::string	Label		Caption above the log text
          */
         propSet.add( YProperty( YUIProperty_Value,              YStringProperty ) );
         propSet.add( YProperty( YUIProperty_LastLine,           YStringProperty ) );
@@ -285,7 +285,7 @@ YLogView::propertySet()
 
 
 bool
-YLogView::setProperty( const string & propertyName, const YPropertyValue & val )
+YLogView::setProperty( const std::string & propertyName, const YPropertyValue & val )
 {
     propertySet().check( propertyName, val.type() ); // throws exceptions if not found or type mismatch
 
@@ -304,7 +304,7 @@ YLogView::setProperty( const string & propertyName, const YPropertyValue & val )
 
 
 YPropertyValue
-YLogView::getProperty( const string & propertyName )
+YLogView::getProperty( const std::string & propertyName )
 {
     propertySet().check( propertyName ); // throws exceptions if not found
 

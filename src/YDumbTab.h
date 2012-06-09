@@ -122,7 +122,7 @@ public:
      * 'false' if that value requires special handling (not in error cases:
      * those are covered by exceptions).
      **/
-    virtual bool setProperty( const string & propertyName,
+    virtual bool setProperty( const std::string & propertyName,
 			      const YPropertyValue & val );
 
     /**
@@ -132,7 +132,7 @@ public:
      * This method may throw exceptions, for example
      *   - if there is no property with that name
      **/
-    virtual YPropertyValue getProperty( const string & propertyName );
+    virtual YPropertyValue getProperty( const std::string & propertyName );
 
     /**
      * Return this class's property set.
@@ -151,7 +151,7 @@ public:
      *
      * Reimplemented from YSelectionWidget.
      **/
-    virtual string shortcutString() const { return ""; }
+    virtual std::string shortcutString() const { return ""; }
 
     /**
      * Set the string of this widget that holds the keyboard shortcut.
@@ -161,7 +161,7 @@ public:
      *
      * Reimplemented from YSelectionWidget.
      **/
-    virtual void setShortcutString( const string & str ) { shortcutChanged(); }
+    virtual void setShortcutString( const std::string & str ) { shortcutChanged(); }
 
     /**
      * Returns 'true' if this widget is stretchable in the specified dimension.
@@ -175,13 +175,13 @@ public:
      * Descriptive label for debugging. Derived from this widget's only child
      * (if there is one).
      **/
-    virtual string debugLabel() const;
+    virtual std::string debugLabel() const;
 
 private:
 
     // Disable unwanted base class methods
-    string label() const;
-    virtual void setLabel( const string & newLabel ) {};
+    std::string label() const;
+    virtual void setLabel( const std::string & newLabel ) {};
 
 
     ImplPtr<YDumbTabPrivate> priv;

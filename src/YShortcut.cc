@@ -105,7 +105,7 @@ YShortcut::~YShortcut()
 }
 
 
-string
+std::string
 YShortcut::shortcutString()
 {
     if ( ! _shortcutStringCached )
@@ -121,7 +121,7 @@ YShortcut::shortcutString()
 }
 
 
-string
+std::string
 YShortcut::cleanShortcutString()
 {
     if ( ! _cleanShortcutStringCached )
@@ -133,14 +133,14 @@ YShortcut::cleanShortcutString()
 }
 
 
-string
-YShortcut::cleanShortcutString( string shortcutString )
+std::string
+YShortcut::cleanShortcutString( std::string shortcutString )
 {
-    string::size_type pos = 0;
+    std::string::size_type pos = 0;
 
-    while ( ( pos = findShortcutPos( shortcutString, pos ) ) != string::npos )
+    while ( ( pos = findShortcutPos( shortcutString, pos ) ) != std::string::npos )
     {
-	shortcutString.erase( pos, ( string::size_type ) 1 );
+	shortcutString.erase( pos, ( std::string::size_type ) 1 );
     }
 
     return shortcutString;
@@ -174,25 +174,25 @@ YShortcut::shortcut()
 void
 YShortcut::setShortcut( char newShortcut )
 {
-    string str = cleanShortcutString();
+    std::string str = cleanShortcutString();
 
     if ( newShortcut != YShortcut::None )
     {
 	char findme[] = { (char)tolower( newShortcut ), (char)toupper( newShortcut ), 0 };
-	string::size_type pos = str.find_first_of( findme );
+	std::string::size_type pos = str.find_first_of( findme );
 
-	if ( pos == string::npos )
+	if ( pos == std::string::npos )
 	{
 	    yuiError() << "Can't find '<< " << newShortcut
 		       << "' in " << widgetClass()
 		       << " \"" << cleanShortcutString() << "\""
-		       << endl;
+		       << std::endl;
 
 	    return;
 	}
 
 	str.insert( pos,
-		    string( 1, shortcutMarker() ) );	// equivalent to 'string( "& " )'
+		    std::string( 1, shortcutMarker() ) );	// equivalent to 'std::string( "& " )'
     }
 
     widget()->setShortcutString( str );
@@ -226,9 +226,9 @@ YShortcut::distinctShortcutChars()
 
 	// Mark characters as contained
 
-	string clean = cleanShortcutString();
+	std::string clean = cleanShortcutString();
 
-	for ( string::size_type pos=0; pos < clean.length(); pos++ )
+	for ( std::string::size_type pos=0; pos < clean.length(); pos++ )
 	{
 	    if ( YShortcut::isValid( clean[ pos ] ) )
 		contained[ (int) clean[ pos ] ] = true;
@@ -255,9 +255,9 @@ YShortcut::distinctShortcutChars()
 bool
 YShortcut::hasValidShortcutChar()
 {
-    string clean = cleanShortcutString();
+    std::string clean = cleanShortcutString();
 
-    for ( string::size_type pos=0; pos < clean.length(); pos++ )
+    for ( std::string::size_type pos=0; pos < clean.length(); pos++ )
     {
 	if ( YShortcut::isValid( clean[ pos ] ) )
 	    return true;
@@ -267,27 +267,27 @@ YShortcut::hasValidShortcutChar()
 }
 
 
-string
+std::string
 YShortcut::getShortcutString()
 {
     return getShortcutString( widget() );
 }
 
 
-string
+std::string
 YShortcut::getShortcutString( const YWidget * widget )
 {
     if ( ! widget )
-	return string( "" );
+	return std::string( "" );
 
     return widget->shortcutString();
 }
 
 
-string::size_type
-YShortcut::findShortcutPos( const string & str, string::size_type pos )
+std::string::size_type
+YShortcut::findShortcutPos( const std::string & str, std::string::size_type pos )
 {
-    while ( ( pos = str.find( shortcutMarker(), pos ) ) != string::npos )
+    while ( ( pos = str.find( shortcutMarker(), pos ) ) != std::string::npos )
     {
 	if ( pos+1 < str.length() )
 	{
@@ -302,20 +302,20 @@ YShortcut::findShortcutPos( const string & str, string::size_type pos )
 	{
 	    // A pathological case: The string ends with '& '.
 	    // This is invalid anyway, but prevent endless loop even in this case.
-	    return string::npos;
+	    return std::string::npos;
 	}
     }
 
-    return string::npos;	// not found
+    return std::string::npos;	// not found
 }
 
 
 char
-YShortcut::findShortcut( const string & str, string::size_type pos )
+YShortcut::findShortcut( const std::string & str, std::string::size_type pos )
 {
     pos = findShortcutPos( str, pos );
 
-    return pos == string::npos ? (char) 0 : str[ pos+1 ];
+    return pos == std::string::npos ? (char) 0 : str[ pos+1 ];
 }
 
 
@@ -340,7 +340,7 @@ YShortcut::normalized( char c )
 
 
 
-string
+std::string
 YItemShortcut::getShortcutString()
 {
     if ( ! _item )
@@ -353,25 +353,25 @@ YItemShortcut::getShortcutString()
 void
 YItemShortcut::setShortcut( char newShortcut )
 {
-    string str = cleanShortcutString();
+    std::string str = cleanShortcutString();
 
     if ( newShortcut != YShortcut::None )
     {
 	char findme[] = { (char)tolower( newShortcut ), (char)toupper( newShortcut ), 0 };
-	string::size_type pos = str.find_first_of( findme );
+	std::string::size_type pos = str.find_first_of( findme );
 
-	if ( pos == string::npos )
+	if ( pos == std::string::npos )
 	{
 	    yuiError() << "Can't find '<< " << newShortcut
 		       << "' in item "
 		       << " \"" << cleanShortcutString() << "\""
-		       << endl;
+		       << std::endl;
 
 	    return;
 	}
 
 	str.insert( pos,
-		    string( 1, shortcutMarker() ) );	// equivalent to 'string( "& " )'
+		    std::string( 1, shortcutMarker() ) );	// equivalent to 'std::string( "& " )'
     }
 
     _item->setLabel( str );

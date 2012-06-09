@@ -138,7 +138,7 @@ public:
      * Note: Use a YBarGraphMultiUpdate object for improved performance
      * when doing multiple changes at the same time.
      **/
-    void setLabel( int segmentIndex, const string & newLabel );
+    void setLabel( int segmentIndex, const std::string & newLabel );
 
     /**
      * Set the background color of the segment with the specified index
@@ -168,7 +168,7 @@ public:
      * 'false' if that value requires special handling (not in error cases:
      * those are covered by exceptions).
      **/
-    virtual bool setProperty( const string & propertyName,
+    virtual bool setProperty( const std::string & propertyName,
 			      const YPropertyValue & val );
 
     /**
@@ -177,7 +177,7 @@ public:
      *
      * This method may throw YUIPropertyExceptions.
      **/
-    virtual YPropertyValue getProperty( const string & propertyName );
+    virtual YPropertyValue getProperty( const std::string & propertyName );
 
     /**
      * Return this class's property set.
@@ -230,10 +230,10 @@ public:
      * The YBarGraph widget will automatically assign some default colors (one
      * of at least 5 different ones) if none are specified.
      **/
-    YBarGraphSegment( int 		value 		= 0,
-		      const string &	label 		= string(),
-		      const YColor &	segmentColor 	= YColor(),
-		      const YColor &	textColor	= YColor() )
+    YBarGraphSegment( int 			value 		= 0,
+		      const std::string &	label 		= std::string(),
+		      const YColor &		segmentColor 	= YColor(),
+		      const YColor &		textColor	= YColor() )
 	: _value( value )
 	, _label( label )
 	, _segmentColor( segmentColor )
@@ -254,13 +254,13 @@ public:
      * Return the current text label of this segment.
      * Any %1 placeholder will be returned as %1 (not expanded).
      **/
-    string label() const { return _label; }
+    std::string label() const { return _label; }
 
     /**
      * Set the text label of this segment.
      * Use %1 as a placeholder for the current value.
      **/
-    void setLabel( const string & newLabel ) { _label = newLabel; }
+    void setLabel( const std::string & newLabel ) { _label = newLabel; }
 
     /**
      * Return the segment background color.
@@ -300,7 +300,7 @@ public:
 private:
 
     int		_value;
-    string	_label;
+    std::string	_label;
     YColor 	_segmentColor;
     YColor 	_textColor;
 };

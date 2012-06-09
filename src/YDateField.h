@@ -79,7 +79,7 @@ protected:
     /**
      * Constructor.
      **/
-    YDateField( YWidget * parent, const string & label );
+    YDateField( YWidget * parent, const std::string & label );
 
 public:
     /**

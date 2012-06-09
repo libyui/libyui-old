@@ -60,10 +60,9 @@
 #include <iostream>
 #include "YWidgetID.h"
 
-using std::endl;
 
 
-YStringWidgetID::YStringWidgetID( const string & val )
+YStringWidgetID::YStringWidgetID( const std::string & val )
     : _value( val )
 {
     // NOP
@@ -89,21 +88,21 @@ YStringWidgetID::isEqual( YWidgetID * otherID ) const
 }
 
 
-string
+std::string
 YStringWidgetID::toString() const
 {
     return _value;
 }
 
 
-string
+std::string
 YStringWidgetID::value() const
 {
     return _value;
 }
 
 
-const string &
+const std::string &
 YStringWidgetID::valueConstRef() const
 {
     return _value;

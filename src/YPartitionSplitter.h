@@ -121,17 +121,17 @@ protected:
      *
      * newPartFieldLabel: IntField label for the size of the new partition
      **/
-    YPartitionSplitter( YWidget *	parent,
-			int 		usedSize,
-			int 		totalFreeSize,
-			int 		newPartSize,
-			int 		minNewPartSize,
-			int 		minFreeSize,
-			const string &	usedLabel,
-			const string &	freeLabel,
-			const string &	newPartLabel,
-			const string &	freeFieldLabel,
-			const string &	newPartFieldLabel );
+    YPartitionSplitter( YWidget *		parent,
+			int			usedSize,
+			int			totalFreeSize,
+			int			newPartSize,
+			int			minNewPartSize,
+			int			minFreeSize,
+			const std::string &	usedLabel,
+			const std::string &	freeLabel,
+			const std::string &	newPartLabel,
+			const std::string &	freeFieldLabel,
+			const std::string &	newPartFieldLabel );
 
 public:
 
@@ -172,11 +172,11 @@ public:
     int 	minNewPartSize()	const;
     int		maxNewPartSize()	const	{ return totalFreeSize() - minFreeSize(); }
 
-    string	usedLabel()          	const;
-    string 	freeLabel()          	const;
-    string 	newPartLabel()         	const;
-    string 	freeFieldLabel()     	const;
-    string 	newPartFieldLabel()    	const;
+    std::string	usedLabel()          	const;
+    std::string freeLabel()          	const;
+    std::string newPartLabel()         	const;
+    std::string freeFieldLabel()     	const;
+    std::string newPartFieldLabel()    	const;
 
     /**
      * Set a property.
@@ -188,7 +188,7 @@ public:
      * 'false' if that value requires special handling (not in error cases:
      * those are covered by exceptions).
      **/
-    virtual bool setProperty( const string & propertyName,
+    virtual bool setProperty( const std::string & propertyName,
 			      const YPropertyValue & val );
 
     /**
@@ -197,7 +197,7 @@ public:
      *
      * This method may throw YUIPropertyExceptions.
      **/
-    virtual YPropertyValue getProperty( const string & propertyName );
+    virtual YPropertyValue getProperty( const std::string & propertyName );
 
     /**
      * Return this class's property set.

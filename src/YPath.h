@@ -63,23 +63,21 @@
 #include <string>
 #include <vector>
 
-using namespace std;
-
 class YPath
 {
 
 public:
 
-  YPath( string directory, string filename );
+  YPath( std::string directory, std::string filename );
   ~YPath();
-  string path();
-  string dir();
+  std::string path();
+  std::string dir();
 
 private:
 
-  vector<string> lsDir( string directory );
-  string lookRecursive( string directory, string filename, vector<string> fullList );
-  string fullPath;
+  std::vector<std::string> lsDir( std::string directory );
+  std::string lookRecursive( std::string directory, std::string filename, std::vector<std::string> fullList );
+  std::string fullPath;
 
 };
 

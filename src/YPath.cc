@@ -71,19 +71,19 @@
 #define YUILogComponent "ui"
 #include "YUILog.h"
 
-YPath::YPath ( string directory, string filename )
+YPath::YPath ( std::string directory, std::string filename )
 {
-  yuiMilestone () << "Looking for " << filename << endl;
+  yuiMilestone () << "Looking for " << filename << std::endl;
 
-  bool isThemeDir = ! directory.compare ( THEMEDIR );
-  string progSubDir;
-  string themeSubDir = "";
-  vector<string> dirList;
-  vector<string> fullList;
+  bool				isThemeDir = ! directory.compare ( THEMEDIR );
+  std::string			progSubDir;
+  std::string			themeSubDir = "";
+  std::vector<std::string>	dirList;
+  std::vector<std::string>	fullList;
 
   progSubDir = YSettings::access () -> getProgSubDir ();
 
-  yuiMilestone () << "Preferring subdir: " << progSubDir << endl;
+  yuiMilestone () << "Preferring subdir: " << progSubDir << std::endl;
 
   if ( isThemeDir )
   {
@@ -95,18 +95,18 @@ YPath::YPath ( string directory, string filename )
   dirList.push_back ( directory + "/" + progSubDir );
   dirList.push_back ( directory );
 
-  for ( vector<string>::iterator x = dirList.begin () ; x != dirList.end () && fullPath.compare ( "" ) == 0 ; ++x )
+  for ( std::vector<std::string>::iterator x = dirList.begin () ; x != dirList.end () && fullPath.compare ( "" ) == 0 ; ++x )
   {
-    yuiMilestone () << "scanning subdir: " << *x << endl;
+    yuiMilestone () << "scanning subdir: " << *x << std::endl;
 
-    vector<string> fileList = lsDir( *x );
+    std::vector<std::string> fileList = lsDir( *x );
     fullList.push_back( *x );
 
-    for ( vector<string>::iterator i = fileList.begin () ; i != fileList.end () && fullPath.compare ( "" ) == 0 ; ++i )
+    for ( std::vector<std::string>::iterator i = fileList.begin () ; i != fileList.end () && fullPath.compare ( "" ) == 0 ; ++i )
     {
       if ( *i != "." && *i != ".." )		// filter out parent and curdir
       {
-	stringstream fullname;
+	std::stringstream fullname;
 	fullname << directory << "/" << ( *i );
 
 	if ( *i == filename )
@@ -121,24 +121,24 @@ YPath::YPath ( string directory, string filename )
   }
 
   if( fullPath.compare ( "" ) != 0 )
-    yuiMilestone() << "Found " << filename << " in " << dir() << endl;
+    yuiMilestone() << "Found " << filename << " in " << dir() << std::endl;
   else
-    yuiMilestone() << "Could NOT find " << filename << " by looking recursive inside " << directory << endl;
+    yuiMilestone() << "Could NOT find " << filename << " by looking recursive inside " << directory << std::endl;
 }
 
 YPath::~YPath()
 {
 }
 
-vector<string> YPath::lsDir( string directory )
+std::vector<std::string> YPath::lsDir( std::string directory )
 {
-  vector<string> fileList;
-  DIR *dir;
-  struct dirent *ent;
+  std::vector<std::string>	fileList;
+  DIR *				dir;
+  struct dirent *		ent;
 
   if ( ( dir = opendir( directory.c_str () ) ) != NULL )
   {
-    yuiMilestone() << "Looking in " << directory << endl;
+    yuiMilestone() << "Looking in " << directory << std::endl;
 
     while ( ( ent = readdir ( dir ) ) != NULL )
       fileList.push_back ( ent -> d_name );
@@ -146,21 +146,21 @@ vector<string> YPath::lsDir( string directory )
     closedir ( dir );
   }
   else
-    yuiMilestone() << "\"" << directory << "\" does NOT exist." << endl;
+    yuiMilestone() << "\"" << directory << "\" does NOT exist." << std::endl;
 
   return fileList;
 }
 
-string YPath::lookRecursive( string directory, string filename, vector<string> fullList )
+std::string YPath::lookRecursive( std::string directory, std::string filename, std::vector<std::string> fullList )
 {
-  vector<string> fileList = lsDir( directory );
-  string file = "";
+  std::vector<std::string>	fileList = lsDir( directory );
+  std::string			file = "";
 
-  for ( vector<string>::iterator i = fileList.begin() ; i != fileList.end() && file.compare ( "" ) == 0 ; ++i )
+  for ( std::vector<std::string>::iterator i = fileList.begin() ; i != fileList.end() && file.compare ( "" ) == 0 ; ++i )
   {
     if ( *i != "." && *i != ".." )            // filter out parent and curdir
     {
-      stringstream fullname;
+      std::stringstream fullname;
       fullname << directory << "/" << ( *i );
 
       if ( *i == filename )
@@ -175,12 +175,12 @@ string YPath::lookRecursive( string directory, string filename, vector<string> f
   return file;
 }
 
-string YPath::path()
+std::string YPath::path()
 {
   return fullPath;
 }
 
-string YPath::dir()
+std::string YPath::dir()
 {
   return fullPath.substr ( 0, fullPath.rfind( "/" ) );
 }

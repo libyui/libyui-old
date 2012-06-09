@@ -66,17 +66,17 @@
 
 struct YFramePrivate
 {
-    YFramePrivate( const string & frameLabel )
+    YFramePrivate( const std::string & frameLabel )
 	: label( frameLabel )
 	{}
 
-    string label;
+    std::string label;
 };
 
 
 
 
-YFrame::YFrame( YWidget * parent, const string & label )
+YFrame::YFrame( YWidget * parent, const std::string & label )
     : YSingleChildContainerWidget( parent )
     , priv( new YFramePrivate( YShortcut::cleanShortcutString( label ) ) )
 {
@@ -90,13 +90,13 @@ YFrame::~YFrame()
 }
 
 
-void YFrame::setLabel( const string & newLabel )
+void YFrame::setLabel( const std::string & newLabel )
 {
     priv->label = YShortcut::cleanShortcutString( newLabel );
 }
 
 
-string YFrame::label() const
+std::string YFrame::label() const
 {
     return priv->label;
 }
@@ -110,7 +110,7 @@ YFrame::propertySet()
     if ( propSet.isEmpty() )
     {
 	/*
-	 * @property string  Label	the text on the frame
+	 * @property std::string	Label	the text on the frame
 	 */
 
 	propSet.add( YProperty( YUIProperty_Label,	YStringProperty	) );
@@ -122,7 +122,7 @@ YFrame::propertySet()
 
 
 bool
-YFrame::setProperty( const string & propertyName, const YPropertyValue & val )
+YFrame::setProperty( const std::string & propertyName, const YPropertyValue & val )
 {
     propertySet().check( propertyName, val.type() ); // throws exceptions if not found or type mismatch
 
@@ -137,7 +137,7 @@ YFrame::setProperty( const string & propertyName, const YPropertyValue & val )
 
 
 YPropertyValue
-YFrame::getProperty( const string & propertyName )
+YFrame::getProperty( const std::string & propertyName )
 {
     propertySet().check( propertyName ); // throws exceptions if not found
 

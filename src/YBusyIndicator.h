@@ -71,7 +71,7 @@ protected:
      * Constructor.
      **/
     YBusyIndicator( YWidget * 		parent,
-		  const string &	label,
+		  const std::string &	label,
 		  int			timeout = 1000,
 		  bool 			alive = true );
 
@@ -90,7 +90,7 @@ public:
     /**
      * Get the label (the caption above the progress bar).
      **/
-    string label();
+    std::string label();
 
     /**
      * Set the label (the caption above the progress bar).
@@ -98,7 +98,7 @@ public:
      * Derived classes are free to reimplement this, but they should call this
      * base class method at the end of the overloaded function.
      **/
-    virtual void setLabel( const string & label );
+    virtual void setLabel( const std::string & label );
 
     /**
      * Return the current timeout in milliseconds.
@@ -140,7 +140,7 @@ public:
      * 'false' if that value requires special handling (not in error cases:
      * those are covered by exceptions).
      **/
-    virtual bool setProperty( const string & propertyName,
+    virtual bool setProperty( const std::string & propertyName,
 			      const YPropertyValue & val );
 
     /**
@@ -149,7 +149,7 @@ public:
      *
      * This method may throw YUIPropertyExceptions.
      **/
-    virtual YPropertyValue getProperty( const string & propertyName );
+    virtual YPropertyValue getProperty( const std::string & propertyName );
 
     /**
      * Return this class's property set.

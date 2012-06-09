@@ -65,7 +65,6 @@
 #include "YEvent.h"
 #include "YDialog.h"
 
-using std::string;
 
 unsigned long YEvent::_nextSerial = 0;
 
@@ -155,8 +154,8 @@ YWidgetEvent::YWidgetEvent( YWidget *	widget,
 
 
 
-YKeyEvent::YKeyEvent( const string &	keySymbol,
-		      YWidget *		focusWidget )
+YKeyEvent::YKeyEvent( const std::string &	keySymbol,
+		      YWidget *			focusWidget )
     : YEvent( KeyEvent )
     , _keySymbol( keySymbol )
     , _focusWidget( focusWidget )
@@ -171,7 +170,7 @@ operator<<( std::ostream & stream, const YEvent * event )
     if ( event )
     {
 	stream << YEvent::toString( event->eventType() )
-	       << " at " << hex << (void *) event << dec;
+	       << " at " << std::hex << (void *) event << std::dec;
     }
     else
     {

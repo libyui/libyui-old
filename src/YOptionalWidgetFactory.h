@@ -67,9 +67,6 @@
 #include "YWizard.h"
 #include "YGraph.h"
 
-using std::string;
-using std::vector;
-using std::map;
 
 class YBarGraph;
 class YDateField;
@@ -100,9 +97,9 @@ public:
 
     virtual bool			hasWizard();
     virtual YWizard *			createWizard		( YWidget * 		parent,
-								  const string & 	backButtonLabel,
-								  const string & 	abortButtonLabel,
-								  const string & 	nextButtonLabel,
+								  const std::string & 	backButtonLabel,
+								  const std::string & 	abortButtonLabel,
+								  const std::string & 	nextButtonLabel,
 								  YWizardMode		wizardMode = YWizardMode_Standard );
 
     virtual bool			hasDumbTab();
@@ -110,16 +107,16 @@ public:
 
     virtual bool			hasSlider();
     virtual YSlider *			createSlider		( YWidget *		parent,
-								  const string	&	label,
+								  const std::string &	label,
 								  int 			minVal,
 								  int 			maxVal,
 								  int 			initialVal );
 
     virtual bool			hasDateField();
-    virtual YDateField *		createDateField		( YWidget * parent, const string & label );
+    virtual YDateField *		createDateField		( YWidget * parent, const std::string & label );
 
     virtual bool			hasTimeField();
-    virtual YTimeField *		createTimeField		( YWidget * parent, const string & label );
+    virtual YTimeField *		createTimeField		( YWidget * parent, const std::string & label );
 
     virtual bool			hasBarGraph();
     virtual YBarGraph *			createBarGraph		( YWidget * parent );
@@ -131,9 +128,9 @@ public:
     virtual YWidget *			createSimplePatchSelector( YWidget * parent, long modeFlags = 0 );
 
     virtual bool			hasMultiProgressMeter();
-    YMultiProgressMeter *		createHMultiProgressMeter( YWidget * parent, const vector<float> & maxValues );
-    YMultiProgressMeter *		createVMultiProgressMeter( YWidget * parent, const vector<float> & maxValues );
-    virtual YMultiProgressMeter *	createMultiProgressMeter ( YWidget * parent, YUIDimension dim, const vector<float> & maxValues );
+    YMultiProgressMeter *		createHMultiProgressMeter( YWidget * parent, const std::vector<float> & maxValues );
+    YMultiProgressMeter *		createVMultiProgressMeter( YWidget * parent, const std::vector<float> & maxValues );
+    virtual YMultiProgressMeter *	createMultiProgressMeter ( YWidget * parent, YUIDimension dim, const std::vector<float> & maxValues );
 
     virtual bool			hasPartitionSplitter();
     virtual YPartitionSplitter *	createPartitionSplitter	( YWidget * 		parent,
@@ -142,17 +139,17 @@ public:
 								  int 			newPartSize,
 								  int 			minNewPartSize,
 								  int 			minFreeSize,
-								  const string &	usedLabel,
-								  const string &	freeLabel,
-								  const string &	newPartLabel,
-								  const string &	freeFieldLabel,
-								  const string &	newPartFieldLabel );
+								  const std::string &	usedLabel,
+								  const std::string &	freeLabel,
+								  const std::string &	newPartLabel,
+								  const std::string &	freeFieldLabel,
+								  const std::string &	newPartFieldLabel );
 
 
     virtual bool			hasDownloadProgress();
     virtual YDownloadProgress *		createDownloadProgress	( YWidget * 		parent,
-								  const string & 	label,
-								  const string & 	filename,
+								  const std::string & 	label,
+								  const std::string & 	filename,
 								  YFileSize_t		expectedFileSize );
 
     bool				hasDummySpecialWidget();
@@ -160,12 +157,12 @@ public:
 
     virtual bool                        hasTimezoneSelector();
     virtual YTimezoneSelector *         createTimezoneSelector( YWidget * parent,
-								const string & pixmap,
-								const map<string,string> & timezones );
+								const std::string & pixmap,
+								const std::map<std::string,std::string> & timezones );
 
     virtual bool			hasGraph();
-    virtual YGraph *			createGraph( YWidget * parent, const string & filename,
-						     const string & layoutAlgorithm );
+    virtual YGraph *			createGraph( YWidget * parent, const std::string & filename,
+						     const std::string & layoutAlgorithm );
     virtual YGraph *			createGraph( YWidget * parent, graph_t * graph );
 
     virtual bool			hasContextMenu();

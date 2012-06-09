@@ -63,7 +63,6 @@
 #include "YItem.h"
 #include "ImplPtr.h"
 
-using std::string;
 class YSelectionWidgetPrivate;
 
 /**
@@ -86,10 +85,10 @@ protected:
      * application. Note that single selection can also mean that no item is
      * selected.
      **/
-    YSelectionWidget( YWidget *		parent,
-		      const string & 	label,
-		      bool 		enforceSingleSelection,
-		      bool              recurisveSelection = false );
+    YSelectionWidget( YWidget *			parent,
+		      const std::string &	label,
+		      bool			enforceSingleSelection,
+		      bool			recurisveSelection = false );
 
 public:
     /**
@@ -106,7 +105,7 @@ public:
     /**
      * Return this widget's label (the caption above the item list).
      **/
-    string label() const;
+    std::string label() const;
 
     /**
      * Change this widget's label (the caption above the item list).
@@ -114,7 +113,7 @@ public:
      * Derived classes should overwrite this function, but they should call
      * this base class function in the new implementation.
      **/
-    virtual void setLabel( const string & newLabel );
+    virtual void setLabel( const std::string & newLabel );
 
     /**
      * Add one item. This widget assumes ownership of the item object and will
@@ -132,15 +131,15 @@ public:
     /**
      * Overloaded for convenience: Add an item by string.
      **/
-    void addItem( const string & itemLabel, bool selected = false );
+    void addItem( const std::string & itemLabel, bool selected = false );
 
     /**
      * Overloaded for convenience: Add an item with a text and an icon.
      * Note that not all UIs can display icons.
      **/
-    void addItem( const string & itemLabel,
-		  const string & iconName,
-		  bool selected = false );
+    void addItem( const std::string & itemLabel,
+		  const std::string & iconName,
+		  bool  selected = false );
 
     /**
      * Add multiple items. For some UIs, this can be more efficient than
@@ -248,13 +247,13 @@ public:
      * Set this widget's base path where to look up icons.
      * If this is a relative path, YUI::qApp()->iconBasePath() is prepended.
      **/
-    void setIconBasePath( const string & basePath );
+    void setIconBasePath( const std::string & basePath );
 
     /**
      * Return this widget's base path where to look up icons
      * as set with setIconBasePath().
      **/
-    string iconBasePath() const;
+    std::string iconBasePath() const;
 
     /**
      * Return the full path + file name for the specified icon name.
@@ -264,7 +263,7 @@ public:
      *
      * If 'iconName' is empty, this will return an empty string.
      **/
-    string iconFullPath( const string & iconName ) const;
+    std::string iconFullPath( const std::string & iconName ) const;
 
     /**
      * Return the full path + file name for the icon of the specified item.
@@ -275,7 +274,7 @@ public:
      * If 'item' does not have an iconName specified, this will return an empty
      * string.
      **/
-    string iconFullPath( YItem * item ) const;
+    std::string iconFullPath( YItem * item ) const;
 
     /**
      * Return 'true' if this widget's items contain the specified item.
@@ -286,21 +285,21 @@ public:
      * Find the (first) item with the specified label.
      * Return 0 if there is no item with that label.
      **/
-    YItem * findItem( const string & itemLabel ) const;
+    YItem * findItem( const std::string & itemLabel ) const;
 
     /**
      * Get the string of this widget that holds the keyboard shortcut.
      *
      * Reimplemented from YWidget.
      **/
-    virtual string shortcutString() const { return label(); }
+    virtual std::string shortcutString() const { return label(); }
 
     /**
      * Set the string of this widget that holds the keyboard shortcut.
      *
      * Reimplemented from YWidget.
      **/
-    virtual void setShortcutString( const string & str )
+    virtual void setShortcutString( const std::string & str )
 	{ setLabel( str ); }
 
 protected:
@@ -349,7 +348,7 @@ protected:
      * Recursively try to find an item with label 'wantedItemLabel' between
      * iterators 'begin' and 'end'. Return that item or 0 if there is none.
      **/
-    YItem * findItem	( const string &	wantedItemLabel,
+    YItem * findItem	( const std::string &	wantedItemLabel,
 			  YItemConstIterator	begin,
 			  YItemConstIterator	end ) const;
 

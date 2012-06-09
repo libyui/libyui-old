@@ -62,7 +62,6 @@
 #include <vector>
 #include "YWidget.h"
 
-using std::vector;
 
 class YLayoutBoxPrivate;
 
@@ -70,8 +69,8 @@ class YLayoutBoxPrivate;
 class YLayoutBox : public YWidget
 {
 public:
-    typedef vector<int> sizeVector;
-    typedef vector<int> posVector;
+    typedef std::vector<int> sizeVector;
+    typedef std::vector<int> posVector;
 
 protected:
     /**

@@ -62,7 +62,6 @@
 #include <iosfwd>
 #include <string>
 
-using std::string;
 
 
 /**
@@ -91,7 +90,7 @@ public:
      * Convert the ID value to string.
      * Used for logging and debugging.
      **/
-    virtual string toString() const = 0;
+    virtual std::string toString() const = 0;
 
 private:
     /**
@@ -111,7 +110,7 @@ public:
     /**
      * Constructor.
      **/
-    YStringWidgetID( const string & value );
+    YStringWidgetID( const std::string & value );
 
     /**
      * Destructor.
@@ -131,20 +130,20 @@ public:
      *
      * Reimplemented from YWidgetID.
      **/
-    virtual string toString() const;
+    virtual std::string toString() const;
 
     /**
      * Return the ID value.
      **/
-    string value() const;
+    std::string value() const;
 
     /**
      * Return the ID value as a const ref.
      **/
-    const string & valueConstRef() const;
+    const std::string & valueConstRef() const;
 
 private:
-    string _value;
+    std::string _value;
 };
 
 std::ostream & operator<<( std::ostream & stream, const YWidgetID * id );

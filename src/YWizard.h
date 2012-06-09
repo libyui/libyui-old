@@ -131,11 +131,11 @@ protected:
      *
      * If only two buttons are desired, leave 'backButtonLabel' empty.
      **/
-    YWizard( YWidget *	 	parent,
-	     const string & 	backButtonLabel,
-	     const string & 	abortButtonLabel,
-	     const string & 	nextButtonLabel,
-	     YWizardMode 	wizardMode = YWizardMode_Standard );
+    YWizard( YWidget *			parent,
+	     const std::string &	backButtonLabel,
+	     const std::string &	abortButtonLabel,
+	     const std::string &	nextButtonLabel,
+	     YWizardMode		wizardMode = YWizardMode_Standard );
 
 public:
 
@@ -194,28 +194,28 @@ public:
      *
      * The default implementation simply calls button->setLabel( newLabel ).
      **/
-    virtual void setButtonLabel( YPushButton * button, const string & newLabel );
+    virtual void setButtonLabel( YPushButton * button, const std::string & newLabel );
 
     /**
      * Set the help text.
      **/
-    virtual void setHelpText( const string & helpText ) = 0;
+    virtual void setHelpText( const std::string & helpText ) = 0;
 
     /**
      * Set the dialog icon. An empty icon name clears the current icon.
      **/
-    virtual void setDialogIcon( const string & iconName ) = 0;
+    virtual void setDialogIcon( const std::string & iconName ) = 0;
 
     /**
      * Set the dialog title shown in the window manager's title bar.
        An empty string clears the current title.
      **/
-    virtual void setDialogTitle( const string & titleText ) = 0;
+    virtual void setDialogTitle( const std::string & titleText ) = 0;
 
     /**
      * Set the dialog heading.
      **/
-    virtual void setDialogHeading( const string & headingText ) = 0;
+    virtual void setDialogHeading( const std::string & headingText ) = 0;
 
 
     //
@@ -227,14 +227,14 @@ public:
      * This only adds the step to the internal list of steps.
      * The display is only updated upon calling updateSteps().
      **/
-    virtual void addStep( const string & text, const string & id ) = 0;
+    virtual void addStep( const std::string & text, const std::string & id ) = 0;
 
     /**
      * Add a step heading for the steps panel on the side bar.
      * This only adds the heading to the internal list of steps.
      * The display is only updated upon calling updateSteps().
      **/
-    virtual void addStepHeading( const string & text ) = 0;
+    virtual void addStepHeading( const std::string & text ) = 0;
 
     /**
      * Delete all steps and step headings from the internal lists.
@@ -245,7 +245,7 @@ public:
     /**
      * Set the current step. This also triggers updateSteps() if necessary.
      **/
-    virtual void setCurrentStep( const string & id ) = 0;
+    virtual void setCurrentStep( const std::string & id ) = 0;
 
     /**
      * Update the steps display: Reflect the internal steps and heading lists
@@ -264,20 +264,20 @@ public:
      * with which this newly created item can be referenced - and that will be
      * returned when the user clicks on a tree item.
      **/
-    virtual void addTreeItem( const string & parentID,
-			      const string & text,
-			      const string & id	) = 0;
+    virtual void addTreeItem( const std::string & parentID,
+			      const std::string & text,
+			      const std::string & id	) = 0;
 
     /**
      * Select the tree item with the specified ID, if such an item exists.
      **/
-    virtual void selectTreeItem( const string & id ) = 0;
+    virtual void selectTreeItem( const std::string & id ) = 0;
 
     /**
      * Returns the current tree selection or an empty string if nothing is
      * selected or there is no tree.
      **/
-    virtual string currentTreeSelection() = 0;
+    virtual std::string currentTreeSelection() = 0;
 
     /**
      * Delete all tree items.
@@ -295,28 +295,28 @@ public:
      * (including keyboard shortcuts marked with '&'), 'id' is the menu ID for
      * later addMenuEntry() etc. calls.
      **/
-    virtual void addMenu( const string & text,
-			  const string & id ) = 0;
+    virtual void addMenu( const std::string & text,
+			  const std::string & id ) = 0;
 
     /**
      * Add a submenu to the menu with ID 'parentMenuID'.
      **/
-    virtual void addSubMenu( const string & parentMenuID,
-			     const string & text,
-			     const string & id ) = 0;
+    virtual void addSubMenu( const std::string & parentMenuID,
+			     const std::string & text,
+			     const std::string & id ) = 0;
 
     /**
      * Add a menu entry to the menu with ID 'parentMenuID'. 'id' is what will
      * be returned by UI::UserInput() etc. when a user activates this menu entry.
      **/
-    virtual void addMenuEntry( const string & parentMenuID,
-			       const string & text,
-			       const string & id ) = 0;
+    virtual void addMenuEntry( const std::string & parentMenuID,
+			       const std::string & text,
+			       const std::string & id ) = 0;
 
     /**
      * Add a menu separator to a menu.
      **/
-    virtual void addMenuSeparator( const string & parentMenuID ) = 0;
+    virtual void addMenuSeparator( const std::string & parentMenuID ) = 0;
 
     /**
      * Delete all menus and hide the menu bar.
@@ -328,8 +328,8 @@ public:
      * with the specified label that will return the specified id to
      * UI::UserInput() when clicked.
      **/
-    virtual void showReleaseNotesButton( const string & label,
-					 const string & id ) = 0;
+    virtual void showReleaseNotesButton( const std::string & label,
+					 const std::string & id ) = 0;
 
     //
     // Misc
@@ -364,7 +364,7 @@ public:
      *
      * This method may throw YUIPropertyExceptions.
      **/
-    virtual YPropertyValue getProperty( const string & propertyName );
+    virtual YPropertyValue getProperty( const std::string & propertyName );
 
     /**
      * Return this class's property set.

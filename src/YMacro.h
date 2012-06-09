@@ -63,7 +63,6 @@
 
 class YMacroRecorder;
 class YMacroPlayer;
-using std::string;
 
 
 /**
@@ -103,7 +102,7 @@ public:
     /**
      * Record a macro to the specified macro file.
      **/
-    static void record( const string & macroFile );
+    static void record( const std::string & macroFile );
 
     /**
      * End macro recording.
@@ -118,7 +117,7 @@ public:
     /**
      * Play a macro from the specified macro file.
      **/
-    static void play( const string & macroFile );
+    static void play( const std::string & macroFile );
 
     /**
      * Play the next block from the current macro, if there is one playing.

@@ -64,7 +64,6 @@
 #include <string>
 #include <vector>
 
-using std::vector;
 class YItem;
 
 
@@ -121,19 +120,19 @@ public:
      *
      * This value is chached, i.e. this isn't a too expensive operation.
      **/
-    string shortcutString();
+    std::string shortcutString();
 
     /**
      * Returns the shortcut string ( from the widget's shortcut property )
      * without any "&" markers.
      **/
-    string cleanShortcutString();
+    std::string cleanShortcutString();
 
     /**
      * Static version of the above for general use:
      * Returns the specified string without any "&" markers.
      **/
-    static string cleanShortcutString( string shortcutString );
+    static std::string cleanShortcutString( std::string shortcutString );
 
     /**
      * The preferred shortcut character, i.e. the character that had been
@@ -195,7 +194,7 @@ public:
      * Returns string::npos if not found or the position of the shortcut marker
      * (not the shortcut character!) if found.
      **/
-    static string::size_type findShortcutPos( const string & str, string::size_type start_pos = 0 );
+    static std::string::size_type findShortcutPos( const std::string & str, std::string::size_type start_pos = 0 );
 
     /**
      * Static function: Find the next shortcut marker in a string, beginning at
@@ -203,7 +202,7 @@ public:
      *
      * Returns the shortcut character or 0 if none found.
      **/
-    static char findShortcut( const string & str, string::size_type start_pos = 0 );
+    static char findShortcut( const std::string & str, std::string::size_type start_pos = 0 );
 
     /**
      * Returns 'true' if 'c' is a valid shortcut character, i.e. [a-zA-Z0-9],
@@ -221,7 +220,7 @@ public:
      * Obtain a widget's shortcut property - the string that contains "&" to
      * designate a shortcut.
      **/
-    static string getShortcutString( const YWidget * widget );
+    static std::string getShortcutString( const YWidget * widget );
 
 
 protected:
@@ -230,16 +229,16 @@ protected:
      * Obtain the the shortcut property of this shortcut's widget - the string
      * that contains "&" to designate a shortcut.
      **/
-    virtual string getShortcutString();
+    virtual std::string getShortcutString();
 
 
     // Data members
 
     YWidget *	_widget;
-    string	_shortcutString;
+    std::string	_shortcutString;
     bool	_shortcutStringCached;
 
-    string	_cleanShortcutString;
+    std::string	_cleanShortcutString;
     bool	_cleanShortcutStringCached;
 
     int		_preferred;	// int to enable initializing with invalid char (-1)
@@ -290,7 +289,7 @@ protected:
      * Obtain the the shortcut property of this shortcut's widget - the string
      * that contains "&" to designate a shortcut.
      **/
-    virtual string getShortcutString();
+    virtual std::string getShortcutString();
 
 
 private:
@@ -299,7 +298,7 @@ private:
 };
 
 
-typedef vector<YShortcut *>		YShortcutList;
+typedef std::vector<YShortcut *>	YShortcutList;
 typedef YShortcutList::iterator		YShortcutListIterator;
 
 

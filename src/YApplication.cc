@@ -69,7 +69,6 @@
 #include "YUI.h"
 #include "YItem.h"
 
-using std::map;
 
 typedef map<string, int> YFunctionKeyMap;
 

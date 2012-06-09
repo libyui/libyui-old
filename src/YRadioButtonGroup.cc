@@ -174,7 +174,7 @@ YRadioButtonGroup::propertySet()
 
 
 bool
-YRadioButtonGroup::setProperty( const string & propertyName, const YPropertyValue & val )
+YRadioButtonGroup::setProperty( const std::string & propertyName, const YPropertyValue & val )
 {
     propertySet().check( propertyName, val.type() ); // throws exceptions if not found or type mismatch
 
@@ -190,7 +190,7 @@ YRadioButtonGroup::setProperty( const string & propertyName, const YPropertyValu
 
 
 YPropertyValue
-YRadioButtonGroup::getProperty( const string & propertyName )
+YRadioButtonGroup::getProperty( const std::string & propertyName )
 {
     propertySet().check( propertyName ); // throws exceptions if not found
 

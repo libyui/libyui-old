@@ -61,8 +61,6 @@
 
 #include "YTreeItem.h"
 
-using std::string;
-using std::vector;
 
 
 /**
@@ -74,12 +72,12 @@ public:
     /**
      * Constructors for toplevel items.
      **/
-    YMenuItem( const string &	label )
+    YMenuItem( const std::string &	label )
 	: YTreeItem( label )
 	{}
 
-    YMenuItem( const string & 	label,
-	       const string & 	iconName )
+    YMenuItem( const std::string & 	label,
+	       const std::string & 	iconName )
 	: YTreeItem( label, iconName )
 	{}
 
@@ -90,14 +88,14 @@ public:
      * parent assumes ownership of this item and will delete it in its (the
      * parent's) destructor.
      **/
-    YMenuItem( YMenuItem * 	parent,
-	       const string & 	label )
+    YMenuItem( YMenuItem *		parent,
+	       const std::string & 	label )
 	: YTreeItem( parent, label )
 	{}
 
-    YMenuItem( YMenuItem * 	parent,
-	       const string & 	label,
-	       const string & 	iconName )
+    YMenuItem( YMenuItem *		parent,
+	       const std::string & 	label,
+	       const std::string & 	iconName )
 	: YTreeItem( parent, label, iconName )
 	{}
 

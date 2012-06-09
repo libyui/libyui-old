@@ -62,7 +62,6 @@
 #include "YWidget.h"
 #include <string>
 
-using std::string;
 
 class YImagePrivate;
 
@@ -77,7 +76,7 @@ public:
      * (e.g., MNG).
      **/
     YImage( YWidget *		parent,
-	    const string &	imageFileName,
+	    const std::string &	imageFileName,
 	    bool 		animated = false );
 
     /**
@@ -94,7 +93,7 @@ public:
     /**
      * Return the file name of this widget's image.
      **/
-    string imageFileName() const;
+    std::string imageFileName() const;
 
     /**
      * Returns 'true' if the current image is an animated image format (e.g.,
@@ -108,12 +107,12 @@ public:
      * Derived classes should overwrite this, but call this base class function
      * in the new function.
      **/
-    virtual void setImage( const string & imageFileName, bool animated = false );
+    virtual void setImage( const std::string & imageFileName, bool animated = false );
 
     /**
      * Set and display a movie (an animated image).
      **/
-    void setMovie( const string & movieFileName )
+    void setMovie( const std::string & movieFileName )
 	{ setImage( movieFileName, true ); }
 
     /**

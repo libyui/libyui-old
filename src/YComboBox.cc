@@ -73,14 +73,14 @@ struct YComboBoxPrivate
 	{}
 
     bool	editable;
-    string	validChars;
+    std::string	validChars;
     int		inputMaxLength;
 };
 
 
 
 
-YComboBox::YComboBox( YWidget * parent, const string & label, bool editable )
+YComboBox::YComboBox( YWidget * parent, const std::string & label, bool editable )
     : YSelectionWidget( parent, label,
 			true )		// enforceSingleSelection
     , priv( new YComboBoxPrivate( editable ) )
@@ -101,13 +101,13 @@ bool YComboBox::editable() const
 }
 
 
-string YComboBox::validChars()
+std::string YComboBox::validChars()
 {
     return priv->validChars;
 }
 
 
-void YComboBox::setValidChars( const string & newValidChars )
+void YComboBox::setValidChars( const std::string & newValidChars )
 {
     priv->validChars= newValidChars;
 }
@@ -125,13 +125,13 @@ void YComboBox::setInputMaxLength( int len )
 }
 
 
-string YComboBox::value()
+std::string YComboBox::value()
 {
     return text();
 }
 
 
-void YComboBox::setValue( const string & newText )
+void YComboBox::setValue( const std::string & newText )
 {
     YItem * item = findItem( newText );
 
@@ -169,7 +169,7 @@ void YComboBox::selectItem( YItem * item, bool selected )
 YItem *
 YComboBox::selectedItem()
 {
-    string currentText = text();
+    std::string currentText = text();
 
     if ( ! currentText.empty() )
     {
@@ -219,12 +219,12 @@ YComboBox::propertySet()
     if ( propSet.isEmpty() )
     {
 	/*
-	 * @property itemID | string  	Value		ID of the selected item or the text the user entered
-	 * @property string		Label		caption above the combo box
-	 * @property itemList		Items		All items
-	 * @property string 		ValidChars	set of valid input characters
-	 * @property integer		InputMaxLength	maximum number of input characters
-	 * @property string  		IconPath	Base path for icons
+	 * @property itemID | std::string	Value		ID of the selected item or the text the user entered
+	 * @property std::string		Label		caption above the combo box
+	 * @property itemList			Items		All items
+	 * @property std::string 		ValidChars	set of valid input characters
+	 * @property integer			InputMaxLength	maximum number of input characters
+	 * @property std::string		IconPath	Base path for icons
 	 */
 	propSet.add( YProperty( YUIProperty_Value,		YOtherProperty	 ) );
 	propSet.add( YProperty( YUIProperty_Items,		YOtherProperty	 ) );
@@ -240,7 +240,7 @@ YComboBox::propertySet()
 
 
 bool
-YComboBox::setProperty( const string & propertyName, const YPropertyValue & val )
+YComboBox::setProperty( const std::string & propertyName, const YPropertyValue & val )
 {
     propertySet().check( propertyName, val.type() ); // throws exceptions if not found or type mismatch
 
@@ -260,7 +260,7 @@ YComboBox::setProperty( const string & propertyName, const YPropertyValue & val 
 
 
 YPropertyValue
-YComboBox::getProperty( const string & propertyName )
+YComboBox::getProperty( const std::string & propertyName )
 {
     propertySet().check( propertyName ); // throws exceptions if not found
 

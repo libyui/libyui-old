@@ -83,7 +83,7 @@ void YMacro::setPlayer( YMacroPlayer * player )
 }
 
 
-void YMacro::record( const string & macroFile )
+void YMacro::record( const std::string & macroFile )
 {
     if ( _recorder )
 	_recorder->record( macroFile );
@@ -106,7 +106,7 @@ bool YMacro::recording()
 }
 
 
-void YMacro::play( const string & macroFile )
+void YMacro::play( const std::string & macroFile )
 {
     if ( _player )
 	_player->play( macroFile );

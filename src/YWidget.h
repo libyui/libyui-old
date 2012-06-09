@@ -74,7 +74,6 @@ class YDialog;
 class YWidgetID;
 class YMacroRecorder;
 
-using std::string;
 
 typedef YChildrenManager<YWidget>	YWidgetChildrenManager;
 typedef YSingleChildManager<YWidget>	YSingleWidgetChildManager;
@@ -117,12 +116,12 @@ public:
      * Note: This is usually translated to the user's target language.
      * This makes this useful for debugging only.
      **/
-    virtual string debugLabel() const;
+    virtual std::string debugLabel() const;
 
     /**
      * Return the help text for this widget.
      **/
-    string helpText() const;
+    std::string helpText() const;
 
     /**
      * Set a help text for this widget.
@@ -131,7 +130,7 @@ public:
      * Displaying the text at a convenient time is currently the application's
      * responsibility. This may change in future versions.
      **/
-    void setHelpText( const string & helpText );
+    void setHelpText( const std::string & helpText );
 
 
     //
@@ -184,7 +183,7 @@ public:
      * 'false' if that value requires special handling (not in error cases:
      * those are covered by exceptions).
      **/
-    virtual bool setProperty( const string & propertyName,
+    virtual bool setProperty( const std::string & propertyName,
 			      const YPropertyValue & val );
 
     /**
@@ -193,7 +192,7 @@ public:
      * This method may throw exceptions, for example
      *	 - if there is no property with that name
      **/
-    virtual YPropertyValue getProperty( const string & propertyName );
+    virtual YPropertyValue getProperty( const std::string & propertyName );
 
 
     //
@@ -565,7 +564,7 @@ public:
      *
      * Overwrite this for widgets that can have keyboard shortcuts.
      **/
-    virtual string shortcutString() const { return string( "" ); }
+    virtual std::string shortcutString() const { return std::string( "" ); }
 
     /**
      * Set the string of this widget that holds the keyboard shortcut, if any.
@@ -573,7 +572,7 @@ public:
      *
      * Overwrite this for widgets that can have keyboard shortcuts.
      **/
-    virtual void setShortcutString( const string & str );
+    virtual void setShortcutString( const std::string & str );
 
     /**
      * The name of the widget property that will return user input, if there is
