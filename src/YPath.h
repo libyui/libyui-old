@@ -63,20 +63,44 @@
 #include <string>
 #include <vector>
 
+/**
+ * Finds files (e.g. plugins or theme pixmaps) recursively inside
+ * a directory.
+ **/
 class YPath
 {
 
 public:
 
-  YPath( std::string directory, std::string filename );
+/**
+ * Constructor
+ *
+ * to be called with the directory where to look inside
+ * and filename which to lookup.
+ *
+ * YSettings::progSubDir will be preferred by the lookup.
+ **/
+  YPath( const std::string & directory, const std::string & filename );
+/**
+ * Destructor
+ **/
   ~YPath();
+/**
+ * Returns the full path of the file if found;
+ * if not found just the filename given in constructor.
+ **/
   std::string path();
+/**
+ * Returns the directory where the file is found;
+ * if not found just the subdir part (if there's any) of
+ * the filename given in constructor.
+ **/
   std::string dir();
 
 private:
 
-  std::vector<std::string> lsDir( std::string directory );
-  std::string lookRecursive( std::string directory, std::string filename, std::vector<std::string> fullList );
+  std::vector<std::string> lsDir( const std::string & directory );
+  std::string lookRecursive( const std::string & directory, const std::string & filename, std::vector<std::string> fullList );
   std::string fullPath;
 
 };
