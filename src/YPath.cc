@@ -80,7 +80,7 @@ YPath::YPath ( const std::string & directory, const std::string & filename )
   std::string			filenameNoPrepend = filename.substr ( fullPath.rfind( "/" ) + 1, std::string::npos );
   std::string			fullname = "";
   std::string			themeSubDir = "/current";
-  std::string			subDirPrepend = "/" + filename.substr ( 0, fullPath.rfind( "/" );
+  std::string			subDirPrepend = "/" + filename.substr ( 0, fullPath.rfind( "/" ) );
   bool				hasSubDirPrepend = subDirPrepend.compare ( "/" );
   std::vector<std::string>	dirList;
 
@@ -123,7 +123,6 @@ YPath::YPath ( const std::string & directory, const std::string & filename )
 	  fullPath = fullname;
 	else
 	{
-	  fullList.push_back ( fullname );
 	  fullPath = lookRecursive ( fullname, filenameNoPrepend );
 	}
       }

@@ -100,7 +100,7 @@ public:
 private:
 
   std::vector<std::string> lsDir( const std::string & directory );
-  std::string lookRecursive( const std::string & directory, const std::string & filename, std::vector<std::string> fullList );
+  std::string lookRecursive( const std::string & directory, const std::string & filename );
   std::string fullPath;
 
 };
