@@ -61,7 +61,6 @@
 #define YUIPlugin_h
 
 #include <string>
-using std::string;
 
 
 /**
@@ -116,7 +115,7 @@ public:
      * Returns a human readable (but in most cases untranslated) error message
      * if there was an error.
      **/
-    string errorMsg() const;
+    std::string errorMsg() const;
 
 protected:
 
@@ -128,12 +127,12 @@ protected:
     /**
      * Returns the base name of the plugin library.
      **/
-    string pluginLibBaseName() const { return _pluginLibBaseName; }
+    std::string pluginLibBaseName() const { return _pluginLibBaseName; }
 
     /**
      * Returns the full path of the plugin library.
      **/
-    string pluginLibFullPath() const;
+    std::string pluginLibFullPath() const;
 
     /**
      * Loads the plugin library.
@@ -142,9 +141,9 @@ protected:
 
 private:
 
-    string	_pluginLibBaseName;
+    std::string	_pluginLibBaseName;
     void * 	_pluginLibHandle;
-    string	_errorMsg;
+    std::string	_errorMsg;
 };
 
 

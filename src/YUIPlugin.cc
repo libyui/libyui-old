@@ -67,13 +67,12 @@
 
 #include "config.h"
 
-using std::string;
 
 YUIPlugin::YUIPlugin( const char * pluginLibBaseName )
 {
-    _pluginLibBaseName = string( pluginLibBaseName );
+    _pluginLibBaseName = std::string( pluginLibBaseName );
 
-    string pluginFilename = pluginLibFullPath();
+    std::string pluginFilename = pluginLibFullPath();
 
     _pluginLibHandle = dlopen( pluginFilename.c_str(),
 			       RTLD_NOW | RTLD_GLOBAL);
@@ -84,7 +83,7 @@ YUIPlugin::YUIPlugin( const char * pluginLibBaseName )
 
 	yuiError() << "Could not load UI plugin \"" << pluginLibBaseName
 		   << "\": " << _errorMsg
-		   << endl;
+		   << std::endl;
     }
 }
 
@@ -104,11 +103,11 @@ YUIPlugin::unload()
 }
 
 
-string
+std::string
 YUIPlugin::pluginLibFullPath() const
 {
 
-    string pluginName = PLUGIN_PREFIX;
+    std::string pluginName = PLUGIN_PREFIX;
     pluginName.append( _pluginLibBaseName );
     pluginName.append( PLUGIN_SUFFIX );
 
@@ -129,7 +128,7 @@ void * YUIPlugin::locateSymbol( const char * symbol )
     {
 	yuiError() << "Could not locate symbol \"" << symbol
 		   << "\" in " << pluginLibFullPath()
-		   << endl;
+		   << std::endl;
     }
 
     return addr;
@@ -148,7 +147,7 @@ bool YUIPlugin::success() const
 }
 
 
-string YUIPlugin::errorMsg() const
+std::string YUIPlugin::errorMsg() const
 {
     return _errorMsg;
 }

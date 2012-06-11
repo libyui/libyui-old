@@ -64,7 +64,6 @@
 class YRadioButtonGroup;
 class YRadioButtonPrivate;
 
-using std::string;
 
 /**
  * RadioButton: Widget for one-out-of-many selection.
@@ -102,7 +101,7 @@ protected:
      * This can't be done in the constructor because it would involve calling a
      * virtual function, which doesn't work yet within the constructor.
      **/
-    YRadioButton( YWidget * parent, const string & label );
+    YRadioButton( YWidget * parent, const std::string & label );
 
 public:
     /**
@@ -136,7 +135,7 @@ public:
     /**
      * Get the label (the text on the RadioButton).
      **/
-    string label() const;
+    std::string label() const;
 
     /**
      * Set the label (the text on the RadioButton).
@@ -144,7 +143,7 @@ public:
      * Derived classes are free to reimplement this, but they should call this
      * base class method at the end of the overloaded function.
      **/
-    virtual void setLabel( const string & label );
+    virtual void setLabel( const std::string & label );
 
     /**
      * Returns 'true' if a bold font should be used.
@@ -177,7 +176,7 @@ public:
      * 'false' if that value requires special handling (not in error cases:
      * those are covered by exceptions).
      **/
-    virtual bool setProperty( const string & propertyName,
+    virtual bool setProperty( const std::string & propertyName,
 			      const YPropertyValue & val );
 
     /**
@@ -187,7 +186,7 @@ public:
      * This method may throw exceptions, for example
      *   - if there is no property with that name
      **/
-    virtual YPropertyValue getProperty( const string & propertyName );
+    virtual YPropertyValue getProperty( const std::string & propertyName );
 
     /**
      * Return this class's property set.
@@ -202,14 +201,14 @@ public:
      *
      * Reimplemented from YWidget.
      **/
-    virtual string shortcutString() const { return label(); }
+    virtual std::string shortcutString() const { return label(); }
 
     /**
      * Set the string of this widget that holds the keyboard shortcut.
      *
      * Reimplemented from YWidget.
      **/
-    virtual void setShortcutString( const string & str )
+    virtual void setShortcutString( const std::string & str )
 	{ setLabel( str ); }
 
     /**

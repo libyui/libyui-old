@@ -66,7 +66,6 @@
 
 typedef SortedTreeItem<YTransText>	YStringTreeItem;
 
-using std::string;
 
 
 /**
@@ -119,7 +118,7 @@ public:
      *  	"local"
      *			"bin"
      **/
-    YStringTreeItem * addBranch( const string &		content,
+    YStringTreeItem * addBranch( const std::string &	content,
 				 char 			delimiter = 0,
 				 YStringTreeItem *	parent 	  = 0 );
 
@@ -129,9 +128,9 @@ public:
      * 'startWithDelimiter' specifies whether or not the complete path should
      * start with the delimiter character.
      **/
-    string origPath( const YStringTreeItem *	item,
-		     char 			delimiter,
-		     bool 			startWithDelimiter = true )
+    std::string origPath( const YStringTreeItem *	item,
+			  char				delimiter,
+			  bool				startWithDelimiter = true )
 	{ return completePath( item, false, delimiter, startWithDelimiter ); }
 
 
@@ -140,9 +139,9 @@ public:
      * 'startWithDelimiter' specifies whether or not the complete path should
      * start with the delimiter character.
      **/
-    string translatedPath( const YStringTreeItem * item,
-			   char delimiter,
-			   bool startWithDelimiter = true )
+    std::string translatedPath( const YStringTreeItem * item,
+				char delimiter,
+				bool startWithDelimiter = true )
 	{ return completePath( item, true, delimiter, startWithDelimiter ); }
 
 
@@ -195,7 +194,7 @@ public:
      * Translate message 'orig' using the internal textdomain. Returns the
      * translated text or the original if there is no translation.
      **/
-    string translate( const string & orig );
+    std::string translate( const std::string & orig );
 
 
 protected:
@@ -205,21 +204,21 @@ protected:
      * item.  'startWithDelimiter' specifies whether or not the complete path
      * should start with the delimiter character.
      **/
-    string completePath( const YStringTreeItem * item,
-			 bool translated,
-			 char delimiter,
-			 bool startWithDelimiter );
+    std::string completePath( const YStringTreeItem * item,
+			      bool translated,
+			      char delimiter,
+			      bool startWithDelimiter );
 
     /**
      * Debugging - dump one branch of the tree into the log file.
      **/
-    void logBranch( YStringTreeItem * branch, string indentation );
+    void logBranch( YStringTreeItem * branch, std::string indentation );
 
 
     // Data members
 
     YStringTreeItem *	_root;
-    string		_textdomain;
+    std::string		_textdomain;
 };
 
 

@@ -62,7 +62,6 @@
 #include <string>
 #include <iosfwd>
 
-using std::string;
 
 
 /**
@@ -76,12 +75,12 @@ public:
      * Retrieve the environment variable 'name' and store the value
      * (unless 'name' is empty).
      **/
-    YEnvVar( const string & name = string() );
+    YEnvVar( const std::string & name = std::string() );
 
     /**
      * Return the name of the environment variable.
      **/
-    string name() const { return _name; }
+    std::string name() const { return _name; }
 
     /**
      * Return 'true' if the environment variable is set.
@@ -91,34 +90,34 @@ public:
     /**
      * Return the value of the environment variable.
      **/
-    string value() const { return _value; }
+    std::string value() const { return _value; }
 
     /**
      * Return 'true' if the environment variable is set and the value is
      * 'str'.
      **/
-    bool isEqual( const string & str, bool caseSensitive = false ) const;
+    bool isEqual( const std::string & str, bool caseSensitive = false ) const;
 
     /**
      * Case-insensitive comparison (shortcut for isEqual() ):
      * Return 'true' if the environment variable is set and the value is
      * 'str'.
      **/
-    bool operator==( const string & str ) const
+    bool operator==( const std::string & str ) const
 	{ return isEqual( str ); }
 
     /**
      * Return 'true' if the environment variable is set and the value contains
      * 'str'.
      **/
-    bool contains( const string & str, bool caseSensitive = false ) const;
+    bool contains( const std::string & str, bool caseSensitive = false ) const;
 
 
 private:
 
-    string _name;
-    string _value;
-    bool   _isSet;
+    std::string	_name;
+    std::string	_value;
+    bool	_isSet;
 };
 
 
@@ -131,7 +130,7 @@ std::ostream & operator<<( std::ostream & stream, const YEnvVar env );
 /**
  * Return 'str' converted to lower case.
  **/
-string tolower( const string & str );
+std::string tolower( const std::string & str );
 
 
 #endif // YEnvVar_h

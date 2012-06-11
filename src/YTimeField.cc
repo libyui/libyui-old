@@ -74,7 +74,7 @@ struct YTimeFieldPrivate
 
 
 
-YTimeField::YTimeField( YWidget * parent, const string & label )
+YTimeField::YTimeField( YWidget * parent, const std::string & label )
     : YSimpleInputField( parent, label )
     , priv( new YTimeFieldPrivate() )
 {
@@ -91,6 +91,6 @@ YTimeField::~YTimeField()
 /*
  * Properties (all handled in YSimpleInputField):
  *
- * @property string  Value	the time (the field's contents) as "hh:mm:ss"
- * @property string  Label	caption above the input field
+ * @property std::string	Value	the time (the field's contents) as "hh:mm:ss"
+ * @property std::string	Label	caption above the input field
  */

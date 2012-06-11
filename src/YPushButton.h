@@ -63,7 +63,6 @@
 
 class YPushButtonPrivate;
 
-using std::string;
 
 
 class YPushButton : public YWidget
@@ -72,7 +71,7 @@ protected:
     /**
      * Constructor.
      **/
-    YPushButton( YWidget * parent, const string & label );
+    YPushButton( YWidget * parent, const std::string & label );
 
 public:
     /**
@@ -89,7 +88,7 @@ public:
     /**
      * Get the label (the text on the button).
      **/
-    string label() const;
+    std::string label() const;
 
     /**
      * Set the label (the text on the button).
@@ -97,7 +96,7 @@ public:
      * Derived classes are free to reimplement this, but they should call this
      * base class method at the end of the overloaded function.
      **/
-    virtual void setLabel( const string & label );
+    virtual void setLabel( const std::string & label );
 
     /**
      * Set this button's icon from an icon file in the UI's default icon
@@ -106,7 +105,7 @@ public:
      * This default implementation does nothing.
      * UIs that can handle icons can choose to overwrite this method.
      **/
-    virtual void setIcon( const string & iconName ) {}
+    virtual void setIcon( const std::string & iconName ) {}
 
     /**
      * Returns 'true' if this is the dialog's default button, i.e. the one
@@ -194,7 +193,7 @@ public:
      * 'false' if that value requires special handling (not in error cases:
      * those are covered by exceptions).
      **/
-    virtual bool setProperty( const string & propertyName,
+    virtual bool setProperty( const std::string & propertyName,
 			      const YPropertyValue & val );
 
     /**
@@ -203,7 +202,7 @@ public:
      *
      * This method may throw YUIPropertyExceptions.
      **/
-    virtual YPropertyValue getProperty( const string & propertyName );
+    virtual YPropertyValue getProperty( const std::string & propertyName );
 
     /**
      * Return this class's property set.
@@ -218,14 +217,14 @@ public:
      *
      * Reimplemented from YWidget.
      **/
-    virtual string shortcutString() const { return label(); }
+    virtual std::string shortcutString() const { return label(); }
 
     /**
      * Set the string of this widget that holds the keyboard shortcut.
      *
      * Reimplemented from YWidget.
      **/
-    virtual void setShortcutString( const string & str )
+    virtual void setShortcutString( const std::string & str )
 	{ setLabel( str ); }
 
 

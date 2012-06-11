@@ -61,14 +61,12 @@
 
 #include "YItem.h"
 
-using std::string;
-using std::vector;
 
 class YTableCell;
 
-typedef vector<YTableCell *>                    YTableCellCollection;
-typedef YTableCellCollection::iterator          YTableCellIterator;
-typedef YTableCellCollection::const_iterator    YTableCellConstIterator;
+typedef std::vector<YTableCell *>		YTableCellCollection;
+typedef YTableCellCollection::iterator		YTableCellIterator;
+typedef YTableCellCollection::const_iterator	YTableCellConstIterator;
 
 
 /**
@@ -110,16 +108,16 @@ public:
      *     cell[3] ==> ""
      *     cell[4] ==> "five"
      **/
-    YTableItem( const string & label_0,
-                const string & label_1 = string(),
-                const string & label_2 = string(),
-                const string & label_3 = string(),
-                const string & label_4 = string(),
-                const string & label_5 = string(),
-                const string & label_6 = string(),
-                const string & label_7 = string(),
-                const string & label_8 = string(),
-                const string & label_9 = string() );
+    YTableItem( const std::string & label_0,
+                const std::string & label_1 = std::string(),
+                const std::string & label_2 = std::string(),
+                const std::string & label_3 = std::string(),
+                const std::string & label_4 = std::string(),
+                const std::string & label_5 = std::string(),
+                const std::string & label_6 = std::string(),
+                const std::string & label_7 = std::string(),
+                const std::string & label_8 = std::string(),
+                const std::string & label_9 = std::string() );
 
     /**
      * Destructor.
@@ -143,7 +141,7 @@ public:
      * Create a new cell and add it (even if both 'label' and
      * 'iconName' are empty).
      **/
-    void addCell( const string & label, const string & iconName = string() );
+    void addCell( const std::string & label, const std::string & iconName = std::string() );
 
     /**
      * Delete all cells.
@@ -184,13 +182,13 @@ public:
      * Return the label of cell no. 'index' (counting from 0 on) or an empty
      * string if there is no cell with that index.
      **/
-    string label( int index ) const;
+    std::string label( int index ) const;
 
     /**
      * Return the icon name of cell no. 'index' (counting from 0 on) or an empty
      * string if there is no cell with that index.
      **/
-    string iconName( int index ) const;
+    std::string iconName( int index ) const;
 
     /**
      * Return 'true' if there is a cell with the specified index that has an
@@ -201,7 +199,7 @@ public:
     /**
      * Just for debugging.
      **/
-    string label() const { return label(0); }
+    std::string label() const { return label(0); }
 
 private:
 
@@ -209,10 +207,10 @@ private:
     // context since there is not just one single label or icon name, but one
     // for each cell.
 
-    string      iconName()      const                           { return ""; }
-    bool        hasIconName()   const                           { return false; }
-    void        setLabel        ( const string & )              {}
-    void        setIconName     ( const string & )              {}
+    std::string	iconName()	const			{ return ""; }
+    bool	hasIconName()	const			{ return false; }
+    void	setLabel	( const std::string & )	{}
+    void	setIconName	( const std::string & )	{}
 
 
     //
@@ -253,7 +251,7 @@ public:
      * a parent item yet (that will be added to a parent later with
      * setParent()).
      **/
-    YTableCell( const string & label, const string & iconName = "" )
+    YTableCell( const std::string & label, const std::string & iconName = "" )
         : _label( label )
         , _iconName( iconName )
 	, _parent( 0 )
@@ -264,10 +262,10 @@ public:
      * Constructor with parent, column no., label and optional icon name for
      * cells that are created with a parent.
      **/
-    YTableCell( YTableItem * 	parent,
-		int 		column,
-		const string &	label,
-		const string &	iconName = "" )
+    YTableCell( YTableItem *		parent,
+		int			column,
+		const std::string &	label,
+		const std::string &	iconName = "" )
         : _label( label )
         , _iconName( iconName )
 	, _parent( parent )
@@ -286,7 +284,7 @@ public:
      * Return this cells's label. This is what the user sees in a dialog, so
      * this will usually be a translated text.
      **/
-    string label() const { return _label; }
+    std::string label() const { return _label; }
 
     /**
      * Set this cell's label.
@@ -295,12 +293,12 @@ public:
      * added to the table widget, call YTable::cellChanged() to notify the
      * table widget about the fact. Only then will the display be updated.
      **/
-    void setLabel( const string & newLabel ) { _label = newLabel; }
+    void setLabel( const std::string & newLabel ) { _label = newLabel; }
 
     /**
      * Return this cell's icon name.
      **/
-    string iconName() const { return _iconName; }
+    std::string iconName() const { return _iconName; }
 
     /**
      * Return 'true' if this cell has an icon name.
@@ -314,7 +312,7 @@ public:
      * added to the table widget, call YTable::cellChanged() to notify the
      * table widget about the fact. Only then will the display be updated.
      **/
-    void setIconName( const string & newIconName ) { _iconName = newIconName; }
+    void setIconName( const std::string & newIconName ) { _iconName = newIconName; }
 
     /**
      * Return this cell's parent item or 0 if it doesn't have one yet.
@@ -344,8 +342,8 @@ public:
 
 private:
 
-    string 		_label;
-    string		_iconName;
+    std::string		_label;
+    std::string		_iconName;
     YTableItem *	_parent;
     int			_column;
 };

@@ -61,7 +61,6 @@
 
 #include <string>
 
-using std::string;
 class YWidget;
 
 
@@ -90,7 +89,7 @@ public:
     /**
      * Start recording a macro to the specified file.
      **/
-    virtual void record( const string & macroFileName ) = 0;
+    virtual void record( const std::string & macroFileName ) = 0;
 
     /**
      * End recording and close the current macro file (if there is any).
@@ -116,7 +115,7 @@ public:
      * be used.
      **/
     virtual void recordMakeScreenShot( bool enabled = false,
-				       const string & filename = string() ) = 0;
+				       const std::string & filename = std::string() ) = 0;
 };
 
 #endif // YMacroRecorder_h

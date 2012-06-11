@@ -70,14 +70,11 @@
 #include "YWidget.h"
 
 
-using std::string;
-using std::ostream;
-using std::endl;
 
 
-string YCodeLocation::asString() const
+std::string YCodeLocation::asString() const
 {
-    string str( _file );
+    std::string str( _file );
     str += "(" + _func + "):";
 
     char formatted_number[ 20 ];
@@ -89,8 +86,8 @@ string YCodeLocation::asString() const
 }
 
 
-ostream &
-operator<<( ostream & str, const YCodeLocation & obj )
+std::ostream &
+operator<<( std::ostream & str, const YCodeLocation & obj )
 {
     return str << obj.asString();
 }
@@ -101,7 +98,7 @@ YUIException::YUIException()
     // NOP
 }
 
-YUIException::YUIException( const string & msg_r )
+YUIException::YUIException( const std::string & msg_r )
     : _msg( msg_r )
 {
     // NOP
@@ -114,7 +111,7 @@ YUIException::~YUIException() throw()
 }
 
 
-string
+std::string
 YUIException::asString() const
 {
     std::ostringstream str;
@@ -123,38 +120,38 @@ YUIException::asString() const
 }
 
 
-ostream &
-YUIException::dumpOn( ostream & str ) const
+std::ostream &
+YUIException::dumpOn( std::ostream & str ) const
 {
     return str << _msg;
 }
 
 
-ostream &
-YUIException::dumpError( ostream & str ) const
+std::ostream &
+YUIException::dumpError( std::ostream & str ) const
 {
     return dumpOn( str << _where << ": " );
 }
 
 
-ostream &
-operator<<( ostream & str, const YUIException & obj )
+std::ostream &
+operator<<( std::ostream & str, const YUIException & obj )
 {
     return obj.dumpError( str );
 }
 
 
-string
+std::string
 YUIException::strErrno( int errno_r )
 {
     return strerror( errno_r );
 }
 
 
-string
-YUIException::strErrno( int errno_r, const string & msg )
+std::string
+YUIException::strErrno( int errno_r, const std::string & msg )
 {
-    string ret( msg );
+    std::string ret( msg );
     ret += ": ";
     return ret += strErrno( errno_r );
 }
@@ -169,12 +166,12 @@ YUIException::log( const YUIException & 	exception,
 		     location.file().c_str(),
 		     location.line(),
 		     location.func().c_str() )
-			 << "\t" << prefix << " " << exception.asString() << endl;
+			 << "\t" << prefix << " " << exception.asString() << std::endl;
 }
 
 
-ostream &
-YUIUnknownPropertyException::dumpOn( ostream & str ) const
+std::ostream &
+YUIUnknownPropertyException::dumpOn( std::ostream & str ) const
 {
     if ( widget() )
     {
@@ -182,20 +179,20 @@ YUIUnknownPropertyException::dumpOn( ostream & str ) const
 		   << " has no property named \""
 		   << property().name()
 		   << "\""
-		   << endl;
+		   << std::endl;
     }
     else
     {
 	return str << "Unknown property name \""
 		   << property().name()
 		   << "\""
-		   << endl;
+		   << std::endl;
     }
 }
 
 
-ostream &
-YUIPropertyTypeMismatchException::dumpOn( ostream & str ) const
+std::ostream &
+YUIPropertyTypeMismatchException::dumpOn( std::ostream & str ) const
 {
     std::string widgetClass;
 
@@ -209,12 +206,12 @@ YUIPropertyTypeMismatchException::dumpOn( ostream & str ) const
 	       << property().typeAsStr()
 	       << ", not "
 	       << YProperty::typeAsStr( type() )
-	       << endl;
+	       << std::endl;
 }
 
 
-ostream &
-YUISetReadOnlyPropertyException::dumpOn( ostream & str ) const
+std::ostream &
+YUISetReadOnlyPropertyException::dumpOn( std::ostream & str ) const
 {
     std::string widgetClass;
 
@@ -225,12 +222,12 @@ YUISetReadOnlyPropertyException::dumpOn( ostream & str ) const
 	       << widgetClass
 	       << property().name()
 	       << "is read-only!"
-	       << endl;
+	       << std::endl;
 }
 
 
-ostream &
-YUIBadPropertyArgException::dumpOn( ostream & str ) const
+std::ostream &
+YUIBadPropertyArgException::dumpOn( std::ostream & str ) const
 {
     std::string widgetClass;
 
@@ -242,5 +239,5 @@ YUIBadPropertyArgException::dumpOn( ostream & str ) const
 	       << property().name()
 	       << ": "
 	       << msg()
-	       << endl;
+	       << std::endl;
 }

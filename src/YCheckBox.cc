@@ -66,17 +66,17 @@
 
 struct YCheckBoxPrivate
 {
-    YCheckBoxPrivate( const string & label )
+    YCheckBoxPrivate( const std::string & label )
 	: label( label )
 	, useBoldFont( false )
 	{}
 
-    string	label;
+    std::string	label;
     bool	useBoldFont;
 };
 
 
-YCheckBox::YCheckBox( YWidget * parent, const string & label )
+YCheckBox::YCheckBox( YWidget * parent, const std::string & label )
     : YWidget( parent )
     , priv( new YCheckBoxPrivate( label ) )
 {
@@ -90,13 +90,13 @@ YCheckBox::~YCheckBox()
 }
 
 
-void YCheckBox::setLabel( const string & newLabel )
+void YCheckBox::setLabel( const std::string & newLabel )
 {
     priv->label = newLabel;
 }
 
 
-string YCheckBox::label() const
+std::string YCheckBox::label() const
 {
     return priv->label;
 }
@@ -122,8 +122,8 @@ YCheckBox::propertySet()
     if ( propSet.isEmpty() )
     {
 	/*
-	 * @property boolean Value 	the on/off state; nil for "don't care" (tristate)
-	 * @property string  Label	the text on the CheckBox
+	 * @property boolean	  Value 	the on/off state; nil for "don't care" (tristate)
+	 * @property std::string  Label		the text on the CheckBox
 	 */
 
 	propSet.add( YProperty( YUIProperty_Value,	YOtherProperty	) );
@@ -136,7 +136,7 @@ YCheckBox::propertySet()
 
 
 bool
-YCheckBox::setProperty( const string & propertyName, const YPropertyValue & val )
+YCheckBox::setProperty( const std::string & propertyName, const YPropertyValue & val )
 {
     propertySet().check( propertyName, val.type() ); // throws exceptions if not found or type mismatch
 
@@ -152,7 +152,7 @@ YCheckBox::setProperty( const string & propertyName, const YPropertyValue & val 
 
 
 YPropertyValue
-YCheckBox::getProperty( const string & propertyName )
+YCheckBox::getProperty( const std::string & propertyName )
 {
     propertySet().check( propertyName ); // throws exceptions if not found
 

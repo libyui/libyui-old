@@ -93,7 +93,7 @@ protected:
      * 'editable' means the user can freely enter any value without being
      * restricted to the items of the ComboBox's list.
      **/
-    YComboBox( YWidget * parent, const string & label, bool editable );
+    YComboBox( YWidget * parent, const std::string & label, bool editable );
 
 public:
     /**
@@ -125,7 +125,7 @@ public:
      *
      * See also YComboBox::selectedItem().
      **/
-    string value();
+    std::string value();
 
     /**
      * Set the value of this ComboBox by string: Try to find a list item with
@@ -137,7 +137,7 @@ public:
      *
      * See also selectItem().
      **/
-    void setValue( const string & newText );
+    void setValue( const std::string & newText );
 
     /**
      * Return the (first) selected item or 0 if none is selected or if this
@@ -177,7 +177,7 @@ public:
      *
      * This is only meaningful for if the ComboBox is editable.
      **/
-    string validChars();
+    std::string validChars();
 
     /**
      * Set the valid input characters. No input validation is performed (i.e.,
@@ -188,7 +188,7 @@ public:
      * Derived classes are free to reimplement this, but they should call this
      * base class method at the end of the overloaded function.
      **/
-    virtual void setValidChars( const string & validChars );
+    virtual void setValidChars( const std::string & validChars );
 
     /**
      * The maximum input length, i.e., the maximum number of characters the
@@ -219,7 +219,7 @@ public:
      * 'false' if that value requires special handling (not in error cases:
      * those are covered by exceptions).
      **/
-    virtual bool setProperty( const string & propertyName,
+    virtual bool setProperty( const std::string & propertyName,
 			      const YPropertyValue & val );
 
     /**
@@ -228,7 +228,7 @@ public:
      *
      * This method may throw YUIPropertyExceptions.
      **/
-    virtual YPropertyValue getProperty( const string & propertyName );
+    virtual YPropertyValue getProperty( const std::string & propertyName );
 
     /**
      * Return this class's property set.
@@ -254,7 +254,7 @@ protected:
      *
      * Derived classes are required to implement this function.
      **/
-    virtual string text() = 0;
+    virtual std::string text() = 0;
 
     /**
      *
@@ -265,7 +265,7 @@ protected:
      *
      * Derived classes are required to implement this function.
      **/
-    virtual void setText( const string & newText ) = 0;
+    virtual void setText( const std::string & newText ) = 0;
 
 
 private:

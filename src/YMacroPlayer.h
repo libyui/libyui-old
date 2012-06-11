@@ -85,7 +85,7 @@ public:
     /**
      * Play a macro from the specified macro file.
      **/
-    virtual void play( const string & macroFile ) = 0;
+    virtual void play( const std::string & macroFile ) = 0;
 
     /**
      * Play the next block from the current macro, if there is one playing.

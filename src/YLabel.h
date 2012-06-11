@@ -63,7 +63,6 @@
 #include <string>
 #include "ImplPtr.h"
 
-using std::string;
 
 class YLabelPrivate;
 
@@ -86,7 +85,7 @@ public:
      * This cannot be changed after creating the widget.
      **/
     YLabel( YWidget * 		parent,
-	    const string &	text,
+	    const std::string &	text,
 	    bool 		isHeading	= false,
 	    bool 		isOutputField	= false );
 
@@ -106,13 +105,13 @@ public:
     /**
      * Return the text the widget displays.
      **/
-    string text() const;
+    std::string text() const;
 
     /**
      * Aliases for text().
      **/
-    string value() const { return text(); }
-    string label() const { return text(); }
+    std::string value() const { return text(); }
+    std::string label() const { return text(); }
 
     /**
      * Set the text the widget displays.
@@ -120,13 +119,13 @@ public:
      * Derived classes should overwrite this, but call this base class function
      * in the overwritten function.
      **/
-    virtual void setText( const string & newText );
+    virtual void setText( const std::string & newText );
 
     /**
      * Aliases for setText().
      **/
-    void setValue( const string & newValue ) { setText( newValue ); }
-    void setLabel( const string & newLabel ) { setText( newLabel ); }
+    void setValue( const std::string & newValue ) { setText( newValue ); }
+    void setLabel( const std::string & newLabel ) { setText( newLabel ); }
 
     /**
      * Return 'true' if this is a Heading widget, i.e., it should display its
@@ -170,7 +169,7 @@ public:
      * 'false' if that value requires special handling (not in error cases:
      * those are covered by exceptions).
      **/
-    virtual bool setProperty( const string & propertyName,
+    virtual bool setProperty( const std::string & propertyName,
 			      const YPropertyValue & val );
 
     /**
@@ -196,7 +195,7 @@ public:
      * Reimplemented from YWidget since a YLabel doesn't have a shortcut
      * property.
      **/
-    virtual string debugLabel() const;
+    virtual std::string debugLabel() const;
 
 private:
 

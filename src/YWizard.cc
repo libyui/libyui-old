@@ -79,9 +79,9 @@ struct YWizardPrivate
 
 
 YWizard::YWizard( YWidget *		parent,
-		  const string & 	backButtonLabel,
-		  const string & 	abortButtonLabel,
-		  const string & 	nextButtonLabel,
+		  const std::string & 	backButtonLabel,
+		  const std::string & 	abortButtonLabel,
+		  const std::string & 	nextButtonLabel,
 		  YWizardMode 		wizardMode )
     : YWidget( parent )
     , priv( new YWizardPrivate( wizardMode ) )
@@ -125,21 +125,21 @@ YWizard::protectNextButton( bool protect )
 
 
 void
-YWizard::setButtonLabel( YPushButton * button, const string & label )
+YWizard::setButtonLabel( YPushButton * button, const std::string & label )
 {
     // FIXME: Throw exception? ( YUI_CHECK_PTR() )
 
     if ( button )
 	button->setLabel( label );
     else
-	yuiError() << "NULL button" << endl;
+	yuiError() << "NULL button" << std::endl;
 }
 
 
 void
 YWizard::ping()
 {
-    yuiDebug() << "YWizard is active" << endl;
+    yuiDebug() << "YWizard is active" << std::endl;
 }
 
 
@@ -151,7 +151,7 @@ YWizard::propertySet()
     if ( propSet.isEmpty() )
     {
 	/*
-	 * @property string CurrentItem	the currently selected tree item (read only)
+	 * @property std::string	CurrentItem	the currently selected tree item (read only)
 	 */
 	propSet.add( YProperty( YUIProperty_CurrentItem, YStringProperty, true ) );	// read-only
 	propSet.add( YWidget::propertySet() );
@@ -162,7 +162,7 @@ YWizard::propertySet()
 
 
 YPropertyValue
-YWizard::getProperty( const string & propertyName )
+YWizard::getProperty( const std::string & propertyName )
 {
     propertySet().check( propertyName ); // throws exceptions if not found
 

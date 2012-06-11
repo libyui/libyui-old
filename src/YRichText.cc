@@ -69,14 +69,14 @@ struct YRichTextPrivate
     /**
      * Constructor.
      **/
-    YRichTextPrivate( const string & text, bool plainTextMode )
+    YRichTextPrivate( const std::string & text, bool plainTextMode )
 	: text( text )
 	, plainTextMode( plainTextMode )
 	, autoScrollDown ( false )
 	, shrinkable( false )
 	{}
 
-    string	text;
+    std::string	text;
     bool	plainTextMode;
     bool	autoScrollDown;
     bool	shrinkable;
@@ -85,7 +85,7 @@ struct YRichTextPrivate
 
 
 
-YRichText::YRichText( YWidget * parent, const string & text, bool plainTextMode )
+YRichText::YRichText( YWidget * parent, const std::string & text, bool plainTextMode )
     : YWidget( parent )
     , priv( new YRichTextPrivate( text, plainTextMode ) )
 {
@@ -102,13 +102,13 @@ YRichText::~YRichText()
 }
 
 
-void YRichText::setValue( const string & newValue )
+void YRichText::setValue( const std::string & newValue )
 {
     priv->text = newValue;
 }
 
 
-string YRichText::value() const
+std::string YRichText::value() const
 {
     return priv->text;
 }
@@ -158,8 +158,8 @@ YRichText::propertySet()
     if ( propSet.isEmpty() )
     {
 	/*
-	 * @property string  Value	the text content
-	 * @property string  Text	the text content
+	 * @property std::string	Value	the text content
+	 * @property std::string	Text	the text content
 	 */
 	propSet.add( YProperty( YUIProperty_Value,		YStringProperty	 ) );
 	propSet.add( YProperty( YUIProperty_Text,		YStringProperty	 ) );
@@ -171,7 +171,7 @@ YRichText::propertySet()
 
 
 bool
-YRichText::setProperty( const string & propertyName, const YPropertyValue & val )
+YRichText::setProperty( const std::string & propertyName, const YPropertyValue & val )
 {
     propertySet().check( propertyName, val.type() ); // throws exceptions if not found or type mismatch
 
@@ -187,7 +187,7 @@ YRichText::setProperty( const string & propertyName, const YPropertyValue & val 
 
 
 YPropertyValue
-YRichText::getProperty( const string & propertyName )
+YRichText::getProperty( const std::string & propertyName )
 {
     propertySet().check( propertyName ); // throws exceptions if not found
 

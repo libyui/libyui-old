@@ -266,9 +266,9 @@ void YDialogSpy::showProperties( YWidget * widget )
 	      it != propSet.propertiesEnd();
 	      ++it )
 	{
-	    YProperty      prop    = *it;
-	    YPropertyValue propVal = widget->getProperty( prop.name() );
-	    string         propValStr;
+	    YProperty		prop    = *it;
+	    YPropertyValue	propVal = widget->getProperty( prop.name() );
+	    std::string		propValStr;
 
 	    switch ( prop.type() )
 	    {
@@ -354,7 +354,7 @@ void YDialogSpy::exec()
 	    if ( event->widget() == priv->widgetTree || updateProp )
 	    {
 		YWidgetTreeItem * item = (YWidgetTreeItem *) priv->widgetTree->selectedItem();
-		yuiDebug() << "Highlighting " << item << endl;
+		yuiDebug() << "Highlighting " << item << std::endl;
 
 		if ( item )
 		{

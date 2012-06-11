@@ -69,11 +69,6 @@
 
 #include "YUIException.h"
 
-using std::ostream;
-using std::ofstream;
-using std::cerr;
-using std::endl;
-using std::vector;
 
 static void stdLogger( YUILogLevel_t	logLevel,
 		       const char *	logComponent,
@@ -82,7 +77,7 @@ static void stdLogger( YUILogLevel_t	logLevel,
 		       const char * 	sourceFunctionName,
 		       const char *	message );
 
-static ostream * stdLogStream = &cerr;
+static std::ostream * stdLogStream = &std::cerr;
 
 
 /**
@@ -151,7 +146,7 @@ private:
     int			lineNo;
     const char *	functionName;
 
-    string		buffer;
+    std::string		buffer;
 };
 
 
@@ -162,7 +157,7 @@ YUILogBuffer::writeBuffer( const char * sequence, std::streamsize seqLen )
     // Add new character sequence
 
     if ( seqLen > 0 )
-	buffer += string( sequence, seqLen );
+	buffer += std::string( sequence, seqLen );
 
     //
     // Output buffer contents line by line
@@ -172,11 +167,11 @@ YUILogBuffer::writeBuffer( const char * sequence, std::streamsize seqLen )
     std::size_t newline_pos = 0;
 
     while ( start < buffer.length() &&
-	    ( newline_pos = buffer.find_first_of( '\n', start ) ) != string::npos )
+	    ( newline_pos = buffer.find_first_of( '\n', start ) ) != std::string::npos )
     {
 	YUILoggerFunction loggerFunction = YUILog::loggerFunction( true ); // never return 0
 
-	string line = buffer.substr( start, newline_pos - start );
+	std::string line = buffer.substr( start, newline_pos - start );
 
 	loggerFunction( logLevel, logComponent,
 			YUILog::basename( sourceFileName ).c_str(), lineNo, functionName,
@@ -186,7 +181,7 @@ YUILogBuffer::writeBuffer( const char * sequence, std::streamsize seqLen )
     }
 
     if ( start < buffer.length() )
-	buffer = buffer.substr( start, string::npos );
+	buffer = buffer.substr( start, std::string::npos );
     else
 	buffer.clear();
 
@@ -254,7 +249,7 @@ struct YPerThreadLogInfo
 	, logBuffer()
 	, logStream( &logBuffer )
     {
-	// cerr << "New thread with ID " << hex << threadHandle << dec << endl;
+	// std::cerr << "New thread with ID " << hex << threadHandle << dec << std::endl;
     }
 
     /**
@@ -280,7 +275,7 @@ struct YPerThreadLogInfo
 
     pthread_t		threadHandle;
     YUILogBuffer	logBuffer;
-    ostream 		logStream;
+    std::ostream	logStream;
 };
 
 
@@ -319,7 +314,7 @@ struct YUILogPrivate
 	// The UI thread does the most logging, but it is created after the
 	// main thread.
 
-	for ( vector<YPerThreadLogInfo *>::reverse_iterator it = threadLogInfo.rbegin();
+	for ( std::vector<YPerThreadLogInfo *>::reverse_iterator it = threadLogInfo.rbegin();
 	      it != threadLogInfo.rend();
 	      ++it )
 	{
@@ -337,14 +332,14 @@ struct YUILogPrivate
     // Data members
     //
 
-    string				logFileName;
-    ofstream				stdLogStream;
+    std::string				logFileName;
+    std::ofstream			stdLogStream;
     YUILoggerFunction			loggerFunction;
     YUIEnableDebugLoggingFunction	enableDebugLoggingHook;
     YUIDebugLoggingEnabledFunction	debugLoggingEnabledHook;
     bool				enableDebugLogging;
 
-    vector<YPerThreadLogInfo *>		threadLogInfo;
+    std::vector<YPerThreadLogInfo *>	threadLogInfo;
 };
 
 
@@ -380,11 +375,11 @@ YUILog::instance()
 
 
 bool
-YUILog::setLogFileName( const string & logFileName )
+YUILog::setLogFileName( const std::string & logFileName )
 {
     instance()->priv->logFileName = logFileName;
 
-    ofstream & logStream = instance()->priv->stdLogStream;
+    std::ofstream & logStream = instance()->priv->stdLogStream;
 
     if ( logStream.is_open() )
 	logStream.close();
@@ -393,7 +388,7 @@ YUILog::setLogFileName( const string & logFileName )
 
     if ( logFileName.empty() ) // log to stderr again
     {
-	stdLogStream = &cerr;
+	stdLogStream = &std::cerr;
     }
     else
     {
@@ -406,8 +401,8 @@ YUILog::setLogFileName( const string & logFileName )
 	}
 	else
 	{
-	    cerr << "ERROR: Can't open log file " << logFileName << endl;
-	    stdLogStream = &cerr;
+	    std::cerr << "ERROR: Can't open log file " << logFileName << std::endl;
+	    stdLogStream = &std::cerr;
 	}
     }
 
@@ -415,7 +410,7 @@ YUILog::setLogFileName( const string & logFileName )
 }
 
 
-string
+std::string
 YUILog::logFileName()
 {
     return instance()->priv->logFileName;
@@ -487,7 +482,7 @@ YUILog::debugLoggingEnabledHook()
 }
 
 
-ostream &
+std::ostream &
 YUILog::log( YUILogLevel_t	logLevel,
 	     const char *	logComponent,
 	     const char *	sourceFileName,
@@ -518,28 +513,28 @@ YUILog::log( YUILogLevel_t	logLevel,
 }
 
 
-ostream &
+std::ostream &
 YUILog::debug( const char * logComponent, const char * sourceFileName, int lineNo, const char * functionName )
 {
     return instance()->log( YUI_LOG_DEBUG, logComponent, sourceFileName, lineNo, functionName );
 }
 
 
-ostream &
+std::ostream &
 YUILog::milestone( const char * logComponent, const char * sourceFileName, int lineNo, const char * functionName )
 {
     return instance()->log( YUI_LOG_MILESTONE, logComponent, sourceFileName, lineNo, functionName );
 }
 
 
-ostream &
+std::ostream &
 YUILog::warning( const char * logComponent, const char * sourceFileName, int lineNo, const char * functionName )
 {
     return instance()->log( YUI_LOG_WARNING, logComponent, sourceFileName, lineNo, functionName );
 }
 
 
-ostream &
+std::ostream &
 YUILog::error( const char * logComponent, const char * sourceFileName, int lineNo, const char * functionName )
 {
     return instance()->log( YUI_LOG_ERROR, logComponent, sourceFileName, lineNo, functionName );
@@ -547,13 +542,13 @@ YUILog::error( const char * logComponent, const char * sourceFileName, int lineN
 
 
 
-string
-YUILog::basename( const string & fileNameWithPath )
+std::string
+YUILog::basename( const std::string & fileNameWithPath )
 {
     std::size_t lastSlashPos = fileNameWithPath.find_last_of( '/' );
 
-    string fileName =
-	( lastSlashPos == string::npos ) ?
+    std::string fileName =
+	( lastSlashPos == std::string::npos ) ?
 	fileNameWithPath :
 	fileNameWithPath.substr( lastSlashPos+1 );
 
@@ -603,5 +598,5 @@ stdLogger( YUILogLevel_t	logLevel,
 		    << sourceFileName	<< ":" << sourceLineNo << " "
 		    << sourceFunctionName	<< "(): "
 		    << message
-		    << endl;
+		    << std::endl;
 }

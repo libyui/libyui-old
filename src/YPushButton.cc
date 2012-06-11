@@ -67,7 +67,6 @@
 #include "YPushButton.h"
 
 
-using std::string;
 
 
 struct YPushButtonPrivate

@@ -63,7 +63,6 @@
 #include "YWidget.h"
 #include "ImplPtr.h"
 
-using std::string;
 
 class YRichTextPrivate;
 
@@ -79,9 +78,9 @@ public:
      * i.e. any HTML-like tags in the text should not be interpreted in any
      * way.
      **/
-    YRichText( YWidget * 	parent,
-	       const string & 	text,
-	       bool 		plainTextMode = false );
+    YRichText( YWidget *		parent,
+	       const std::string &	text,
+	       bool			plainTextMode = false );
 
     /**
      * Destructor.
@@ -100,22 +99,22 @@ public:
      * Derived classes should overwrite this function, but call this base class
      * function in the new function.
      **/
-    virtual void setValue( const string & newValue );
+    virtual void setValue( const std::string & newValue );
 
     /**
      * Return the text content of the RichText widget.
      **/
-    string value() const;
+    std::string value() const;
 
     /**
      * Alias for setValue().
      **/
-    void setText( const string & newText ) { setValue( newText ); }
+    void setText( const std::string & newText ) { setValue( newText ); }
 
     /**
      * Alias for value().
      **/
-    string text() const { return value(); }
+    std::string text() const { return value(); }
 
     /**
      * Return 'true' if this RichText widget is in "plain text" mode, i.e. does
@@ -171,7 +170,7 @@ public:
      * 'false' if that value requires special handling (not in error cases:
      * those are covered by exceptions).
      **/
-    virtual bool setProperty( const string & propertyName,
+    virtual bool setProperty( const std::string & propertyName,
 			      const YPropertyValue & val );
 
     /**
@@ -180,7 +179,7 @@ public:
      *
      * This method may throw YUIPropertyExceptions.
      **/
-    virtual YPropertyValue getProperty( const string & propertyName );
+    virtual YPropertyValue getProperty( const std::string & propertyName );
 
     /**
      * Return this class's property set.

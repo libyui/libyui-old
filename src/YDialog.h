@@ -364,7 +364,7 @@ public:
      * This is useful for help texts.
      * 'richText' indicates if YRichText formatting should be applied.
      **/
-    static void showText( const string & text, bool richText = false );
+    static void showText( const std::string & text, bool richText = false );
 
     /**
      * Show the help text for the specified widget. If it doesn't have one,

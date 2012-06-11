@@ -62,12 +62,10 @@
 #include <string>
 #include <vector>
 
-using std::string;
-using std::vector;
 
 class YItem;
 
-typedef vector<YItem *> 			YItemCollection;
+typedef std::vector<YItem *> 			YItemCollection;
 typedef YItemCollection::iterator		YItemIterator;
 typedef YItemCollection::const_iterator		YItemConstIterator;
 
@@ -82,7 +80,7 @@ public:
     /**
      * Constructor with just the label and optionally the selected state.
      **/
-    YItem( const string & label, bool selected = false )
+    YItem( const std::string & label, bool selected = false )
 	: _label( label )
 	, _selected( selected )
 	, _index( -1 )
@@ -92,7 +90,7 @@ public:
     /**
      * Constructor with label and icon name and optionally the selected state.
      **/
-    YItem( const string & label, const string & iconName, bool selected = false )
+    YItem( const std::string & label, const std::string & iconName, bool selected = false )
 	: _label( label )
 	, _iconName( iconName )
 	, _selected( selected )
@@ -109,17 +107,17 @@ public:
      * Return this item's label. This is what the user sees in a dialog, so
      * this will usually be a translated text.
      **/
-    string label() const { return _label; }
+    std::string label() const { return _label; }
 
     /**
      * Set this item's label.
      **/
-    void setLabel( const string & newLabel ) { _label = newLabel; }
+    void setLabel( const std::string & newLabel ) { _label = newLabel; }
 
     /**
      * Return this item's icon name.
      **/
-    string iconName() const { return _iconName; }
+    std::string iconName() const { return _iconName; }
 
     /**
      * Return 'true' if this item has an icon name.
@@ -129,7 +127,7 @@ public:
     /**
      * Set this item's icon name.
      **/
-    void setIconName( const string & newIconName ) { _iconName = newIconName; }
+    void setIconName( const std::string & newIconName ) { _iconName = newIconName; }
 
     /**
      * Return 'true' if this item is currently selected.
@@ -221,8 +219,8 @@ public:
 
 private:
 
-    string	_label;
-    string	_iconName;
+    std::string	_label;
+    std::string	_iconName;
     bool	_selected;
     int		_index;
     void *	_data;

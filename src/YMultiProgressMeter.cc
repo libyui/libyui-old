@@ -66,28 +66,28 @@
 
 struct YMultiProgressMeterPrivate
 {
-    YMultiProgressMeterPrivate( YUIDimension 		dim,
-				const vector<float> &	maxValues )
+    YMultiProgressMeterPrivate( YUIDimension			dim,
+				const std::vector<float> &	maxValues )
 	: dim( dim )
 	, maxValues( maxValues )
     {
 	// Make currentValues as large as maxValues
 	// and initialize each element with 0
-	currentValues = vector<float>( maxValues.size(), 0.0 );
+	currentValues = std::vector<float>( maxValues.size(), 0.0 );
     }
 
 
     YUIDimension	dim;
-    vector<float>	maxValues;
-    vector<float>	currentValues;
+    std::vector<float>	maxValues;
+    std::vector<float>	currentValues;
 };
 
 
 
 
-YMultiProgressMeter::YMultiProgressMeter( YWidget *		parent,
-					  YUIDimension		dim,
-					  const vector<float> &	maxValues )
+YMultiProgressMeter::YMultiProgressMeter( YWidget *			parent,
+					  YUIDimension			dim,
+					  const std::vector<float> &	maxValues )
     : YWidget( parent )
     , priv( new YMultiProgressMeterPrivate( dim, maxValues ) )
 {
@@ -159,7 +159,7 @@ void YMultiProgressMeter::setCurrentValue( int segment, float value )
 }
 
 
-void YMultiProgressMeter::setCurrentValues( const vector<float> & values )
+void YMultiProgressMeter::setCurrentValues( const std::vector<float> & values )
 {
     for ( int i=0; i < (int) values.size(); i++ )
     {
@@ -189,7 +189,7 @@ YMultiProgressMeter::propertySet()
 
 
 bool
-YMultiProgressMeter::setProperty( const string & propertyName, const YPropertyValue & val )
+YMultiProgressMeter::setProperty( const std::string & propertyName, const YPropertyValue & val )
 {
     propertySet().check( propertyName, val.type() ); // throws exceptions if not found or type mismatch
 
@@ -204,7 +204,7 @@ YMultiProgressMeter::setProperty( const string & propertyName, const YPropertyVa
 
 
 YPropertyValue
-YMultiProgressMeter::getProperty( const string & propertyName )
+YMultiProgressMeter::getProperty( const std::string & propertyName )
 {
     propertySet().check( propertyName ); // throws exceptions if not found
 

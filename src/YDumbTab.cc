@@ -113,10 +113,10 @@ YDumbTab::stretchable( YUIDimension dim ) const
 }
 
 
-string
+std::string
 YDumbTab::debugLabel() const
 {
-    string str = widgetClass();
+    std::string str = widgetClass();
 
     for ( YItemConstIterator it = itemsBegin();
 	  it != itemsEnd();
@@ -153,7 +153,7 @@ YDumbTab::propertySet()
 
 
 bool
-YDumbTab::setProperty( const string & propertyName, const YPropertyValue & val )
+YDumbTab::setProperty( const std::string & propertyName, const YPropertyValue & val )
 {
     propertySet().check( propertyName, val.type() ); // throws exceptions if not found or type mismatch
 
@@ -170,7 +170,7 @@ YDumbTab::setProperty( const string & propertyName, const YPropertyValue & val )
 
 
 YPropertyValue
-YDumbTab::getProperty( const string & propertyName )
+YDumbTab::getProperty( const std::string & propertyName )
 {
     propertySet().check( propertyName ); // throws exceptions if not found
 

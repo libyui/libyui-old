@@ -70,7 +70,7 @@ protected:
     /**
      * Constructor.
      **/
-    YMultiLineEdit( YWidget * parent, const string & label );
+    YMultiLineEdit( YWidget * parent, const std::string & label );
 
 public:
     /**
@@ -90,7 +90,7 @@ public:
      *
      * Derived classes are required to implement this.
      **/
-    virtual string value() = 0;
+    virtual std::string value() = 0;
 
     /**
      * Set the current value (the text entered by the user or set from the
@@ -98,12 +98,12 @@ public:
      *
      * Derived classes are required to implement this.
      **/
-    virtual void setValue( const string & text ) = 0;
+    virtual void setValue( const std::string & text ) = 0;
 
     /**
      * Get the label (the caption above the MultiLineEdit).
      **/
-    string label() const;
+    std::string label() const;
 
     /**
      * Set the label (the caption above the MultiLineEdit).
@@ -111,7 +111,7 @@ public:
      * Derived classes are free to reimplement this, but they should call this
      * base class method at the end of the overloaded function.
      **/
-    virtual void setLabel( const string & label );
+    virtual void setLabel( const std::string & label );
 
     /**
      * The maximum input length, i.e., the maximum number of characters the
@@ -166,7 +166,7 @@ public:
      * 'false' if that value requires special handling (not in error cases:
      * those are covered by exceptions).
      **/
-    virtual bool setProperty( const string & propertyName,
+    virtual bool setProperty( const std::string & propertyName,
 			      const YPropertyValue & val );
 
     /**
@@ -175,7 +175,7 @@ public:
      *
      * This method may throw YUIPropertyExceptions.
      **/
-    virtual YPropertyValue getProperty( const string & propertyName );
+    virtual YPropertyValue getProperty( const std::string & propertyName );
 
     /**
      * Return this class's property set.
@@ -190,14 +190,14 @@ public:
      *
      * Reimplemented from YWidget.
      **/
-    virtual string shortcutString() const { return label(); }
+    virtual std::string shortcutString() const { return label(); }
 
     /**
      * Set the string of this widget that holds the keyboard shortcut.
      *
      * Reimplemented from YWidget.
      **/
-    virtual void setShortcutString( const string & str )
+    virtual void setShortcutString( const std::string & str )
 	{ setLabel( str ); }
 
     /**

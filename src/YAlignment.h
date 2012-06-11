@@ -61,7 +61,6 @@
 
 #include "YSingleChildContainerWidget.h"
 
-using std::string;
 
 class YAlignmentPrivate;
 
@@ -181,13 +180,13 @@ public:
      * ("/usr/share/libyui/theme/") if the path doesn't start with "/"
      * or ".").
      **/
-    virtual void setBackgroundPixmap( const string & pixmapFileName );
+    virtual void setBackgroundPixmap( const std::string & pixmapFileName );
 
     /**
      * Return the name of the background pixmap or an empty string, if there
      * is none.
      **/
-    string backgroundPixmap() const;
+    std::string backgroundPixmap() const;
 
     /**
      * Add a child widget.

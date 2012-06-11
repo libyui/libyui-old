@@ -69,24 +69,24 @@
 
 struct YDownloadProgressPrivate
 {
-    YDownloadProgressPrivate( const string & 	label,
-			      const string & 	filename,
-			      YFileSize_t	expectedSize )
+    YDownloadProgressPrivate( const std::string &	label,
+			      const std::string &	filename,
+			      YFileSize_t		expectedSize )
 	: label( label )
 	, filename( filename )
 	, expectedSize( expectedSize )
 	{}
 
-    string	label;
-    string	filename;
+    std::string	label;
+    std::string	filename;
     YFileSize_t	expectedSize;
 };
 
 
-YDownloadProgress::YDownloadProgress( YWidget * 	parent,
-				      const string &	label,
-				      const string &	filename,
-				      YFileSize_t	expectedSize )
+YDownloadProgress::YDownloadProgress( YWidget *			parent,
+				      const std::string &	label,
+				      const std::string &	filename,
+				      YFileSize_t		expectedSize )
     : YWidget( parent )
     , priv( new YDownloadProgressPrivate( label, filename, expectedSize ) )
 {
@@ -103,7 +103,7 @@ YDownloadProgress::~YDownloadProgress()
 }
 
 
-string
+std::string
 YDownloadProgress::label() const
 {
     return priv->label;
@@ -111,13 +111,13 @@ YDownloadProgress::label() const
 
 
 void
-YDownloadProgress::setLabel( const string & label )
+YDownloadProgress::setLabel( const std::string & label )
 {
     priv->label = label;
 }
 
 
-string
+std::string
 YDownloadProgress::filename() const
 {
     return priv->filename;
@@ -125,7 +125,7 @@ YDownloadProgress::filename() const
 
 
 void
-YDownloadProgress::setFilename( const string & filename )
+YDownloadProgress::setFilename( const std::string & filename )
 {
     priv->filename = filename;
 }
@@ -180,11 +180,11 @@ YDownloadProgress::propertySet()
     if ( propSet.isEmpty() )
     {
 	/*
-	 * @property string  Label		text above the progress bar
-	 * @property string  Filename		name of the file that is monitored
-	 * @property integer ExpectedSize	expected size of the file in bytes
-	 * @property integer CurrentSize	current  size of the file in bytes (read-only!)
-	 * @property integer Value		current  percent of the download   (read-only!)
+	 * @property std::string	Label		text above the progress bar
+	 * @property std::string	Filename	name of the file that is monitored
+	 * @property integer		ExpectedSize	expected size of the file in bytes
+	 * @property integer		CurrentSize	current  size of the file in bytes (read-only!)
+	 * @property integer		Value		current  percent of the download   (read-only!)
 	 */
 	propSet.add( YProperty( YUIProperty_Label, 		YStringProperty  ) );
 	propSet.add( YProperty( YUIProperty_Filename,		YStringProperty  ) );
@@ -199,7 +199,7 @@ YDownloadProgress::propertySet()
 
 
 bool
-YDownloadProgress::setProperty( const string & propertyName, const YPropertyValue & val )
+YDownloadProgress::setProperty( const std::string & propertyName, const YPropertyValue & val )
 {
     propertySet().check( propertyName, val.type() ); // throws exceptions if not found or type mismatch
 
@@ -216,7 +216,7 @@ YDownloadProgress::setProperty( const string & propertyName, const YPropertyValu
 
 
 YPropertyValue
-YDownloadProgress::getProperty( const string & propertyName )
+YDownloadProgress::getProperty( const std::string & propertyName )
 {
     propertySet().check( propertyName ); // throws exceptions if not found
 

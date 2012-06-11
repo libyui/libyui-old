@@ -63,7 +63,6 @@
 #include "YSingleChildContainerWidget.h"
 #include "ImplPtr.h"
 
-using std::string;
 class YCheckBoxFramePrivate;
 
 
@@ -74,7 +73,7 @@ public:
      * Constructor.
      **/
     YCheckBoxFrame( YWidget *		parent,
-		    const string &	label,
+		    const std::string &	label,
 		    bool		checked );
 
     /**
@@ -91,7 +90,7 @@ public:
     /**
      * Return the label text on the CheckBoxFrame.
      **/
-    string label() const;
+    std::string label() const;
 
     /**
      * Change the label text on the CheckBoxFrame.
@@ -99,7 +98,7 @@ public:
      * Derived classes should overload this, but call this base class function
      * in the overloaded function.
      **/
-    virtual void setLabel( const string & label );
+    virtual void setLabel( const std::string & label );
 
     /**
      * Check or uncheck the CheckBoxFrame's check box.
@@ -161,14 +160,14 @@ public:
      *
      * Reimplemented from YWidget.
      **/
-    virtual string shortcutString() const { return label(); }
+    virtual std::string shortcutString() const { return label(); }
 
     /**
      * Set the string of this widget that holds the keyboard shortcut.
      *
      * Reimplemented from YWidget.
      **/
-    virtual void setShortcutString( const string & str )
+    virtual void setShortcutString( const std::string & str )
 	{ setLabel( str ); }
 
     /**
@@ -190,7 +189,7 @@ public:
      * 'false' if that value requires special handling (not in error cases:
      * those are covered by exceptions).
      **/
-    virtual bool setProperty( const string & propertyName,
+    virtual bool setProperty( const std::string & propertyName,
 			      const YPropertyValue & val );
 
     /**
@@ -200,7 +199,7 @@ public:
      * This method may throw exceptions, for example
      *   - if there is no property with that name
      **/
-    virtual YPropertyValue getProperty( const string & propertyName );
+    virtual YPropertyValue getProperty( const std::string & propertyName );
 
     /**
      * Return this class's property set.

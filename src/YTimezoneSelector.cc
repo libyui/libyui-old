@@ -72,9 +72,9 @@ class YTimezoneSelectorPrivate
 
 
 
-YTimezoneSelector::YTimezoneSelector( YWidget *		parent,
-                                      const string &pixmap,
-                                      const map<string, string> &timezones )
+YTimezoneSelector::YTimezoneSelector( YWidget *					parent,
+                                      const std::string				&pixmap,
+                                      const std::map<std::string, std::string>	&timezones )
     : YWidget( parent )
 {
 }
@@ -103,7 +103,7 @@ YTimezoneSelector::propertySet()
 
 
 bool
-YTimezoneSelector::setProperty( const string & propertyName, const YPropertyValue & val )
+YTimezoneSelector::setProperty( const std::string & propertyName, const YPropertyValue & val )
 {
     propertySet().check( propertyName, val.type() ); // throws exceptions if not found or type mismatch
 
@@ -122,7 +122,7 @@ YTimezoneSelector::setProperty( const string & propertyName, const YPropertyValu
 
 
 YPropertyValue
-YTimezoneSelector::getProperty( const string & propertyName )
+YTimezoneSelector::getProperty( const std::string & propertyName )
 {
     propertySet().check( propertyName ); // throws exceptions if not found
 

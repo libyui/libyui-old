@@ -62,7 +62,6 @@
 #include <map>
 #include "YWidget.h"
 
-using std::map;
 
 class YTimezoneSelectorPrivate;
 
@@ -79,8 +78,8 @@ protected:
      * The widget is only displaying timezones/cities in that map
      **/
     YTimezoneSelector( YWidget *parent,
-                       const string &pixmap,
-		       const map<string, string> &timezones );
+                       const std::string &pixmap,
+		       const std::map<std::string, std::string> &timezones );
 
 public:
     /**
@@ -104,7 +103,7 @@ public:
      * 'false' if that value requires special handling (not in error cases:
      * those are covered by exceptions).
      **/
-    virtual bool setProperty( const string & propertyName,
+    virtual bool setProperty( const std::string & propertyName,
 			      const YPropertyValue & val );
 
     /**
@@ -113,7 +112,7 @@ public:
      *
      * This method may throw YUIPropertyExceptions.
      **/
-    virtual YPropertyValue getProperty( const string & propertyName );
+    virtual YPropertyValue getProperty( const std::string & propertyName );
 
     /**
      * Return this class's property set.

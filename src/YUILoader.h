@@ -65,7 +65,6 @@
 
 #include "YUI.h"
 
-using std::string;
 
 
 #define YUIPlugin_Qt		"qt"
@@ -91,9 +90,9 @@ public:
      *
      * This might throw exceptions.
      **/
-    static void loadPlugin( const string & name, bool withThreads = false );
+    static void loadPlugin( const std::string & name, bool withThreads = false );
 
-    static bool pluginExists( const string & pluginBaseName );
+    static bool pluginExists( const std::string & pluginBaseName );
 
 private:
     YUILoader()  {}

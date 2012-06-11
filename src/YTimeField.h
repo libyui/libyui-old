@@ -78,7 +78,7 @@ protected:
     /**
      * Constructor.
      **/
-    YTimeField( YWidget * parent, const string & label );
+    YTimeField( YWidget * parent, const std::string & label );
 
 public:
     /**
