@@ -77,7 +77,7 @@ struct YMenuButtonPrivate
 
 
 
-YMenuButton::YMenuButton( YWidget * parent, const string & label )
+YMenuButton::YMenuButton( YWidget * parent, const std::string & label )
     : YSelectionWidget( parent, label,
 			false )	// enforceSingleSelection
     , priv( new YMenuButtonPrivate() )
@@ -191,9 +191,9 @@ YMenuButton::propertySet()
     if ( propSet.isEmpty() )
     {
 	/*
-	 * @property string  	Label		Label on the menu button
-	 * @property itemList	Items		All menu items and submenus
-	 * @property string  	IconPath	Base path for icons (on menu items)
+	 * @property std::string	Label		Label on the menu button
+	 * @property itemList		Items		All menu items and submenus
+	 * @property std::string	IconPath	Base path for icons (on menu items)
 	 */
 	propSet.add( YProperty( YUIProperty_Label,		YStringProperty	 ) );
 	propSet.add( YProperty( YUIProperty_Items,		YOtherProperty	 ) );
@@ -206,7 +206,7 @@ YMenuButton::propertySet()
 
 
 bool
-YMenuButton::setProperty( const string & propertyName, const YPropertyValue & val )
+YMenuButton::setProperty( const std::string & propertyName, const YPropertyValue & val )
 {
     propertySet().check( propertyName, val.type() ); // throws exceptions if not found or type mismatch
 
@@ -223,7 +223,7 @@ YMenuButton::setProperty( const string & propertyName, const YPropertyValue & va
 
 
 YPropertyValue
-YMenuButton::getProperty( const string & propertyName )
+YMenuButton::getProperty( const std::string & propertyName )
 {
     propertySet().check( propertyName ); // throws exceptions if not found
 

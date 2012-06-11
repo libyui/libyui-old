@@ -69,7 +69,6 @@
 #include "YUI.h"
 #include "YApplication.h"
 
-using std::setw;
 
 
 struct YLayoutBoxPrivate

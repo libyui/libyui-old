@@ -62,7 +62,6 @@
 #include <string>
 #include "ImplPtr.h"
 
-using std::string;
 class YCommandLinePrivate;
 
 
@@ -107,23 +106,23 @@ public:
      *
      * This might throw an YUIIndexOutOfRangeException.
      **/
-    string arg( int index ) const;
+    std::string arg( int index ) const;
 
     /**
      * Return command line argument no. 'index' (from 0 on) as operator[]:
      *
      * for ( int i=0; i < cmdLine.argc(); i++ )
-     *     cout << cmdLine[i]  << endl;
+     *     cout << cmdLine[i]  << std::endl;
      *
      * This might throw an YUIIndexOutOfRangeException.
      **/
-    string operator[]( int index ) const
+    std::string operator[]( int index ) const
 	{ return arg( index ); }
 
     /**
      * Add a command line argument (at the end of the existing ones).
      **/
-    void add( const string & arg );
+    void add( const std::string & arg );
 
     /**
      * Remove command line argument no. 'index' (from 0 on).
@@ -137,7 +136,7 @@ public:
      *
      * This might throw an YUIIndexOutOfRangeException.
      **/
-    void replace( int index, const string & arg );
+    void replace( int index, const std::string & arg );
 
     /**
      * Find a command line argument 'argName' ("-display" etc.).
@@ -146,7 +145,7 @@ public:
      *
      * Return the position of 'argName' (from 0 on) or -1 if not found.
      **/
-    int find( const string & argName ) const;
+    int find( const std::string & argName ) const;
 
 
 private:

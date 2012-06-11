@@ -82,7 +82,7 @@ protected:
      * algorithm can be any string accepted by the function gvLayout from
      * graphviz, e.g. "dot" or "neato".
      **/
-    YGraph( YWidget * parent, const string & filename, const string & layoutAlgorithm );
+    YGraph( YWidget * parent, const std::string & filename, const std::string & layoutAlgorithm );
 
     /**
      * Constructor.
@@ -114,7 +114,7 @@ public:
      * 'false' if that value requires special handling (not in error cases:
      * those are covered by exceptions).
      **/
-    virtual bool setProperty( const string & propertyName,
+    virtual bool setProperty( const std::string & propertyName,
 			      const YPropertyValue & val );
 
     /**
@@ -123,7 +123,7 @@ public:
      *
      * This method may throw YUIPropertyExceptions.
      **/
-    virtual YPropertyValue getProperty( const string & propertyName );
+    virtual YPropertyValue getProperty( const std::string & propertyName );
 
     /**
      * Return this class's property set.
@@ -136,7 +136,7 @@ public:
     /**
      * Return the filename that describes the graph.
      **/
-    string filename() const;
+    std::string filename() const;
 
     /**
      * Set the filename that describes the graph and render the graph.
@@ -144,19 +144,19 @@ public:
      * class method in the new implementation. Most derived classes only need
      * to implement renderGraph().
      **/
-    virtual void setFilename( const string & filename );
+    virtual void setFilename( const std::string & filename );
 
     /**
      * Return the layout-algorithm used for the graph.
      **/
-    string layoutAlgorithm() const;
+    std::string layoutAlgorithm() const;
 
     /**
      * Set the layout-algorithm used for the graph.  Derived classes can
      * reimplent this, but they should call this base class method in the new
      * implementation.
      **/
-    virtual void setLayoutAlgorithm( const string & filename );
+    virtual void setLayoutAlgorithm( const std::string & filename );
 
     /**
      * Render the graph. Derived classes can reimplent this, but they should
@@ -169,7 +169,7 @@ public:
      * Return name of activated node. Activation can happen due to e.g. single
      * right mouse click (context menu) or double left mouse click.
      */
-    virtual string activatedNode() const;
+    virtual std::string activatedNode() const;
 
 protected:
 
@@ -177,7 +177,7 @@ protected:
      * Render the graph from the filename. Derived classes are required to
      * implement this.
      **/
-    virtual void renderGraph( const string & filename, const string & layoutAlgorithm ) = 0;
+    virtual void renderGraph( const std::string & filename, const std::string & layoutAlgorithm ) = 0;
 
     /**
      * Render the graph. Derived classes are required to implement this.

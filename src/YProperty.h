@@ -62,14 +62,13 @@
 #include <string>
 #include <vector>
 
-using std::string;
 
 
 enum YPropertyType
 {
     YUnknownPropertyType = 0,
     YOtherProperty,		// requires futher checking
-    YStringProperty,		// const string &
+    YStringProperty,		// const std::string &
     YBoolProperty,		// bool
     YIntegerProperty		// YCP Integer == C++ long long
 };
@@ -90,7 +89,7 @@ public:
      * Constructor: Create a property with the specified name and type.
      * 'isReadOnly' is for properties that cannot be set, only retrieved.
      **/
-    YProperty( const string & name, YPropertyType type, bool isReadOnly = false )
+    YProperty( const std::string & name, YPropertyType type, bool isReadOnly = false )
 	: _name( name )
 	, _type( type )
 	, _isReadOnly( isReadOnly )
@@ -99,7 +98,7 @@ public:
     /**
      * Returns the name of this property.
      **/
-    string name() const { return _name; }
+    std::string name() const { return _name; }
 
     /**
      * Returns the type of this property.
@@ -114,16 +113,16 @@ public:
     /**
      * Returns the type of this property as string.
      **/
-    string typeAsStr() const { return YProperty::typeAsStr( _type ); }
+    std::string typeAsStr() const { return YProperty::typeAsStr( _type ); }
 
     /**
      * Returns a string description of a property type.
      **/
-    static string typeAsStr( YPropertyType type );
+    static std::string typeAsStr( YPropertyType type );
 
 private:
 
-    string		_name;
+    std::string		_name;
     YPropertyType	_type;
     bool		_isReadOnly;
 };
@@ -143,7 +142,7 @@ public:
     /**
      * Constructor for string properties.
      **/
-    YPropertyValue( const string & str ):
+    YPropertyValue( const std::string & str ):
 	_type( YStringProperty ), _stringVal( str ) {}
 
     /**
@@ -193,13 +192,13 @@ public:
     /**
      * Returns the type of this property value as string.
      **/
-    string typeAsStr() const { return YProperty::typeAsStr( _type ); }
+    std::string typeAsStr() const { return YProperty::typeAsStr( _type ); }
 
     /**
      * Methods to get the value of this property.
      * Check with type() which one to use.
      **/
-    string	stringVal() 	const { return _stringVal;	}
+    std::string	stringVal() 	const { return _stringVal;	}
     bool 	boolVal()	const { return _boolVal;	}
     YInteger 	integerVal()	const { return _integerVal;	}
 
@@ -207,7 +206,7 @@ public:
 private:
 
     YPropertyType	_type;
-    string		_stringVal;
+    std::string		_stringVal;
     bool		_boolVal;
     YInteger		_integerVal;
 };
@@ -230,7 +229,7 @@ public:
      * Use YPropertySet::contains() for a check that simply returns 'false'
      * if it does not exist.
      **/
-    void check( const string & propertyName ) const;
+    void check( const std::string & propertyName ) const;
 
     /**
      * Check if a property 'propertyName' exists in this property set.
@@ -241,7 +240,7 @@ public:
      * YUIPropertyTypeMismatchException.
      * If the property is read-only, throw a YUISetReadOnlyPropertyException.
      **/
-    void check( const string & propertyName, YPropertyType type ) const;
+    void check( const std::string & propertyName, YPropertyType type ) const;
 
     /**
      * Same as above, overloaded for convenience.
@@ -256,7 +255,7 @@ public:
      * Use YPropertySet::check() for a check that throws exceptions if
      * there is no such property.
      **/
-    bool contains( const string & propertyName ) const throw();
+    bool contains( const std::string & propertyName ) const throw();
 
     /**
      * Check if a property 'propertyName' exists in this property set.
@@ -271,7 +270,7 @@ public:
      * Use YPropertySet::check() for a check that throws exceptions if
      * there is no such property.
      **/
-    bool contains( const string & propertyName, YPropertyType type ) const;
+    bool contains( const std::string & propertyName, YPropertyType type ) const;
 
     /**
      * Same as above, overloaded for convenience.

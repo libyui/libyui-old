@@ -61,7 +61,6 @@
 #include "YStringTree.h"
 
 
-using std::string;
 
 
 YStringTree::YStringTree( const char * domain )
@@ -80,7 +79,7 @@ YStringTree::~YStringTree()
 
 
 YStringTreeItem *
-YStringTree::addBranch( const string &		content,
+YStringTree::addBranch( const std::string &	content,
 			char 			delimiter,
 			YStringTreeItem * 	parent )
 {
@@ -100,8 +99,8 @@ YStringTree::addBranch( const string &		content,
     {
 	// Split 'content' into substrings and insert each subitem
 
-	string::size_type start = 0;
-	string::size_type end   = 0;
+	std::string::size_type start = 0;
+	std::string::size_type end   = 0;
 
 	while ( start < content.length() )
 	{
@@ -129,7 +128,7 @@ YStringTree::addBranch( const string &		content,
 
 	    if ( end > start )
 	    {
-		string path_component = content.substr( start, end - start );
+		std::string path_component = content.substr( start, end - start );
 		YTransText path_component_trans( path_component, translate( path_component ) );
 
 		// Check if an entry with this text already exists
@@ -149,22 +148,22 @@ YStringTree::addBranch( const string &		content,
 }
 
 
-string
-YStringTree::translate( const string & orig )
+std::string
+YStringTree::translate( const std::string & orig )
 {
-    string trans( dgettext( _textdomain.c_str(), orig.c_str() ) );
+    std::string trans( dgettext( _textdomain.c_str(), orig.c_str() ) );
 
     return trans;
 }
 
 
-string
+std::string
 YStringTree::completePath( const YStringTreeItem * item,
 			   bool translated,
 			   char delimiter,
 			   bool startWithDelimiter )
 {
-    string path;
+    std::string path;
 
     if ( item )
     {
@@ -172,7 +171,7 @@ YStringTree::completePath( const YStringTreeItem * item,
 
 	while ( item->parent() && item->parent() != _root )
 	{
-	    string parentPath = translated ?
+	    std::string parentPath = translated ?
 		item->parent()->value().translation() :
 		item->parent()->value().orig();
 
@@ -227,7 +226,7 @@ YStringTree::logTree()
 
 
 void
-YStringTree::logBranch( YStringTreeItem * branch, string indentation )
+YStringTree::logBranch( YStringTreeItem * branch, std::string indentation )
 {
     if ( branch )
     {

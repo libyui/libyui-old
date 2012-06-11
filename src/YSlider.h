@@ -88,10 +88,10 @@ protected:
      * parameter that is not used here (because the current value is not stored
      * in this base class, but in the derived class).
      **/
-    YSlider( YWidget *		parent,
-	     const string & 	label,
-	     int		minValue,
-	     int		maxValue );
+    YSlider( YWidget *			parent,
+	     const std::string &	label,
+	     int			minValue,
+	     int			maxValue );
 
 public:
     /**

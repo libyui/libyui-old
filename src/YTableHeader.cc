@@ -65,7 +65,6 @@
 #include "YTableHeader.h"
 #include "YUIException.h"
 
-using std::vector;
 
 
 struct YTableHeaderPrivate
@@ -73,8 +72,8 @@ struct YTableHeaderPrivate
     YTableHeaderPrivate()
 	{}
 
-    vector<string>		headers;
-    vector<YAlignmentType>	alignments;
+    std::vector<std::string>	headers;
+    std::vector<YAlignmentType>	alignments;
 };
 
 
@@ -94,7 +93,7 @@ YTableHeader::~YTableHeader()
 
 
 void
-YTableHeader::addColumn( const string & header, YAlignmentType alignment )
+YTableHeader::addColumn( const std::string & header, YAlignmentType alignment )
 {
     priv->headers.push_back( header );
     priv->alignments.push_back( alignment );
@@ -115,7 +114,7 @@ YTableHeader::hasColumn( int column ) const
 }
 
 
-string
+std::string
 YTableHeader::header( int column ) const
 {
     if ( column >= 0 && column < (int) priv->headers.size() )

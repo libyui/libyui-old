@@ -63,7 +63,6 @@
 #include "ImplPtr.h"
 #include "YTypes.h"
 
-using std::string;
 
 
 class YTableHeaderPrivate;
@@ -91,7 +90,7 @@ public:
     /**
      * Add a column with the specified colum header text and alignment.
      **/
-    void addColumn( const string &	header,
+    void addColumn( const std::string &	header,
 		    YAlignmentType	alignment = YAlignBegin );
 
     /**
@@ -108,7 +107,7 @@ public:
     /**
      * Return the header text for the specified column.
      **/
-    string header( int column ) const;
+    std::string header( int column ) const;
 
     /**
      * Return the alignment for the specified column.

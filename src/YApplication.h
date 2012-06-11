@@ -65,7 +65,6 @@
 #include  "YIconLoader.h"
 
 
-using std::string;
 
 class YWidget;
 class YWidgetID;
@@ -109,12 +108,12 @@ public:
      * YSelectionBox, YComboBox, etc. or YWizard prepend this to icon
      * specifications that don't use an absolute path.
      **/
-    virtual string iconBasePath() const;
+    virtual std::string iconBasePath() const;
 
     /**
      * Set the icon base path.
      **/
-    virtual void setIconBasePath( const string & newIconBasePath );
+    virtual void setIconBasePath( const std::string & newIconBasePath );
 
     YIconLoader *iconLoader();
 
@@ -138,7 +137,7 @@ public:
      * This function returns 10 for F10, F for F9 etc.;
      * 0 means "no function key".
      **/
-    int defaultFunctionKey( const string & label ) const;
+    int defaultFunctionKey( const std::string & label ) const;
 
     /**
      * Add a mapping from the specified label to the specified F-key number.
@@ -146,7 +145,7 @@ public:
      *
      * This only affects widgets that are created after this call.
      **/
-    void setDefaultFunctionKey( const string & label, int fkey );
+    void setDefaultFunctionKey( const std::string & label, int fkey );
 
     /**
      * Clear all previous label-to-function-key mappings.
@@ -167,14 +166,14 @@ public:
      * Derived classes can overwrite this method, but they should call this
      * base class method at the beginning of the new implementation.
      **/
-    virtual void setLanguage( const string & language,
-			      const string & encoding = string() );
+    virtual void setLanguage( const std::string & language,
+			      const std::string & encoding = std::string() );
 
     /**
      * Return the current language from the locale environment ($LANG).
      * If 'stripEncoding' is true, any encoding (".utf8" etc.) is removed.
      **/
-    string language( bool stripEncoding = false ) const;
+    std::string language( bool stripEncoding = false ) const;
 
     /**
      * Return a string for a named glyph:
@@ -197,7 +196,7 @@ public:
      * Derived classes are free to overwrite this. It does not make sense to
      * call this base class method in a new implementation.
      **/
-    virtual string glyph( const string & glyphSymbolName );
+    virtual std::string glyph( const std::string & glyphSymbolName );
 
     /**
      * Open a directory selection box and prompt the user for an existing
@@ -213,8 +212,8 @@ public:
      *
      * Derived classes are required to implement this.
      **/
-    virtual string askForExistingDirectory( const string & startDir,
-					    const string & headline ) = 0;
+    virtual std::string askForExistingDirectory( const std::string & startDir,
+					    const std::string & headline ) = 0;
 
     /**
      * Open a file selection box and prompt the user for an existing file.
@@ -232,9 +231,9 @@ public:
      *
      * Derived classes are required to implement this.
      **/
-    virtual string askForExistingFile( const string & startWith,
-				       const string & filter,
-				       const string & headline ) = 0;
+    virtual std::string askForExistingFile( const std::string & startWith,
+				       const std::string & filter,
+				       const std::string & headline ) = 0;
 
     /**
      * Open a file selection box and prompt the user for a file to save data
@@ -254,9 +253,9 @@ public:
      *
      * Derived classes are required to implement this.
      **/
-    virtual string askForSaveFileName( const string & startWith,
-				       const string & filter,
-				       const string & headline ) = 0;
+    virtual std::string askForSaveFileName( const std::string & startWith,
+				       const std::string & filter,
+				       const std::string & headline ) = 0;
 
     /**
      * Open a context menu for a widget
@@ -278,12 +277,12 @@ public:
      * Derived classes can overwrite this method, but they should call this
      * base class method in the new implementation.
      **/
-    virtual void setProductName( const string & productName );
+    virtual void setProductName( const std::string & productName );
 
     /**
      * Set the current product name ("openSUSE", "SLES", ...).
      **/
-    string productName() const;
+    std::string productName() const;
 
     /**
      * Convert logical layout spacing units into device dependent units.
@@ -331,7 +330,7 @@ public:
      * Make a screen shot and save it to the specified file.
      * This default implementation does nothing.
      **/
-    virtual void makeScreenShot( const string & fileName ) {}
+    virtual void makeScreenShot( const std::string & fileName ) {}
 
     /**
      * Beep.
@@ -362,11 +361,11 @@ public:
      *
      * This default implementation does nothing.
      **/
-    virtual void setConsoleFont( const string & console_magic,
-				 const string & font,
-				 const string & screen_map,
-				 const string & unicode_map,
-				 const string & language )
+    virtual void setConsoleFont( const std::string & console_magic,
+				 const std::string & font,
+				 const std::string & screen_map,
+				 const std::string & unicode_map,
+				 const std::string & language )
 	{}
 
     /**
@@ -379,7 +378,7 @@ public:
      *
      * This default implementation logs an error and returns -1.
      **/
-    virtual int runInTerminal( const string & command );
+    virtual int runInTerminal( const std::string & command );
 
 
     //

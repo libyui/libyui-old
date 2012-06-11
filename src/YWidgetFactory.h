@@ -63,7 +63,6 @@
 
 #include "YTypes.h"
 
-using std::string;
 
 class YWidget;
 class YAlignment;
@@ -133,37 +132,37 @@ public:
     // Common Leaf Widgets
     //
 
-    virtual YPushButton *	createPushButton	( YWidget * parent, const string & label )				= 0;
-    virtual YLabel *		createLabel		( YWidget * parent, const string & text, bool isHeading = false, bool isOutputField = false ) = 0;
-    YLabel *			createHeading		( YWidget * parent, const string & label );
-    virtual YInputField *	createInputField	( YWidget * parent, const string & label, bool passwordMode = false )	= 0;
-    virtual YCheckBox *		createCheckBox		( YWidget * parent, const string & label, bool isChecked = false )	= 0;
-    virtual YRadioButton *	createRadioButton	( YWidget * parent, const string & label, bool isChecked = false )	= 0;
-    virtual YComboBox *		createComboBox		( YWidget * parent, const string & label, bool editable	 = false )	= 0;
-    virtual YSelectionBox * 	createSelectionBox	( YWidget * parent, const string & label )				= 0;
-    virtual YTree *		createTree		( YWidget * parent, const string & label, bool multiselection = false, bool recursiveselection = false ) = 0;
+    virtual YPushButton *	createPushButton	( YWidget * parent, const std::string & label )				= 0;
+    virtual YLabel *		createLabel		( YWidget * parent, const std::string & text, bool isHeading = false, bool isOutputField = false ) = 0;
+    YLabel *			createHeading		( YWidget * parent, const std::string & label );
+    virtual YInputField *	createInputField	( YWidget * parent, const std::string & label, bool passwordMode = false )	= 0;
+    virtual YCheckBox *		createCheckBox		( YWidget * parent, const std::string & label, bool isChecked = false )	= 0;
+    virtual YRadioButton *	createRadioButton	( YWidget * parent, const std::string & label, bool isChecked = false )	= 0;
+    virtual YComboBox *		createComboBox		( YWidget * parent, const std::string & label, bool editable	 = false )	= 0;
+    virtual YSelectionBox * 	createSelectionBox	( YWidget * parent, const std::string & label )				= 0;
+    virtual YTree *		createTree		( YWidget * parent, const std::string & label, bool multiselection = false, bool recursiveselection = false ) = 0;
     virtual YTable *		createTable		( YWidget * parent, YTableHeader * header_disown, bool multiSelection = false  ) = 0;
-    virtual YProgressBar *	createProgressBar	( YWidget * parent, const string & label, int maxValue = 100 )		= 0;
-    virtual YRichText *		createRichText		( YWidget * parent, const string & text = string(), bool plainTextMode = false )	= 0;
-    virtual YBusyIndicator *	createBusyIndicator	( YWidget * parent, const string & label, int timeout = 1000 )		= 0;
+    virtual YProgressBar *	createProgressBar	( YWidget * parent, const std::string & label, int maxValue = 100 )		= 0;
+    virtual YRichText *		createRichText		( YWidget * parent, const std::string & text = std::string(), bool plainTextMode = false )	= 0;
+    virtual YBusyIndicator *	createBusyIndicator	( YWidget * parent, const std::string & label, int timeout = 1000 )		= 0;
 
     //
     // Less Common Leaf Widgets
     //
 
-    YPushButton *		createIconButton	( YWidget * parent, const string & iconName, const string & fallbackTextLabel );
-    YLabel *			createOutputField	( YWidget * parent, const string & label );
-    virtual YIntField *		createIntField		( YWidget * parent, const string & label, int minVal, int maxVal, int initialVal )	= 0;
-    YInputField *		createPasswordField	( YWidget * parent, const string & label );
+    YPushButton *		createIconButton	( YWidget * parent, const std::string & iconName, const std::string & fallbackTextLabel );
+    YLabel *			createOutputField	( YWidget * parent, const std::string & label );
+    virtual YIntField *		createIntField		( YWidget * parent, const std::string & label, int minVal, int maxVal, int initialVal )	= 0;
+    YInputField *		createPasswordField	( YWidget * parent, const std::string & label );
 
-    virtual YMenuButton *	createMenuButton	( YWidget * parent, const string & label )						= 0;
-    virtual YMultiLineEdit * 	createMultiLineEdit	( YWidget * parent, const string & label )						= 0;
-    virtual YImage *		createImage		( YWidget * parent, const string & imageFileName, bool animated = false )		= 0;
-    virtual YLogView *		createLogView		( YWidget * parent, const string & label, int visibleLines, int storedLines = 0 )	= 0;
-    virtual YMultiSelectionBox *createMultiSelectionBox ( YWidget * parent, const string & label )						= 0;
+    virtual YMenuButton *	createMenuButton	( YWidget * parent, const std::string & label )						= 0;
+    virtual YMultiLineEdit * 	createMultiLineEdit	( YWidget * parent, const std::string & label )						= 0;
+    virtual YImage *		createImage		( YWidget * parent, const std::string & imageFileName, bool animated = false )		= 0;
+    virtual YLogView *		createLogView		( YWidget * parent, const std::string & label, int visibleLines, int storedLines = 0 )	= 0;
+    virtual YMultiSelectionBox *createMultiSelectionBox ( YWidget * parent, const std::string & label )						= 0;
 
     virtual YPackageSelector *	createPackageSelector	( YWidget * parent, long ModeFlags = 0 )		= 0;
-    virtual YWidget *		createPkgSpecial	( YWidget * parent, const string & subwidgetName ) 	= 0; // NCurses only
+    virtual YWidget *		createPkgSpecial	( YWidget * parent, const std::string & subwidgetName )	= 0; // NCurses only
 
     //
     // Layout Helpers
@@ -204,8 +203,8 @@ public:
     // Visual Grouping
     //
 
-    virtual YFrame *		createFrame		( YWidget * parent, const string & label )		 = 0;
-    virtual YCheckBoxFrame *	createCheckBoxFrame	( YWidget * parent, const string & label, bool checked ) = 0;
+    virtual YFrame *		createFrame		( YWidget * parent, const std::string & label )			= 0;
+    virtual YCheckBoxFrame *	createCheckBoxFrame	( YWidget * parent, const std::string & label, bool checked )	= 0;
 
     //
     // Logical Grouping

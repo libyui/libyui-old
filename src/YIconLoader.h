@@ -73,22 +73,22 @@ public:
     YIconLoader();
     ~YIconLoader();
 
-    string findIcon( string name );
+    std::string findIcon( std::string name );
 
     //FIXME: these two are here for compatibility reasons
     // deprecate them in due course and treat base path just
     // like any other search path
-    void setIconBasePath( string path );
-    string iconBasePath() const;
+    void setIconBasePath( std::string path );
+    std::string iconBasePath() const;
 
-    void addIconSearchPath( string path );
+    void addIconSearchPath( std::string path );
 
 private:
 
-    string _iconBasePath;
-    list <string> icon_dirs;
+    std::string		_iconBasePath;
+    list <std::string>	icon_dirs;
 
-    bool fileExists( string fname );
+    bool fileExists( std::string fname );
 };
 
 #endif

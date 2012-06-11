@@ -85,7 +85,7 @@ void YUILoader::loadUI( bool withThreads )
 
     if ( envDisplay && !wantNcurses )
     {
-	string wantedGUI;
+	std::string wantedGUI;
 
 	if ( haveQt && !wantGtk)
 	   wantedGUI = YUIPlugin_Qt;
@@ -130,7 +130,7 @@ void YUILoader::loadUI( bool withThreads )
 }
 
 
-void YUILoader::loadPlugin( const string & name, bool withThreads )
+void YUILoader::loadPlugin( const std::string & name, bool withThreads )
 {
     YUIPlugin uiPlugin( name.c_str() );
 
@@ -150,10 +150,10 @@ void YUILoader::loadPlugin( const string & name, bool withThreads )
     YUI_THROW( YUIPluginException( name ) );
 }
 
-bool YUILoader::pluginExists( const string & pluginBaseName )
+bool YUILoader::pluginExists( const std::string & pluginBaseName )
 {
     struct stat fileinfo;
-    string pluginName = PLUGIN_PREFIX;
+    std::string pluginName = PLUGIN_PREFIX;
 
     pluginName.append( pluginBaseName );
     pluginName.append( PLUGIN_SUFFIX );

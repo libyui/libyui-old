@@ -67,8 +67,6 @@
 #include "config.h"
 
 
-using std::min;
-using std::max;
 
 
 struct YAlignmentPrivate
@@ -101,7 +99,7 @@ struct YAlignmentPrivate
     int minWidth;
     int minHeight;
 
-    string backgroundPixmap;
+    std::string backgroundPixmap;
 
     YBothDim<YAlignmentType> alignment;
 };
@@ -204,7 +202,7 @@ void YAlignment::setMinHeight( int height )
 }
 
 
-string YAlignment::backgroundPixmap() const
+std::string YAlignment::backgroundPixmap() const
 {
     return priv->backgroundPixmap;
 }
@@ -236,7 +234,7 @@ int YAlignment::preferredWidth()
     int preferredWidth = firstChild()->preferredWidth();
     preferredWidth    += leftMargin() + rightMargin();
 
-    return max( minWidth(), preferredWidth );
+    return std::max( minWidth(), preferredWidth );
 }
 
 
@@ -248,7 +246,7 @@ int YAlignment::preferredHeight()
     int preferredHeight = firstChild()->preferredHeight();
     preferredHeight    += topMargin() + bottomMargin();
 
-    return max( minHeight(), preferredHeight );
+    return std::max( minHeight(), preferredHeight );
 }
 
 
@@ -256,7 +254,7 @@ void YAlignment::setSize( int newWidth, int newHeight )
 {
     if ( ! hasChildren() )
     {
-	yuiError() << "No child in " << this << endl;
+	yuiError() << "No child in " << this << std::endl;
 	return;
     }
 
@@ -351,9 +349,9 @@ void YAlignment::setSize( int newWidth, int newHeight )
     moveChild( firstChild(), newChildPos.hor, newChildPos.vert );
 
 #if 0
-    yuiDebug() << "setSize( alignment, " << newWidth         << ", " << newHeight         << ")" << endl;
-    yuiDebug() << "setSize( child, "     << newChildSize.hor << ", " << newChildSize.vert << ")" << endl;
-    yuiDebug() << "moveChild( "          << newChildPos.hor  << ", " << newChildPos.vert  << ")" << endl;
+    yuiDebug() << "setSize( alignment, " << newWidth         << ", " << newHeight         << ")" << std::endl;
+    yuiDebug() << "setSize( child, "     << newChildSize.hor << ", " << newChildSize.vert << ")" << std::endl;
+    yuiDebug() << "moveChild( "          << newChildPos.hor  << ", " << newChildPos.vert  << ")" << std::endl;
 #endif
 }
 
@@ -367,9 +365,9 @@ int YAlignment::totalMargins( YUIDimension dim ) const
 
 
 
-void YAlignment::setBackgroundPixmap( const string & pixmapFileName )
+void YAlignment::setBackgroundPixmap( const std::string & pixmapFileName )
 {
-    string pixmap = pixmapFileName;
+    std::string pixmap = pixmapFileName;
 
     if ( pixmap.length() > 0 &&
 	 pixmap[0] != '/'  &&	// Absolute path?
@@ -389,8 +387,8 @@ void YAlignment::setBackgroundPixmap( const string & pixmapFileName )
 const char *
 YAlignment::widgetClass() const
 {
-    string wClass = "YAlignment";
-    string subClass;
+    std::string wClass = "YAlignment";
+    std::string subClass;
 
     if      ( priv->alignment.hor == YAlignBegin 	)	subClass = "Left";
     else if ( priv->alignment.hor == YAlignEnd		)	subClass = "Right";

@@ -77,7 +77,6 @@
 #include "YUIException.h"
 #include "YEventFilter.h"
 
-using std::string;
 
 #define VERBOSE_DIALOGS			0
 #define VERBOSE_DISCARDED_EVENTS	0
@@ -154,7 +153,7 @@ YDialog::YDialog( YDialogType dialogType, YDialogColorMode colorMode )
     _dialogStack.push( this );
 
 #if VERBOSE_DIALOGS
-    yuiDebug() << "New " << this << endl;
+    yuiDebug() << "New " << this << std::endl;
 #endif
 
     new YHelpButtonHandler( this );
@@ -164,7 +163,7 @@ YDialog::YDialog( YDialogType dialogType, YDialogColorMode colorMode )
 YDialog::~YDialog()
 {
 #if VERBOSE_DIALOGS
-    yuiDebug() << "Destroying " << this << endl;
+    yuiDebug() << "Destroying " << this << std::endl;
 #endif
 
     // Inform attached classes that this dialog is in the process of being
@@ -192,7 +191,7 @@ YDialog::~YDialog()
 	    _dialogStack.top()->activate();
     }
     else
-	yuiError() << "Not top of dialog stack: " << this << endl;
+	yuiError() << "Not top of dialog stack: " << this << std::endl;
 }
 
 
@@ -222,7 +221,7 @@ YDialog::isTopmostDialog() const
 {
     if ( _dialogStack.empty() )
     {
-	yuiError() << "Dialog stack empty, but dialog existing: " << this << endl;
+	yuiError() << "Dialog stack empty, but dialog existing: " << this << std::endl;
 	return false;
     }
 
@@ -238,7 +237,7 @@ YDialog::deleteEventFilters()
 	YEventFilter * filter = priv->eventFilterList.back();
 	
 #if VERBOSE_DIALOGS
-	yuiDebug() << "Deleting event filter " << hex << filter << dec << endl;
+	yuiDebug() << "Deleting event filter " << std::std::hex << filter << std::dec << std::endl;
 #endif
 	delete filter;
     }
@@ -317,7 +316,7 @@ YDialog::checkShortcuts( bool force )
 {
     if ( priv->shortcutCheckPostponed && ! force )
     {
-	yuiDebug() << "Shortcut check postponed" << endl;
+	yuiDebug() << "Shortcut check postponed" << std::endl;
     }
     else
     {
@@ -344,7 +343,7 @@ YDialog::setDefaultButton( YPushButton * newDefaultButton )
     {
 	yuiError() << "Too many `opt(`default) PushButtons: ["
 		   << newDefaultButton->label()
-		   << "]" << endl;
+		   << "]" << std::endl;
     }
 
     priv->defaultButton = newDefaultButton;
@@ -355,7 +354,7 @@ void
 YDialog::setInitialSize()
 {
 #if VERBOSE_DIALOGS
-    yuiDebug() << "Setting initial size for " << this << endl;
+    yuiDebug() << "Setting initial size for " << this << std::endl;
 #endif
 
     // Trigger geometry management
@@ -366,7 +365,7 @@ YDialog::setInitialSize()
 void
 YDialog::recalcLayout()
 {
-    yuiDebug() << "Recalculating layout for " << this << endl;
+    yuiDebug() << "Recalculating layout for " << this << std::endl;
 
     setSize( preferredWidth(), preferredHeight() );
 }
@@ -387,7 +386,7 @@ YDialog::waitForEvent( int timeout_millisec )
     if ( shortcutCheckPostponed() )
     {
 	yuiError() << "Performing missing keyboard shortcut check now in "
-		   << this << endl;
+		   << this << std::endl;
 
 	checkShortcuts( true );
     }
@@ -457,7 +456,7 @@ YDialog::filterInvalidEvents( YEvent * event )
 	     * and the widget has been destroyed meanwhile.
 	     **/
 
-	    // yuiDebug() << "Discarding event for widget that has become invalid" << endl;
+	    // yuiDebug() << "Discarding event for widget that has become invalid" << std::endl;
 
 	    deleteEvent( widgetEvent );
 	    return 0;
@@ -475,17 +474,17 @@ YDialog::filterInvalidEvents( YEvent * event )
 	     **/
 
 	    // Yes, really yuiDebug() - this may legitimately happen.
-	    yuiDebug() << "Discarding event from widget from foreign dialog" << endl;
+	    yuiDebug() << "Discarding event from widget from foreign dialog" << std::endl;
 
 #if VERBOSE_DISCARDED_EVENTS
 	    yuiDebug() << "Expected: "   << this
 		       << ", received: " << widgetEvent->widget()->findDialog()
-		       << endl;
+		       << std::endl;
 
-	    yuiDebug() << "Event widget: "  << widgetEvent->widget() << endl;
-	    yuiDebug() << "From:" << endl;
+	    yuiDebug() << "Event widget: "  << widgetEvent->widget() << std::endl;
+	    yuiDebug() << "From:" << std::endl;
 	    widgetEvent->widget()->findDialog()->dumpWidgetTree();
-	    yuiDebug() << "Current dialog:" << endl;
+	    yuiDebug() << "Current dialog:" << std::endl;
 	    dumpWidgetTree();
 #endif
 
@@ -512,13 +511,13 @@ YDialog::deleteEvent( YEvent * event )
 	if ( event->isValid() )
 	{
 #if VERBOSE_EVENTS
-	    yuiDebug() << "Deleting " << event << endl;
+	    yuiDebug() << "Deleting " << event << std::endl;
 #endif
 	    delete event;
 	}
 	else
 	{
-	    yuiError() << "Attempt to delete invalid event " << event << endl;
+	    yuiError() << "Attempt to delete invalid event " << event << std::endl;
 	}
     }
 }
@@ -601,14 +600,14 @@ YDialog::addEventFilter( YEventFilter * eventFilter )
     if ( find( priv->eventFilterList.begin(), priv->eventFilterList.end(),
 	       eventFilter ) != priv->eventFilterList.end() )
     {
-	yuiError() << "event filter " << hex << eventFilter << dec
+	yuiError() << "event filter " << std::hex << eventFilter << std::dec
 		   << " already added to " << this
-		   << endl;
+		   << std::endl;
     }
     else
     {
 #if VERBOSE_DIALOGS
-	yuiDebug() << "Adding event filter " << hex << eventFilter << dec << endl;
+	yuiDebug() << "Adding event filter " << std::hex << eventFilter << std::dec << std::endl;
 #endif
 	priv->eventFilterList.push_back( eventFilter );
     }
@@ -621,7 +620,7 @@ YDialog::removeEventFilter( YEventFilter * eventFilter )
     YUI_CHECK_PTR( eventFilter );
 
 #if VERBOSE_DIALOGS
-    yuiDebug() << "Removing event filter " << hex << eventFilter << dec << endl;
+    yuiDebug() << "Removing event filter " << std::hex << eventFilter << std::dec << std::endl;
 #endif
     priv->eventFilterList.remove( eventFilter );
 }
@@ -648,7 +647,7 @@ YDialog::callEventFilters( YEvent * event )
 
 
 void
-YDialog::showText( const string & text, bool useRichText )
+YDialog::showText( const std::string & text, bool useRichText )
 {
 
     // set help text dialog size to 80% of topmost dialog, respectively 45x15 (default)
@@ -696,13 +695,13 @@ YDialog::showText( const string & text, bool useRichText )
 bool
 YDialog::showHelpText( YWidget * widget )
 {
-    string helpText;
+    std::string helpText;
 
     while ( widget )
     {
 	if ( ! widget->helpText().empty() )
 	{
-	    yuiDebug() << "Found help text for " << widget << endl;
+	    yuiDebug() << "Found help text for " << widget << std::endl;
 	    helpText = widget->helpText();
 	}
 
@@ -711,14 +710,14 @@ YDialog::showHelpText( YWidget * widget )
 
     if ( ! helpText.empty() )
     {
-	yuiMilestone() << "Showing help text" << endl;
+	yuiMilestone() << "Showing help text" << std::endl;
 	showText( helpText, true );
 
-	yuiMilestone() << "Help dialog closed" << endl;
+	yuiMilestone() << "Help dialog closed" << std::endl;
     }
     else // No help text
     {
-	yuiWarning() << "No help text" << endl;
+	yuiWarning() << "No help text" << std::endl;
     }
 
     return ! helpText.empty();

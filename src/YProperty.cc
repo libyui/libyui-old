@@ -59,10 +59,9 @@
 #include "YProperty.h"
 #include "YUIException.h"
 
-using std::string;
 
 
-string
+std::string
 YProperty::typeAsStr( YPropertyType type )
 {
     switch ( type )
@@ -94,7 +93,7 @@ YPropertySet::YPropertySet()
 
 
 void
-YPropertySet::check( const string & propertyName ) const
+YPropertySet::check( const std::string & propertyName ) const
 {
     if ( ! contains( propertyName ) )
 	YUI_THROW( YUIUnknownPropertyException( propertyName ) );
@@ -102,18 +101,18 @@ YPropertySet::check( const string & propertyName ) const
 
 
 void
-YPropertySet::check( const string & propertyName, YPropertyType type ) const
+YPropertySet::check( const std::string & propertyName, YPropertyType type ) const
 {
     if ( ! contains( propertyName, type ) )
 	YUI_THROW( YUIUnknownPropertyException( propertyName ) );
 
-    // YPropertySet::contains( const string &, YPropertyType ) will throw
+    // YPropertySet::contains( const std::string &, YPropertyType ) will throw
     // a YUIPropertyTypeMismatchException, if applicable
 }
 
 
 bool
-YPropertySet::contains( const string & propertyName ) const throw()
+YPropertySet::contains( const std::string & propertyName ) const throw()
 {
     for ( YPropertySet::const_iterator it = _properties.begin();
 	  it != _properties.end();
@@ -128,7 +127,7 @@ YPropertySet::contains( const string & propertyName ) const throw()
 
 
 bool
-YPropertySet::contains( const string & propertyName, YPropertyType type ) const
+YPropertySet::contains( const std::string & propertyName, YPropertyType type ) const
 {
     for ( YPropertySet::const_iterator it = _properties.begin();
 	  it != _properties.end();

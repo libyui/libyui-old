@@ -80,10 +80,10 @@ protected:
      *
      * 'expectedSize' is the expected size of the file in bytes.
      **/
-    YDownloadProgress( YWidget *	parent,
-		       const string &	label,
-		       const string &	filename,
-		       YFileSize_t	expectedSize );
+    YDownloadProgress( YWidget *		parent,
+		       const std::string &	label,
+		       const std::string &	filename,
+		       YFileSize_t		expectedSize );
 public:
     /**
      * Destructor.
@@ -99,7 +99,7 @@ public:
     /**
      * Get the label (the text above the progress bar).
      **/
-    string label() const;
+    std::string label() const;
 
     /**
      * Set the label (the text above the progress bar).
@@ -107,12 +107,12 @@ public:
      * Derived classes are free to reimplement this, but they should call this
      * base class method at the end of the overloaded function.
      **/
-    virtual void setLabel( const string & label );
+    virtual void setLabel( const std::string & label );
 
     /**
      * Return the name of the file that is being monitored.
      **/
-    string filename() const;
+    std::string filename() const;
 
     /**
      * Set the name of a new file to monitor.
@@ -120,7 +120,7 @@ public:
      * Derived classes are free to reimplement this, but they should call this
      * base class method at the end of the overloaded function.
      **/
-    virtual void setFilename( const string & filename );
+    virtual void setFilename( const std::string & filename );
 
     /**
      * Return the expected file size.
@@ -164,7 +164,7 @@ public:
      * 'false' if that value requires special handling (not in error cases:
      * those are covered by exceptions).
      **/
-    virtual bool setProperty( const string & propertyName,
+    virtual bool setProperty( const std::string & propertyName,
 			      const YPropertyValue & val );
 
     /**
@@ -173,7 +173,7 @@ public:
      *
      * This method may throw YUIPropertyExceptions.
      **/
-    virtual YPropertyValue getProperty( const string & propertyName );
+    virtual YPropertyValue getProperty( const std::string & propertyName );
 
     /**
      * Return this class's property set.

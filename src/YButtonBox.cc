@@ -69,9 +69,6 @@
 #include "YUI.h"
 #include "YApplication.h"
 
-using std::max;
-using std::vector;
-using std::list;
 
 
 YButtonBoxLayoutPolicy	YButtonBox::_layoutPolicy = kdeLayoutPolicy();

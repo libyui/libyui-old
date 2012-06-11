@@ -61,7 +61,6 @@
 
 #include "YWidget.h"
 
-using std::string;
 
 /**
  * Container widget class that manages one child.

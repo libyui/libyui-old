@@ -79,8 +79,8 @@
 //    #include <YUILog.h>
 //
 //    ...
-//    yuiDebug() << "Creating widget" << widget << endl;
-//    yuiError() << "No widget with ID " << id << endl;
+//    yuiDebug() << "Creating widget" << widget << std::endl;
+//    yuiError() << "No widget with ID " << id << std::endl;
 //
 // Unless the underlying logger function handles this differently,
 // Milestone, Warning and Error are always logged, Debug only when enabled.
@@ -91,12 +91,6 @@
 #define yuiWarning()	YUILog::warning  ( YUILogComponent, __FILE__, __LINE__, __FUNCTION__ )
 #define yuiError()	YUILog::error    ( YUILogComponent, __FILE__, __LINE__, __FUNCTION__ )
 
-using std::endl;
-using std::hex;
-using std::dec;
-using std::boolalpha;
-using std::noboolalpha;
-using std::string;
 
 //
 // ------ End of user relevant part ------
@@ -194,14 +188,14 @@ public:
      *     need this should use a custom logger function.
      *     See also setLoggerFunction().
      **/
-    static bool setLogFileName( const string & logFileName );
+    static bool setLogFileName( const std::string & logFileName );
 
     /**
      * Return the current log file name or an empty string if stderr is used.
      * Notice that this information is only relevant as long as the standard
      * logger function is used.
      **/
-    static string logFileName();
+    static std::string logFileName();
 
     /**
      * Set the UI logger function. This is the function that will ultimately
@@ -250,7 +244,7 @@ public:
     /**
      * Return the base name without path from a file name with path.
      **/
-    static string basename( const string & fileNameWithPath );
+    static std::string basename( const std::string & fileNameWithPath );
 
 
 private:

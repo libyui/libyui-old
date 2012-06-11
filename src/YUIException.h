@@ -69,9 +69,6 @@
 
 #include "YProperty.h"
 
-using std::string;
-using std::ostream;
-using std::endl;
 
 class YWidget;
 
@@ -254,9 +251,9 @@ public:
      * Constructor.
      * Commonly called using the YUI_EXCEPTION_CODE_LOCATION macro.
      **/
-    YCodeLocation( const string & file_r,
-		   const string & func_r,
-		   int		  line_r )
+    YCodeLocation( const std::string &	file_r,
+		   const std::string &	func_r,
+		   int			line_r )
 	: _file( file_r )
 	, _func( func_r )
 	, _line( line_r )
@@ -272,12 +269,12 @@ public:
     /**
      * Returns the source file name where the exception occured.
      **/
-    string file() const { return _file; }
+    std::string file() const { return _file; }
 
     /**
      * Returns the name of the function where the exception occured.
      **/
-    string func() const { return _func; }
+    std::string func() const { return _func; }
 
     /**
      * Returns the source line number where the exception occured.
@@ -287,16 +284,16 @@ public:
     /**
      * Returns the location in normalized string format.
      **/
-    string asString() const;
+    std::string asString() const;
 
     /**
      * Stream output
      **/
-    friend ostream & operator<<( ostream & str, const YCodeLocation & obj );
+    friend std::ostream & operator<<( std::ostream & str, const YCodeLocation & obj );
 
 private:
-    string	_file;
-    string	_func;
+    std::string	_file;
+    std::string	_func;
     int		_line;
 
 }; // YCodeLocation
@@ -305,7 +302,7 @@ private:
 /**
  * YCodeLocation stream output
  **/
-ostream & operator<<( ostream & str, const YCodeLocation & obj );
+std::ostream & operator<<( std::ostream & str, const YCodeLocation & obj );
 
 
 /**
@@ -328,7 +325,7 @@ public:
      * Constructor taking a message.
      * Use YUI_THROW to throw exceptions.
      **/
-    YUIException( const string & msg_r );
+    YUIException( const std::string & msg_r );
 
     /**
      * Destructor.
@@ -352,29 +349,29 @@ public:
      * Note: This is not neccessarily the complete error message.
      * The whole error message is provided by asString or dumpOn.
      **/
-    const string & msg() const
+    const std::string & msg() const
 	{ return _msg; }
 
     /**
      * Set a new message string.
      **/
-    void setMsg( const string & msg )
+    void setMsg( const std::string & msg )
 	{ _msg = msg; }
 
     /**
      * Error message provided by dumpOn as string.
      **/
-    string asString() const;
+    std::string asString() const;
 
     /**
      * Make a string from errno_r.
      **/
-    static string strErrno( int errno_r );
+    static std::string strErrno( int errno_r );
 
     /**
      * Make a string from errno_r and msg_r.
      **/
-    static string strErrno( int errno_r, const string & msg );
+    static std::string strErrno( int errno_r, const std::string & msg );
 
     /**
      * Drop a log line on throw, catch or rethrow.
@@ -396,21 +393,21 @@ protected:
     /**
      * Overload this to print a proper error message.
      **/
-    virtual ostream & dumpOn( ostream & str ) const;
+    virtual std::ostream & dumpOn( std::ostream & str ) const;
 
 
 private:
-    friend ostream & operator<<( ostream & str, const YUIException & obj );
+    friend std::ostream & operator<<( std::ostream & str, const YUIException & obj );
 
 
-    mutable YCodeLocation 	_where;
-    string 			_msg;
+    mutable YCodeLocation	_where;
+    std::string			_msg;
 
     /**
-     * Called by ostream & operator<<() .
+     * Called by std::ostream & operator<<() .
      * Prints YCodeLocation and the error message provided by dumpOn.
      **/
-    ostream & dumpError( ostream & str ) const;
+    std::ostream & dumpError( std::ostream & str ) const;
 
 }; // class YUIException
 
@@ -418,7 +415,7 @@ private:
 /**
  * YUIException stream output
  **/
-ostream & operator<<( ostream & str, const YUIException & obj );
+std::ostream & operator<<( std::ostream & str, const YUIException & obj );
 
 
 /**
@@ -476,8 +473,8 @@ public:
 class YUIWidgetNotFoundException: public YUIException
 {
 public:
-    YUIWidgetNotFoundException( const string & idString )
-	: YUIException( string( "No widget with ID " ) + idString )
+    YUIWidgetNotFoundException( const std::string & idString )
+	: YUIException( std::string( "No widget with ID " ) + idString )
 	{}
 
     virtual ~YUIWidgetNotFoundException() throw()
@@ -512,7 +509,7 @@ public:
 class YUISyntaxErrorException: public YUIException
 {
 public:
-    YUISyntaxErrorException( const string & msg )
+    YUISyntaxErrorException( const std::string & msg )
 	: YUIException( msg )
 	{}
 
@@ -559,7 +556,7 @@ protected:
      * Write proper error message with all relevant data.
      * Reimplemented from YUIException.
      **/
-    virtual ostream & dumpOn( ostream & str ) const = 0;
+    virtual std::ostream & dumpOn( std::ostream & str ) const = 0;
 
 private:
     YProperty	_property;
@@ -574,8 +571,8 @@ private:
 class YUIUnknownPropertyException: public YUIPropertyException
 {
 public:
-    YUIUnknownPropertyException( const string &	propertyName,
-				 YWidget *	widget = 0 )
+    YUIUnknownPropertyException( const std::string &	propertyName,
+				 YWidget *		widget = 0 )
 	: YUIPropertyException( YProperty( propertyName, YUnknownPropertyType ), widget )
 	{}
 
@@ -588,7 +585,7 @@ protected:
      * Write proper error message with all relevant data.
      * Reimplemented from YUIException.
      **/
-    virtual ostream & dumpOn( ostream & str ) const;
+    virtual std::ostream & dumpOn( std::ostream & str ) const;
 };
 
 
@@ -621,7 +618,7 @@ protected:
      * Write proper error message with all relevant data.
      * Reimplemented from YUIException.
      **/
-    virtual ostream & dumpOn( ostream & str ) const;
+    virtual std::ostream & dumpOn( std::ostream & str ) const;
 
 private:
     YPropertyType _type;
@@ -649,7 +646,7 @@ protected:
      * Write proper error message with all relevant data.
      * Reimplemented from YUIException.
      **/
-    virtual ostream & dumpOn( ostream & str ) const;
+    virtual std::ostream & dumpOn( std::ostream & str ) const;
 };
 
 
@@ -659,7 +656,7 @@ public:
 
     YUIBadPropertyArgException( const YProperty & 	property,
 				YWidget *		widget,
-				const string &		message = "" )
+				const std::string &	message = "" )
 	: YUIPropertyException( property, widget )
 	{ setMsg( message ); }
 
@@ -672,7 +669,7 @@ protected:
      * Write proper error message with all relevant data.
      * Reimplemented from YUIException.
      **/
-    virtual ostream & dumpOn( ostream & str ) const;
+    virtual std::ostream & dumpOn( std::ostream & str ) const;
 };
 
 
@@ -704,15 +701,15 @@ protected:
      * Write proper error message with all relevant data.
      * Reimplemented from YUIException.
      **/
-    virtual ostream & dumpOn( ostream & str ) const
+    virtual std::ostream & dumpOn( std::ostream & str ) const
     {
-	string widgetClass =
+	std::string widgetClass =
 	    container() ? container()->widgetClass() :
 	    "widget";
 
 	return str << "Too many children for "
 		   << widgetClass
-		   << endl;
+		   << std::endl;
     }
 
 private:
@@ -760,20 +757,20 @@ protected:
      * Write proper error message with all relevant data.
      * Reimplemented from YUIException.
      **/
-    virtual ostream & dumpOn( ostream & str ) const
+    virtual std::ostream & dumpOn( std::ostream & str ) const
     {
-	string containerWidgetClass =
+	std::string containerWidgetClass =
 	    container() ? container()->widgetClass() :
 	    "widget";
 
-	string childWidgetClass =
+	std::string childWidgetClass =
 	    child() ? child()->widgetClass() :
 	    "<Null>";
 
 	return str << childWidgetClass
 		   << " is not a child of "
 		   << containerWidgetClass
-		   << endl;
+		   << std::endl;
     }
 
 private:
@@ -797,8 +794,8 @@ class YUIUnsupportedWidgetException: public YUIException
 {
 public:
 
-    YUIUnsupportedWidgetException( const string & widgetType )
-	: YUIException( string( "Unsupported optional widget type: " ) + widgetType )
+    YUIUnsupportedWidgetException( const std::string & widgetType )
+	: YUIException( std::string( "Unsupported optional widget type: " ) + widgetType )
 	{}
 
     virtual ~YUIUnsupportedWidgetException() throw()
@@ -836,10 +833,10 @@ public:
      *
      *     validMin <= index <= validMax
      **/
-    YUIIndexOutOfRangeException( int 		invalidIndex,
-				 int 		validMin,
-				 int 		validMax,
-				 const string &	msg = "" )
+    YUIIndexOutOfRangeException( int			invalidIndex,
+				 int			validMin,
+				 int			validMax,
+				 const std::string &	msg = "" )
 	: YUIException( msg )
 	, _invalidIndex( invalidIndex )
 	, _validMin( validMin )
@@ -870,16 +867,16 @@ protected:
      * Write proper error message with all relevant data.
      * Reimplemented from YUIException.
      **/
-    virtual ostream & dumpOn( ostream & str ) const
+    virtual std::ostream & dumpOn( std::ostream & str ) const
     {
-	string prefix = msg();
+	std::string prefix = msg();
 
 	if ( prefix.empty() )
 	    prefix = "Index out of range";
 
 	return str << prefix << ": " << _invalidIndex
 		   << " valid: " << _validMin << " .. " << _validMax
-		   << endl;
+		   << std::endl;
     }
 
 private:
@@ -896,8 +893,8 @@ private:
 class YUIPluginException: public YUIException
 {
 public:
-    YUIPluginException( const string & pluginName )
-	: YUIException( string( "Couldn't load plug-in " ) + pluginName )
+    YUIPluginException( const std::string & pluginName )
+	: YUIException( std::string( "Couldn't load plug-in " ) + pluginName )
 	{}
 
     virtual ~YUIPluginException() throw()
@@ -927,7 +924,7 @@ class YUIButtonRoleMismatchException: public YUIException
 {
 public:
 
-    YUIButtonRoleMismatchException( const string & msg )
+    YUIButtonRoleMismatchException( const std::string & msg )
 	: YUIException( msg )
 	{}
 

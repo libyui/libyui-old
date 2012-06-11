@@ -61,8 +61,6 @@
 
 #include "YItem.h"
 
-using std::string;
-using std::vector;
 
 
 /**
@@ -76,12 +74,12 @@ public:
     /**
      * Constructors for toplevel items.
      **/
-    YTreeItem( const string &	label,
-	       bool 		isOpen = false );
+    YTreeItem( const std::string &	label,
+	       bool			isOpen = false );
 
-    YTreeItem( const string & 	label,
-	       const string & 	iconName,
-	       bool 		isOpen = false );
+    YTreeItem( const std::string &	label,
+	       const std::string &	iconName,
+	       bool			isOpen = false );
 
     /**
      * Constructors for items that have a parent item.
@@ -90,14 +88,14 @@ public:
      * parent assumes ownership of this item and will delete it in its (the
      * parent's) destructor.
      **/
-    YTreeItem( YTreeItem * 	parent,
-	       const string & 	label,
-	       bool 		isOpen = false );
+    YTreeItem( YTreeItem *		parent,
+	       const std::string &	label,
+	       bool			isOpen = false );
 
-    YTreeItem( YTreeItem * 	parent,
-	       const string & 	label,
-	       const string & 	iconName,
-	       bool 		isOpen = false );
+    YTreeItem( YTreeItem *		parent,
+	       const std::string &	label,
+	       const std::string &	iconName,
+	       bool			isOpen = false );
 
     /**
      * Destructor.

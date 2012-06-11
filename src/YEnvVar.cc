@@ -67,7 +67,7 @@
 #include <YEnvVar.h>
 
 
-YEnvVar::YEnvVar( const string & name )
+YEnvVar::YEnvVar( const std::string & name )
     : _name( name )
     , _isSet( false )
 {
@@ -85,7 +85,7 @@ YEnvVar::YEnvVar( const string & name )
 
 
 bool
-YEnvVar::isEqual( const string & str, bool caseSensitive ) const
+YEnvVar::isEqual( const std::string & str, bool caseSensitive ) const
 {
     if ( ! _isSet )
 	return false;
@@ -97,28 +97,28 @@ YEnvVar::isEqual( const string & str, bool caseSensitive ) const
 }
 
 bool
-YEnvVar::contains( const string & str, bool caseSensitive ) const
+YEnvVar::contains( const std::string & str, bool caseSensitive ) const
 {
     if ( ! _isSet )
 	return false;
 
     if ( caseSensitive )
     {
-	return _value.find( str ) != string::npos;
+	return _value.find( str ) != std::string::npos;
     }
     else
     {
-	return tolower( _value ).find( tolower( str ) ) != string::npos;
+	return tolower( _value ).find( tolower( str ) ) != std::string::npos;
     }
 }
 
 
-string tolower( const string & str )
+std::string tolower( const std::string & str )
 {
-    string lowStr;
+    std::string lowStr;
     lowStr.reserve( str.size() );
 
-    for ( string::const_iterator it = str.begin();
+    for ( std::string::const_iterator it = str.begin();
 	  it != str.end();
 	  ++it )
     {

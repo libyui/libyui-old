@@ -69,13 +69,10 @@
 #define YUILogComponent "ui"
 #include "YUILog.h"
 
-using std::vector;
-using std::ifstream;
-
 
 struct YCommandLinePrivate
 {
-    vector<string> args;
+    std::vector<std::string> args;
 };
 
 
@@ -87,17 +84,17 @@ YCommandLine::YCommandLine()
 {
     YUI_CHECK_NEW( priv );
 
-    ifstream cmdline( "/proc/self/cmdline", ifstream::in | ifstream::binary );
+    std::ifstream cmdline( "/proc/self/cmdline", std::ifstream::in | std::ifstream::binary );
 
     while ( cmdline.good() )
     {
-	string arg;
+	std::string arg;
 	getline( cmdline, arg, '\0' );
 
 	if ( ! arg.empty() )
 	{
 	    yuiDebug() << "Arg #" << priv->args.size()
-		       << ": \"" << arg << "\"" << endl;
+		       << ": \"" << arg << "\"" << std::endl;
 
 	    priv->args.push_back( arg );
 	}
@@ -136,13 +133,13 @@ YCommandLine::argv() const
 
 
 void
-YCommandLine::add( const string & arg )
+YCommandLine::add( const std::string & arg )
 {
     priv->args.push_back( arg );
 }
 
 
-string
+std::string
 YCommandLine::arg( int index ) const
 {
     YUI_CHECK_INDEX( index, 0, (int) priv->args.size()-1 );
@@ -161,7 +158,7 @@ YCommandLine::remove( int index )
 
 
 void
-YCommandLine::replace( int index, const string & newArg )
+YCommandLine::replace( int index, const std::string & newArg )
 {
     YUI_CHECK_INDEX( index, 0, (int) priv->args.size()-1 );
 
@@ -170,7 +167,7 @@ YCommandLine::replace( int index, const string & newArg )
 
 
 int
-YCommandLine::find( const string & argName ) const
+YCommandLine::find( const std::string & argName ) const
 {
     for ( int i=0; i < argc(); i++ )
     {

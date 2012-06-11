@@ -65,7 +65,6 @@
 #include "YDialog.h"
 #include "YSimpleEventHandler.h"
 
-using std::string;
 class YWidget;
 class YItem;
 class YDialog;
@@ -249,14 +248,14 @@ public:
      * key, such as "CursorLeft", "F1", etc.) and optionally the widget that
      * currently has the keyboard focus.
      **/
-    YKeyEvent( const string &	keySymbol,
+    YKeyEvent( const std::string &	keySymbol,
 	       YWidget *	focusWidget = 0 );
 
     /**
      * Returns the key symbol - a text describing the
      * key, such as "CursorLeft", "F1", "a", "A", etc.
      **/
-    string keySymbol() const { return _keySymbol; }
+    std::string keySymbol() const { return _keySymbol; }
 
     /**
      * Returns the widget that currently has the keyboard focus.
@@ -280,7 +279,7 @@ protected:
     // Data members
     //
 
-    string	_keySymbol;
+    std::string	_keySymbol;
     YWidget * 	_focusWidget;
 };
 
@@ -297,8 +296,8 @@ public:
 	, _item( item )
 	{}
 
-    YMenuEvent( const char *     id )	: YEvent( MenuEvent ), _item(0), _id( id ) {}
-    YMenuEvent( const string & 	 id )	: YEvent( MenuEvent ), _item(0), _id( id ) {}
+    YMenuEvent( const char *		id )	: YEvent( MenuEvent ), _item(0), _id( id ) {}
+    YMenuEvent( const std::string &	id )	: YEvent( MenuEvent ), _item(0), _id( id ) {}
 
     /**
      * Return the YItem that corresponds to this event or 0 if the event was
@@ -312,7 +311,7 @@ public:
      * Return the string ID of this event. This will be an empty string if the
      * event was constructed with a YItem.
      **/
-    string id() const { return _id; }
+    std::string id() const { return _id; }
 
 protected:
 
@@ -328,8 +327,8 @@ protected:
     // Data members
     //
 
-    YItem * _item;
-    string  _id;
+    YItem *	_item;
+    std::string	_id;
 };
 
 
