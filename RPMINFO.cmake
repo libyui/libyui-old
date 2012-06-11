@@ -17,9 +17,9 @@ SET( SPEC_BuildRequires		"boost-devel" "cmake >= 2.8" "gcc-c++" )					# the Buil
 
 SET( SPEC_Conflicts		"yast2-core < 2.16.38" )							# the Conflicts every single pkg wrapped with "" and speparated with spaces
 
-SET( SPEC_Provides		"libyui = %{version}" "yast2-libyui = %{version}" )				# the Provides every single pkg wrapped with "" and speparated with spaces
+SET( SPEC_Provides		"libyui = %{version}" "yast2-libyui = 2.21.4}" )				# the Provides every single pkg wrapped with "" and speparated with spaces
 
-SET( SPEC_Obsoletes		"yast2-libyui < %{version}" )							# the Obsoletes every single pkg wrapped with "" and speparated with spaces
+SET( SPEC_Obsoletes		"yast2-libyui <= 2.21.4" )							# the Obsoletes every single pkg wrapped with "" and speparated with spaces
 
 SET( SPEC_DEVEL_Requires	"@PROJECTNAME@@@varpfx@_SONAME_MAJOR@ = %{version}" )				# the Requires for the -devel pkg every single pkg wrapped with "" and speparated with spaces
 SET( SPEC_DEVEL_Requires	${SPEC_DEVEL_Requires} "glibc-devel" "libstdc++-devel" "boost-devel" )
