@@ -15,7 +15,7 @@ SET( SPEC_DESCRIPTION		"${SPEC_DESCRIPTION}dependencies." )
 
 SET( SPEC_BuildRequires		"boost-devel" "cmake >= 2.8" "gcc-c++" )					# the BuildRequires every single pkg wrapped with "" and speparated with spaces
 
-SET( SPEC_Provides		"libyui = %{version}" "yast2-libyui = 2.21.4}" )				# the Provides every single pkg wrapped with "" and speparated with spaces
+SET( SPEC_Provides		"libyui = %{version}" "yast2-libyui = 2.21.4" )					# the Provides every single pkg wrapped with "" and speparated with spaces
 
 SET( SPEC_Obsoletes		"yast2-libyui <= 2.21.4" )							# the Obsoletes every single pkg wrapped with "" and speparated with spaces
 
