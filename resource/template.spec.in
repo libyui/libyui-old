@@ -63,14 +63,13 @@ cd build
 cmake .. \
 	-DPREFIX=%{_prefix} \
 	-DLIB_DIR=%{_lib} \
-	-DCMAKE_BUILD_TYPE=RELWITHDEBINFO \
-	-DENABLE_STATIC=ON
+	-DCMAKE_BUILD_TYPE=RELWITHDEBINFO
+
 %else
 cmake .. \
 	-DPREFIX=%{_prefix} \
 	-DLIB_DIR=%{_lib} \
-	-DCMAKE_BUILD_TYPE=RELEASE \
-	-DENABLE_STATIC=ON
+	-DCMAKE_BUILD_TYPE=RELEASE
 %endif
 
 make %{?jobs:-j%jobs}
