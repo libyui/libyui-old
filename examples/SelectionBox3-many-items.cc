@@ -26,7 +26,7 @@
 YItemCollection pizzaItems()
 {
     YItemCollection items;
-    yuiMilestone() << "Creating item collection" << endl;
+    yuiMilestone() << "Creating item collection" << std::endl;
 
     for ( int i=1; i<= ITEM_COUNT; i++ )
     {
@@ -35,7 +35,7 @@ YItemCollection pizzaItems()
 	items.push_back( new YItem( name ) );
     }
 
-    yuiMilestone() << "Item collection created" << endl;
+    yuiMilestone() << "Item collection created" << std::endl;
 
     return items;
 }
@@ -148,7 +148,7 @@ int main( int argc, char **argv )
 	    {
 		selBox->deleteAllItems();
 		selBox->addItems( pizzaItems() );
-		yuiMilestone() << "Pizza items added" << endl;
+		yuiMilestone() << "Pizza items added" << std::endl;
 	    }
 	    else if ( event->widget() == clearButton )
 	    {
@@ -187,7 +187,7 @@ int main( int argc, char **argv )
 	    else if ( event->widget() == selBox ||
 		      event->widget() == valueButton )
 	    {
-		yuiMilestone() << "Event widget: " << event->widget() << endl;
+		yuiMilestone() << "Event widget: " << event->widget() << std::endl;
 
 		YItem * item = selBox->selectedItem();
 
@@ -198,7 +198,7 @@ int main( int argc, char **argv )
 	    }
 	    else
 	    {
-		yuiMilestone() << "Unknown event" << endl;
+		yuiMilestone() << "Unknown event" << std::endl;
 	    }
 	}
     }

@@ -180,7 +180,7 @@ int main( int argc, char **argv )
 	    else if ( event->widget() == selBox ||
 		      event->widget() == valueButton )
 	    {
-		yuiMilestone() << "Event widget: " << event->widget() << endl;
+		yuiMilestone() << "Event widget: " << event->widget() << std::endl;
 		
 		YItem * item = selBox->selectedItem();
 
@@ -191,7 +191,7 @@ int main( int argc, char **argv )
 	    }
 	    else
 	    {
-		yuiMilestone() << "Unknown event" << endl;
+		yuiMilestone() << "Unknown event" << std::endl;
 	    }
 	}
     }
