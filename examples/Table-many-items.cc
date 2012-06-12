@@ -29,7 +29,7 @@
 YItemCollection pizzaItems()
 {
     YItemCollection items;
-    yuiMilestone() << "Creating item collection" << endl;
+    yuiMilestone() << "Creating item collection" << std::endl;
 
     for ( int i=1; i<= ITEM_COUNT; i++ )
     {
@@ -41,7 +41,7 @@ YItemCollection pizzaItems()
 	items.push_back( new YTableItem( no, name ) );
     }
 
-    yuiMilestone() << "Item collection created" << endl;
+    yuiMilestone() << "Item collection created" << std::endl;
 
     return items;
 }
@@ -160,12 +160,12 @@ int main( int argc, char **argv )
 		table->deleteAllItems();
 		YItemCollection items = pizzaItems();
 
-		yuiMilestone() << "Adding pizza items..." << endl;
+		yuiMilestone() << "Adding pizza items..." << std::endl;
 		time_t startTime = time(0);
 		table->addItems( items );
 		time_t elapsed = time(0) - startTime;
 
-		yuiMilestone() << "Pizza items added; elapsed time: " << elapsed << " sec" << endl;
+		yuiMilestone() << "Pizza items added; elapsed time: " << elapsed << " sec" << std::endl;
 	    }
 	    else if ( event->widget() == clearButton )
 	    {
@@ -204,7 +204,7 @@ int main( int argc, char **argv )
 	    else if ( event->widget() == table ||
 		      event->widget() == valueButton )
 	    {
-		yuiMilestone() << "Event widget: " << event->widget() << endl;
+		yuiMilestone() << "Event widget: " << event->widget() << std::endl;
 
 		YItem * item = table->selectedItem();
 
@@ -220,7 +220,7 @@ int main( int argc, char **argv )
 	    }
 	    else
 	    {
-		yuiMilestone() << "Unknown event" << endl;
+		yuiMilestone() << "Unknown event" << std::endl;
 	    }
 	}
     }
