@@ -95,12 +95,11 @@ rm -rf "$RPM_BUILD_ROOT"
 %files -n @PROJECTNAME@@SONAME_MAJOR@
 %defattr(-,root,root)
 
-%{_libdir}@SPEC_LIBDIR@/lib*.so.*
+%{_libdir}/lib*.so.*
 
 %files devel
 %defattr(-,root,root)
-%{_libdir}@SPEC_LIBDIR@/lib*.so
-%{_libdir}@SPEC_LIBDIR@/lib*.a
+%{_libdir}/lib*.so
 %{_prefix}/include/yui
 %{_libdir}/pkgconfig/@PROJECTNAME@.pc
 %{_libdir}/cmake/@PROJECTNAME@
