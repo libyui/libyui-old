@@ -177,6 +177,8 @@ SET( ${TARGETLIB}_HEADERS
   YRpmGroupsTree.h
   YStringTree.h
   YTransText.h
+
+  "${CMAKE_CURRENT_BINARY_DIR}/${PROJECTNAME_UC}_config.h"
 )
 
 IF( DISABLE_SHARED )

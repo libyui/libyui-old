@@ -67,7 +67,7 @@
 #include "YUIException.h"
 #include "YPath.h"
 
-#include "config.h"
+#include "Libyui_config.h"
 
 
 void YUILoader::loadUI( bool withThreads )

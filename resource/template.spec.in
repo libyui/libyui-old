@@ -62,15 +62,14 @@ cd build
 %if %{?_with_debug:1}%{!?_with_debug:0}
 cmake .. \
 	-DPREFIX=%{_prefix} \
+	-DDOC_DIR=%{_docdir}
 	-DLIB_DIR=%{_lib} \
-	-DDOC_DIR=%{_docdir} \
 	-DCMAKE_BUILD_TYPE=RELWITHDEBINFO
-
 %else
 cmake .. \
 	-DPREFIX=%{_prefix} \
+	-DDOC_DIR=%{_docdir}
 	-DLIB_DIR=%{_lib} \
-	-DDOC_DIR=%{_docdir} \
 	-DCMAKE_BUILD_TYPE=RELEASE
 %endif
 
@@ -95,11 +94,11 @@ rm -rf "$RPM_BUILD_ROOT"
 %files -n @PROJECTNAME@@SONAME_MAJOR@
 %defattr(-,root,root)
 
-%{_libdir}/lib*.so.*
+%{_libdir}@SPEC_LIBDIR@/lib*.so.*
 
 %files devel
 %defattr(-,root,root)
-%{_libdir}/lib*.so
+%{_libdir}@SPEC_LIBDIR@/lib*.so
 %{_prefix}/include/yui
 %{_libdir}/pkgconfig/@PROJECTNAME@.pc
 %{_libdir}/cmake/@PROJECTNAME@
