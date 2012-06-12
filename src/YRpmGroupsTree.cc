@@ -59,7 +59,7 @@
 
 #include "YRpmGroupsTree.h"
 
-#include "config.h"
+#include "Libyui_config.h"
 
 #define TEXTDOMAIN "rpm-groups"
 

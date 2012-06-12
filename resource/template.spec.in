@@ -62,15 +62,14 @@ cd build
 %if %{?_with_debug:1}%{!?_with_debug:0}
 cmake .. \
 	-DPREFIX=%{_prefix} \
-	-DLIB_DIR=%{_lib} \
 	-DDOC_DIR=%{_docdir} \
+	-DLIB_DIR=%{_lib} \
 	-DCMAKE_BUILD_TYPE=RELWITHDEBINFO
-
 %else
 cmake .. \
 	-DPREFIX=%{_prefix} \
-	-DLIB_DIR=%{_lib} \
 	-DDOC_DIR=%{_docdir} \
+	-DLIB_DIR=%{_lib} \
 	-DCMAKE_BUILD_TYPE=RELEASE
 %endif
 

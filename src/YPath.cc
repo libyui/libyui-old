@@ -66,7 +66,7 @@
 
 #include "YPath.h"
 #include "YSettings.h"
-#include "config.h"
+#include "Libyui_config.h"
 
 #define YUILogComponent "ui"
 #include "YUILog.h"

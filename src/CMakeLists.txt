@@ -83,6 +83,7 @@ SET( ${TARGETLIB}_SOURCES
 )
 
 SET( ${TARGETLIB}_HEADERS
+  "${CMAKE_CURRENT_BINARY_DIR}/${PROJECTNAME_UC}_config.h"
   YUI.h
   YApplication.h
   YWidgetFactory.h

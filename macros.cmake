@@ -156,6 +156,12 @@ MACRO( FIND_LIB_DEPENDENCIES )	# try to find all libs from ${LIB_DEPS}
     SET( ${LIB_LINKER} ${${p}_LIBRARIES} ${LIB_LINKER} )
   ENDFOREACH()
 
+  IF( PLUGINNAME )
+    FOREACH( p "" _MAJOR _MINOR _PATCH )
+      SET( SONAME${p} "${Lib${BASENAME}_SONAME${p}}")
+    ENDFOREACH()
+  ENDIF( PLUGINNAME )
+
 ENDMACRO( FIND_LIB_DEPENDENCIES )
 
 MACRO( FIND_LINKER_LIBS )	# try to find all libs to be linked against
@@ -316,12 +322,12 @@ MACRO( GEN_FILES )		# generate files from templates
 
   CONFIGURE_FILE(
     "${PROJECT_SOURCE_DIR}/resource/config.h.in"
-    "${PROJECT_BINARY_DIR}/src/config.h"
+    "${PROJECT_BINARY_DIR}/src/${PROJECTNAME_UC}_config.h"
     @ONLY
   )
 
   FOREACH( p "${PROJECTNAME_UC}Config.cmake" "${PROJECTNAME_UC}ConfigVersion.cmake" "${PROJECTNAME}.pc"
-           "src/config.h" )
+           "src/${PROJECTNAME_UC}_config.h" )
     CONFIGURE_FILE(
       "${PROJECT_BINARY_DIR}/${p}"
       "${PROJECT_BINARY_DIR}/${p}"
@@ -333,8 +339,10 @@ ENDMACRO( GEN_FILES )
 
 MACRO( PREP_SPEC_FILES )
 
+  IF( PLUGINNAME )
   SET( SPEC_LIBDIR "/${BASELIB}/${PROGSUBDIR_UC}" )
   STRING( REGEX REPLACE "/+" "/" SPEC_LIBDIR "${SPEC_LIBDIR}" )
+  ENDIF( PLUGINNAME )
 
   FOREACH( p "BuildRequires" "Conflicts" "Provides" "Obsoletes" "DEVEL_Requires" "DEVEL_Provides" )
     STRING( REPLACE "DEVEL_" "" SPEC_PREPEND "${p}" )
