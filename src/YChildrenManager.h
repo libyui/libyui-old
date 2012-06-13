@@ -61,7 +61,7 @@
 
 #include <list>
 #include <algorithm>
-#include <YUIException.h>
+#include "YUIException.h"
 
 
 /**
