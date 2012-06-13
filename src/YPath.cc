@@ -73,45 +73,57 @@
 
 YPath::YPath ( const std::string & directory, const std::string & filename )
 {
-  yuiMilestone () << "Looking for " << filename << std::endl;
+  yuiMilestone () << "Given filename: " << filename << std::endl;
 
   bool				isThemeDir = ! directory.compare ( THEMEDIR );
   std::string			progSubDir = YSettings::access () -> getProgSubDir ();
-  std::string			filenameNoPrepend = filename.substr ( fullPath.rfind( "/" ) + 1, std::string::npos );
   std::string			fullname = "";
   std::string			themeSubDir = "/current";
-  std::string			subDirPrepend = "/" + filename.substr ( 0, fullPath.rfind( "/" ) );
-  bool				hasSubDirPrepend = subDirPrepend.compare ( "/" );
+  size_t			splitPos = fullPath.rfind( "/" );
+  bool				hasProgSubDir = progSubDir.compare ( "" );
+  bool				hasSubDirPrepend = ( splitPos != std::string::npos );
+  std::string			filenameNoPrepend = filename.substr ( splitPos + 1, std::string::npos );
+  std::string			subDirPrepend = "";
   std::vector<std::string>	dirList;
 
+  if ( hasSubDirPrepend )
+    subDirPrepend = filename.substr ( 0, splitPos );
+
   yuiMilestone () << "Preferring subdir: " << progSubDir << std::endl;
+  yuiMilestone () << "Subdir given with filename: " << subDirPrepend << std::endl;
+  yuiMilestone () << "Looking for: " << filenameNoPrepend << std::endl;
 
   if ( hasSubDirPrepend )	// prefer subdir prepended to filename
   {
     if ( isThemeDir )		// prefer /current inside THEMEDIR
     {
-      dirList.push_back ( directory + "/" + progSubDir + themeSubDir + subDirPrepend );
-      dirList.push_back ( directory + themeSubDir + subDirPrepend );
-    }
+      if ( hasProgSubDir )
+        dirList.push_back ( directory + "/" + progSubDir + themeSubDir + "/" + subDirPrepend );
 
-    dirList.push_back ( directory + "/" + progSubDir + subDirPrepend );
-    dirList.push_back ( directory + subDirPrepend );
+      dirList.push_back ( directory + themeSubDir + "/" + subDirPrepend );
+    }
+    if ( hasProgSubDir )
+      dirList.push_back ( directory + "/" + progSubDir + "/" + subDirPrepend );
+
+    dirList.push_back ( directory + "/" + subDirPrepend );
   }
 
   if ( isThemeDir )		// prefer /current inside THEMEDIR
   {
-    dirList.push_back ( directory + "/" + progSubDir + themeSubDir );
+    if ( hasProgSubDir )
+      dirList.push_back ( directory + "/" + progSubDir + themeSubDir );
+
     dirList.push_back ( directory + themeSubDir );
   }
 
 				// the "usual" lookup
-  dirList.push_back ( directory + "/" + progSubDir );
+  if ( hasProgSubDir )
+    dirList.push_back ( directory + "/" + progSubDir );
+
   dirList.push_back ( directory );
 
   for ( std::vector<std::string>::const_iterator x = dirList.begin () ; x != dirList.end () && fullPath.compare ( "" ) == 0 ; ++x )
   {
-    yuiMilestone () << "scanning subdir: " << *x << std::endl;
-
     std::vector<std::string> fileList = lsDir( *x );
 
     for ( std::vector<std::string>::const_iterator i = fileList.begin () ; i != fileList.end () && fullPath.compare ( "" ) == 0 ; ++i )
@@ -119,7 +131,7 @@ YPath::YPath ( const std::string & directory, const std::string & filename )
       if ( *i != "." && *i != ".." )		// filter out parent and curdir
       {
 	fullname =  directory + "/" + *i;
-	if ( *i == filename )
+	if ( *i == filenameNoPrepend )
 	  fullPath = fullname;
 	else
 	{
@@ -130,7 +142,7 @@ YPath::YPath ( const std::string & directory, const std::string & filename )
   }
 
   if( fullPath.compare ( "" ) != 0 )
-    yuiMilestone() << "Found " << filename << " in " << dir() << std::endl;
+    yuiMilestone() << "Found " << filenameNoPrepend << " in " << dir() << std::endl;
   else
   {
     yuiMilestone() << "Could NOT find " << filename << " by looking recursive inside " << directory << std::endl;
@@ -157,8 +169,6 @@ std::vector<std::string> YPath::lsDir( const std::string & directory )
 
     closedir ( dir );
   }
-  else
-    yuiMilestone() << "\"" << directory << "\" does NOT exist." << std::endl;
 
   return fileList;
 }
