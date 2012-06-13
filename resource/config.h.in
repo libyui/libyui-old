@@ -55,9 +55,13 @@
   Author: Björn Esser <bjoern.esser@gmail.com>
 
 /-*/
+#ifndef @PROJECTNAME_UC@_CONFIG_H
+#define @PROJECTNAME_UC@_CONFIG_H
 
 #define LOCALEDIR	"@PREFIX@/@DATAROOTDIR@/locale"
 #define PLUGINDIR	"@PREFIX@/@LIB_DIR_PLAIN@/@BASELIB@"
 #define THEMEDIR	"@PREFIX@/@THEME_DIR@"
 #define PLUGIN_PREFIX	"lib@BASELIB@-"
 #define PLUGIN_SUFFIX	".so.@SONAME_MAJOR@"
+
+#endif // @PROJECTNAME_UC@_CONFIG_H
