@@ -55,8 +55,6 @@ make install DESTDIR="$RPM_BUILD_ROOT"
 
 %fdupes -s $RPM_BUILD_ROOT/%_docdir/@PROJECTNAME@
 
-%perl_process_packlist
-
 
 %clean
 rm -rf "$RPM_BUILD_ROOT"

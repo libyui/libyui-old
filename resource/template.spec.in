@@ -81,9 +81,6 @@ cd build
 make install DESTDIR="$RPM_BUILD_ROOT"
 
 
-%perl_process_packlist
-
-
 %clean
 rm -rf "$RPM_BUILD_ROOT"
 
