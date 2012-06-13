@@ -94,14 +94,14 @@ rm -rf "$RPM_BUILD_ROOT"
 %files -n @PROJECTNAME@@SONAME_MAJOR@
 %defattr(-,root,root)
 
-%{_libdir}/lib*.so.*
+%{_libdir}@SPEC_LIBDIR@/lib*.so.*
 
 %files devel
 %defattr(-,root,root)
-%{_libdir}/lib*.so
+%{_libdir}@SPEC_LIBDIR@/lib*.so
 %{_prefix}/include/yui
 %{_libdir}/pkgconfig/@PROJECTNAME@.pc
 %{_libdir}/cmake/@PROJECTNAME@
-%doc %{_docdir}/@PROJECTNAME@
+@SPEC_DEVEL_DOCS@
 
 %changelog
