@@ -91,7 +91,7 @@ rm -rf "$RPM_BUILD_ROOT"
 
 %files -n @PROJECTNAME@@SONAME_MAJOR@
 %defattr(-,root,root)
-%dir %{_libdir}@SPEC_Libdir@
+@SPEC_Owndir@
 %{_libdir}@SPEC_Libdir@/lib*.so.*
 @SPEC_Docs@
 
