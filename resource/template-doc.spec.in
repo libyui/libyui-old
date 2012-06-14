@@ -53,7 +53,7 @@ make %{?jobs:-j%jobs} docs
 cd build
 make install DESTDIR="$RPM_BUILD_ROOT"
 
-%fdupes -s $RPM_BUILD_ROOT/%_docdir/@PROJECTNAME_UC@@SONAME_MAJOR@/doc
+%fdupes -s $RPM_BUILD_ROOT/%_docdir/@PROJECTNAME@@SONAME_MAJOR@
 
 
 %clean
@@ -62,6 +62,6 @@ rm -rf "$RPM_BUILD_ROOT"
 
 %files
 %defattr(-,root,root)
-%doc %{_docdir}/@PROJECTNAME_UC@@SONAME_MAJOR@/doc
+%doc %{_docdir}/@PROJECTNAME@@SONAME_MAJOR@
 
 %changelog
