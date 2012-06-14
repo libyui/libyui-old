@@ -21,7 +21,7 @@ IF( EXISTS "${@PROJECTNAME_UC@_CMAKE_DIR}/CMakeCache.txt" )
    # In build tree
    INCLUDE( "${@PROJECTNAME_UC@_CMAKE_DIR}/@PROJECTNAME_UC@BuildTreeSettings.cmake" )
 ELSE()
-   SET( @PROJECTNAME_UC@_INCLUDE_DIRS "${@PROJECTNAME_UC@_CMAKE_DIR}/@CONF_REL_INCLUDE_DIR@" )
+   SET( @PROJECTNAME_UC@_INCLUDE_DIRS "@INSTALL_INCLUDE_DIR_PREFIX@" )
 ENDIF()
 
 # Our library dependencies (contains definitions for IMPORTED targets)
@@ -29,3 +29,5 @@ INCLUDE( "${@PROJECTNAME_UC@_CMAKE_DIR}/@PROJECTNAME_UC@LibraryDepends.cmake" )
 
 # These are IMPORTED targets created by @PROJECTNAME_UC@LibraryDepends.cmake
 SET( @PROJECTNAME_UC@_LIBRARIES @TARGETLIB@ )
+
+MESSAGE( STATUS "Found @PROJECTNAME_UC@: ${IMPORTED_LOCATION_RELEASE} (Version: @VERSION@)" )

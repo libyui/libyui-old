@@ -130,10 +130,10 @@ MACRO( SET_ENVIRONMENT )	# setup the environment vars
   SET( THEME_DIR "${FULL_DATA_DIR}/theme" )
 
   IF( NOT DEFINED DOC_DIR )
-    SET( DOC_DIR "${DATAROOTDIR}/doc/${PROJECTNAME}" )
+    SET( DOC_DIR "${DATAROOTDIR}/doc/${PROJECTNAME}${SONAME_MAJOR}/doc" )
   ELSE( NOT DEFINED DOC_DIR )
     STRING( REPLACE "${PREFIX}/" "" DOC_DIR "${DOC_DIR}" )
-    SET( DOC_DIR "${DOC_DIR}/${PROJECTNAME}" )
+    SET( DOC_DIR "${DOC_DIR}/${PROJECTNAME}${SONAME_MAJOR}/doc" )
   ENDIF( NOT DEFINED DOC_DIR )
 
   SET( INSTALL_DOC_DIR "${DOC_DIR}" )
@@ -244,7 +244,7 @@ MACRO( SET_AUTODOCS )		# looks for doxygen, dot and latex and setup autodocs acc
 
     IF( INSTALL_DOCS OR DOCS_ONLY )
 
-      FOREACH( p css gif html jpg js png )
+      FOREACH( p css gif html jpg js png tag )
         INSTALL(
           DIRECTORY "${CMAKE_BINARY_DIR}/doc/html"
           DESTINATION "${INSTALL_DOC_DIR_PREFIX}"
@@ -252,10 +252,6 @@ MACRO( SET_AUTODOCS )		# looks for doxygen, dot and latex and setup autodocs acc
         )
       ENDFOREACH()
 
-      INSTALL(
-        FILES "${CMAKE_BINARY_DIR}/doc/${PROJECTNAME}.tag"
-        DESTINATION "${INSTALL_DOC_DIR_PREFIX}/html"
-      )
     ENDIF( INSTALL_DOCS OR DOCS_ONLY )
 
     CONFIGURE_FILE(
@@ -301,12 +297,6 @@ MACRO( GEN_EXPORTS )		# generate and export the library-depends
 ENDMACRO( GEN_EXPORTS )
 
 MACRO( GEN_FILES )		# generate files from templates
-
-  FILE(
-    RELATIVE_PATH CONF_REL_INCLUDE_DIR
-    "${INSTALL_CMAKE_DIR_PREFIX}"
-     "${INSTALL_INCLUDE_DIR_PREFIX}"
-  )
 
   FOREACH( p BuildTreeSettings.cmake Config.cmake ConfigVersion.cmake )
     CONFIGURE_FILE(

@@ -99,6 +99,6 @@ rm -rf "$RPM_BUILD_ROOT"
 %{_prefix}/include/yui
 %{_libdir}/pkgconfig/@PROJECTNAME@.pc
 %{_libdir}/cmake/@PROJECTNAME@
-@SPEC_DEVEL_DOCS@
+%doc %{_docdir}/@PROJECTNAME_UC@@SONAME_MAJOR@/doc
 
 %changelog
