@@ -79,9 +79,7 @@ make %{?jobs:-j%jobs}
 %install
 cd build
 make install DESTDIR="$RPM_BUILD_ROOT"
-# provide empty root dir for plugins
-install -d %{buildroot}%{_libdir}/yui
-
+install -d %{buildroot}%{_libdir}/@BASELIB@
 
 %clean
 rm -rf "$RPM_BUILD_ROOT"
@@ -97,7 +95,7 @@ rm -rf "$RPM_BUILD_ROOT"
 
 %files devel
 %defattr(-,root,root)
-%dir %{_libdir}/yui
+%dir %{_libdir}/@BASELIB@
 %{_libdir}@SPEC_LIBDIR@/lib*.so
 %{_prefix}/include/yui
 %{_libdir}/pkgconfig/@PROJECTNAME@.pc
