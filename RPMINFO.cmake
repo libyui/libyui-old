@@ -15,6 +15,8 @@ SET( SPEC_Description		"${SPEC_Description}dependencies." )
 SET( SPEC_BuildRequires		"boost-devel" "cmake >= 2.8" "gcc-c++" )
 SET( SPEC_Provides		"libyui = %{version}" "yast2-libyui = 2.21.5" )
 SET( SPEC_Obsoletes		"yast2-libyui < 2.21.5" )
+SET( SPEC_Docs			"%doc ChangeLog COPYING MAINTAINER"
 SET( SPEC_DEVEL_Requires	"@PROJECTNAME@@@varpfx@_SONAME_MAJOR@ = %{version}" )
 SET( SPEC_DEVEL_Requires	${SPEC_DEVEL_Requires} "glibc-devel" "libstdc++-devel" "boost-devel" )
 SET( SPEC_DEVEL_Provides	"pkgconfig(@PROJECTNAME@) = %{version}" )
+SET( SPEC_DEVEL_Docs		"%doc %{_docdir}/@PROJECTNAME@@SONAME_MAJOR@" )
