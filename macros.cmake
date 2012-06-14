@@ -339,9 +339,9 @@ ENDMACRO( GEN_FILES )
 MACRO( PREP_SPEC_FILES )
 
   IF( PLUGINNAME )
-  SET( SPEC_LIBDIR "/${BASELIB}/${PROGSUBDIR_UC}" )
-  STRING( REGEX REPLACE "^/+" "/" SPEC_LIBDIR "${SPEC_LIBDIR}" )
-  STRING( REGEX REPLACE "/+$" "" SPEC_LIBDIR "${SPEC_LIBDIR}" )
+  SET( SPEC_Libdir "/${BASELIB}/${PROGSUBDIR_UC}" )
+  STRING( REGEX REPLACE "^/+" "/" SPEC_Libdir "${SPEC_Libdir}" )
+  STRING( REGEX REPLACE "/+$" "" SPEC_Libdir "${SPEC_Libdir}" )
   ENDIF( PLUGINNAME )
 
   FOREACH( p "BuildRequires" "Conflicts" "Provides" "Obsoletes" "DEVEL_Requires" "DEVEL_Provides" )

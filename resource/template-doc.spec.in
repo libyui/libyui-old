@@ -20,11 +20,11 @@ BuildRequires:  texlive-latex
 
 Obsoletes:	@PROJECTNAME@-doc < %{version}
 
-URL:		@SPEC_URL@
+URL:		@SPEC_Url@
 Summary:	@PROJECTNAME_UC@ documentation
 
 %description
-@SPEC_DESCRIPTION@
+@SPEC_Description@
 
 This package provides the documentation. (HTML & PDF)
 
