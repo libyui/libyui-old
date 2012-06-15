@@ -21,9 +21,10 @@ Summary:	@SPEC_Summary@
 
 Group:		System/Libraries
 
-@Conflicts@
+@Requires@
 @Provides@
 @Obsoletes@
+@Conflicts@
 URL:		@SPEC_Url@
 Summary:	@PROJECTNAME_UC@ - @SPEC_Summary@
 

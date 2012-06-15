@@ -33,7 +33,7 @@ ENDMACRO( SET_OPTIONS )
 MACRO( SET_BUILD_FLAGS )	# setup compiler-flags depending on CMAKE_BUILD_TYPE
 
   SET( CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,--no-undefined" )
-  
+
   STRING( STRIP "${CMAKE_CXX_FLAGS}" CMAKE_CXX_FLAGS )
   SET( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fmessage-length=0" )
   STRING( STRIP "${CMAKE_CXX_FLAGS}" CMAKE_CXX_FLAGS )
@@ -82,6 +82,8 @@ ENDMACRO( SET_BUILD_FLAGS )
 
 MACRO( SET_ENVIRONMENT )	# setup the environment vars
 
+  SET( CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/resource" )
+
   IF( NOT DEFINED PREFIX )
     SET( PREFIX "/usr" )
   ENDIF( NOT DEFINED PREFIX )
@@ -126,7 +128,7 @@ MACRO( SET_ENVIRONMENT )	# setup the environment vars
   SET( FULL_DATA_DIR "${DATAROOTDIR}/lib${BASELIB}" )
   SET( INSTALL_INCLUDE_DIR "${INCLUDE_DIR}" CACHE PATH "Installation directory for header files" )
   SET( INSTALL_LIB_DIR "${LIB_DIR}" CACHE PATH "Installation directory for libraries" )
-  
+
   SET( THEME_DIR "${FULL_DATA_DIR}/theme" )
 
   IF( NOT DEFINED DOC_DIR )
@@ -206,7 +208,7 @@ MACRO( SET_AUTODOCS )		# looks for doxygen, dot and latex and setup autodocs acc
     FIND_PACKAGE( LATEX )
 
     SET(
-      LATEX_COND 
+      LATEX_COND
       NOT ${PDFLATEX_COMPILER} STREQUAL "PDFLATEX_COMPILER-NOTFOUND"
       AND NOT ${MAKEINDEX_COMPILER} STREQUAL "MAKEINDEX_COMPILER-NOTFOUND"
     )
@@ -259,7 +261,7 @@ MACRO( SET_AUTODOCS )		# looks for doxygen, dot and latex and setup autodocs acc
       ${PROJECT_BINARY_DIR}/Doxyfile
       @ONLY
     )
-  
+
     CONFIGURE_FILE(
       ${PROJECT_BINARY_DIR}/Doxyfile
       ${PROJECT_BINARY_DIR}/Doxyfile
@@ -272,7 +274,7 @@ ENDMACRO( SET_AUTODOCS )
 
 MACRO( SET_SUBDIRS )		# setup the subdirs
 
-  FOREACH( p ${SUBDIRS} )  
+  FOREACH( p ${SUBDIRS} )
     ADD_SUBDIRECTORY( ${p} )
   ENDFOREACH()
 
@@ -291,7 +293,7 @@ MACRO( GEN_EXPORTS )		# generate and export the library-depends
       FILE "${PROJECT_BINARY_DIR}/${PROJECTNAME_UC}LibraryDepends.cmake"
     )
   ENDIF( ENABLE_STATIC AND NOT DISABLE_SHARED )
- 
+
   EXPORT( PACKAGE ${PROJECTNAME} )
 
 ENDMACRO( GEN_EXPORTS )
@@ -345,12 +347,12 @@ MACRO( PREP_SPEC_FILES )
   SET( SPEC_Owndir "%dir %{_libdir}${SPEC_Libdir}" )
   ENDIF( PLUGINNAME )
 
-  FOREACH( p "BuildRequires" "Conflicts" "Provides" "Obsoletes" "DEVEL_Requires" "DEVEL_Provides" )
+  FOREACH( p "BuildRequires" "Requires" "Provides" "Obsoletes" "Conflicts" "DEVEL_Requires" "DEVEL_Provides" )
     STRING( REPLACE "DEVEL_" "" SPEC_PREPEND "${p}" )
     FOREACH( x ${SPEC_${p}} )
       SET( ${p} "${${p}}${SPEC_PREPEND}:	${x}\n" )
     ENDFOREACH( x SPEC_${p} )
-  ENDFOREACH( p "BuildRequires" "Conflicts" "Provides" "Obsoletes" "DEVEL_Requires" "DEVEL_Provides" )
+  ENDFOREACH( p "BuildRequires" "Requires" "Provides" "Obsoletes" "Conflicts" "DEVEL_Requires" "DEVEL_Provides" )
 
   CONFIGURE_FILE(
     "${PROJECT_SOURCE_DIR}/resource/template.spec.in"
