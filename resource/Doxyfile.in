@@ -5,7 +5,7 @@
 #---------------------------------------------------------------------------
 DOXYFILE_ENCODING      = UTF-8
 PROJECT_NAME           = @PROJECTNAME@
-PROJECT_NUMBER         = @@varpfx@_VERSION@
+PROJECT_NUMBER         = @VERSION@
 PROJECT_BRIEF          =
 PROJECT_LOGO           =
 OUTPUT_DIRECTORY       = @PROJECT_BINARY_DIR@/doc
