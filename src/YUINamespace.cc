@@ -50,13 +50,13 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #define y2log_component "ui"
 #include <ycp/y2log.h>
 
-#include "YUI.h"
+#include <yui/YUI.h>
 #include "YCP_UI.h"
-#include "YUISymbols.h"
+#include <yui/YUISymbols.h>
 #include "YUIComponent.h"
 #include "YUINamespace.h"
 #include "YCPBuiltinCaller.h"
-#include "YMacro.h"
+#include <yui/YMacro.h>
 
 #define VERBOSE_UI_CALLS	0
 

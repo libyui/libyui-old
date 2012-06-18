@@ -50,7 +50,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include <ycp/YCPCode.h>
 #include <ycp/StaticDeclaration.h>
 
-#include "YUI.h"
+#include <yui/YUI.h>
 #include "YUIComponent.h"
 
 class YUINamespace;

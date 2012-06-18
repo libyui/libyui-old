@@ -19,8 +19,12 @@ Requires:	yast2-core
 BuildRequires:	yast2-core-devel
 Conflicts:	yast2-core < 2.16.38
 
-Requires:	yast2-libyui	   >= 2.21.1
-BuildRequires:	yast2-libyui-devel >= 2.21.1
+# dependecies for new libyui
+Requires:	yast2 >= 2.23.1
+Conflicts:	yast2-libyui < 2.42.0
+
+Requires:	libyui4	   >= 2.21.5
+BuildRequires:	libyui-devel >= 2.21.5
 
 # libyui ImplPtr
 BuildRequires:	boost-devel
@@ -40,7 +44,7 @@ Summary:	YaST2 - YCP Bindings for the YaST2 User Interface Engine
 Requires:	glibc-devel
 Requires:	libstdc++-devel
 Requires:	boost-devel
-Requires:	yast2-libyui-devel
+Requires:	libyui-devel
 Requires:	yast2-core-devel
 Requires:	yast2-devtools
 

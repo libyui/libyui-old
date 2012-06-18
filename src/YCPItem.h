@@ -42,7 +42,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 
 #include <ycp/YCPValue.h>
 #include <ycp/YCPString.h>
-#include "YItem.h"
+#include <yui/YItem.h>
 
 
 /**

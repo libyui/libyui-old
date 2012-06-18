@@ -43,7 +43,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include <stdio.h>
 #include <ycp/YCPSymbol.h>
 #include <ycp/YCPTerm.h>
-#include "YMacroRecorder.h"
+#include <yui/YMacroRecorder.h>
 
 class YWidget;
 

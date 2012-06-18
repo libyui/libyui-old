@@ -40,7 +40,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include <ycp/YCPVoid.h>
 #include <ycp/YCPBoolean.h>
 #include "YCPItemWriter.h"
-#include "YUISymbols.h"
+#include <yui/YUISymbols.h>
 
 
 YCPList

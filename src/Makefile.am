@@ -1,9 +1,10 @@
-#
+
 # Makefile.am for ycp-ui-bindings/src
 #
 
 AM_CXXFLAGS = -DY2LOG=\"libycp\"		\
-	-fmessage-length=0
+	-fmessage-length=0			\
+	-DYAST2DIR=\"$(yast2dir)\"
 
 AM_CPPFLAGS = -DLOCALEDIR=\"${localedir}\"
 

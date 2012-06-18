@@ -40,19 +40,19 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include <ycp/YCPSymbol.h>
 
 #define YUILogComponent "ui"
-#include "YUILog.h"
+#include <yui/YUILog.h>
 
 #include "YCPErrorDialog.h"
-#include "YUI.h"
-#include "YApplication.h"
+#include <yui/YUI.h>
+#include <yui/YApplication.h>
 
-#include "YWidgetFactory.h"
+#include <yui/YWidgetFactory.h>
 #include "YCPValueWidgetID.h"
-#include "YDialog.h"
-#include "YLabel.h"
-#include "YPushButton.h"
-#include "YButtonBox.h"
-#include "YLayoutBox.h"
+#include <yui/YDialog.h>
+#include <yui/YLabel.h>
+#include <yui/YPushButton.h>
+#include <yui/YButtonBox.h>
+#include <yui/YLayoutBox.h>
 
 using std::string;
 
@@ -85,7 +85,7 @@ void YCPErrorDialog::exceptionDialog( const string & headingText,
     }
     catch ( ... )
     {
-	yuiWarning() << "Caught unknown exception" << endl;
+	yuiWarning() << "Caught unknown exception" << std::endl;
     }
 }
 
