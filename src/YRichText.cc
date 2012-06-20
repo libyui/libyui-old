@@ -142,7 +142,7 @@ YRichText::setProperty( const std::string & propertyName, const YPropertyValue &
     propertySet().check( propertyName, val.type() ); // throws exceptions if not found or type mismatch
 
     if	    ( propertyName == YUIProperty_Value		)	setValue( val.stringVal() );
-    if	    ( propertyName == YUIProperty_Text		)	setValue( val.stringVal() );
+    else if ( propertyName == YUIProperty_Text		)	setValue( val.stringVal() );
     else
     {
 	return YWidget::setProperty( propertyName, val );
