@@ -15,6 +15,6 @@ localedir=${datarootdir}/locale
 
 Name: @PROJECTNAME@
 Version: @VERSION@
-Description: @PROJECTNAME@ - @SPEC_SUMMARY@
+Description: @PROJECTNAME@ - @SUMMARY@
 Libs: -l@TARGETLIB@
 Cflags: -I${includedir}
