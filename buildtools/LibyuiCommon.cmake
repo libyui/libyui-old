@@ -138,6 +138,7 @@ MACRO( SET_ENVIRONMENT )	# setup the environment vars
   SET( FULL_DATA_DIR "${DATAROOTDIR}/lib${BASELIB}" )
   SET( INSTALL_INCLUDE_DIR "${INCLUDE_DIR}" CACHE PATH "Installation directory for header files" )
   SET( INSTALL_LIB_DIR "${LIB_DIR}" CACHE PATH "Installation directory for libraries" )
+  SET( INSTALL_BUILDTOOLS_DIR "${FULL_DATA_DIR}/buildtools" )
 
   SET( THEME_DIR "${FULL_DATA_DIR}/theme" )
 
@@ -150,7 +151,7 @@ MACRO( SET_ENVIRONMENT )	# setup the environment vars
 
   SET( INSTALL_DOC_DIR "${DOC_DIR}" )
 
-  FOREACH( p "DOC" LIB INCLUDE CMAKE PKGCONFIG )
+  FOREACH( p "DOC" LIB INCLUDE CMAKE PKGCONFIG BUILDTOOLS )
     SET( var "INSTALL_${p}_DIR" )
     IF( NOT IS_ABSOLUTE "${${var}}" )
       SET( ${var}_PREFIX "${PREFIX}/${${var}}" )
@@ -354,22 +355,8 @@ ENDMACRO( GEN_FILES )
 
 MACRO( PREP_SPEC_FILES )
 
-  IF( PLUGINNAME )
-  SET( SPEC_Libdir "/${BASELIB}/${PROGSUBDIR_UC}" )
-  STRING( REGEX REPLACE "^/+" "/" SPEC_Libdir "${SPEC_Libdir}" )
-  STRING( REGEX REPLACE "/+$" "" SPEC_Libdir "${SPEC_Libdir}" )
-  SET( SPEC_Owndir "%dir %{_libdir}${SPEC_Libdir}" )
-  ENDIF( PLUGINNAME )
-
-  FOREACH( p "BuildRequires" "Requires" "Provides" "Obsoletes" "Conflicts" "DEVEL_Requires" "DEVEL_Provides" )
-    STRING( REPLACE "DEVEL_" "" SPEC_PREPEND "${p}" )
-    FOREACH( x ${SPEC_${p}} )
-      SET( ${p} "${${p}}${SPEC_PREPEND}:	${x}\n" )
-    ENDFOREACH( x SPEC_${p} )
-  ENDFOREACH( p "BuildRequires" "Requires" "Provides" "Obsoletes" "Conflicts" "DEVEL_Requires" "DEVEL_Provides" )
-
   CONFIGURE_FILE(
-    "${BUILDTOOLS_DIR}/template.spec.in"
+    "${CMAKE_SOURCE_DIR}/${PROJECTNAME}.spec.in"
     "${PROJECT_BINARY_DIR}/package/${PROJECTNAME}.spec"
     @ONLY
   )
@@ -379,16 +366,6 @@ MACRO( PREP_SPEC_FILES )
     "${PROJECT_BINARY_DIR}/package/${PROJECTNAME}-doc.spec"
     @ONLY
   )
-
-  FOREACH ( p 0 2 )
-    FOREACH( x "package/${PROJECTNAME}.spec" "package/${PROJECTNAME}-doc.spec" )
-      CONFIGURE_FILE(
-        "${PROJECT_BINARY_DIR}/${x}"
-        "${PROJECT_BINARY_DIR}/${x}"
-        @ONLY
-      )
-    ENDFOREACH( x "package/${PROJECTNAME}.spec" "package/${PROJECTNAME}-doc.spec" )
-  ENDFOREACH ( p 0 2 )
 
 ENDMACRO( PREP_SPEC_FILES )
 
@@ -535,5 +512,12 @@ INSTALL(
   FILES "${CMAKE_BINARY_DIR}/${PROJECTNAME}.pc"
   DESTINATION "${INSTALL_PKGCONFIG_DIR_PREFIX}"
 )
+
+IF( NOT PLUGINNAME )
+  INSTALL(
+    DIRECTORY "${BUILDTOOLS_DIR}"
+    DESTINATION "${INSTALL_BUILDTOOLS_DIR_PREFIX}"
+  )
+ENDIF( NOT PLUGINNAME )
 
 ENDMACRO( SET_INSTALL_TARGET )
