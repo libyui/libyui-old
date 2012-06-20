@@ -82,7 +82,7 @@ YShortcutManager::checkShortcuts( bool autoResolve )
         // that primarily use non-ASCII characters (Russian, Greek, Chinese,
         // Japanese, Korean).
 
-	yuiMilestone() << "Not enough widgets with valid shortcut characters - no check" << std::endl;
+	yuiWarning() << "Not enough widgets with valid shortcut characters - no check" << std::endl;
 	yuiDebug() << "Found " << validCount << " widgets with valid shortcut characters" << std::endl;
 	return;
     }
@@ -116,9 +116,9 @@ YShortcutManager::checkShortcuts( bool autoResolve )
 		shortcut->setConflict();
 		_conflictCount++;
 
-		yuiMilestone() << "Shortcut conflict: '" << shortcut->preferred()
-			       << "' used for " << shortcut->widget()
-			       << std::endl;
+		yuiDebug() << "Shortcut conflict: '" << shortcut->preferred()
+			   << "' used for " << shortcut->widget()
+			   << std::endl;
 	    }
 	}
 	else	// No or invalid shortcut
@@ -130,7 +130,7 @@ YShortcutManager::checkShortcuts( bool autoResolve )
 
 		if ( ! shortcut->widget()->autoShortcut() )
 		{
-		    yuiMilestone() << "No valid shortcut for " << shortcut->widget() << std::endl;
+		    yuiDebug() << "No valid shortcut for " << shortcut->widget() << std::endl;
 		}
 	    }
 	}
@@ -164,7 +164,7 @@ YShortcutManager::resolveAllConflicts()
 
     if ( ! _didCheck )
     {
-	yuiMilestone() << "Call checkShortcuts() first!" << std::endl;
+	yuiError() << "Call checkShortcuts() first!" << std::endl;
 	return;
     }
 
@@ -208,7 +208,7 @@ YShortcutManager::resolveAllConflicts()
 
 	if ( shortcut->conflict() )
 	{
-	    yuiMilestone() << "Couldn't resolve shortcut conflict for " << shortcut->widget() << std::endl;
+	    yuiWarning() << "Couldn't resolve shortcut conflict for " << shortcut->widget() << std::endl;
 	}
 
 
@@ -289,10 +289,10 @@ YShortcutManager::resolveConflict( YShortcut * shortcut )
     }
     else	// No unique shortcut found
     {
-	yuiMilestone() << "Couldn't resolve shortcut conflict for "
-		       << shortcut->widget()
-		       << " - assigning no shortcut"
-		       << std::endl;
+	yuiWarning() << "Couldn't resolve shortcut conflict for "
+		     << shortcut->widget()
+		     << " - assigning no shortcut"
+		     << std::endl;
 
 	shortcut->clearShortcut();
 	shortcut->setConflict( false );
