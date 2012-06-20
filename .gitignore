@@ -46,6 +46,9 @@ install_manifest.txt
 # CMake project-bindir
 build*/
 
+# but don't exclude buildtools-dir
+!/buildtools
+
 # Archives
 # It's better to unpack these files and commit the raw source because
 # git has its own built in compression methods.
