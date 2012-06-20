@@ -32,22 +32,34 @@ ENDMACRO( SET_OPTIONS )
 
 MACRO( SET_BUILD_FLAGS )	# setup compiler-flags depending on CMAKE_BUILD_TYPE
 
+  IF( NOT USE_C_STD )
+    SET( USE_C_STD "gnu99" )
+    MESSAGE( STATUS "USE_C_STD not set, defaulting to ${USE_C_STD}" )
+  ENDIF( NOT USE_C_STD )
+
   SET( CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,--no-undefined" )
 
   STRING( STRIP "${CMAKE_CXX_FLAGS}" CMAKE_CXX_FLAGS )
   SET( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fmessage-length=0" )
   STRING( STRIP "${CMAKE_CXX_FLAGS}" CMAKE_CXX_FLAGS )
 
+  STRING( STRIP "${CMAKE_C_FLAGS}" CMAKE_C_FLAGS )
+  SET( CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=${USE_C_STD} -fmessage-length=0" )
+  STRING( STRIP "${CMAKE_C_FLAGS}" CMAKE_C_FLAGS )
+
   IF( ENABLE_DEBUG )
     SET( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g3" )
+    SET( CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g3" )
   ENDIF( ENABLE_DEBUG )
 
   IF ( ENABLE_WALL )
     SET( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall" )
+    SET( CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall" )
   ENDIF ( ENABLE_WALL )
 
   IF ( ENABLE_WERROR )
     SET( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror" )
+    SET( CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Werror" )
   ENDIF ( ENABLE_WERROR )
 
   STRING( TOUPPER "${CMAKE_BUILD_TYPE}" BUILD_TYPE_CHECK )
@@ -74,19 +86,17 @@ MACRO( SET_BUILD_FLAGS )	# setup compiler-flags depending on CMAKE_BUILD_TYPE
   ENDIF( NOT BUILD_TYPE_PASSED )
 
   SET( CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS} -O0 -g3" )
+  SET( CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS} -O0 -g3" )
   SET( CMAKE_CXX_FLAGS_MINSIZEREL "${CMAKE_CXX_FLAGS} -Os" )
+  SET( CMAKE_C_FLAGS_MINSIZEREL "${CMAKE_C_FLAGS} -Os" )
   SET( CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS} -O3" )
+  SET( CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS} -O3" )
   SET( CMAKE_CXX_FLAGS_RELWITHDEBINFO "${CMAKE_CXX_FLAGS} -O3 -g3" )
+  SET( CMAKE_C_FLAGS_RELWITHDEBINFO "${CMAKE_C_FLAGS} -O3 -g3" )
 
 ENDMACRO( SET_BUILD_FLAGS )
 
 MACRO( SET_ENVIRONMENT )	# setup the environment vars
-
-  SET( CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/resource" )
-
-  IF( NOT DEFINED PREFIX )
-    SET( PREFIX "/usr" )
-  ENDIF( NOT DEFINED PREFIX )
 
   IF( NOT LIB_DIR )
     IF (CMAKE_SIZEOF_VOID_P MATCHES "8")
@@ -107,7 +117,7 @@ MACRO( SET_ENVIRONMENT )	# setup the environment vars
   SET( CMAKE_PREFIX_PATH "${CMAKE_PREFIX_PATH}" "${PREFIX}" )
   SET( CMAKE_INSTALL_PREFIX "${PREFIX}" )
   SET( CMAKE_LIBRARY_PATH ${CMAKE_LIBRARY_PATH} "${PREFIX}/${LIB_DIR}" "${PREFIX}/${LIB_DIR}/${BASELIB}" )
-  SET( CMAKE_INCLUDE_PATH "${CMAKE_INCLUDE_PATH}" "${PREFIX}/${INCLUDE_DIR}" "${EXTRA_INCLUDES}" )
+  SET( CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH} ${PREFIX}/${INCLUDE_DIR} ${EXTRA_INCLUDES} )
   SET( INSTALL_CMAKE_DIR ${LIB_DIR}/cmake/${PROJECTNAME} CACHE PATH "Installation directory for CMake files" )
   SET( INSTALL_PKGCONFIG_DIR ${LIB_DIR}/pkgconfig CACHE PATH "Installation directory for pkgconfig files" )
 
@@ -128,6 +138,7 @@ MACRO( SET_ENVIRONMENT )	# setup the environment vars
   SET( FULL_DATA_DIR "${DATAROOTDIR}/lib${BASELIB}" )
   SET( INSTALL_INCLUDE_DIR "${INCLUDE_DIR}" CACHE PATH "Installation directory for header files" )
   SET( INSTALL_LIB_DIR "${LIB_DIR}" CACHE PATH "Installation directory for libraries" )
+  SET( INSTALL_BUILDTOOLS_DIR "${FULL_DATA_DIR}/buildtools" )
 
   SET( THEME_DIR "${FULL_DATA_DIR}/theme" )
 
@@ -140,7 +151,7 @@ MACRO( SET_ENVIRONMENT )	# setup the environment vars
 
   SET( INSTALL_DOC_DIR "${DOC_DIR}" )
 
-  FOREACH( p "DOC" LIB INCLUDE CMAKE PKGCONFIG )
+  FOREACH( p "DOC" LIB INCLUDE CMAKE PKGCONFIG BUILDTOOLS )
     SET( var "INSTALL_${p}_DIR" )
     IF( NOT IS_ABSOLUTE "${${var}}" )
       SET( ${var}_PREFIX "${PREFIX}/${${var}}" )
@@ -157,7 +168,7 @@ MACRO( FIND_LIB_DEPENDENCIES )	# try to find all libs from ${LIB_DEPS}
     FIND_PACKAGE( ${p} REQUIRED )
     SET( CMAKE_INCLUDE_PATH "${CMAKE_INCLUDE_PATH}" ${${p}_INCLUDE_DIR} )
     SET( CMAKE_INCLUDE_PATH "${CMAKE_INCLUDE_PATH}" ${${p}_INCLUDE_DIRS} )
-    SET( LIB_LINKER "${${p}_LIBRARIES}" "${LIB_LINKER}" )
+    SET( LIB_LINKER ${${p}_LIBRARIES} "${LIB_LINKER}" )
   ENDFOREACH()
 
   IF( PLUGINNAME )
@@ -261,7 +272,7 @@ MACRO( SET_AUTODOCS )		# looks for doxygen, dot and latex and setup autodocs acc
     ENDIF( INSTALL_DOCS OR DOCS_ONLY )
 
     CONFIGURE_FILE(
-      ${PROJECT_SOURCE_DIR}/resource/Doxyfile.in
+      ${BUILDTOOLS_DIR}/Doxyfile.in
       ${PROJECT_BINARY_DIR}/Doxyfile
       @ONLY
     )
@@ -306,21 +317,21 @@ MACRO( GEN_FILES )		# generate files from templates
 
   FOREACH( p BuildTreeSettings.cmake Config.cmake ConfigVersion.cmake )
     CONFIGURE_FILE(
-      "${PROJECT_SOURCE_DIR}/resource/${p}.in"
+      "${BUILDTOOLS_DIR}/${p}.in"
       "${PROJECT_BINARY_DIR}/${PROJECTNAME_UC}${p}"
       @ONLY
     )
   ENDFOREACH()
 
   CONFIGURE_FILE(
-    "${PROJECT_SOURCE_DIR}/resource/template.pc.in"
+    "${BUILDTOOLS_DIR}/template.pc.in"
     "${PROJECT_BINARY_DIR}/${PROJECTNAME}.pc"
     @ONLY
   )
 
   IF( NOT PLUGINNAME )
     CONFIGURE_FILE(
-      "${PROJECT_SOURCE_DIR}/resource/config.h.in"
+      "${BUILDTOOLS_DIR}/config.h.in"
       "${PROJECT_BINARY_DIR}/src/${PROJECTNAME_UC}_config.h"
       @ONLY
     )
@@ -344,41 +355,17 @@ ENDMACRO( GEN_FILES )
 
 MACRO( PREP_SPEC_FILES )
 
-  IF( PLUGINNAME )
-  SET( SPEC_Libdir "/${BASELIB}/${PROGSUBDIR_UC}" )
-  STRING( REGEX REPLACE "^/+" "/" SPEC_Libdir "${SPEC_Libdir}" )
-  STRING( REGEX REPLACE "/+$" "" SPEC_Libdir "${SPEC_Libdir}" )
-  SET( SPEC_Owndir "%dir %{_libdir}${SPEC_Libdir}" )
-  ENDIF( PLUGINNAME )
-
-  FOREACH( p "BuildRequires" "Requires" "Provides" "Obsoletes" "Conflicts" "DEVEL_Requires" "DEVEL_Provides" )
-    STRING( REPLACE "DEVEL_" "" SPEC_PREPEND "${p}" )
-    FOREACH( x ${SPEC_${p}} )
-      SET( ${p} "${${p}}${SPEC_PREPEND}:	${x}\n" )
-    ENDFOREACH( x SPEC_${p} )
-  ENDFOREACH( p "BuildRequires" "Requires" "Provides" "Obsoletes" "Conflicts" "DEVEL_Requires" "DEVEL_Provides" )
-
   CONFIGURE_FILE(
-    "${PROJECT_SOURCE_DIR}/resource/template.spec.in"
+    "${CMAKE_SOURCE_DIR}/${PROJECTNAME}.spec.in"
     "${PROJECT_BINARY_DIR}/package/${PROJECTNAME}.spec"
     @ONLY
   )
 
   CONFIGURE_FILE(
-    "${PROJECT_SOURCE_DIR}/resource/template-doc.spec.in"
+    "${BUILDTOOLS_DIR}/template-doc.spec.in"
     "${PROJECT_BINARY_DIR}/package/${PROJECTNAME}-doc.spec"
     @ONLY
   )
-
-  FOREACH ( p 0 2 )
-    FOREACH( x "package/${PROJECTNAME}.spec" "package/${PROJECTNAME}-doc.spec" )
-      CONFIGURE_FILE(
-        "${PROJECT_BINARY_DIR}/${x}"
-        "${PROJECT_BINARY_DIR}/${x}"
-        @ONLY
-      )
-    ENDFOREACH( x "package/${PROJECTNAME}.spec" "package/${PROJECTNAME}-doc.spec" )
-  ENDFOREACH ( p 0 2 )
 
 ENDMACRO( PREP_SPEC_FILES )
 
@@ -525,5 +512,12 @@ INSTALL(
   FILES "${CMAKE_BINARY_DIR}/${PROJECTNAME}.pc"
   DESTINATION "${INSTALL_PKGCONFIG_DIR_PREFIX}"
 )
+
+IF( NOT PLUGINNAME )
+  INSTALL(
+    DIRECTORY "${BUILDTOOLS_DIR}"
+    DESTINATION "${INSTALL_BUILDTOOLS_DIR_PREFIX}"
+  )
+ENDIF( NOT PLUGINNAME )
 
 ENDMACRO( SET_INSTALL_TARGET )
