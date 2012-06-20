@@ -98,8 +98,6 @@ ENDMACRO( SET_BUILD_FLAGS )
 
 MACRO( SET_ENVIRONMENT )	# setup the environment vars
 
-  SET( CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/resource" )
-
   IF( NOT LIB_DIR )
     IF (CMAKE_SIZEOF_VOID_P MATCHES "8")
       SET( LIB_DIR "lib64" )
@@ -273,7 +271,7 @@ MACRO( SET_AUTODOCS )		# looks for doxygen, dot and latex and setup autodocs acc
     ENDIF( INSTALL_DOCS OR DOCS_ONLY )
 
     CONFIGURE_FILE(
-      ${PROJECT_SOURCE_DIR}/resource/Doxyfile.in
+      ${BUILDTOOLS_DIR}/Doxyfile.in
       ${PROJECT_BINARY_DIR}/Doxyfile
       @ONLY
     )
@@ -318,21 +316,21 @@ MACRO( GEN_FILES )		# generate files from templates
 
   FOREACH( p BuildTreeSettings.cmake Config.cmake ConfigVersion.cmake )
     CONFIGURE_FILE(
-      "${PROJECT_SOURCE_DIR}/resource/${p}.in"
+      "${BUILDTOOLS_DIR}/${p}.in"
       "${PROJECT_BINARY_DIR}/${PROJECTNAME_UC}${p}"
       @ONLY
     )
   ENDFOREACH()
 
   CONFIGURE_FILE(
-    "${PROJECT_SOURCE_DIR}/resource/template.pc.in"
+    "${BUILDTOOLS_DIR}/template.pc.in"
     "${PROJECT_BINARY_DIR}/${PROJECTNAME}.pc"
     @ONLY
   )
 
   IF( NOT PLUGINNAME )
     CONFIGURE_FILE(
-      "${PROJECT_SOURCE_DIR}/resource/config.h.in"
+      "${BUILDTOOLS_DIR}/config.h.in"
       "${PROJECT_BINARY_DIR}/src/${PROJECTNAME_UC}_config.h"
       @ONLY
     )
@@ -371,13 +369,13 @@ MACRO( PREP_SPEC_FILES )
   ENDFOREACH( p "BuildRequires" "Requires" "Provides" "Obsoletes" "Conflicts" "DEVEL_Requires" "DEVEL_Provides" )
 
   CONFIGURE_FILE(
-    "${PROJECT_SOURCE_DIR}/resource/template.spec.in"
+    "${BUILDTOOLS_DIR}/template.spec.in"
     "${PROJECT_BINARY_DIR}/package/${PROJECTNAME}.spec"
     @ONLY
   )
 
   CONFIGURE_FILE(
-    "${PROJECT_SOURCE_DIR}/resource/template-doc.spec.in"
+    "${BUILDTOOLS_DIR}/template-doc.spec.in"
     "${PROJECT_BINARY_DIR}/package/${PROJECTNAME}-doc.spec"
     @ONLY
   )
