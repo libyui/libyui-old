@@ -25,7 +25,6 @@ Summary:	@SUMMARY@
 
 Group:		System/Libraries
 
-Provides:	libyui = %{version}
 Provides:	yast2-libyui = 2.42.0
 Obsoletes:	yast2-libyui < 2.42.0
 
