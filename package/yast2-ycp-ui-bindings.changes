@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Jun 26 13:58:41 CEST 2012 - aschnell@suse.de
+
+- adapted to namespace changes in yast2-core
+
+-------------------------------------------------------------------
 Mon Mar 26 14:36:12 UTC 2012 - jreidinger@suse.com
 
 - removed libxcrypt-devel from buildrequires (aschnell)

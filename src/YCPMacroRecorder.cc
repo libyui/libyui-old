@@ -166,12 +166,11 @@ void YCPMacroRecorder::writeMacroFileFooter()
 
 void YCPMacroRecorder::recordYcpCodeLocation()
 {
-    extern ExecutionEnvironment ee;	// YCP interpreter status
-    ExecutionEnvironment::CallStack callStack( ee.callstack() );
+    YaST::ExecutionEnvironment::CallStack callStack(YaST::ee.callstack());
 
     if ( ! callStack.empty() )
     {
-	const CallFrame * frame = callStack.back();
+	const YaST::CallFrame* frame = callStack.back();
 	string functionName;
 
 	if ( frame && frame->function->entry()->toString().find( "Wizard::UserInput" ) == string::npos  )
