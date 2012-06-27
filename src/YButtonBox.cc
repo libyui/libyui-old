@@ -5,7 +5,7 @@
   published by the Free Software Foundation; either version 2.1 of the
   License, or (at your option) version 3.0 of the License. This library
   is distributed in the hope that it will be useful, but WITHOUT ANY
-  WARRANTY; without even the implied warranty of MERCHANTABILITY or 
+  WARRANTY; without even the implied warranty of MERCHANTABILITY or
   FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
   License for more details. You should have received a copy of the GNU
   Lesser General Public License along with this library; if not, write
@@ -35,6 +35,7 @@
 #include "YUI.h"
 #include "YApplication.h"
 
+using std::max;
 
 
 YButtonBoxLayoutPolicy	YButtonBox::_layoutPolicy = kdeLayoutPolicy();
@@ -159,7 +160,7 @@ YButtonBox::setSize( int newWidth, int newHeight )
 void
 YButtonBox::doLayout( int width, int height )
 {
-    vector<YPushButton *> buttons = buttonsByButtonOrder();
+    std::vector<YPushButton *> buttons = buttonsByButtonOrder();
 
     if ( buttons.empty() )
 	return;
@@ -368,7 +369,7 @@ YButtonBox::doLayout( int width, int height )
 
     bool reverseLayout = YUI::app()->reverseLayout();
 
-    for ( vector<YPushButton *>::iterator it = buttons.begin();
+    for ( std::vector<YPushButton *>::iterator it = buttons.begin();
 	  it != buttons.end();
 	  ++it )
     {
@@ -405,11 +406,11 @@ YButtonBox::doLayout( int width, int height )
 }
 
 
-vector<YPushButton *>
+std::vector<YPushButton *>
 YButtonBox::buttonsByButtonOrder()
 {
-    vector<YPushButton *> specialButtons( YMaxButtonRole, (YPushButton *) 0 );
-    vector<YPushButton *> customButtons;
+    std::vector<YPushButton *> specialButtons( YMaxButtonRole, (YPushButton *) 0 );
+    std::vector<YPushButton *> customButtons;
 
     for ( YWidgetListConstIterator it = childrenBegin();
 	  it != childrenEnd();
@@ -429,7 +430,7 @@ YButtonBox::buttonsByButtonOrder()
 
 		if ( specialButtons[ button->role() ] ) // Only one of each of those is allowed
 		{
-		    string msg = "Multiple buttons with that role [";
+		    std::string msg = "Multiple buttons with that role [";
 		    msg += button->debugLabel();
 		    msg += "]";
 		    YUI_THROW( YUIButtonRoleMismatchException( msg ) );
@@ -450,7 +451,7 @@ YButtonBox::buttonsByButtonOrder()
 	}
     }
 
-    vector<YPushButton *> buttons;
+    std::vector<YPushButton *> buttons;
 
     if ( _layoutPolicy.buttonOrder == YKDEButtonOrder )
     {
