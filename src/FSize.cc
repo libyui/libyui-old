@@ -31,9 +31,7 @@
 
 #include "FSize.h"
 
-using namespace std;
-
-FSize::FSize( const string &sizeStr, const Unit unit_r )
+FSize::FSize( const std::string &sizeStr, const Unit unit_r )
   : _size( atoll( sizeStr.c_str() ) * factor( unit_r ) )
 {
 }
@@ -105,10 +103,10 @@ std::string FSize::form( const Unit unit_r, unsigned fw, unsigned prec, const bo
 	    "%*.*f",
 	    fw, prec, ( double( _size ) / factor( unit_r ) ) );
 
-  string ret( buffer );
+  std::string ret( buffer );
 
   if ( showunit )
-    ret += string(" ") + unit( unit_r );
+    ret += std::string(" ") + unit( unit_r );
 
   return ret;
 }

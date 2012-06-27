@@ -5,7 +5,7 @@
   published by the Free Software Foundation; either version 2.1 of the
   License, or (at your option) version 3.0 of the License. This library
   is distributed in the hope that it will be useful, but WITHOUT ANY
-  WARRANTY; without even the implied warranty of MERCHANTABILITY or 
+  WARRANTY; without even the implied warranty of MERCHANTABILITY or
   FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
   License for more details. You should have received a copy of the GNU
   Lesser General Public License along with this library; if not, write
@@ -35,8 +35,9 @@
 #include "YUI.h"
 #include "YItem.h"
 
+using std::endl;
 
-typedef map<string, int> YFunctionKeyMap;
+typedef std::map<std::string, int> YFunctionKeyMap;
 
 
 struct YApplicationPrivate
@@ -46,7 +47,7 @@ struct YApplicationPrivate
 	, reverseLayout( false )
 	{}
 
-    string		productName;
+    std::string		productName;
     bool		reverseLayout;
     YFunctionKeyMap	defaultFunctionKey;
     YIconLoader*	iconLoader;
@@ -79,7 +80,7 @@ YApplication::findWidget( YWidgetID * id, bool doThrow ) const
 }
 
 
-string
+std::string
 YApplication::iconBasePath() const
 {
     return priv->iconLoader->iconBasePath();
@@ -87,7 +88,7 @@ YApplication::iconBasePath() const
 
 
 void
-YApplication::setIconBasePath( const string & newIconBasePath )
+YApplication::setIconBasePath( const std::string & newIconBasePath )
 {
     priv->iconLoader->setIconBasePath ( newIconBasePath );
 }
@@ -99,13 +100,13 @@ YApplication::iconLoader()
 }
 
 void
-YApplication::setProductName( const string & productName )
+YApplication::setProductName( const std::string & productName )
 {
     priv->productName = productName;
 }
 
 
-string
+std::string
 YApplication::productName() const
 {
     return priv->productName;
@@ -126,7 +127,7 @@ bool YApplication::reverseLayout() const
 
 
 int
-YApplication::defaultFunctionKey( const string & label ) const
+YApplication::defaultFunctionKey( const std::string & label ) const
 {
     YFunctionKeyMap::const_iterator result =
 	priv->defaultFunctionKey.find( YShortcut::cleanShortcutString( label  ) );
@@ -139,7 +140,7 @@ YApplication::defaultFunctionKey( const string & label ) const
 
 
 void
-YApplication::setDefaultFunctionKey( const string & label, int fkey )
+YApplication::setDefaultFunctionKey( const std::string & label, int fkey )
 {
     if ( fkey > 0 )
 	priv->defaultFunctionKey[ YShortcut::cleanShortcutString( label ) ] = fkey;
@@ -156,9 +157,9 @@ YApplication::clearDefaultFunctionKeys()
 
 
 void
-YApplication::setLanguage( const string & language, const string & encoding )
+YApplication::setLanguage( const std::string & language, const std::string & encoding )
 {
-    string lang = language;
+    std::string lang = language;
 
     if ( ! encoding.empty() )
     {
@@ -173,7 +174,7 @@ YApplication::setLanguage( const string & language, const string & encoding )
 }
 
 
-string
+std::string
 YApplication::language( bool stripEncoding ) const
 {
     const char *lang_env = getenv( "LANG" );
@@ -181,13 +182,13 @@ YApplication::language( bool stripEncoding ) const
     if ( ! lang_env )
 	return "";
 
-    string lang( lang_env );
+    std::string lang( lang_env );
 
     if ( stripEncoding )
     {
-	string::size_type pos = lang.find_first_of( ".@" );
+	std::string::size_type pos = lang.find_first_of( ".@" );
 
-	if ( pos != string::npos )		// if encoding etc. specified
+	if ( pos != std::string::npos )		// if encoding etc. specified
 	{
 	    lang = lang.substr( 0, pos );	// remove it
 	}
@@ -197,8 +198,8 @@ YApplication::language( bool stripEncoding ) const
 }
 
 
-string
-YApplication::glyph( const string & sym )
+std::string
+YApplication::glyph( const std::string & sym )
 {
     if	    ( sym == YUIGlyph_ArrowLeft		)	return ( reverseLayout() ? "->" : "<-"  );
     else if ( sym == YUIGlyph_ArrowRight	)	return ( reverseLayout() ? "<-" : "->"  );
@@ -239,7 +240,7 @@ YApplication::layoutUnits( YUIDimension dim, int deviceUnits )
 
 
 int
-YApplication::runInTerminal ( const string & module )
+YApplication::runInTerminal ( const std::string & module )
 {
     yuiError() << "Not in text mode: Cannot run external program in terminal." << endl;
 

@@ -5,7 +5,7 @@
   published by the Free Software Foundation; either version 2.1 of the
   License, or (at your option) version 3.0 of the License. This library
   is distributed in the hope that it will be useful, but WITHOUT ANY
-  WARRANTY; without even the implied warranty of MERCHANTABILITY or 
+  WARRANTY; without even the implied warranty of MERCHANTABILITY or
   FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
   License for more details. You should have received a copy of the GNU
   Lesser General Public License along with this library; if not, write
@@ -31,6 +31,8 @@
 
 #include "YIconLoader.h"
 
+using std::endl;
+
 #define FALLBACK_ICON_PATH "/usr/share/icons/hicolor/"
 
 YIconLoader::YIconLoader()
@@ -42,33 +44,33 @@ YIconLoader::~YIconLoader()
 {
 }
 
-void YIconLoader::setIconBasePath( string path)
+void YIconLoader::setIconBasePath( std::string path )
 {
     _iconBasePath = path;
 }
 
-string YIconLoader::iconBasePath() const
+std::string YIconLoader::iconBasePath() const
 {
     return _iconBasePath;
 }
 
-void YIconLoader::addIconSearchPath( string path )
+void YIconLoader::addIconSearchPath( std::string path )
 {
     icon_dirs.push_front( path );
 }
 
-string YIconLoader::findIcon( string name )
+std::string YIconLoader::findIcon( std::string name )
 {
     // No extension -> add some
-    string::size_type loc = name.find(".png");
-    if ( loc == string::npos )
+    std::string::size_type loc = name.find(".png");
+    if ( loc == std::string::npos )
 	name += ".png";
 
     // Absolute path -> return it
     if (name[0] == '/')
         return name;
 
-    string fullPath;
+    std::string fullPath;
 
     // Look in global search path
     if ( !_iconBasePath.empty () )
@@ -82,12 +84,12 @@ string YIconLoader::findIcon( string name )
     }
 
     // Now search the fallback dirs
-    list<string>::iterator listIt = icon_dirs.begin();
+    std::list<std::string>::iterator listIt = icon_dirs.begin();
 
     while( listIt != icon_dirs.end() )
     {
 	// Something like relative path
-	if ( name.find('/') != string::npos )
+	if ( name.find('/') != std::string::npos )
             fullPath = *listIt +  name;
 	// No '/' chars, just the name -> use '22x22/apps' fallback
 	else
@@ -106,7 +108,7 @@ string YIconLoader::findIcon( string name )
     return "";
 }
 
-bool YIconLoader::fileExists( string fname )
+bool YIconLoader::fileExists( std::string fname )
 {
     struct stat fileInfo;
     int ret = stat (fname.c_str(), &fileInfo);
