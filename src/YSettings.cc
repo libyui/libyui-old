@@ -1,5 +1,5 @@
 /*
-  Copyright (c) 2012 Björn Esser 
+  Copyright (c) 2012 Björn Esser
 
   Permission is hereby granted, free of charge, to any person obtaining
   a copy of this software and associated documentation files (the
@@ -36,10 +36,10 @@
 #define YUILogComponent "ui"
 #include "YUILog.h"
 
-using namespace std;
+using std::endl;
 
 YSettings * YSettings::_instance = 0;
-string YSettings::progSubDir = "";
+std::string YSettings::progSubDir = "";
 
 YSettings * YSettings::access ()
 {
@@ -57,7 +57,7 @@ YSettings::~YSettings ()
 {
 }
 
-void YSettings::setProgSubDir( string directory )
+void YSettings::setProgSubDir( std::string directory )
 {
   if ( progSubDir.compare ( "" ) == 0 )
   {
@@ -73,7 +73,7 @@ void YSettings::setProgSubDir( string directory )
   }
 }
 
-string YSettings::getProgSubDir ()
+std::string YSettings::getProgSubDir ()
 {
   return progSubDir;
 }

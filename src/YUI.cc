@@ -5,7 +5,7 @@
   published by the Free Software Foundation; either version 2.1 of the
   License, or (at your option) version 3.0 of the License. This library
   is distributed in the hope that it will be useful, but WITHOUT ANY
-  WARRANTY; without even the implied warranty of MERCHANTABILITY or 
+  WARRANTY; without even the implied warranty of MERCHANTABILITY or
   FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
   License for more details. You should have received a copy of the GNU
   Lesser General Public License along with this library; if not, write
@@ -46,10 +46,11 @@
 #include "YEnvVar.h"
 #include "YBuiltinCaller.h"
 
+using std::endl;
+
 // Environment variable to determine button order
 // (set to "KDE" or "GNOME" - case insensitive)
 #define ENV_BUTTON_ORDER "Y2_BUTTON_ORDER"
-
 
 
 YUI * YUI::_ui = 0;
@@ -444,7 +445,7 @@ void YUI::setButtonOrderFromEnvironment()
 
     if ( buttonOrder != oldButtonOrder )
     {
-	string buttonOrderStr;
+	std::string buttonOrderStr;
 
 	switch ( buttonOrder )
 	{

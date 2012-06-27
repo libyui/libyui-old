@@ -5,7 +5,7 @@
   published by the Free Software Foundation; either version 2.1 of the
   License, or (at your option) version 3.0 of the License. This library
   is distributed in the hope that it will be useful, but WITHOUT ANY
-  WARRANTY; without even the implied warranty of MERCHANTABILITY or 
+  WARRANTY; without even the implied warranty of MERCHANTABILITY or
   FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
   License for more details. You should have received a copy of the GNU
   Lesser General Public License along with this library; if not, write
@@ -34,7 +34,7 @@
 
 struct YSelectionWidgetPrivate
 {
-    YSelectionWidgetPrivate( const string &	label,
+    YSelectionWidgetPrivate( const std::string &	label,
 			     bool	    	enforceSingleSelection,
 			     bool 		recursiveSelection )
 	: label( label )
@@ -42,10 +42,10 @@ struct YSelectionWidgetPrivate
         , recursiveSelection ( recursiveSelection )
 	{}
 
-    string		label;
+    std::string		label;
     bool		enforceSingleSelection;
     bool		recursiveSelection;
-    string		iconBasePath;
+    std::string		iconBasePath;
     YItemCollection	itemCollection;
 };
 
@@ -53,7 +53,7 @@ struct YSelectionWidgetPrivate
 
 
 YSelectionWidget::YSelectionWidget( YWidget * 		parent,
-				    const string & 	label,
+				    const std::string & 	label,
 				    bool		enforceSingleSelection ,
 			     	    bool 		recursiveSelection )
     : YWidget( parent )
@@ -92,13 +92,13 @@ void YSelectionWidget::deleteAllItems()
 }
 
 
-string YSelectionWidget::label() const
+std::string YSelectionWidget::label() const
 {
     return priv->label;
 }
 
 
-void YSelectionWidget::setLabel( const string & newLabel )
+void YSelectionWidget::setLabel( const std::string & newLabel )
 {
     priv->label = newLabel;
 }
@@ -122,21 +122,21 @@ void YSelectionWidget::setEnforceSingleSelection( bool enforceSingleSelection )
 }
 
 
-void YSelectionWidget::setIconBasePath( const string & basePath )
+void YSelectionWidget::setIconBasePath( const std::string & basePath )
 {
     priv->iconBasePath = basePath;
 }
 
 
-string YSelectionWidget::iconBasePath() const
+std::string YSelectionWidget::iconBasePath() const
 {
     return priv->iconBasePath;
 }
 
 
-string YSelectionWidget::iconFullPath( const string & iconName ) const
+std::string YSelectionWidget::iconFullPath( const std::string & iconName ) const
 {
-    string fullPath;
+    std::string fullPath;
 
     if ( ! iconName.empty() )
     {
@@ -156,7 +156,7 @@ string YSelectionWidget::iconFullPath( const string & iconName ) const
 }
 
 
-string YSelectionWidget::iconFullPath( YItem * item ) const
+std::string YSelectionWidget::iconFullPath( YItem * item ) const
 {
     if ( item )
 	return iconFullPath( item->iconName() );
@@ -222,8 +222,8 @@ void YSelectionWidget::addItem( YItem * item )
 }
 
 
-void YSelectionWidget::addItem( const string & 	itemLabel,
-				const string & 	iconName,
+void YSelectionWidget::addItem( const std::string & 	itemLabel,
+				const std::string & 	iconName,
 				bool 		selected )
 {
     YItem * item = new YItem( itemLabel, iconName, selected );
@@ -232,7 +232,7 @@ void YSelectionWidget::addItem( const string & 	itemLabel,
 }
 
 
-void YSelectionWidget::addItem( const string & itemLabel, bool selected )
+void YSelectionWidget::addItem( const std::string & itemLabel, bool selected )
 {
     addItem( itemLabel, "", selected );
 }
@@ -473,14 +473,14 @@ void YSelectionWidget::deselectAllItems( YItemIterator	begin,
 
 
 YItem *
-YSelectionWidget::findItem( const string & wantedItemLabel ) const
+YSelectionWidget::findItem( const std::string & wantedItemLabel ) const
 {
     return findItem( wantedItemLabel, itemsBegin(), itemsEnd() );
 }
 
 
 YItem *
-YSelectionWidget::findItem( const string &	wantedItemLabel,
+YSelectionWidget::findItem( const std::string &	wantedItemLabel,
 			    YItemConstIterator	begin,
 			    YItemConstIterator	end ) const
 {

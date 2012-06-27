@@ -5,7 +5,7 @@
   published by the Free Software Foundation; either version 2.1 of the
   License, or (at your option) version 3.0 of the License. This library
   is distributed in the hope that it will be useful, but WITHOUT ANY
-  WARRANTY; without even the implied warranty of MERCHANTABILITY or 
+  WARRANTY; without even the implied warranty of MERCHANTABILITY or
   FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
   License for more details. You should have received a copy of the GNU
   Lesser General Public License along with this library; if not, write
@@ -230,8 +230,8 @@ YWidgetFactory::createHVSquash( YWidget * parent )
 
 YPushButton *
 YWidgetFactory::createIconButton( YWidget *	 parent,
-				  const string & iconName,
-				  const string & fallbackTextLabel )
+				  const std::string & iconName,
+				  const std::string & fallbackTextLabel )
 {
     YPushButton * button = createPushButton( parent, fallbackTextLabel );
     button->setIcon( iconName );
@@ -241,7 +241,7 @@ YWidgetFactory::createIconButton( YWidget *	 parent,
 
 
 YLabel *
-YWidgetFactory::createHeading( YWidget * parent, const string & text )
+YWidgetFactory::createHeading( YWidget * parent, const std::string & text )
 {
     return createLabel( parent,
 			text,
@@ -251,7 +251,7 @@ YWidgetFactory::createHeading( YWidget * parent, const string & text )
 
 
 YLabel *
-YWidgetFactory::createOutputField( YWidget * parent, const string & text )
+YWidgetFactory::createOutputField( YWidget * parent, const std::string & text )
 {
     return createLabel( parent,
 			text,
@@ -261,7 +261,7 @@ YWidgetFactory::createOutputField( YWidget * parent, const string & text )
 
 
 YInputField *
-YWidgetFactory::createPasswordField( YWidget * parent, const string & label )
+YWidgetFactory::createPasswordField( YWidget * parent, const std::string & label )
 {
     return createInputField( parent,
 			     label,

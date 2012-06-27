@@ -5,7 +5,7 @@
   published by the Free Software Foundation; either version 2.1 of the
   License, or (at your option) version 3.0 of the License. This library
   is distributed in the hope that it will be useful, but WITHOUT ANY
-  WARRANTY; without even the implied warranty of MERCHANTABILITY or 
+  WARRANTY; without even the implied warranty of MERCHANTABILITY or
   FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
   License for more details. You should have received a copy of the GNU
   Lesser General Public License along with this library; if not, write
@@ -32,12 +32,12 @@
 #include "YUISymbols.h"
 #include "YPushButton.h"
 
-
+using std::endl;
 
 
 struct YPushButtonPrivate
 {
-    YPushButtonPrivate( const string & label )
+    YPushButtonPrivate( const std::string & label )
 	: label( label )
 	, isDefaultButton( false )
 	, setDefaultButtonRecursive( false )
@@ -45,7 +45,7 @@ struct YPushButtonPrivate
 	, role( YCustomButton )
 	{}
 
-    string	label;
+    std::string	label;
     bool	isDefaultButton;
     bool	setDefaultButtonRecursive;
     bool	isHelpButton;
@@ -53,7 +53,7 @@ struct YPushButtonPrivate
 };
 
 
-YPushButton::YPushButton( YWidget * parent, const string & label )
+YPushButton::YPushButton( YWidget * parent, const std::string & label )
     : YWidget( parent )
     , priv( new YPushButtonPrivate( label ) )
 {
@@ -75,13 +75,13 @@ YPushButton::~YPushButton()
 }
 
 
-void YPushButton::setLabel( const string & label )
+void YPushButton::setLabel( const std::string & label )
 {
     priv->label = label;
 }
 
 
-string YPushButton::label() const
+std::string YPushButton::label() const
 {
     return priv->label;
 }
@@ -202,7 +202,7 @@ YPushButton::propertySet()
     if ( propSet.isEmpty() )
     {
 	/*
-	 * @property string Label	text on the button
+	 * @property std::string Label	text on the button
 	 */
 	propSet.add( YProperty( YUIProperty_Label, YStringProperty ) );
 	propSet.add( YWidget::propertySet() );
@@ -213,7 +213,7 @@ YPushButton::propertySet()
 
 
 bool
-YPushButton::setProperty( const string & propertyName, const YPropertyValue & val )
+YPushButton::setProperty( const std::string & propertyName, const YPropertyValue & val )
 {
     propertySet().check( propertyName, val.type() ); // throws exceptions if not found or type mismatch
 
@@ -228,7 +228,7 @@ YPushButton::setProperty( const string & propertyName, const YPropertyValue & va
 
 
 YPropertyValue
-YPushButton::getProperty( const string & propertyName )
+YPushButton::getProperty( const std::string & propertyName )
 {
     propertySet().check( propertyName ); // throws exceptions if not found
 
