@@ -66,6 +66,7 @@ YUI::YUI( bool withThreads )
     , _terminate_ui_thread( false )
     , _eventsBlocked( false )
 {
+    yuiMilestone() << "This is libyui " << VERSION << std::endl;
     yuiMilestone() << "Creating UI " << ( withThreads ? "with" : "without" ) << " threads" << endl;
     _ui = this;
 }
