@@ -349,16 +349,16 @@ void YAlignment::setBackgroundPixmap( const std::string & pixmapFileName )
     priv->backgroundPixmap = pixmap;
 }
 
-static const char *YAlignment_classes[3][5] =
-{
-  {"YAlignment_Left", "YAlignment_HCenter", "YAlignment_Right",  "YMarginBox", "YMinWidth"},
-  {"YAlignment_Top",  "YAlignment_VCenter", "YAlignment_Bottom", "YMarginBox", "YMinHeight"},
-  {0,                 "YAlignment_HVCenter", 0,                  "YAlignment", "YMinSize"},
-};
-
 const char *
 YAlignment::widgetClass() const
 {
+    static const char *YAlignment_classes[3][5] =
+    {
+        {"YAlignment_Left", "YAlignment_HCenter", "YAlignment_Right",  "YMarginBox", "YMinWidth"},
+        {"YAlignment_Top",  "YAlignment_VCenter", "YAlignment_Bottom", "YMarginBox", "YMinHeight"},
+        {0,                 "YAlignment_HVCenter", 0,                  "YAlignment", "YMinSize"},
+    };
+
     int hIndex = 3;
     int vIndex = 2;
 
