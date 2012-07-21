@@ -151,9 +151,19 @@ void help()
   auto frame		= YUI::widgetFactory()->createFrame( dialog, "[ Help ]" );
 
   auto vbox		= YUI::widgetFactory()->createVBox( frame );
-  YUI::widgetFactory()->createVStretch( vbox );
-  YUI::widgetFactory()->createLabel( vbox, "HELP!" );
-  YUI::widgetFactory()->createVStretch( vbox );
+  auto rt		= YUI::widgetFactory()->createRichText( vbox );
+  Str str;
+  str << "<h1>Headline 1</h1>\n";
+  str << "<h2>Headline 2</h2>\n";
+  str << "<h3>Headline 3</h3>\n";
+  str << "A sample list with attributed words:";
+  str << "<li>'<bold>bold</bold>'</li>\n";
+  str << "<li>'<em>emphasis</em>'</li>\n";
+  str << "<li>'<pre>preformated</pre>'</li>\n";
+  str << "<li>'<code>code</code>'</li>\n";
+  str << "<li>'plain'</li>\n";
+  str << "<li>'a bit longer plain text hopefully spanning multiple lines'</li>\n";
+  rt->setValue( str );
 
   // buttonbox
   auto buttonbox	= YUI::widgetFactory()->createButtonBox( vbox );
