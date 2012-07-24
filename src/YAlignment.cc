@@ -349,45 +349,48 @@ void YAlignment::setBackgroundPixmap( const std::string & pixmapFileName )
     priv->backgroundPixmap = pixmap;
 }
 
-
 const char *
 YAlignment::widgetClass() const
 {
-    std::string wClass = "YAlignment";
-    std::string subClass;
-
-    if      ( priv->alignment.hor == YAlignBegin 	)	subClass = "Left";
-    else if ( priv->alignment.hor == YAlignEnd		)	subClass = "Right";
-    else if ( priv->alignment.hor == YAlignCenter	)
+    static const char *YAlignment_classes[3][5] =
     {
-	if  ( priv->alignment.vert == YAlignCenter 	)	subClass = "HVCenter";
-	else							subClass = "HCenter";
+        {"YAlignment_Left", "YAlignment_HCenter", "YAlignment_Right",  "YMarginBox", "YMinWidth"},
+        {"YAlignment_Top",  "YAlignment_VCenter", "YAlignment_Bottom", "YMarginBox", "YMinHeight"},
+        {0,                 "YAlignment_HVCenter", 0,                  "YAlignment", "YMinSize"},
+    };
+
+    int hIndex = 3;
+    int vIndex = 2;
+
+    if      ( priv->alignment.hor == YAlignBegin    ) { vIndex = 0; hIndex = 0; }
+    else if ( priv->alignment.hor == YAlignEnd      ) { vIndex = 0; hIndex = 2; }
+    else if ( priv->alignment.hor == YAlignCenter   )
+    {
+        vIndex = 0; hIndex = 1;
+        if  ( priv->alignment.vert == YAlignCenter  )
+            vIndex = 2;
     }
-    else if ( priv->alignment.vert == YAlignBegin	)	subClass = "Top";
-    else if ( priv->alignment.vert == YAlignEnd		)	subClass = "Bottom";
-    else if ( priv->alignment.vert == YAlignCenter	)	subClass = "VCenter";
+    else if ( priv->alignment.vert == YAlignBegin   ) { vIndex = 1; hIndex = 0; }
+    else if ( priv->alignment.vert == YAlignEnd     ) { vIndex = 1; hIndex = 2; }
+    else if ( priv->alignment.vert == YAlignCenter  ) { vIndex = 1; hIndex = 1; }
 
     if ( priv->alignment.hor  == YAlignUnchanged &&
-	 priv->alignment.vert == YAlignUnchanged )
+         priv->alignment.vert == YAlignUnchanged )
     {
-	if ( priv->leftMargin   > 0 ||
-	     priv->rightMargin  > 0 ||
-	     priv->topMargin    > 0 ||
-	     priv->bottomMargin > 0 )
-	{
-	    wClass = "YMarginBox";
-	}
+        if ( priv->leftMargin   > 0 ||
+             priv->rightMargin  > 0 ||
+             priv->topMargin    > 0 ||
+             priv->bottomMargin > 0 )
+        {
+            vIndex = 0; hIndex = 3;
+        }
 
-	if ( priv->minWidth > 0 || priv->minHeight > 0 )
-	{
-	    if      ( priv->minWidth  == 0 )			wClass = "YMinHeight";
-	    else if ( priv->minHeight == 0 )			wClass = "YMinWidth";
-	    else						wClass = "YMinSize";
-	}
+        if ( priv->minWidth > 0 || priv->minHeight > 0 )
+        {
+            if      ( priv->minWidth  == 0 ) { vIndex = 1; hIndex = 4; }
+            else if ( priv->minHeight == 0 ) { vIndex = 0; hIndex = 4; }
+            else                             { vIndex = 2; hIndex = 4; }
+        }
     }
-
-    if ( ! subClass.empty() )
-	wClass += "_" + subClass;
-
-    return wClass.c_str();
+    return YAlignment_classes[vIndex][hIndex];
 }
