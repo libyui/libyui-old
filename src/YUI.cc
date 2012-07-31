@@ -33,6 +33,8 @@
 #include <pthread.h>
 #include <stdlib.h>	// getenv()
 
+#include <stack>
+
 #define YUILogComponent "ui"
 #include "YUILog.h"
 
@@ -52,8 +54,13 @@ using std::endl;
 // (set to "KDE" or "GNOME" - case insensitive)
 #define ENV_BUTTON_ORDER "Y2_BUTTON_ORDER"
 
-
+// Keep dialog stack before the YUITerminator
+// so that it is destroyed afterwards.
+// YUITerminator deletes _yui which calls YUI::~YUI
+// which accesses the dialog stack to remove all dialogs
+std::stack<YDialog *> YDialog::_dialogStack;
 YUI * YUI::_ui = 0;
+
 static bool uiDeleted = false;
 
 extern void * start_ui_thread( void * yui );
