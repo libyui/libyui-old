@@ -49,8 +49,6 @@
 #define VERBOSE_EVENTS			0
 
 
-std::stack<YDialog *> YDialog::_dialogStack;
-
 typedef std::list<YEventFilter *> YEventFilterList;
 
 
