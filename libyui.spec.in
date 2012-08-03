@@ -22,7 +22,7 @@
 Name:		@PROJECTNAME@
 Version:	@VERSION@
 Release:	0
-License:	GPL-2.0
+License:	LGPL-2.1
 Source:		@PROJECTNAME@-%{version}.tar.bz2
 Group:		System/Libraries
 
