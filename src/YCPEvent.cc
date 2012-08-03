@@ -44,13 +44,13 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include <ycp/YCPSymbol.h>
 
 #include "YCPEvent.h"
-#include "YWidget.h"
+#include <yui/YWidget.h>
 #include "YCPItem.h"
 #include "YCPMenuItem.h"
 #include "YCPValueWidgetID.h"
 
 #define YUILogComponent "ui"
-#include "YUILog.h"
+#include <yui/YUILog.h>
 
 
 

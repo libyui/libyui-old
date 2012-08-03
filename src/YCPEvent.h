@@ -44,7 +44,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include <ycp/YCPValue.h>
 #include <ycp/YCPMap.h>
 
-#include "YEvent.h"
+#include <yui/YEvent.h>
 
 
 /**

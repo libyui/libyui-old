@@ -42,7 +42,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 
 
 #include <ycp/YCPValue.h>
-#include "YUIException.h"
+#include <yui/YUIException.h>
 
 
 /**

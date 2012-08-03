@@ -43,7 +43,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 
 #include "YCPItemParser.h"
 #include "YCP_UI_Exception.h"
-#include "YUISymbols.h"
+#include <yui/YUISymbols.h>
 
 
 YItemCollection

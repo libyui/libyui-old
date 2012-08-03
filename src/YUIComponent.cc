@@ -42,7 +42,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include <stdio.h>
 
 #define YUILogComponent "ui-component"
-#include "YUILog.h"
+#include <yui/YUILog.h>
 
 #define y2log_component "ui-component"
 #include <ycp/y2log.h>
@@ -52,11 +52,12 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 
 #include "YUIComponent.h"
 #include "YUINamespace.h"
-#include "YUI.h"
-#include "YUILoader.h"
-#include "YUIException.h"
+#include <yui/YUI.h>
+#include <yui/YUILoader.h>
+#include <yui/YUIException.h>
+#include <yui/YSettings.h>
 
-#include "YMacro.h"
+#include <yui/YMacro.h>
 #include "YCPMacroRecorder.h"
 #include "YCPMacroPlayer.h"
 
@@ -180,6 +181,7 @@ YUIComponent::createUI()
 	    YUILoader::loadPlugin( _requestedUIName, _withThreads );
 
 	_ui = YUI::ui();
+        YSettings::setProgSubDir( YAST2DIR );
     
 	YMacro::setRecorder( new YCPMacroRecorder() );
 	YMacro::setPlayer  ( new YCPMacroPlayer()   );

@@ -41,7 +41,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #define YCPErrorDialog_h
 
 #include <string>
-#include "YUIException.h"
+#include <yui/YUIException.h>
 
 using std::string;
 

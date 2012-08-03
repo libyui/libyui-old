@@ -40,7 +40,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #ifndef YCPBuiltinCaller_h
 #define YCPBuiltinCaller_h
 
-#include "YBuiltinCaller.h"
+#include <yui/YBuiltinCaller.h>
 #include "ycp/YCPValue.h"
 
 class YUIFunction;

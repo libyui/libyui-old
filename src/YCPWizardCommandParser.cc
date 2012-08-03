@@ -43,8 +43,8 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 
 #include "YCPWizardCommandParser.h"
 #include "YCPValueWidgetID.h"
-#include "YWizard.h"
-#include "YPushButton.h"
+#include <yui/YWizard.h>
+#include <yui/YPushButton.h>
 
 
 bool

@@ -46,10 +46,10 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include <ycp/YCPCode.h>
 
 #define YUILogComponent "ui-macro"
-#include "YUILog.h"
+#include <yui/YUILog.h>
 
-#include "YUISymbols.h"
-#include "YWidget.h"
+#include <yui/YUISymbols.h>
+#include <yui/YWidget.h>
 #include "YCPMacroPlayer.h"
 
 

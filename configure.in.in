@@ -16,9 +16,9 @@ CREATE_PKGCONFIG=true
 
 ## check for libyui includes
 AC_LANG_PUSH([C++])
-AC_CHECK_HEADERS([YaST2/yui/YWidgetFactory.h],
+AC_CHECK_HEADERS([yui/YWidgetFactory.h],
                  [],
-                 [AC_MSG_ERROR([libyui headers not found - install package yast2-libyui-devel!])])
+                 [AC_MSG_ERROR([libyui headers not found - install package libyui-devel!])])
 AC_LANG_POP
 
 @YAST2-OUTPUT@

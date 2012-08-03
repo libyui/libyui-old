@@ -39,7 +39,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 
 #include <ycp/YCPVoid.h>
 #include "YCPTableItemWriter.h"
-#include "YUISymbols.h"
+#include <yui/YUISymbols.h>
 
 
 YCPList

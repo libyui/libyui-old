@@ -45,7 +45,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include <ycp/YCPFloat.h>
 
 #define YUILogComponent "ui"
-#include "YUILog.h"
+#include <yui/YUILog.h>
 
 #include "YCP_util.h"
 
@@ -81,7 +81,7 @@ float toFloat( const YCPValue & val )
     if ( val->isFloat() )
 	return val->asFloat()->value();
 
-    yuiError() << "Can't convert " << val << " to float" << endl;
+    yuiError() << "Can't convert " << val << " to float" << std::endl;
 
     return -1.0;
 }
@@ -173,7 +173,7 @@ int recode( const string & src,
 	    yuiError() << "Recode: (errno " << errno
 		       <<  ") -- failed conversion: '" << srcEncoding
 		       << "' --> '" << destEncoding << "'"
-		       << endl;
+		       << std::endl;
 	    
 	    complained = true;
 	}

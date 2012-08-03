@@ -46,7 +46,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include <ycp/YCPMap.h>
 #include <ycp/YCPTerm.h>
 #include <string>
-#include "YItem.h"
+#include <yui/YItem.h>
 
 using std::string;
 

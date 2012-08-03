@@ -44,7 +44,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include <ycp/YCPTerm.h>
 #include <ycp/YCPList.h>
 
-#include "YTypes.h"
+#include <yui/YTypes.h>
 
 using std::vector;
 

@@ -48,16 +48,16 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include <ycp/y2log.h>	// ycperror()
 
 #define YUILogComponent "ui"
-#include "YUILog.h"
+#include <yui/YUILog.h>
 
 #include <Y2.h>
 
 #include "YCP_UI.h"
-#include "YUI.h"
+#include <yui/YUI.h>
 #include "YUIComponent.h"
-#include "YUIException.h"
-#include "YUISymbols.h"
-#include "YApplication.h"
+#include <yui/YUIException.h>
+#include <yui/YUISymbols.h>
+#include <yui/YApplication.h>
 #include "YCPDialogParser.h"
 #include "YCPErrorDialog.h"
 #include "YCPEvent.h"
@@ -69,16 +69,16 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "YCPValueWidgetID.h"
 #include "YCPWizardCommandParser.h"
 #include "YCP_util.h"
-#include "YCheckBox.h"
-#include "YDialog.h"
-#include "YEvent.h"
-#include "YMacro.h"
-#include "YOptionalWidgetFactory.h"
-#include "YReplacePoint.h"
-#include "YShortcut.h"
-#include "YWidget.h"
-#include "YWidgetFactory.h"
-#include "YWizard.h"
+#include <yui/YCheckBox.h>
+#include <yui/YDialog.h>
+#include <yui/YEvent.h>
+#include <yui/YMacro.h>
+#include <yui/YOptionalWidgetFactory.h>
+#include <yui/YReplacePoint.h>
+#include <yui/YShortcut.h>
+#include <yui/YWidget.h>
+#include <yui/YWidgetFactory.h>
+#include <yui/YWizard.h>
 
 using std::string;
 

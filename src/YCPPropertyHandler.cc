@@ -67,20 +67,20 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "YCPTreeItemWriter.h"
 #include "YCPValueWidgetID.h"
 
-#include "YBarGraph.h"
-#include "YCheckBox.h"
-#include "YComboBox.h"
-#include "YDumbTab.h"
-#include "YMenuButton.h"
-#include "YMultiProgressMeter.h"
-#include "YMultiSelectionBox.h"
-#include "YRadioButton.h"
-#include "YRadioButtonGroup.h"
-#include "YSelectionBox.h"
-#include "YTable.h"
-#include "YTree.h"
-#include "YWizard.h"
-#include "YUISymbols.h"
+#include <yui/YBarGraph.h>
+#include <yui/YCheckBox.h>
+#include <yui/YComboBox.h>
+#include <yui/YDumbTab.h>
+#include <yui/YMenuButton.h>
+#include <yui/YMultiProgressMeter.h>
+#include <yui/YMultiSelectionBox.h>
+#include <yui/YRadioButton.h>
+#include <yui/YRadioButtonGroup.h>
+#include <yui/YSelectionBox.h>
+#include <yui/YTable.h>
+#include <yui/YTree.h>
+#include <yui/YWizard.h>
+#include <yui/YUISymbols.h>
 
 using std::list;
 

@@ -40,7 +40,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #ifndef YCPValueWidgetID_h
 #define YCPValueWidgetID_h
 
-#include "YWidgetID.h"
+#include <yui/YWidgetID.h>
 #include <ycp/YCPValue.h>
 
 using std::string;
