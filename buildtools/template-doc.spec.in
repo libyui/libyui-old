@@ -6,7 +6,7 @@
 Name:		@PROJECTNAME@-doc
 Version:	@VERSION@
 Release:	0
-License:	LGPL-2.1
+License:	LGPL-2.1 or LGPL-3.0
 Source:		@PROJECTNAME@-%{version}.tar.bz2
 Group:		Documentation/HTML
 
