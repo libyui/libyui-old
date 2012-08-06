@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Aug  6 12:43:08 CEST 2012 - tgoettlicher@suse.de
+
+- adapt bindings to work with yast independed standalone libyui package
+- 2.21.5
+
+-------------------------------------------------------------------
 Tue Jun 26 13:58:41 CEST 2012 - aschnell@suse.de
 
 - adapted to namespace changes in yast2-core
