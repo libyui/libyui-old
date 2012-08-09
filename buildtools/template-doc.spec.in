@@ -30,8 +30,6 @@ BuildRequires:  graphviz-gnome
 BuildRequires:  texlive-latex
 @BuildRequires@
 
-Obsoletes:	@PROJECTNAME@-doc < %{version}
-
 URL:		@URL@
 Summary:	@PROJECTNAME_UC@ documentation
 
