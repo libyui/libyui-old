@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Sep  4 14:33:29 CEST 2012 - tgoettlicher@suse.de
+
+- Fixed requirements in doc spec file
+
+-------------------------------------------------------------------
 Wed May  2 16:45:38 CEST 2012 - tgoettlicher@suse.de
 
 - Fixed bnc#753784: YaST help dialogs appear fullscreen
