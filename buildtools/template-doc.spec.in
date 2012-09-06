@@ -29,6 +29,7 @@ BuildRequires:  fdupes
 BuildRequires:  graphviz-gnome
 BuildRequires:  texlive-latex
 BuildRequires:  cmake >= 2.8
+BuildRequires:  gcc-c++
 @BuildRequires@
 
 URL:		@URL@
