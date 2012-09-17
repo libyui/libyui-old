@@ -20,7 +20,7 @@ BuildRequires:	yast2-core-devel
 Conflicts:	yast2-core < 2.16.38
 
 # dependecies for new libyui
-Requires:	yast2 >= 2.23.1
+Conflicts:	yast2 < 2.23.0
 Conflicts:	yast2-libyui < 2.42.0
 
 Requires:	libyui4	   >= 2.21.5

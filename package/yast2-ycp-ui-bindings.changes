@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Sep 17 13:26:24 CEST 2012 - fehr@suse.de
+
+- change Requires>=2.23 to Conflicts<2.23, to avoid build cycle
+- 2.21.6
+
+-------------------------------------------------------------------
 Mon Aug  6 12:43:08 CEST 2012 - tgoettlicher@suse.de
 
 - adapt bindings to work with yast independed standalone libyui package
