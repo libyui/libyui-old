@@ -1,0 +1,40 @@
+{
+
+term frame = `VBox(
+                   `CheckBoxFrame( `id(`foo), `opt(`notify), "Selection A", true,
+                                   `VBox(
+                                         `CheckBox("Enable Foo"),
+                                         `HBox(
+                                               `HSpacing(2),
+                                               `Left (`CheckBoxFrame( `id(`bar), "Selection B", false,
+                                                                      `VBox(`CheckBox("Enable Bar"),
+                                                                            `SelectionBox(`id(`sel),
+                                                                                          "Select",
+                                                                                          ["Foo", "Bar", "Baz"]),
+                                                                            `CheckBoxFrame( `id(`c), "Selection C",
+                                                                                            true,
+                                                                                            `CheckBox( "Another") )
+                                                                            
+                                                                            )
+                                                                      )
+                                                      )
+                                               ),
+                                         `CheckBox("Disable Blubber")
+                                         )
+                                   ),
+                   `PushButton(`id(`ok), "OK")
+                   );
+
+UI::OpenDialog( frame );
+
+any id = nil;
+
+repeat
+{
+   id = UI::UserInput();
+}
+until (id == `ok );
+
+UI::CloseDialog();
+
+}
