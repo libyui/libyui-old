@@ -34,6 +34,7 @@
 #include "YShortcut.h"
 #include "YUI.h"
 #include "YItem.h"
+#include "YCommandLine.h"
 
 using std::endl;
 
@@ -49,6 +50,8 @@ struct YApplicationPrivate
 
     std::string		productName;
     bool		reverseLayout;
+    std::string applicationTitle;
+    std::string applicationIcon;
     YFunctionKeyMap	defaultFunctionKey;
     YIconLoader*	iconLoader;
 };
@@ -59,6 +62,9 @@ YApplication::YApplication()
 {
     YUI_CHECK_NEW( priv );
     priv->iconLoader = new YIconLoader();
+    YCommandLine cmdLine; // Retrieve command line args from /proc/<pid>/cmdline
+    if ( cmdLine.argc() > 0 )
+      priv->applicationTitle = cmdLine.arg(0);
 }
 
 
@@ -246,3 +252,23 @@ YApplication::runInTerminal ( const std::string & module )
 
     return -1;
 }
+
+void YApplication::setApplicationTitle(const std::string &title)
+{
+    priv->applicationTitle = title;
+}
+
+const std::string &YApplication::applicationTitle() const
+{
+    return priv->applicationTitle;
+}
+
+void YApplication::setApplicationIcon(const std::string &icon)
+{
+    priv->applicationIcon = icon;
+}
+const std::string &YApplication::applicationIcon() const
+{
+    return priv->applicationIcon;
+}
+
