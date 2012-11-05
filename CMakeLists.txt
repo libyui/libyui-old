@@ -17,6 +17,28 @@ ENDIF( PLUGINNAME )
 SET( CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/Modules" "${BUILDTOOLS_DIR}" "${CMAKE_MODULE_PATH}" )
 
 INCLUDE( LibyuiCommon )
+
+#if you need to get a git versioned package you can use cmake -DGIT_VERSION=on
+if (GIT_VERSION)
+  FIND_PACKAGE(Git)
+  if(GIT_FOUND)
+    exec_program(
+                 "${GIT_EXECUTABLE}"
+                 ${CMAKE_CURRENT_SOURCE_DIR}
+                 ARGS "describe"
+	         OUTPUT_VARIABLE GIT_VERSION )
+
+    string( REGEX MATCH "-g[0-9|a-f]+$" VERSION_SHA1 ${GIT_VERSION} )
+    string( REGEX REPLACE "[g]" "" VERSION_SHA1 ${VERSION_SHA1} )
+    set (GIT_SHA1_VERSION "${VERSION_SHA1}")
+  else()
+    message (STATUS "GIT_VERSION option needs git installed")
+    set (GIT_SHA1_VERSION "")
+  endif()
+else()
+  set (GIT_SHA1_VERSION "")
+endif()
+
 INCLUDE( "${CMAKE_CURRENT_SOURCE_DIR}/VERSION.cmake" )
 
 INITIALIZE()

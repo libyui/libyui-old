@@ -380,6 +380,30 @@ public:
     virtual bool hasWizardDialogSupport() { return false; }
 
 
+    /**
+     * Set the application title
+     **/
+    virtual void setApplicationTitle ( const std::string& title );
+    
+    /**
+     * Get the application title
+     * 
+     * Default title is the running command (argv[0])
+     **/
+    virtual const std::string& applicationTitle() const;
+    
+    /**
+     * Set the application Icon
+     **/    
+    virtual void setApplicationIcon ( const std::string& icon );
+    
+    /**
+     * Get the application Icon
+     * 
+     * Default icon is an empty string
+     **/
+     virtual const std::string& applicationIcon() const;
+
 private:
 
     ImplPtr<YApplicationPrivate> priv;
