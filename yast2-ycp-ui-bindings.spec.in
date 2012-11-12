@@ -3,7 +3,7 @@
 
 @HEADER@
 Group:	System/YaST
-License:        GPL-2.0+
+License:        GPL-2.0
 
 
 BuildRequires:	gcc-c++
@@ -79,3 +79,5 @@ mkdir -p "$RPM_BUILD_ROOT"@logdir@
 @includedir@
 @pkgconfigdir@/@RPMNAME@.pc
 %doc @docdir@
+
+%changelog
