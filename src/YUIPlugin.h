@@ -100,11 +100,6 @@ protected:
      **/
     std::string pluginLibFullPath() const;
 
-    /**
-     * Loads the plugin library.
-     **/
-    void loadPluginLib();
-
 private:
 
     std::string	_pluginLibBaseName;
