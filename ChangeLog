@@ -2,7 +2,7 @@
 Mon Jan  7 12:59:46 CET 2013 - tgoettlicher@suse.de
 
 - Removed needless loadPluginLib() from header file
-- Version 2.42.2
+- Version 2.42.4
 
 -------------------------------------------------------------------
 Fri Nov  2 15:03:47 CET 2012 - anaselli@linux.it
