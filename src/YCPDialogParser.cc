@@ -974,6 +974,10 @@ YCPDialogParser::parseWeight( YWidget * parent, YWidgetOpt & opt,
  * The layout boxes are used to split up the dialog and layout a number of
  * widgets horizontally ( <tt>HBox</tt> ) or vertically ( <tt>VBox</tt> ).
  *
+ * Rather than `HBox use `ButtonBox for placing `PushButton items in a pop-up
+ * dialog. Then it automatically places them in the correct order depending
+ * on a selected UI.
+ *
  **/
 
 YWidget *
@@ -1362,7 +1366,7 @@ YCPDialogParser::parseLogView( YWidget * parent, YWidgetOpt & opt,
  * @option	applyButton  assign the [Apply] role to this button (see ButtonBox)
  * @option	customButton override any other button role assigned to this button
  * @usage	`PushButton( `id( `click ), `opt( `default, `hstretch ), "Click me" )
- * @examples	PushButton1.ycp PushButton2.ycp IconButton1.ycp
+ * @examples	PushButton1.ycp PushButton2.ycp IconButton1.ycp ButtonBox1.ycp
  *
  * @description
  *
@@ -1383,6 +1387,10 @@ YCPDialogParser::parseLogView( YWidget * parent, YWidgetOpt & opt,
  *
  * Icons are (at the time of this writing) loaded from the <em>theme</em>
  * directory, /usr/share/YaST2/theme/current.
+ *
+ * Use a <tt>ButtonBox</tt> widget to place more <tt>PushButton</tt>s in
+ * a dialog together. Then it can properly sort the buttons on a screen
+ * depending on the selected UI (GTK, Qt, ncurses).
  *
  * If a button has `opt(`helpButton) set, it is the official help button of
  * this dialog. When activated, this will open a new dialog with the topmost
