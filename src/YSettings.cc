@@ -50,7 +50,6 @@ YSettings * YSettings::access ()
 
 YSettings::YSettings()
 {
-  progSubDir = "";
 }
 
 YSettings::~YSettings ()
@@ -75,5 +74,7 @@ void YSettings::setProgSubDir( std::string directory )
 
 std::string YSettings::getProgSubDir ()
 {
+  yuiMilestone () << "progSubDir: \"" << progSubDir << "\"" << endl;
+
   return progSubDir;
 }
