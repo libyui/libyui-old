@@ -56,15 +56,44 @@ public:
      * Once this is set, it can't be altered. If you do so although an
      * exception will be thrown.
      **/
-    static void setProgSubDir ( std::string directory );
+    void setProgSubDir ( std::string directory );
     /**
      * Returns the value of your program's subdir.
      **/
-    static std::string getProgSubDir ();
+    std::string getProgSubDir ();
+    
+    /**
+     * This can be used to set a subdir ICONDIR,
+     * where your program stores a custom icons.
+     *
+     * Once this is set, it can't be altered. If you do so although an
+     * exception will be thrown.
+     **/
+    void setIconsDir ( std::string directory );
+    /**
+     * Returns the value of your program's icons subdir.
+     **/
+    std::string getIconsDir ();
+    
+    /**
+     * This can be used to set a subdir THEMEDIR,
+     * where your program stores a custom icons.
+     *
+     * Once this is set, it can't be altered. If you do so although an
+     * exception will be thrown.
+     **/
+    void setThemeDir ( std::string directory );
+    /**
+     * Returns the value of your program's theme subdir.
+     **/
+    std::string getThemeDir ();
 
 private:
-    static YSettings * _instance;
-    static std::string progSubDir;
+    static YSettings _instance;
+    std::string progSubDir;
+    std::string progIconDir;
+    std::string progThemeDir;
+    
     YSettings ();
     YSettings ( const YSettings& );
     ~YSettings ();

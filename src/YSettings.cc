@@ -35,20 +35,18 @@
 
 #define YUILogComponent "ui"
 #include "YUILog.h"
+#include <yui/Libyui_config.h>
 
 using std::endl;
 
-YSettings * YSettings::_instance = 0;
-std::string YSettings::progSubDir = "";
+YSettings  YSettings::_instance;
 
 YSettings * YSettings::access ()
 {
-  if ( ! _instance )
-    _instance = new YSettings ();
-  return _instance;
+  return &_instance;
 }
 
-YSettings::YSettings()
+YSettings::YSettings() : progSubDir(), progIconDir(), progThemeDir()
 {
 }
 
@@ -58,7 +56,7 @@ YSettings::~YSettings ()
 
 void YSettings::setProgSubDir( std::string directory )
 {
-  if ( progSubDir.compare ( "" ) == 0 )
+  if ( progSubDir.empty() )
   {
     progSubDir = directory;
     yuiMilestone () << "Set progSubDir to \"" << directory << "\"" << endl;
@@ -77,4 +75,63 @@ std::string YSettings::getProgSubDir ()
   yuiMilestone () << "progSubDir: \"" << progSubDir << "\"" << endl;
 
   return progSubDir;
+}
+
+
+void YSettings::setIconsDir( std::string directory )
+{
+  if ( progIconDir.empty() )
+  {
+    progIconDir = directory;
+    yuiMilestone () << "Set progIconDir to \"" << directory << "\"" << endl;
+    yuiMilestone () << "progIconDir is now locked." << endl;
+  }
+  else
+  {
+    yuiMilestone () << "Can't set progIconDir to \"" << directory << "\"" << endl;
+    yuiMilestone () << "It is locked to: \"" << progIconDir << "\"" << endl;
+    YUI_THROW ( YUIException ( "progIconDir is locked to: \"" + progIconDir + "\"" ) );
+  }
+}
+
+std::string YSettings::getIconsDir ()
+{
+  if (progIconDir.size())
+  {
+    yuiMilestone () << "progIconDir: \"" << progIconDir << "\"" << endl;
+    return progIconDir;
+  }
+  else if (progSubDir.size())
+    return progSubDir + "/icons/";
+  
+  return THEMEDIR "/icons/";
+}
+
+void YSettings::setThemeDir( std::string directory )
+{
+  if ( progThemeDir.empty() )
+  {
+    progThemeDir = directory;
+    yuiMilestone () << "Set progThemeDir to \"" << directory << "\"" << endl;
+    yuiMilestone () << "progThemeDir is now locked." << endl;
+  }
+  else
+  {
+    yuiMilestone () << "Can't set progThemeDir to \"" << directory << "\"" << endl;
+    yuiMilestone () << "It is locked to: \"" << progThemeDir << "\"" << endl;
+    YUI_THROW ( YUIException ( "progThemeDir is locked to: \"" + progThemeDir + "\"" ) );
+  }
+}
+
+std::string YSettings::getThemeDir ()
+{
+  if (progThemeDir.size())
+  {
+    yuiMilestone () << "progThemeDir: \"" << progThemeDir << "\"" << endl;
+    return progThemeDir;
+  }
+  else if (progSubDir.size())
+    return progSubDir + "/theme/";
+
+  return THEMEDIR "/current/wizard/";
 }
