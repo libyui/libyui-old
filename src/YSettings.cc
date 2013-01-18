@@ -39,14 +39,11 @@
 
 using std::endl;
 
-YSettings  YSettings::_instance;
+std::string  YSettings::progSubDir = "";
+std::string  YSettings::progIconDir = "";
+std::string  YSettings::progThemeDir = "";
 
-YSettings * YSettings::access ()
-{
-  return &_instance;
-}
-
-YSettings::YSettings() : progSubDir(), progIconDir(), progThemeDir()
+YSettings::YSettings() 
 {
 }
 
@@ -131,7 +128,10 @@ std::string YSettings::getThemeDir ()
     return progThemeDir;
   }
   else if (progSubDir.size())
-    return progSubDir + "/theme/";
+  {
+    //back compatibility if setProgSubDir is set to "/usr/share/YaST2"
+    return progSubDir + "/theme/current/wizard/";
+  }
 
   return THEMEDIR "/current/wizard/";
 }
