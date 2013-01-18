@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Fri Jan 18 14:51:40 CET 2013 - anaselli@linux.it
+
+- Fixed YSettings
+- Added setThemeDir(), getThemeDir(), setIconsDir() and 
+  getIconsDir() to YSettings
+
+-------------------------------------------------------------------
 Mon Jan  7 12:59:46 CET 2013 - tgoettlicher@suse.de
 
 - Removed needless loadPluginLib() from header file
@@ -8,7 +15,8 @@ Mon Jan  7 12:59:46 CET 2013 - tgoettlicher@suse.de
 Fri Nov  2 15:03:47 CET 2012 - anaselli@linux.it
 
 - Added new API to managed application title and icon
-- Added the availiability to build a git sha1 versioned package using cmake -DGIT_VERSION=on
+- Added the availiability to build a git sha1 versioned package 
+  using cmake -DGIT_VERSION=on
 
 -------------------------------------------------------------------
 Fri Sep  7 13:48:44 CEST 2012 - tgoettlicher@suse.de
