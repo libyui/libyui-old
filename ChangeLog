@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Fri Jan 18 14:51:40 CET 2013 - anaselli@linux.it
+
+- Fixed YSettings
+- Added setThemeDir(), getThemeDir(), setIconsDir() and 
+  getIconsDir() to YSettings
+
+-------------------------------------------------------------------
 Mon Jan  7 12:59:46 CET 2013 - tgoettlicher@suse.de
 
 - Removed needless loadPluginLib() from header file
