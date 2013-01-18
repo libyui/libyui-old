@@ -49,7 +49,7 @@ YPath::YPath ( const std::string & directory, const std::string & filename )
   yuiMilestone () << "Given filename: " << filename << std::endl;
 
   bool				isThemeDir = ! directory.compare ( THEMEDIR );
-  std::string			progSubDir = YSettings::access () -> getProgSubDir ();
+  std::string			progSubDir = YSettings::getProgSubDir ();
   std::string			fullname = "";
   std::string			themeSubDir = "/current";
   size_t			splitPos = fullPath.rfind( "/" );

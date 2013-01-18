@@ -44,12 +44,6 @@ class YSettings
 {
 public:
     /**
-     * This returns a pointer to to the YSettings singleton object.
-     *
-     * If there is no object, when called, the object gets initialised.
-     **/
-    static YSettings * access ();
-    /**
      * This can be used to set a subdir beneath PLUGINDIR or THEMEDIR,
      * where your program stores a custom plugin or theme.
      *
@@ -61,10 +55,38 @@ public:
      * Returns the value of your program's subdir.
      **/
     static std::string getProgSubDir ();
+    
+    /**
+     * This can be used to set a subdir ICONDIR,
+     * where your program stores a custom icons.
+     *
+     * Once this is set, it can't be altered. If you do so although an
+     * exception will be thrown.
+     **/
+    static void setIconsDir ( std::string directory );
+    /**
+     * Returns the value of your program's icons subdir.
+     **/
+    static std::string getIconsDir ();
+    
+    /**
+     * This can be used to set a subdir THEMEDIR,
+     * where your program stores a custom icons.
+     *
+     * Once this is set, it can't be altered. If you do so although an
+     * exception will be thrown.
+     **/
+    static void setThemeDir ( std::string directory );
+    /**
+     * Returns the value of your program's theme subdir.
+     **/
+    static std::string getThemeDir ();
 
 private:
-    static YSettings * _instance;
     static std::string progSubDir;
+    static std::string progIconDir;
+    static std::string progThemeDir;
+    
     YSettings ();
     YSettings ( const YSettings& );
     ~YSettings ();
