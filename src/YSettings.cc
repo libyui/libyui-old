@@ -35,7 +35,7 @@
 
 #define YUILogComponent "ui"
 #include "YUILog.h"
-#include <yui/Libyui_config.h>
+#include "Libyui_config.h"
 
 using std::endl;
 
