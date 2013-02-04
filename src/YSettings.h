@@ -82,10 +82,24 @@ public:
      **/
     static std::string getThemeDir ();
 
+    /**
+     * This can be used to set a subdir LOCALEDIR,
+     * where your program stores translations
+     *
+     * Once this is set, it can't be altered. If you do so although an
+     * exception will be thrown.
+     **/
+    static void setLocaleDir ( std::string directory );
+    /**
+     * Returns the value of your program's locale subdir.
+     **/
+    static std::string getLocaleDir ();
+
 private:
     static std::string progSubDir;
     static std::string progIconDir;
     static std::string progThemeDir;
+    static std::string progLocaleDir;
     
     YSettings ();
     YSettings ( const YSettings& );

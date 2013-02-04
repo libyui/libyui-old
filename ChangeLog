@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Feb  4 15:46:13 CET 2013 - tgoettlicher@suse.de
+
+- Added setLocaleDir(), getLocaleDir()
+- Version 2.42.6
+
+-------------------------------------------------------------------
 Sat Jan 19 23:55:33 CET 2013 - anaselli@linux.it
 
 - wrong path for Libyui_config.h

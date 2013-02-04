@@ -42,6 +42,7 @@ using std::endl;
 std::string  YSettings::progSubDir = "";
 std::string  YSettings::progIconDir = "";
 std::string  YSettings::progThemeDir = "";
+std::string  YSettings::progLocaleDir = "";
 
 YSettings::YSettings() 
 {
@@ -135,3 +136,38 @@ std::string YSettings::getThemeDir ()
 
   return THEMEDIR "/current/wizard/";
 }
+
+
+void YSettings::setLocaleDir( std::string directory )
+{
+  if ( progLocaleDir.empty() )
+  {
+    progLocaleDir = directory;
+    yuiMilestone () << "Set progLocaleDir to \"" << directory << "\"" << endl;
+    yuiMilestone () << "progLocaleDir is now locked." << endl;
+  }
+  else
+  {
+    yuiMilestone () << "Can't set progLocaleDir to \"" << directory << "\"" << endl;
+    yuiMilestone () << "It is locked to: \"" << progLocaleDir << "\"" << endl;
+    YUI_THROW ( YUIException ( "progLocaleDir is locked to: \"" + progLocaleDir + "\"" ) );
+  }
+}
+
+std::string YSettings::getLocaleDir ()
+{
+  if (progLocaleDir.size())
+  {
+    yuiMilestone () << "progLocaleDir: \"" << progLocaleDir << "\"" << endl;
+    return progLocaleDir;
+  }
+  else if (progSubDir.size())
+  {
+    //back compatibility if setProgSubDir is set to "/usr/share/YaST2"
+    return progSubDir + "/locale/";
+  }
+
+  return "/usr/share/locale/";
+}
+
+
