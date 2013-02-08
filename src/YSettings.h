@@ -50,11 +50,11 @@ public:
      * Once this is set, it can't be altered. If you do so although an
      * exception will be thrown.
      **/
-    static void setProgSubDir ( std::string directory );
+    static void setProgDir ( std::string directory );
     /**
      * Returns the value of your program's subdir.
      **/
-    static std::string getProgSubDir ();
+    static std::string progDir ();
     
     /**
      * This can be used to set a subdir ICONDIR,
@@ -63,11 +63,11 @@ public:
      * Once this is set, it can't be altered. If you do so although an
      * exception will be thrown.
      **/
-    static void setIconsDir ( std::string directory );
+    static void setIconDir ( std::string directory );
     /**
      * Returns the value of your program's icons subdir.
      **/
-    static std::string getIconsDir ();
+    static std::string iconDir ();
     
     /**
      * This can be used to set a subdir THEMEDIR,
@@ -80,7 +80,7 @@ public:
     /**
      * Returns the value of your program's theme subdir.
      **/
-    static std::string getThemeDir ();
+    static std::string themeDir ();
 
     /**
      * This can be used to set a subdir LOCALEDIR,
@@ -93,13 +93,13 @@ public:
     /**
      * Returns the value of your program's locale subdir.
      **/
-    static std::string getLocaleDir ();
+    static std::string localeDir ();
 
 private:
-    static std::string progSubDir;
-    static std::string progIconDir;
-    static std::string progThemeDir;
-    static std::string progLocaleDir;
+    static std::string _progDir;
+    static std::string _iconDir;
+    static std::string _themeDir;
+    static std::string _localeDir;
     
     YSettings ();
     YSettings ( const YSettings& );

@@ -39,10 +39,10 @@
 
 using std::endl;
 
-std::string  YSettings::progSubDir = "";
-std::string  YSettings::progIconDir = "";
-std::string  YSettings::progThemeDir = "";
-std::string  YSettings::progLocaleDir = "";
+std::string  YSettings::_progDir = "";
+std::string  YSettings::_iconDir = "";
+std::string  YSettings::_themeDir = "";
+std::string  YSettings::_localeDir = "";
 
 YSettings::YSettings() 
 {
@@ -52,86 +52,86 @@ YSettings::~YSettings ()
 {
 }
 
-void YSettings::setProgSubDir( std::string directory )
+void YSettings::setProgDir( std::string directory )
 {
-  if ( progSubDir.empty() )
+  if ( _progDir.empty() )
   {
-    progSubDir = directory;
-    yuiMilestone () << "Set progSubDir to \"" << directory << "\"" << endl;
-    yuiMilestone () << "progSubDir is now locked." << endl;
+    _progDir = directory;
+    yuiMilestone () << "Set progDir to \"" << directory << "\"" << endl;
+    yuiMilestone () << "progDir is now locked." << endl;
   }
   else
   {
-    yuiMilestone () << "Can't set progSubDir to \"" << directory << "\"" << endl;
-    yuiMilestone () << "It is locked to: \"" << progSubDir << "\"" << endl;
-    YUI_THROW ( YUIException ( "progSubDir is locked to: \"" + progSubDir + "\"" ) );
+    yuiMilestone () << "Can't set progDir to \"" << directory << "\"" << endl;
+    yuiMilestone () << "It is locked to: \"" << _progDir << "\"" << endl;
+    YUI_THROW ( YUIException ( "progSubDir is locked to: \"" + _progDir + "\"" ) );
   }
 }
 
-std::string YSettings::getProgSubDir ()
+std::string YSettings::progDir ()
 {
-  yuiMilestone () << "progSubDir: \"" << progSubDir << "\"" << endl;
+  yuiMilestone () << "progDir: \"" << _progDir << "\"" << endl;
 
-  return progSubDir;
+  return _progDir;
 }
 
 
-void YSettings::setIconsDir( std::string directory )
+void YSettings::setIconDir( std::string directory )
 {
-  if ( progIconDir.empty() )
+  if ( _iconDir.empty() )
   {
-    progIconDir = directory;
-    yuiMilestone () << "Set progIconDir to \"" << directory << "\"" << endl;
-    yuiMilestone () << "progIconDir is now locked." << endl;
+    _iconDir = directory;
+    yuiMilestone () << "Set iconDir to \"" << directory << "\"" << endl;
+    yuiMilestone () << "iconDir is now locked." << endl;
   }
   else
   {
-    yuiMilestone () << "Can't set progIconDir to \"" << directory << "\"" << endl;
-    yuiMilestone () << "It is locked to: \"" << progIconDir << "\"" << endl;
-    YUI_THROW ( YUIException ( "progIconDir is locked to: \"" + progIconDir + "\"" ) );
+    yuiMilestone () << "Can't set iconDir to \"" << directory << "\"" << endl;
+    yuiMilestone () << "It is locked to: \"" << _iconDir << "\"" << endl;
+    YUI_THROW ( YUIException ( "progIconDir is locked to: \"" + _iconDir + "\"" ) );
   }
 }
 
-std::string YSettings::getIconsDir ()
+std::string YSettings::iconDir ()
 {
-  if (progIconDir.size())
+  if (_iconDir.size())
   {
-    yuiMilestone () << "progIconDir: \"" << progIconDir << "\"" << endl;
-    return progIconDir;
+    yuiMilestone () << "iconDir: \"" << _iconDir << "\"" << endl;
+    return _iconDir;
   }
-  else if (progSubDir.size())
-    return progSubDir + "/icons/";
+  else if (_progDir.size())
+    return _progDir + "/icons/";
   
   return THEMEDIR "/icons/";
 }
 
 void YSettings::setThemeDir( std::string directory )
 {
-  if ( progThemeDir.empty() )
+  if ( _themeDir.empty() )
   {
-    progThemeDir = directory;
-    yuiMilestone () << "Set progThemeDir to \"" << directory << "\"" << endl;
-    yuiMilestone () << "progThemeDir is now locked." << endl;
+    _themeDir = directory;
+    yuiMilestone () << "Set themeDir to \"" << directory << "\"" << endl;
+    yuiMilestone () << "themeDir is now locked." << endl;
   }
   else
   {
-    yuiMilestone () << "Can't set progThemeDir to \"" << directory << "\"" << endl;
-    yuiMilestone () << "It is locked to: \"" << progThemeDir << "\"" << endl;
-    YUI_THROW ( YUIException ( "progThemeDir is locked to: \"" + progThemeDir + "\"" ) );
+    yuiMilestone () << "Can't set themeDir to \"" << directory << "\"" << endl;
+    yuiMilestone () << "It is locked to: \"" << _themeDir << "\"" << endl;
+    YUI_THROW ( YUIException ( "themeDir is locked to: \"" + _themeDir + "\"" ) );
   }
 }
 
-std::string YSettings::getThemeDir ()
+std::string YSettings::themeDir ()
 {
-  if (progThemeDir.size())
+  if ( _themeDir.size() )
   {
-    yuiMilestone () << "progThemeDir: \"" << progThemeDir << "\"" << endl;
-    return progThemeDir;
+    yuiMilestone () << "themeDir: \"" << _themeDir << "\"" << endl;
+    return _themeDir;
   }
-  else if (progSubDir.size())
+  else if ( _progDir.size() )
   {
     //back compatibility if setProgSubDir is set to "/usr/share/YaST2"
-    return progSubDir + "/theme/current/wizard/";
+    return _progDir + "/theme/current/wizard/";
   }
 
   return THEMEDIR "/current/wizard/";
@@ -140,31 +140,31 @@ std::string YSettings::getThemeDir ()
 
 void YSettings::setLocaleDir( std::string directory )
 {
-  if ( progLocaleDir.empty() )
+  if ( _localeDir.empty() )
   {
-    progLocaleDir = directory;
-    yuiMilestone () << "Set progLocaleDir to \"" << directory << "\"" << endl;
-    yuiMilestone () << "progLocaleDir is now locked." << endl;
+    _localeDir = directory;
+    yuiMilestone () << "Set localeDir to \"" << directory << "\"" << endl;
+    yuiMilestone () << "localeDir is now locked." << endl;
   }
   else
   {
-    yuiMilestone () << "Can't set progLocaleDir to \"" << directory << "\"" << endl;
-    yuiMilestone () << "It is locked to: \"" << progLocaleDir << "\"" << endl;
-    YUI_THROW ( YUIException ( "progLocaleDir is locked to: \"" + progLocaleDir + "\"" ) );
+    yuiMilestone () << "Can't set localeDir to \"" << directory << "\"" << endl;
+    yuiMilestone () << "It is locked to: \"" << _localeDir << "\"" << endl;
+    YUI_THROW ( YUIException ( "localeDir is locked to: \"" + _localeDir + "\"" ) );
   }
 }
 
-std::string YSettings::getLocaleDir ()
+std::string YSettings::localeDir ()
 {
-  if (progLocaleDir.size())
+  if ( _localeDir.size() )
   {
-    yuiMilestone () << "progLocaleDir: \"" << progLocaleDir << "\"" << endl;
-    return progLocaleDir;
+    yuiMilestone () << "localeDir: \"" << _localeDir << "\"" << endl;
+    return _localeDir;
   }
-  else if (progSubDir.size())
+  else if ( _progDir.size() )
   {
-    //back compatibility if setProgSubDir is set to "/usr/share/YaST2"
-    return progSubDir + "/locale/";
+    //back compatibility if ProgDir is set to "/usr/share/YaST2"
+    return _progDir + "/locale/";
   }
 
   return "/usr/share/locale/";

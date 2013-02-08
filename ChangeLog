@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Feb  8 15:22:03 CET 2013 - tgoettlicher@suse.de
+
+- Code clean-up: removed java-like get-prefix
+- Version 2.42.7
+
+-------------------------------------------------------------------
 Mon Feb  4 15:46:13 CET 2013 - tgoettlicher@suse.de
 
 - Added setLocaleDir(), getLocaleDir()
