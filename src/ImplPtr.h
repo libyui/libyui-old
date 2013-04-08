@@ -41,7 +41,9 @@
 template<class _Impl>
 class ImplPtr : private boost::noncopyable
 {
+#if defined( BOOST_NO_CXX11_EXPLICIT_CONVERSION_OPERATORS ) || defined( BOOST_NO_CXX11_NULLPTR )
     typedef typename boost::scoped_ptr<_Impl>::unspecified_bool_type unspecified_bool_type;
+#endif
 
 public:
     typedef _Impl element_type;
@@ -55,7 +57,11 @@ public:
     void swap( ImplPtr rhs )         { _impl.swap( rhs._impl ); }
 
 public:
+#if defined( BOOST_NO_CXX11_EXPLICIT_CONVERSION_OPERATORS ) || defined( BOOST_NO_CXX11_NULLPTR )
     operator unspecified_bool_type() const { return _impl; }
+#else
+    explicit operator bool () const { return _impl.get() != 0; }
+#endif
 
     const _Impl & operator*()  const { return *_impl; }
     const _Impl * operator->() const { return _impl.get(); }
