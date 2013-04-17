@@ -289,9 +289,11 @@ protected:
 				       const YCPTerm & term, const YCPList & optList, int argnr );
     /**
      * Look for a widget id in a widget term. If it finds one, returns
-     * it and sets argnr to 1, otherwise it creates a new unique widget
-     * id and sets argnr to 0. For example PushButton( `id( 17 ), .... )
-     * has with id 17.
+     * it and sets argnr to point after `id(), whether it turned out valid
+     * or not. Otherwise it creates a new unique widget id and sets 
+     * argnr to 0. For example PushButton( `id( 17 ), .... ) has with id 17.
+     * If it cannot find an id, or the id is a duplicate of an existing one
+     * YCPNull is returned 
      * Return value: The widget id on success or YCPNull on failure
      **/
     static YCPValue getWidgetId( const YCPTerm & term, int *argnr );

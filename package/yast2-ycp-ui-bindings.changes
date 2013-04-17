@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Wed Apr 17 15:41:07 CEST 2013 - tgoettlicher@suse.de
+
+- Fix for bnc#811842: segfault in ncurses because of 
+  uninitialized variable
+- 2.21.7
+
+-------------------------------------------------------------------
 Wed Jan  9 13:24:11 UTC 2013 - locilka@suse.com
 
 - Added references to ButtonBox into the generated documentation
