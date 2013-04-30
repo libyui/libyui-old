@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Apr 30 10:41:15 CEST 2013 - tgoettlicher@suse.de
+
+- Adapted setting prog dir in libyui
+- 2.21.7
+
+-------------------------------------------------------------------
 Wed Jan  9 13:24:11 UTC 2013 - locilka@suse.com
 
 - Added references to ButtonBox into the generated documentation

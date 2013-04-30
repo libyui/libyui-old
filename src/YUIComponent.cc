@@ -171,7 +171,7 @@ YUIComponent::createUI()
 	    YUILoader::loadPlugin( _requestedUIName, _withThreads );
 
 	_ui = YUI::ui();
-        YSettings::setProgSubDir( YAST2DIR );
+        YSettings::setProgDir( YAST2DIR );
     
 	YMacro::setRecorder( new YCPMacroRecorder() );
 	YMacro::setPlayer  ( new YCPMacroPlayer()   );
