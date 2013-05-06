@@ -495,6 +495,11 @@ MACRO( SUMMARY )		# prints a brief summary to stdout
   MESSAGE( STATUS "     Build a static library, too:           ${ENABLE_STATIC}" )
   MESSAGE( STATUS "     Build the examples, too:               ${ENABLE_EXAMPLES}" )
   MESSAGE( STATUS "" )
+  IF( INSTALL_DOCS AND DOXYGEN_FOUND )
+    MESSAGE( STATUS "RUN `make docs` BEFORE `make install` !!!" )
+    MESSAGE( STATUS "OTHERWISE INSTALL WILL FAIL !!!" )
+    MESSAGE( STATUS "" )
+  ENDIF( INSTALL_DOCS AND DOXYGEN_FOUND )
   MESSAGE( STATUS "********************************************************************************" )
   MESSAGE( STATUS "" )
 
@@ -620,9 +625,9 @@ MACRO( PROCESS_SOURCES )
 
   ENDIF( ENABLE_STATIC AND NOT DISABLE_SHARED )
 
-  IF( INSTALL_DOCS AND DOXYGEN_FOUND )
-    ADD_DEPENDENCIES( ${TARGETLIB} docs )
-  ENDIF( INSTALL_DOCS AND DOXYGEN_FOUND )
+#  IF( INSTALL_DOCS AND DOXYGEN_FOUND )
+#    ADD_DEPENDENCIES( ${TARGETLIB} docs )
+#  ENDIF( INSTALL_DOCS AND DOXYGEN_FOUND )
 
 ENDMACRO( PROCESS_SOURCES )
 
