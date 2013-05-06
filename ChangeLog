@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon May  6 13:30:00 UTC 2013 - bjoern.esser@gmail.com
+
+- fix build issues with ncurses and qt
+- Version 3.0.3
+
+-------------------------------------------------------------------
 Mon May  6 11:09:31 UTC 2013 - bjoern.esser@gmail.com
 
 - use SONAME from libyui instead of VERSION.cmake if plugin
