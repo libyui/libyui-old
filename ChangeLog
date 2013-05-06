@@ -1,4 +1,16 @@
 -------------------------------------------------------------------
+Mon May  6 11:09:31 UTC 2013 - bjoern.esser@gmail.com
+
+- use SONAME from libyui instead of VERSION.cmake if plugin
+- bumped up patch-version to 3.0.2
+- disabled auto-gen of docs
+  INSTALL_DOCS=ON will no longer auto-gen the docs
+  added a warning to run "make docs" before "make install"
+- add DOC_SUBDIR to CMake-Vars
+  some distributions prefer %{name}-%{version} over
+  %{name}-%{soname_major} as doc-subdir.
+
+-------------------------------------------------------------------
 Tue Apr 30 09:21:48 CEST 2013 - tgoettlicher@suse.de
 
 - Increased version because of changed function names
