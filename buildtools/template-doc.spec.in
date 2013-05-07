@@ -30,7 +30,7 @@ BuildRequires:  graphviz-gnome
 BuildRequires:  texlive-latex
 BuildRequires:  cmake >= 2.8
 BuildRequires:  gcc-c++
-BuildRequires:  libyui-devel >= 3.0.0
+BuildRequires:  libyui-devel >= 3.0.3
 @BuildRequires@
 
 URL:		@URL@
