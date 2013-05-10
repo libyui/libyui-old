@@ -76,6 +76,8 @@ This package has very few dependencies.
 
 %build
 
+bootstrap.sh
+
 export CFLAGS="$RPM_OPT_FLAGS -DNDEBUG"
 export CXXFLAGS="$RPM_OPT_FLAGS -DNDEBUG"
 
