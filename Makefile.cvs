@@ -5,9 +5,12 @@
 all: configure
 
 configure: clean
+	./bootstrap.sh ; \
 	mkdir build ; \
 	cd build ; \
-	cmake -DCMAKE_BUILD_TYPE=RELEASE ..
+	cmake .. \
+	-DENABLE_WERROR=OFF \
+	-DCMAKE_BUILD_TYPE=RELEASE
 
 install: configure
 	cd build ; \
@@ -18,4 +21,5 @@ reconf:
 	cmake rebuild_cache
 
 clean:
-	rm -rf build
+	rm -rf build \
+		CMakeLists.txt
