@@ -53,7 +53,7 @@ This package provides the documentation. (HTML & PDF)
 export CFLAGS="$RPM_OPT_FLAGS -DNDEBUG"
 export CXXFLAGS="$RPM_OPT_FLAGS -DNDEBUG"
 
-./bootstrap %{_prefix}
+./bootstrap.sh %{_prefix}
 
 mkdir build
 cd build
