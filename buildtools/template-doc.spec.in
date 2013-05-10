@@ -30,7 +30,7 @@ BuildRequires:  graphviz-gnome
 BuildRequires:  texlive-latex
 BuildRequires:  cmake >= 2.8
 BuildRequires:  gcc-c++
-BuildRequires:  libyui-devel >= 3.0.3
+BuildRequires:  libyui-devel >= 3.0.4
 @BuildRequires@
 
 URL:		@URL@
@@ -52,6 +52,8 @@ This package provides the documentation. (HTML & PDF)
 
 export CFLAGS="$RPM_OPT_FLAGS -DNDEBUG"
 export CXXFLAGS="$RPM_OPT_FLAGS -DNDEBUG"
+
+./bootstrap %{_prefix}
 
 mkdir build
 cd build
