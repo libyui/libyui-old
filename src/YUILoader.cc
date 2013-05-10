@@ -65,9 +65,12 @@ void YUILoader::loadUI( bool withThreads )
 	      loadPlugin( wantedGUI, withThreads );
 	      return;
 	   }
-	   catch ( YUIException & ex)
+	   catch ( YUIException & ex )
 	   {
 	      YUI_CAUGHT( ex );
+
+	      if ( ex.asString().compare( 0, 4, "pipe" ) == 0 )
+		YUI_RETHROW ( YUIException( ex ) );
 	   }
 	}
     }

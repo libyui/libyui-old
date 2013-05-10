@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri May 10 19:00:00 UTC 2013 - bjoern.esser@gmail.com
+
+- replace exit()-call on broken pipe() with throwing exception
+- V 3.0.5
+
+-------------------------------------------------------------------
 Fri May 10 14:00:00 UTC 2013 - bjoern.esser@gmail.com
 
 - checking prefix in -doc pkg is obsolete
