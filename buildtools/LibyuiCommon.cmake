@@ -3,6 +3,26 @@
 ### special. Put in a seperate file
 ### and include it in CMakeLists.txt
 
+MACRO( SET_GITVERSION )
+
+  FIND_PACKAGE( Git )
+  IF( GIT_FOUND )
+    EXEC_PROGRAM(
+                 "${GIT_EXECUTABLE}"
+                 ${CMAKE_CURRENT_SOURCE_DIR}
+                 ARGS "describe"
+	         OUTPUT_VARIABLE GIT_VERSION )
+
+    STRING( REGEX MATCH "-g[0-9|a-f]+$" VERSION_SHA1 ${GIT_VERSION} )
+    STRING( REGEX REPLACE "[g]" "" VERSION_SHA1 ${VERSION_SHA1} )
+    SET(GIT_SHA1_VERSION "${VERSION_SHA1}")
+  ELSE( GIT_FOUND )
+    MESSAGE ( STATUS "GIT_VERSION option needs git installed" )
+    SET( GIT_SHA1_VERSION "" )
+  ENDIF( GIT_FOUND )
+
+ENDMACRO ( SET_GITVERSION )
+
 MACRO( INITIALIZE )		# compute internal library-deps and lib-type
 
   SET( PROGSUBDIR_UC "${PROGSUBDIR}" )
