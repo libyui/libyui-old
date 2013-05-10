@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri May 10 14:00:00 UTC 2013 - bjoern.esser@gmail.com
+
+- checking prefix in -doc pkg is obsolete
+- use bootstrap.sh for legacy in -doc pkg here, too
+
+-------------------------------------------------------------------
 Fri May 10 10:40:00 UTC 2013 - bjoern.esser@gmail.com
 
 - use a common toplevel CMakeLists.txt
