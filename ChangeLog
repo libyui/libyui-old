@@ -2,6 +2,7 @@
 Fri May 10 19:00:00 UTC 2013 - bjoern.esser@gmail.com
 
 - replace exit()-call on broken pipe() with throwing exception
+- respect compiler flags of system rpm config when building RELEASE
 - V 3.0.5
 
 -------------------------------------------------------------------
