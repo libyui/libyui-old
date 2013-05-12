@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Wed May 15 15:05:00 UTC 2013 - bjoern.esser@gmail.com
+
+- respect compiler flags of system rpm config when building RELEASE
+  by adding -DRESPECT_FLAGS to cmake
+- add -DSKIP_LATEX to skip generation of LaTeX-based PDF-generation
+  when invoking `make docs`
+- Version 3.0.5
+
+-------------------------------------------------------------------
 Fri May 10 14:00:00 UTC 2013 - bjoern.esser@gmail.com
 
 - checking prefix in -doc pkg is obsolete

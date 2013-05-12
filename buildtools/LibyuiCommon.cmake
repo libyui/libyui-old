@@ -46,6 +46,7 @@ MACRO( SET_OPTIONS )		# setup configurable options
   OPTION( ENABLE_EXAMPLES "Shall I compile the examples, too?" OFF )
   OPTION( ENABLE_WALL "Enable the -Wall compiler-flag?" ON )
   OPTION( ENABLE_WERROR "Enable the -Werror compiler-flag?" ON )
+  OPTION( RESPECT_FLAGS "Shall I respect the system c/ldflags?" OFF )
   OPTION( INSTALL_DOCS "Shall \"make install\" install the docs?" OFF )
 
 ENDMACRO( SET_OPTIONS )
@@ -109,8 +110,13 @@ MACRO( SET_BUILD_FLAGS )	# setup compiler-flags depending on CMAKE_BUILD_TYPE
   SET( CMAKE_C_FLAGS_DEBUG 	"-O0 -g3" )
   SET( CMAKE_CXX_FLAGS_MINSIZEREL	"-Os" )
   SET( CMAKE_C_FLAGS_MINSIZEREL		"-Os" )
-  SET( CMAKE_CXX_FLAGS_RELEASE	"-O3" )
-  SET( CMAKE_C_FLAGS_RELEASE	"-O3" )
+IF( RESPECT_FLAGS )
+  SET( CMAKE_CXX_FLAGS_RELEASE	"" )
+  SET( CMAKE_C_FLAGS_RELEASE	"" )
+ELSE( RESPECT_FLAGS )
+  SET( CMAKE_CXX_FLAGS_RELEASE	"-03" )
+  SET( CMAKE_C_FLAGS_RELEASE	"-03" )
+ENDIF( RESPECT_FLAGS )
   SET( CMAKE_CXX_FLAGS_RELWITHDEBINFO	"-O3 -g3" )
   SET( CMAKE_C_FLAGS_RELWITHDEBINFO	"-O3 -g3" )
 
