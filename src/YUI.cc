@@ -32,7 +32,7 @@
 #include <errno.h>
 #include <pthread.h>
 #include <stdlib.h>	// getenv()
-#include <sstream>	// intToString
+#include <boost/format.hpp>	// numstring
 
 #include <stack>
 
@@ -66,11 +66,8 @@ static bool uiDeleted = false;
 
 extern void * start_ui_thread( void * yui );
 
-std::string intToString( int number )
-{
-   std::stringstream itos;
-   itos << number;
-   return itos.str();
+inline std::string numstring( int n ) {
+  return boost::str( boost::format( "%d" ) % n );
 }
 
 YUI::YUI( bool withThreads )
@@ -231,7 +228,7 @@ void YUI::topmostConstructorHasFinished()
 	    yuiError() << "pipe() failed: errno: " << errno << " " << strerror( errno ) << endl;
 	    // exit(2); // this is evil!!!
 
-	    YUI_THROW_ERRNO_MSG1( YUIException, errno, "pipe() failed: errno: " + intToString( errno ) + ", Reason" );
+	    YUI_THROW_ERRNO_MSG1( YUIException, errno, "pipe() failed: errno: " + numstring( errno ) + ", Reason" );
 	}
     }
     else
