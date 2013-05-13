@@ -65,12 +65,13 @@ void YUILoader::loadUI( bool withThreads )
 	      loadPlugin( wantedGUI, withThreads );
 	      return;
 	   }
+	   catch ( YUIPluginPipeException & ex )
+	   {
+	      YUI_RETHROW ( YUIPluginPipeException( ex ) ); // pass exception to code which gets UI intialized
+	   }
 	   catch ( YUIException & ex )
 	   {
 	      YUI_CAUGHT( ex );
-
-	      if ( ex.asString().compare( 0, 4, "pipe" ) == 0 )
-		YUI_RETHROW ( YUIException( ex ) );
 	   }
 	}
     }

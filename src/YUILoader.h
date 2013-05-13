@@ -61,9 +61,13 @@ public:
      *   try {
      *     dialog = YUI::widgetFactory()->createPopupDialog();
      *   }
-     *   catch( YUIException &ex )
+     *   catch( YUIPluginPipeException &ex )
      *   {
      *     ... clean up & exit your prog here ...
+     *   }
+     *   catch( YUIException &ex )
+     *   {
+     *     ... handle any non-missioncritical errors ...
      *   }
      **/
     static void loadUI( bool withThreads = false );

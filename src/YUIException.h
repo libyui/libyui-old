@@ -869,6 +869,22 @@ public:
 
 
 /**
+ * Exception class for broken pipe() inside
+ * YUI::topmostConstructorHasFinished()
+ **/
+class YUIPluginPipeException: public YUIException
+{
+public:
+    YUIPluginPipeException( const std::string & msg )
+	: YUIException( std::string( msg ) )
+	{}
+
+    virtual ~YUIPluginPipeException() throw()
+	{}
+};
+
+
+/**
  * Exception class for UI plugin load failure
  **/
 class YUICantLoadAnyUIException: public YUIException
