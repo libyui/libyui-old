@@ -225,7 +225,7 @@ void YUI::topmostConstructorHasFinished()
 	}
 	else
 	{
-	    yuiError() << "pipe() failed: errno: " << errno << " " << strerror( errno ) << endl;
+	    // yuiError() << "pipe() failed: errno: " << errno << " " << strerror( errno ) << endl;
 	    // exit(2); // this is evil!!!
 
 	    YUI_THROW_ERRNO_MSG1( YUIException, errno, "pipe() failed: errno: " + numstring( errno ) + ", Reason" );
