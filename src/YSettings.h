@@ -118,8 +118,7 @@ public:
      * FALSE = character based / NCurses
      *
      * If you try to call this method before a UI-plugin
-     * was loaded a YUIPluginException() will be thrown
-     * from YSettings::uiName().
+     * was loaded a YUIPluginException() will be thrown.
      **/
     static bool isGui ();
 
@@ -128,6 +127,8 @@ public:
      * to add the type of the loaded plugin
      * to a semicolon-separated string of
      * actually loaded plugins.
+     *
+     * If you pass an empty string an exception will be thrown.
      **/
     static void addLoadedPlugin ( std::string name );
     /**
@@ -147,6 +148,7 @@ private:
     static std::string _localeDir;
     static std::string _uiName;
     static std::string _loadedPlugins;
+    static bool        _isGui;
     
     YSettings ();
     YSettings ( const YSettings& );

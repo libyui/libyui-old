@@ -47,6 +47,7 @@ std::string  YSettings::_themeDir = "";
 std::string  YSettings::_localeDir = "";
 std::string  YSettings::_uiName = "";
 std::string  YSettings::_loadedPlugins = "";
+bool	     YSettings::_isGui = false;
 
 YSettings::YSettings() 
 {
@@ -181,6 +182,7 @@ void YSettings::setUiName( std::string name )
   {
     _uiName = name;
     yuiMilestone () << "Set uiName to \"" << name << "\"" << endl;
+    _isGui = ( _uiName.compare( YUIPlugin_NCurses ) != 0 ); // setting here, because ui doesn't change after one is loaded.
     ( void ) isGui(); // log output: whether we have a GUI or not.
     yuiMilestone () << "uiName is now locked." << endl;
     addLoadedPlugin( "ui" );
@@ -198,18 +200,27 @@ std::string YSettings::uiName ()
   if ( _uiName.size() )
   {
     yuiMilestone () << "uiName is: \"" << _uiName << "\"" << endl;
-    return _uiName;
+  }
+  else
+  {
+    YUI_THROW ( YUIPluginException ( "uiName is not set, which means no ui-plugin was loaded!" ) );
   }
 
-  YUI_THROW ( YUIPluginException ( "uiName is not set, which means no ui-plugin was loaded!" ) );
-  return "";
+  return _uiName;
 }
 
 bool YSettings::isGui ()
 {
-  bool guiAvail = ( uiName().compare( YUIPlugin_NCurses ) != 0 );
-  yuiMilestone () << "We have a GUI is: \"" << ( guiAvail ? "TRUE" : "FALSE" ) << "\"" << endl;
-  return guiAvail;
+  if ( _uiName.size() )
+  {
+    yuiMilestone () << "We have a GUI is: \"" << ( _isGui ? "TRUE" : "FALSE" ) << "\"" << endl;
+  }
+  else
+  {
+    YUI_THROW ( YUIPluginException ( "No ui-plugin was loaded, so I can not tell you if I'm on a GUI!" ) );
+  }
+
+  return _isGui;
 }
 
 
@@ -219,20 +230,22 @@ void YSettings::addLoadedPlugin ( std::string name )
   if ( name.size() != 0 )
   {
     yuiMilestone () << "Loaded plugins were: \"" << _loadedPlugins << "\"" << endl;
-    ( void ) loadedPluginsCount(); // log the number of loaded plugins before adding.
+    ( void ) loadedPluginsCount(); // log output: number of loaded plugins before adding.
 
     if ( _loadedPlugins.size() != 0 )
       _loadedPlugins.append( ";" );
 
     _loadedPlugins.append( name );
+
+    yuiMilestone () << "Loaded plugins are: \"" << _loadedPlugins << "\"" << endl;
+    ( void ) loadedPluginsCount(); // log output: number of loaded plugins after adding.
   }
   else
   {
-    yuiMilestone () << "Will not add an empty string !!!" << endl;
+    YUI_THROW ( YUIPluginException ( "Will not add an empty string to list of loaded plugins!!!" ) );
   }
 
-  yuiMilestone () << "Loaded plugins are: \"" << _loadedPlugins << "\"" << endl;
-  ( void ) loadedPluginsCount(); // log the number of loaded plugins after adding.
+
 }
 
 std::string YSettings::loadedPlugins ()
