@@ -1,4 +1,18 @@
 -------------------------------------------------------------------
+Fri May 10 19:00:00 UTC 2013 - bjoern.esser@gmail.com
+
+- replace exit()-call on broken pipe() with throwing exception
+- respect compiler flags of system rpm config when building RELEASE
+- add -DSKIP_LATEX to skip generation of LaTeX-based PDF-generation
+  when invoking `make docs`
+- enhanced YSettings:
+  added a way to check
+     * which UI was loaded
+     * whether we are on a GUI or not
+     * which and how many plugins are loaded
+- V 3.0.5
+
+-------------------------------------------------------------------
 Fri May 10 14:00:00 UTC 2013 - bjoern.esser@gmail.com
 
 - checking prefix in -doc pkg is obsolete

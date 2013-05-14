@@ -48,6 +48,31 @@ public:
      * Load any of the available UI plug-ins in this order:
      * - Qt      if $DISPLAY is set
      * - NCurses if stdout is a tty
+     *
+     * Improvement to just calling exit():
+     * This will throw a YUIException when libyui runs with
+     * threads and pipe() fails during initialization of UI.
+     *
+     * You might want to catch this exception inside your
+     * code when the UI is initialized and exit your program
+     * in a sane way, e.g.:
+     *
+     * /code
+     *
+     *   YDialog    * dialog;
+     *   try {
+     *     dialog = YUI::widgetFactory()->createPopupDialog();
+     *   }
+     *   catch( YUIPluginPipeException &ex )
+     *   {
+     *     ... clean up & exit your prog here ...
+     *   }
+     *   catch( YUIException &ex )
+     *   {
+     *     ... handle any non-missioncritical errors ...
+     *   }
+     *
+     * /endcode
      **/
     static void loadUI( bool withThreads = false );
 

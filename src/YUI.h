@@ -187,6 +187,8 @@ public:
     /**
      * Must be called after the constructor of the Qt/NCurses ui
      * is ready. Starts the ui thread.
+     *
+     * Throws YUIPluginPipeException() if pipe() failed.
      **/
     void topmostConstructorHasFinished();
 

@@ -32,6 +32,7 @@
 #include "YUIPlugin.h"
 #include "YUIException.h"
 #include "YPath.h"
+#include "YSettings.h"
 
 #include "Libyui_config.h"
 
@@ -63,9 +64,14 @@ void YUILoader::loadUI( bool withThreads )
 	   try
 	   {
 	      loadPlugin( wantedGUI, withThreads );
+	      YSettings::setUiName( wantedGUI );
 	      return;
 	   }
-	   catch ( YUIException & ex)
+	   catch ( YUIPluginPipeException & ex )
+	   {
+	      YUI_RETHROW ( YUIPluginPipeException( ex ) ); // pass exception to code which gets UI intialized
+	   }
+	   catch ( YUIException & ex )
 	   {
 	      YUI_CAUGHT( ex );
 	   }
@@ -81,6 +87,7 @@ void YUILoader::loadUI( bool withThreads )
 	try
 	{
 	    loadPlugin( YUIPlugin_NCurses, withThreads );
+	    YSettings::setUiName( YUIPlugin_NCurses );
 	    return;
 	}
 	catch ( YUIException & ex)
