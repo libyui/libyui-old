@@ -32,6 +32,7 @@
 #include "YUIPlugin.h"
 #include "YUIException.h"
 #include "YPath.h"
+#include "YSettings.h"
 
 #include "Libyui_config.h"
 
@@ -63,6 +64,8 @@ void YUILoader::loadUI( bool withThreads )
 	   try
 	   {
 	      loadPlugin( wantedGUI, withThreads );
+	      YSettings::setUiName( wantedGUI );
+	      YSettings::addLoadedPlugin( "ui" );
 	      return;
 	   }
 	   catch ( YUIPluginPipeException & ex )
@@ -85,6 +88,8 @@ void YUILoader::loadUI( bool withThreads )
 	try
 	{
 	    loadPlugin( YUIPlugin_NCurses, withThreads );
+	    YSettings::setUiName( YUIPlugin_NCurses );
+	    YSettings::addLoadedPlugin( "ui" );
 	    return;
 	}
 	catch ( YUIException & ex)

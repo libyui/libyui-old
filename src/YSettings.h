@@ -95,11 +95,58 @@ public:
      **/
     static std::string localeDir ();
 
+    /**
+     * This is used by YUILoader::loadUI()
+     * to set the name of the loaded UI-plugin.
+     *
+     * Once this is set, it can't be altered. If you do so although an
+     * exception will be thrown.
+     **/
+    static void setUiName( std::string name );
+    /**
+     * Returns the value of loaded UI-plugin-type,
+     * which is one of the "#define YUIPlugin_*"
+     * in YUILoader.h
+     *
+     * If you try to call this method before a UI-plugin
+     * was loaded a YUIPluginException() will be thrown.
+     **/
+    static std::string uiName ();
+    /**
+     * Returns the type of used UI
+     * TRUE  = GUI
+     * FALSE = character based / NCurses
+     *
+     * If you try to call this method before a UI-plugin
+     * was loaded a YUIPluginException() will be thrown
+     * from YSettings::uiName().
+     **/
+    static bool isGui ();
+
+    /**
+     * This is used by YUILoader::loadUI()
+     * to add the type of the loaded plugin
+     * to a semicolon-separated string of
+     * actually loaded plugins.
+     **/
+    static void addLoadedPlugin ( std::string name );
+    /**
+     * Returns the value of a semicolon-separated
+     * string of actually loaded plugins.
+     **/
+    static std::string loadedPlugins ();
+    /**
+     * Returns the number of actually loaded plugins.
+     **/
+    static size_t loadedPluginsCount ();
+
 private:
     static std::string _progDir;
     static std::string _iconDir;
     static std::string _themeDir;
     static std::string _localeDir;
+    static std::string _uiName;
+    static std::string _loadedPlugins;
     
     YSettings ();
     YSettings ( const YSettings& );
