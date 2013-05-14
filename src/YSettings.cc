@@ -183,6 +183,7 @@ void YSettings::setUiName( std::string name )
     yuiMilestone () << "Set uiName to \"" << name << "\"" << endl;
     ( void ) isGui(); // log output: whether we have a GUI or not.
     yuiMilestone () << "uiName is now locked." << endl;
+    addLoadedPlugin( "ui" );
   }
   else
   {

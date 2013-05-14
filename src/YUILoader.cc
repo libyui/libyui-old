@@ -65,7 +65,6 @@ void YUILoader::loadUI( bool withThreads )
 	   {
 	      loadPlugin( wantedGUI, withThreads );
 	      YSettings::setUiName( wantedGUI );
-	      YSettings::addLoadedPlugin( "ui" );
 	      return;
 	   }
 	   catch ( YUIPluginPipeException & ex )
@@ -89,7 +88,6 @@ void YUILoader::loadUI( bool withThreads )
 	{
 	    loadPlugin( YUIPlugin_NCurses, withThreads );
 	    YSettings::setUiName( YUIPlugin_NCurses );
-	    YSettings::addLoadedPlugin( "ui" );
 	    return;
 	}
 	catch ( YUIException & ex)
