@@ -207,7 +207,7 @@ std::string YSettings::uiName ()
 
 bool YSettings::isGui ()
 {
-  bool guiAvail = !( uiName().compare( YUIPlugin_NCurses ) == 0 );
+  bool guiAvail = ( uiName().compare( YUIPlugin_NCurses ) != 0 );
   yuiMilestone () << "We have a GUI is: \"" << ( guiAvail ? "TRUE" : "FALSE" ) << "\"" << endl;
   return guiAvail;
 }
