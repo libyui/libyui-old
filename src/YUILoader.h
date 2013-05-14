@@ -57,6 +57,8 @@ public:
      * code when the UI is initialized and exit your program
      * in a sane way, e.g.:
      *
+     * /code
+     *
      *   YDialog    * dialog;
      *   try {
      *     dialog = YUI::widgetFactory()->createPopupDialog();
@@ -69,6 +71,8 @@ public:
      *   {
      *     ... handle any non-missioncritical errors ...
      *   }
+     *
+     * /endcode
      **/
     static void loadUI( bool withThreads = false );
 
