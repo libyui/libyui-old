@@ -41,11 +41,13 @@ MACRO( SET_OPTIONS )		# setup configurable options
 
   OPTION( DISABLE_SHARED "Shall I build a static library, only?" OFF )
   OPTION( DOCS_ONLY "Shall \"make install\" install only docs, no binaries?" OFF )
+  OPTION( SKIP_LATEX "Shall I skip the generation of LaTeX PDF-docs?" OFF )
   OPTION( ENABLE_STATIC "Shall I build a static library, too?" OFF )
   OPTION( ENABLE_DEBUG "Shall I include Debug-Symbols in Release?" OFF )
   OPTION( ENABLE_EXAMPLES "Shall I compile the examples, too?" OFF )
   OPTION( ENABLE_WALL "Enable the -Wall compiler-flag?" ON )
   OPTION( ENABLE_WERROR "Enable the -Werror compiler-flag?" ON )
+  OPTION( RESPECT_FLAGS "Shall I respect the system c/ldflags?" OFF )
   OPTION( INSTALL_DOCS "Shall \"make install\" install the docs?" OFF )
 
 ENDMACRO( SET_OPTIONS )
@@ -109,8 +111,13 @@ MACRO( SET_BUILD_FLAGS )	# setup compiler-flags depending on CMAKE_BUILD_TYPE
   SET( CMAKE_C_FLAGS_DEBUG 	"-O0 -g3" )
   SET( CMAKE_CXX_FLAGS_MINSIZEREL	"-Os" )
   SET( CMAKE_C_FLAGS_MINSIZEREL		"-Os" )
-  SET( CMAKE_CXX_FLAGS_RELEASE	"-O3" )
-  SET( CMAKE_C_FLAGS_RELEASE	"-O3" )
+IF( RESPECT_FLAGS )
+  SET( CMAKE_CXX_FLAGS_RELEASE	"" )
+  SET( CMAKE_C_FLAGS_RELEASE	"" )
+ELSE( RESPECT_FLAGS )
+  SET( CMAKE_CXX_FLAGS_RELEASE	"-03" )
+  SET( CMAKE_C_FLAGS_RELEASE	"-03" )
+ENDIF( RESPECT_FLAGS )
   SET( CMAKE_CXX_FLAGS_RELWITHDEBINFO	"-O3 -g3" )
   SET( CMAKE_C_FLAGS_RELWITHDEBINFO	"-O3 -g3" )
 
@@ -266,7 +273,7 @@ MACRO( SET_AUTODOCS )		# looks for doxygen, dot and latex and setup autodocs acc
       AND NOT ${MAKEINDEX_COMPILER} STREQUAL "MAKEINDEX_COMPILER-NOTFOUND"
     )
 
-    IF( ${LATEX_COND} )
+    IF( ${LATEX_COND} AND NOT SKIP_LATEX )
       MESSAGE( STATUS "Found LaTeX: ${PDFLATEX_COMPILER}" )
       MESSAGE( STATUS "Found LaTeX: ${MAKEINDEX_COMPILER}" )
       SET( BUILD_LATEX "YES" )
@@ -286,10 +293,10 @@ MACRO( SET_AUTODOCS )		# looks for doxygen, dot and latex and setup autodocs acc
         )
       ENDIF( INSTALL_DOCS OR DOCS_ONLY )
 
-    ELSE( ${LATEX_COND} )
+    ELSE( ${LATEX_COND} AND NOT SKIP_LATEX )
       MESSAGE( STATUS "Checking for LaTeX: not found" )
       SET( BUILD_LATEX "NO" )
-    ENDIF( ${LATEX_COND} )
+    ENDIF( ${LATEX_COND} AND NOT SKIP_LATEX )
 
     ADD_CUSTOM_TARGET( ${DOXYGEN_TARGET}
       ${DOXYGEN_EXECUTABLE} "${CMAKE_CURRENT_BINARY_DIR}/Doxyfile"
