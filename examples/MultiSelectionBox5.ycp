@@ -1,0 +1,89 @@
+// Advanced MultiSelectionBox example:
+//
+// Retrieve the list of selected items and output it.
+{
+    
+    UI::OpenDialog(
+                   `VBox(
+                         `Heading("Today's menu"),
+			 `MinSize( 55, 10,
+                                   `HBox(`Table(`id(`pizza), `opt(`notify), `header("Pizza", "Price"),
+                                                [
+                                                 `item(`id(`vege), "Vegetarian", 6 ),
+                                                 `item(`id(`capri), "Capricciosa", 7 ),
+                                                 `item(`id(`meat), "Meat and more", 8 )
+                                                 ]
+                                                ),
+                                         `MultiSelectionBox( `id(`toppings), "Select pizza toppings:",
+                                                             [
+                                                              `item( `id(`cheese 	), "Cheese"	, true  ),
+                                                              `item( `id(`tomatoes), "Tomatoes"	, true  ),
+                                                              `item( `id(`mushroom), "Mushrooms"	, false ),
+                                                              `item( `id(`onions	), "Onions" 	)
+                                                              ] )
+                                         )
+                                   ),
+                         `PushButton( `id(`ok), `opt(`default), "&OK")
+                         )
+	       );
+
+    list vege = [
+                  `item( `id(`cheese   	), "Cheese"	, true  ),
+                  `item( `id(`tomatoes 	), "Tomatoes"	, true  ),
+                  `item( `id(`mushroom 	), "Mushrooms"	, false ),
+                  `item( `id(`onions	), "Onions" 	) ];
+    list meat = [   `item( `id(`sausage	), "Salami", true ),
+                    `item( `id(`pork	), "Ham"	) ];
+    list capri = merge (vege, meat);
+    
+    any ret = nil;
+
+    repeat
+    {
+        ret = UI::UserInput();
+
+        if ( ret == `pizza )
+        {
+            any item = UI::QueryWidget(`pizza, `CurrentItem );
+            if ( item == `vege )
+                UI::ChangeWidget(`toppings, `Items, vege );
+            else if ( item == `capri )
+                UI::ChangeWidget(`toppings, `Items, capri );
+            else if ( item == `meat )
+                UI::ChangeWidget(`toppings, `Items, meat ); 
+        }
+    }
+    until ( ret == `ok );
+    
+    list selected_items = (list) UI::QueryWidget( `id(`toppings), `SelectedItems );
+
+    y2debug( "Selected items: %1", selected_items );
+    
+    // Remember to retrieve the widget's data _before_ the dialog is closed,
+    // i.e. before it is destroyed!
+    
+    UI::CloseDialog();
+
+    
+    
+    // Concatenate the list of selected toppings to one multi-line string.
+    
+    string pizza_description = "";
+
+    foreach ( `topping, selected_items, ``{
+	pizza_description = sformat( "%1\n%2", pizza_description, topping );
+    } );
+
+
+    // Open a new dialog to echo the selection.
+    
+    UI::OpenDialog(
+	       `VBox(
+		     `Label( "Your pizza will come with:\n" ),
+		     `Label( pizza_description ),
+		     `PushButton( `opt(`default), "&OK" )
+		     )
+	       );
+    UI::UserInput();
+    UI::CloseDialog();
+}
