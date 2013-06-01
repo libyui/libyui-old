@@ -209,7 +209,7 @@ void popup()
   auto quitButton	= YUI::widgetFactory()->createPushButton( buttonbox, "Quit" );
 
   // event loop
-  while ( true )
+  while ( true || label )	// get rid of unused variable warning
   {
     YEvent * event = dialog->waitForEvent();
     if ( event )
