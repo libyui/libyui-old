@@ -866,7 +866,12 @@ YUIOverloadedFunction::finishParameters()
     {
 	SymbolEntryPtr se_p = *it;
 	constFunctionTypePtr cand_type = se_p->type();
-	int m = real_tp->match (cand_type);
+        // match direction is slightly confusing here as real_tp can be e.g. any(integer)
+        // that means I want function that accepts integer and return anything
+        // and if there is function that returns integer and accept anything I want it
+        // So I actually want to know if there is candidate that match against proposed type
+        // see FunctionType#match implementation or Type#match documentation
+	int m = cand_type->match (real_tp);
 	y2debug ("Candidate: %s MATCH: %d", se_p->toString().c_str(), m);
 
 	if (m == 0)
