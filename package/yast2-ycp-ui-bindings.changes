@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Jun 18 12:19:24 UTC 2013 - tgoettlicher@suse.de
+
+- Fix for bnc#811842: segfault in ncurses because of 
+  uninitialized variable
+-------------------------------------------------------------------
+
 Tue May 14 14:00:54 CEST 2013 - tgoettlicher@suse.de
 
 - Fixed libyui dependency

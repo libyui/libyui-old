@@ -3675,6 +3675,7 @@ YCPDialogParser::getWidgetId( const YCPTerm & term, int *argnr )
 	{
 	    ycperror( "Widget id `" YUISymbol_id "() expects exactly one argument, not %s",
 		     idterm->toString().c_str() );
+	    *argnr = 1;
 	    return YCPNull();
 	}
 
@@ -3685,6 +3686,7 @@ YCPDialogParser::getWidgetId( const YCPTerm & term, int *argnr )
 	{
             // Already have a widget with that ID?
 	    ycperror( "Widget id %s is not unique", id->toString().c_str() );
+	    *argnr = 1;
 	    return YCPNull();
 	}
 
