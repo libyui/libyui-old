@@ -136,7 +136,7 @@ YUIComponentCreator::createInternal( const string & componentName, bool isNamesp
 		uiComponent->setRequestedUIName( name );
 	    }
 
-	    y2milestone( "Returning existing UI component for \"%s\"", name.c_str() );
+	    y2debug( "Returning existing UI component for \"%s\"", name.c_str() );
 	}
 
 	return uiComponent;
