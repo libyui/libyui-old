@@ -19,7 +19,7 @@ UI::OpenDialog(
 		     `Heading("Today's menu"),
 		     `MinSize( 30, 10,
 			       `Table(`id(`menu), 
-				      `opt(`notify, `immediate, `multiSelection),
+				      `opt(`notify, `multiSelection),
 				      `header("Name", "Price"),
 				      [
 				       `item(`id(1), "Chili",		6),
@@ -29,6 +29,7 @@ UI::OpenDialog(
 				       ]
 				      )
 			       ),
+                     `Label("Get notified on 'Return' or double click"),
                      `HBox(
                            `Label("Selected: "),
                            `TextEntry(`id(`info), "") 
@@ -57,7 +58,7 @@ UI::OpenDialog(
         string selItems = "";
         event = UI::WaitForEvent();
         
-        if ( event["EventReason"]:nil == "ValueChanged" )
+        if ( event["ID"]:nil == `menu )
         {
             sel = (list<integer>)UI::QueryWidget(`menu, `SelectedItems);
             foreach ( integer val, sel, 
@@ -66,7 +67,7 @@ UI::OpenDialog(
                       } );
             UI::ChangeWidget(`info, `Value, selItems ); 
         }
-        if  ( event["EventReason"]:nil == "Activated" && event["ID"]:nil != `cancel)
+        else if ( event["ID"]:nil == `next )
         {
             num = num + 1;
             list items = [];
