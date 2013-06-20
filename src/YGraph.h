@@ -27,11 +27,22 @@
 
 #include "YWidget.h"
 
-extern "C"
-{
-    struct Agraph_t;
-    typedef struct Agraph_t graph_t;
-}
+/* graphviz >= 2.30.0 has WITH_CGRAPH conditional:
+
+   struct Agraph_t gets defined different depending
+   on version of grapviz is >= 2.30.0 or not.
+
+   predeclaration  of
+     struct Agraph_t
+     typedef struct Agraph_t graph_t
+
+   will lead to build-errors when building qt-graph
+
+   so let's include the proper define from graphviz
+*/
+
+#include <graphviz/types.h>
+
 
 class YGraphPrivate;
 

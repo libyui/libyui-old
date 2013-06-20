@@ -29,6 +29,7 @@ Group:		System/Libraries
 BuildRequires:	boost-devel
 BuildRequires:	cmake >= 2.8
 BuildRequires:	gcc-c++
+BuildRequires:  graphviz-devel
 BuildRequires:	pkg-config
 
 URL:		@URL@
@@ -59,6 +60,7 @@ Requires:	@PROJECTNAME@@SONAME_MAJOR@ = %{version}
 Requires:	glibc-devel
 Requires:	libstdc++-devel
 Requires:	boost-devel
+Requires:	graphviz-devel
 
 URL:		@URL@
 Summary:	@PROJECTNAME_UC@ header files
