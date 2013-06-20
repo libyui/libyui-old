@@ -44,7 +44,7 @@ MACRO( SET_OPTIONS )		# setup configurable options
   OPTION( SKIP_LATEX "Shall I skip the generation of LaTeX PDF-docs?" OFF )
   OPTION( ENABLE_STATIC "Shall I build a static library, too?" OFF )
   OPTION( ENABLE_DEBUG "Shall I include Debug-Symbols in Release?" OFF )
-  OPTION( ENABLE_EXAMPLES "Shall I compile the examples, too?" OFF )
+  OPTION( ENABLE_EXAMPLES "Shall I compile the examples, too?" ON )
   OPTION( ENABLE_WALL "Enable the -Wall compiler-flag?" ON )
   OPTION( ENABLE_WERROR "Enable the -Werror compiler-flag?" ON )
   OPTION( RESPECT_FLAGS "Shall I respect the system c/ldflags?" OFF )
