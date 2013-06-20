@@ -208,6 +208,9 @@ void popup()
   buttonbox->setLayoutPolicy( YButtonBox::gnomeLayoutPolicy() );
   auto quitButton	= YUI::widgetFactory()->createPushButton( buttonbox, "Quit" );
 
+  // get rid of unused variable warning
+  (void)label;
+
   // event loop
   while ( true )
   {
