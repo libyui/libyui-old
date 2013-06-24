@@ -5,6 +5,7 @@ Mon Jun 24 16:17:06 CEST 2013 - anaselli@linux.it
 - fixed ManyWidget example using handleChildrenEnablement as 
   requested into YCheckBoxFrame documentation to establish the 
   initial enabled or disabled state of the child widgets
+- Version 3.0.7
 
 -------------------------------------------------------------------
 Sat Jun 01 08:00:00 UTC 2013 - bjoern.esser@gmail.com
