@@ -10,7 +10,7 @@ MACRO( SET_GITVERSION )
     EXEC_PROGRAM(
                  "${GIT_EXECUTABLE}"
                  ${CMAKE_CURRENT_SOURCE_DIR}
-                 ARGS "describe"
+                 ARGS "describe --tags"
 	         OUTPUT_VARIABLE GIT_VERSION )
 
     STRING( REGEX MATCH "-g[0-9|a-f]+$" VERSION_SHA1 ${GIT_VERSION} )
