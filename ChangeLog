@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Jun 24 16:17:06 CEST 2013 - anaselli@linux.it
+
+- fixed the use of -DGIT_VERSION=on
+- Version 3.0.7
+
+-------------------------------------------------------------------
 Sat Jun 01 08:00:00 UTC 2013 - bjoern.esser@gmail.com
 
 - fix build with graphviz >= 2.30.0
