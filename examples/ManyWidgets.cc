@@ -363,26 +363,22 @@ int main( int argc, char **argv )
   hbox->setWeight( YD_VERT, 1 );
 
   frame			= YUI::widgetFactory()->createCheckBoxFrame( hbox, "CheckFrame", false );
-  YCheckBoxFrame* cbf	= dynamic_cast<YCheckBoxFrame*>(frame);
   {
     frame->setWeight( YD_HORIZ, 1 );
     frame		= YUI::widgetFactory()->createHVCenter( frame );
     frame		= YUI::widgetFactory()->createVBox( frame );
 
     auto w = YUI::widgetFactory()->createMultiLineEdit( frame, "MultiLineEdit" );
-    cbf->handleChildrenEnablement(cbf->value());
     w->setValue( "Check frame\nto enable\nediting." );
     w->setNotify( true );
   }
 
   frame			= YUI::widgetFactory()->createCheckBoxFrame( hbox, "List", false );
-  cbf			= dynamic_cast<YCheckBoxFrame*>(frame);
   {
     frame->setWeight( YD_HORIZ, 1 );
     frame		= YUI::widgetFactory()->createHVCenter( frame );
     frame		= YUI::widgetFactory()->createVBox( frame );
     auto cbox		= YUI::widgetFactory()->createSelectionBox( atLeft(frame), "Select:" );
-    cbf->handleChildrenEnablement(cbf->value());
     cbox->setNotify( true );
     {
       YItemCollection items;
@@ -397,13 +393,11 @@ int main( int argc, char **argv )
   }
 
   frame			= YUI::widgetFactory()->createCheckBoxFrame( hbox, "Tree", false );
-  cbf			= dynamic_cast<YCheckBoxFrame*>(frame);
   {
     frame->setWeight( YD_HORIZ, 1 );
     frame		= YUI::widgetFactory()->createHVCenter( frame );
     frame		= YUI::widgetFactory()->createVBox( frame );
     auto tree		= YUI::widgetFactory()->createTree( atLeft(frame), "Select:" );
-    cbf->handleChildrenEnablement(cbf->value());
     tree->setNotify( true );
     {
       YItemCollection items;
@@ -445,7 +439,6 @@ int main( int argc, char **argv )
   }
 
   frame			= YUI::widgetFactory()->createCheckBoxFrame( hbox, "Table", false );
-  cbf			= dynamic_cast<YCheckBoxFrame*>(frame);
   {
     frame->setWeight( YD_HORIZ, 1 );
     frame		= YUI::widgetFactory()->createHVCenter( frame );
@@ -457,7 +450,6 @@ int main( int argc, char **argv )
     head->addColumn( "Left", YAlignBegin );
     auto table		= YUI::widgetFactory()->createTable( atLeft(frame), head );
     table->setNotify( true );
-    cbf->handleChildrenEnablement(cbf->value());
 
     YItemCollection items;
     items.push_back( new YTableItem( "a", "b", "c", "extra" ) );
