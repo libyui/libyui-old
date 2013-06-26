@@ -50,7 +50,7 @@ YGraph::YGraph( YWidget * parent, const std::string & filename, const std::strin
 }
 
 
-YGraph::YGraph( YWidget * parent, graph_t * graph )
+YGraph::YGraph( YWidget * parent, /* graph_t */ void * graph )
     : YWidget( parent )
     , priv( new YGraphPrivate( "", "" ) )
 {
@@ -88,7 +88,7 @@ YGraph::layoutAlgorithm() const
 
 
 void
-YGraph::setGraph( graph_t * graph )
+YGraph::setGraph( /* graph_t */ void * graph )
 {
     priv->filename.clear();
     renderGraph( graph );

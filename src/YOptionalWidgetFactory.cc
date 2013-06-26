@@ -264,7 +264,7 @@ YOptionalWidgetFactory::createGraph( YWidget * parent, const std::string & filen
 
 
 YGraph *
-YOptionalWidgetFactory::createGraph( YWidget * parent, graph_t * graph )
+YOptionalWidgetFactory::createGraph( YWidget * parent, /* graph_t */ void * graph )
 {
     THROW_UNSUPPORTED( "YGraph" );
 }

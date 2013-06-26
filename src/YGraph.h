@@ -27,22 +27,15 @@
 
 #include "YWidget.h"
 
-/* graphviz >= 2.30.0 has WITH_CGRAPH conditional:
-
-   struct Agraph_t gets defined different depending
-   on version of grapviz is >= 2.30.0 or not.
-
-   predeclaration  of
-     struct Agraph_t
-     typedef struct Agraph_t graph_t
-
-   will lead to build-errors when building qt-graph
-
-   so let's include the proper define from graphviz
-*/
-
-#include <graphviz/types.h>
-
+/*
+ * Do not include graphviz/types.h here since it conflicts with ncurses
+ * headers. People should finally start to use C++ and namespaces!
+ *
+ * The previous workaround of inserting the graph_t definition here does not
+ * work with graphviz >= 2.30.0 since it depends on the define WITH_CGRAPH.
+ *
+ * For that reason a lot of functions simply take a void* instead of graph_t*.
+ */
 
 class YGraphPrivate;
 
@@ -66,7 +59,7 @@ protected:
      *
      * Renders the graph. The graph must already contain layout information.
      **/
-    YGraph( YWidget * parent, graph_t * graph );
+    YGraph( YWidget * parent, /* graph_t */ void * graph );
 
 public:
 
@@ -140,7 +133,7 @@ public:
      * call this base class method in the new implementation. Most derived
      * classes only need to implement renderGraph().
      **/
-    virtual void setGraph( graph_t * graph );
+    virtual void setGraph( /* graph_t */ void * graph );
 
     /**
      * Return name of activated node. Activation can happen due to e.g. single
@@ -159,7 +152,7 @@ protected:
     /**
      * Render the graph. Derived classes are required to implement this.
      **/
-    virtual void renderGraph( graph_t * graph ) = 0;
+    virtual void renderGraph( /* graph_t */ void * graph ) = 0;
 
 private:
 
