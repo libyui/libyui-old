@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Sun Jun 30 18:52:25 CEST 2013 - anaselli@linux.it
+
+- git describe and git --tags do not always return a git hash
+  to avoid cmake failure a check has been introduced with a warning
+  message
+- skipping also .kdev4 when building source package
+
+-------------------------------------------------------------------
 Wed Jun 26 16:20:29 CEST 2013 - tgoettlicher@suse.de
 
 - Fixed build of libyui-qt-graph examples
