@@ -4,7 +4,6 @@
 ### and include it in CMakeLists.txt
 
 MACRO( SET_GITVERSION )
-
   FIND_PACKAGE( Git )
   IF( GIT_FOUND )
     EXEC_PROGRAM(
@@ -14,8 +13,14 @@ MACRO( SET_GITVERSION )
 	         OUTPUT_VARIABLE GIT_VERSION )
 
     STRING( REGEX MATCH "-g[0-9|a-f]+$" VERSION_SHA1 ${GIT_VERSION} )
-    STRING( REGEX REPLACE "[g]" "" VERSION_SHA1 ${VERSION_SHA1} )
-    SET(GIT_SHA1_VERSION "${VERSION_SHA1}")
+    IF ( VERSION_SHA1 )
+      STRING( REGEX REPLACE "[g]" "" VERSION_SHA1 ${VERSION_SHA1} )
+      SET(GIT_SHA1_VERSION "${VERSION_SHA1}")
+    ELSE( VERSION_SHA1 )
+	    MESSAGE ( WARNING "Cannot evaluate GIT_VERSION based on git
+	    describe --tags, skipping..." )
+      SET( GIT_SHA1_VERSION "" )
+    ENDIF( VERSION_SHA1 )
   ELSE( GIT_FOUND )
     MESSAGE ( STATUS "GIT_VERSION option needs git installed" )
     SET( GIT_SHA1_VERSION "" )
@@ -431,6 +436,7 @@ MACRO( PREP_OBS_TARBALL )	# prepare dist-tarball - This is a shameless rip-off f
     # backup files
     "~$"
     # eclipse files
+    "\\\\.kdev4$"
     "\\\\.cdtproject$"
     "\\\\.cproject$"
     "\\\\.project$"
