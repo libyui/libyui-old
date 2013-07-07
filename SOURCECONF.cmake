@@ -5,6 +5,7 @@ SET( ${TARGETLIB}_SOURCES
   YOptionalWidgetFactory.cc
   YSettings.cc
   YPath.cc
+  YWE.cc
 
   YCommandLine.cc
   YDialogSpy.cc

@@ -30,6 +30,7 @@
 #include <string>
 
 #include "YUI.h"
+#include "YWE.h"
 
 
 
@@ -59,7 +60,31 @@ public:
     static void loadPlugin( const std::string & name, bool withThreads = false );
 
     static bool pluginExists( const std::string & pluginBaseName );
-
+    
+    /**
+     * Load any of the available Widget Extension plug-ins in this order:
+     * - Qt, Gtk or NCurses in the same way as loadUI
+     * 
+     * 'name'   is the user defined plugin name
+     * 'symbol' is the function symbol to be loaded, e.g. void symbolName(void)
+     *          usually createWE(void) 
+     **/
+    static void loadWE( const std::string & name, const std::string & symbol );
+    
+    /**
+     * Load a WE (Widget Extension) plug-in. 
+     * 
+     * 'name' is composed as libyui-XX-YY.so.VER.
+     * where XX  is the user defined name
+     *       YY  is the UI used (ncurses, gtk, qt)
+     *       VER is the libyui so version
+     *
+     * 'symbol' is the symbol to be loaded by dlsym
+     * 
+     * This might throw exceptions.
+     **/
+    static void loadExtensionPlugin( const std::string & name, const std::string & symbol );
+    
 private:
     YUILoader()  {}
     ~YUILoader() {}
@@ -76,5 +101,14 @@ private:
  **/
 typedef YUI * (*createUIFunction_t)( bool );
 
+/**
+ * Every WE extension plug-in has to provide a function
+ *
+ *     YWE * createWE( )
+ *
+ * that creates a WE of that specific type upon the first call and returns that
+ * singleton for all subsequent calls.
+ **/
+typedef YWE * (*createWEFunction_t)( void );
 
 #endif // YUILoader_h
