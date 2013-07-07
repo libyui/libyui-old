@@ -66,8 +66,8 @@ public:
      * - Qt, Gtk or NCurses in the same way as loadUI
      * 
      * 'name'   is the user defined plugin name
-     * 'symbol' is the function symbol to be loaded, e.g. void symbolName(void)
-     *          usually createWE(void) 
+     * 'symbol' is the function symbol to be loaded, e.g. YWE* symbolName(void)
+     *          usually YWE* createWE(void) see createWEFunction_t
      **/
     static void loadWE( const std::string & name, const std::string & symbol );
     
@@ -80,6 +80,7 @@ public:
      *       VER is the libyui so version
      *
      * 'symbol' is the symbol to be loaded by dlsym
+     *          usually YWE* createWE(void) see createWEFunction_t
      * 
      * This might throw exceptions.
      **/
