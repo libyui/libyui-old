@@ -180,7 +180,10 @@ void YUILoader::loadWE ( const std::string& name, const std::string& symbol )
 
         try
         {
-            loadExtensionPlugin( YUIPlugin_NCurses, symbol );
+            std::string wantedNcurses = name;
+            wantedNcurses.append("-");
+            wantedNcurses.append(YUIPlugin_NCurses);
+            loadExtensionPlugin( wantedNcurses, symbol );
             return;
         }
         catch ( YUIException & ex)
