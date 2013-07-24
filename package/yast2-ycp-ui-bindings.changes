@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Wed Jul 24 08:03:23 UTC 2013 - jreidinger@suse.com
+
+- fix calling SetFunctionKeys as overloaded function (gh#yast/ycp-killer#556)
+- removed DemoBrowser.ycp and memtest.ycp examples (lslezak)
+- adapt example to changes in NCTable (gs)
+- 2.24.1
+
+-------------------------------------------------------------------
 Tue Jun 18 12:20:23 UTC 2013 - jreidinger@suse.com
 
 - fix overloaded method matching (BNC#825263)
