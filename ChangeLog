@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Wed Jul 24 14:59:07 CEST 2013 - tgoettlicher@suse.de
+
+- fixed bnc#752278: ComboBox does not show active item when item 
+  with empty label is present
+- Version 3.0.9
+
+-------------------------------------------------------------------
 Wed Jun 26 16:20:29 CEST 2013 - tgoettlicher@suse.de
 
 - Fixed build of libyui-qt-graph examples
