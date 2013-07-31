@@ -1,7 +1,0 @@
-{
-    UI::OpenDialog(`opt(`defaultsize), `PackageSelector(`id(`selector), `opt(`testMode) ) );
-    any input = UI::RunPkgSelection(`id(`selector) );
-    UI::CloseDialog();
-
-    y2milestone( "Input: %1", input );
-}
