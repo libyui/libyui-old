@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Aug  6 14:30:53 CEST 2013 - tgoettlicher@suse.de
+
+- Fixed dependencies
+- Version 3.0.9
+
+-------------------------------------------------------------------
 Wed Jul 24 14:59:07 CEST 2013 - tgoettlicher@suse.de
 
 - fixed bnc#752278: ComboBox does not show active item when item 
