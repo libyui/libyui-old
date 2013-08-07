@@ -137,25 +137,16 @@ YComboBox::selectedItem()
 {
     std::string currentText = text();
 
-    if ( ! currentText.empty() )
+    // Make sure exactly this item is selected (and no other)
+    YSelectionWidget::deselectAllItems();
+
+    // Try to find an item with this text
+    YItem * item = findItem( currentText );
+
+    if ( item )
     {
-	// Try to find an item with this text
-
-	YItem * item = findItem( currentText );
-
-	if ( item )
-	{
-	    // Make sure exactly this item is selected (and no other)
-
-	    YSelectionWidget::deselectAllItems();
-	    item->setSelected( true );
-
-	    return item;
-	}
-    }
-    else
-    {
-	YSelectionWidget::deselectAllItems();
+        item->setSelected( true );
+        return item;
     }
 
     return 0;
