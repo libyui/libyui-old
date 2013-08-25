@@ -176,6 +176,8 @@ SET( ${TARGETLIB}_HEADERS
   YRpmGroupsTree.h
   YStringTree.h
   YTransText.h
+  YWidgetExtensionFactory.h
+  YWE.h
 )
 
 SET( EXAMPLES_LIST
