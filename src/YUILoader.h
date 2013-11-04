@@ -69,7 +69,7 @@ public:
      * 'symbol' is the function symbol to be loaded, e.g. YWE* symbolName(void)
      *          usually YWE* createWE(void) see createWEFunction_t
      **/
-    static void loadWE( const std::string & name, const std::string & symbol );
+    static void loadWE( const std::string & name, const std::string & symbol="_Z8createWEv" );
     
     /**
      * Load a WE (Widget Extension) plug-in. 
