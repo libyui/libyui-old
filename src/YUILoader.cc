@@ -172,29 +172,22 @@ void YUILoader::loadWE ( const std::string& name, const std::string& symbol )
         }
     }
 
-    if ( isatty( STDOUT_FILENO ) )
-    {
-        //
-        // NCurses UI
-        //
+    //
+    // NCurses UI (test on tty has already been done by loadUI)
+    //
 
-        try
-        {
-            std::string wantedNcurses = name;
-            wantedNcurses.append("-");
-            wantedNcurses.append(YUIPlugin_NCurses);
-            loadExtensionPlugin( wantedNcurses, symbol );
-            return;
-        }
-        catch ( YUIException & ex)
-        {
-            YUI_CAUGHT( ex );
-            YUI_RETHROW( ex ); // what else to do here?
-        }
-    }
-    else
+    try
     {
-        YUI_THROW( YUICantLoadAnyUIException() );
+        std::string wantedNcurses = name;
+        wantedNcurses.append("-");
+        wantedNcurses.append(YUIPlugin_NCurses);
+        loadExtensionPlugin( wantedNcurses, symbol );
+        return;
+    }
+    catch ( YUIException & ex)
+    {
+        YUI_CAUGHT( ex );
+        YUI_RETHROW( ex ); // what else to do here?
     }
 }
 
