@@ -22,43 +22,43 @@
 #include "YUIException.h"
 #include "YWE.h"
 
-YWE * YWE::_we = 0;
+YExternalWidgets * YExternalWidgets::_externalWidgets = 0;
 
 
-YWE::YWE()
+YExternalWidgets::YExternalWidgets()
 {
   if (!YUI::ui())
     YUI_THROW( YUIException( "UI must be initialized first" ) );
   
   yuiMilestone() << "Creating Libyui Widget Extension object" <<  std::endl;
   
-  _we = this;
+  _externalWidgets = this;
 }
 
-YWE::~YWE()
+YExternalWidgets::~YExternalWidgets()
 {
-  _we = 0;
+  _externalWidgets = 0;
 }
 
-YWE* YWE::we()
+YExternalWidgets* YExternalWidgets::externalWidgets()
 {
   // we cannot ensure to have loaded it as for YUI, because the name 
   // of the plugin is user dependent
-  return _we;
+  return _externalWidgets;
 }
 
-YWidgetExtensionFactory* YWE::widgetExtensionFactory()
+YExternalWidgetsFactory* YExternalWidgets::externalWidgetsFactory()
 {
-  static YWidgetExtensionFactory * factory = 0;
+  static YExternalWidgetsFactory * factory = 0;
 
   if (!YUI::ui())
     YUI_THROW( YUIException( "UI must be initialized first" ) );
   
-  if (!_we)
+  if (!_externalWidgets)
     YUI_THROW( YUIException( "WE (Widget Extension) must be initialized first" ) );
   
   if ( !factory )
-        factory = we()->createWidgetExtensionFactory();
+        factory = externalWidgets()->createExternalWidgetsFactory();
 
   YUI_CHECK_PTR( factory );
   
@@ -71,10 +71,10 @@ YWidgetExtensionFactory* YWE::widgetExtensionFactory()
 /**
  * Helper class to make sure the WE is properly shut down.
  **/
-class YWETerminator
+class YExternalWidgetsTerminator
 {
 public:
-    YWETerminator() {}
+    YExternalWidgetsTerminator() {}
 
     /**
      * Destructor.
@@ -82,29 +82,29 @@ public:
      * If there still is a WE, it will be deleted.
      * If there is none, this will do nothing.
      **/
-    ~YWETerminator();
+    ~YExternalWidgetsTerminator();
 };
 
 
-YWETerminator::~YWETerminator()
+YExternalWidgetsTerminator::~YExternalWidgetsTerminator()
 {
-    if ( YWE::_we )
+    if ( YExternalWidgets::_externalWidgets )
     {
         yuiMilestone() << "Shutting down WE" << std::endl;
-        delete YWE::_we;
+        delete YExternalWidgets::_externalWidgets;
 
-        YWE::_we = 0;
+        YExternalWidgets::_externalWidgets = 0;
     }
 }
 
 
 /**
- * Static YWETerminator instance: It will make sure the WE is deleted in its
+ * Static YExternalWidgetsTerminator instance: It will make sure the WE is deleted in its
  * global destructor. If the WE is already destroyed, it will do nothing. If
  * there still is a WE object, it will be deleted.
  *
  * This is particularly important for the NCurses WE so the terminal settings
  * are properly restored.
  **/
-static YWETerminator weTerminator;
+static YExternalWidgetsTerminator weTerminator;
 

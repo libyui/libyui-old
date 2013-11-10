@@ -19,59 +19,72 @@
 #ifndef YWE_h
 #define YWE_h
 
-class YWidgetExtensionFactory;
+class YExternalWidgetsFactory;
 
 /**
  * Abstract base class of a libYUI Widget Extension interface.
  **/
-class YWE
+class YExternalWidgets
 {
-    friend class YWETerminator;
+    friend class YExternalWidgetsTerminator;
 
 protected:
     /**
      * Constructor.
      **/
-    YWE( );
+    YExternalWidgets( );
 
 public:
 
     /**
      * Destructor.
      **/
-    virtual ~YWE();
+    virtual ~YExternalWidgets();
 
 
     /**
-     * Access the global YUI Widget Extension.
+     * Access the global YUI external widgets.
+     * 
+     * NOTE that only one external widget plugin can be loaded, further implementation
+     *      may allow more.
      **/
-    static YWE * we();
+    static YExternalWidgets * externalWidgets();
 
     /**
-     * Return the widget extension factory that provides all the createXY() methods for
-     * user defined extension widgets.
+     * Return the external widget factory that provides all the createXY() methods for
+     * user defined widgets.
      *
      * This will create the factory upon the first call and return a pointer to
      * the one and only (singleton) factory upon each subsequent call.
      * This may throw exceptions if the factory cannot be created.
      * 
-     * It is up to user extend YWidgetExtensionFactory to add createXY() methods.
+     * It is up to user extend YExternalWidgetsFactory to add createXY() methods in 
+     * his/her implementation. So once YExternalWidgetsFactory is extended with 
+     * all the createXY() methods, three sub-plugins must be defined one for each
+     * supported graphical environment, e.g. Gtk, ncurses and QT, following the
+     * libyui implementation rules.
+     * 
+     * For instance an external widgets plugin called yui-foo that needs Gtk, ncurses 
+     * and QT specialization will require also yui-foo-gtk, yui-foo-ncurses and
+     * yui-foo-qt plugin implementation.
      * 
      **/
-    static YWidgetExtensionFactory * widgetExtensionFactory();
+    static YExternalWidgetsFactory * externalWidgetsFactory();
 
 protected:
 
     /**
-     * Create the widget extension factory that provides all the createXY() methods for
+     * Create the external widgets factory that provides all the createXY() methods for
      *
-     * Derived classes are required to implement this.
+     * Derived classes are required to implement this. Usually createXY() is virtual,
+     * real implementation is demanded to derived classes that implement Gtk, ncurses and QT
+     * specialization.
      **/
-    virtual YWidgetExtensionFactory * createWidgetExtensionFactory() = 0;
+    virtual YExternalWidgetsFactory * createExternalWidgetsFactory() = 0;
 
 private:
 
-    static YWE *_we;
+    static YExternalWidgets *_externalWidgets;
 };
 
 #endif // YWE_h

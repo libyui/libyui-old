@@ -16,17 +16,18 @@
   Floor, Boston, MA 02110-1301 USA
 */
 
-#ifndef YWidgetExtensionFactory_h
-#define YWidgetExtensionFactory_h
+#ifndef YExternalWidgetsFactory_h
+#define YExternalWidgetsFactory_h
 
 /**
  * Abstract widget factory for mandatory widgets.
  * Use YOptionalWidgetFactory for optional ("special") widgets.
+ * YExternalWidgetsFactory is used for external widgets, e.g. user defined plugin.
  *
  * Refer to the respective widget's documentation (in the header file) for
  * documentation about the function parameters.
  **/
-class YWidgetExtensionFactory
+class YExternalWidgetsFactory
 {
 public:
 
@@ -35,20 +36,20 @@ public:
 protected:
 
     friend class YUI;
-    friend class YWE;
+    friend class YExternalWidgets;
     
     /**
      * Constructor.
      *
-     * Use YWE::widgetExtensionFactory() to get the singleton for this class.
+     * Use YExternalWidgets::widgetExtensionFactory() to get the singleton for this class.
      **/
-    YWidgetExtensionFactory() {}
+    YExternalWidgetsFactory() {}
 
     /**
      * Destructor.
      **/
-    virtual ~YWidgetExtensionFactory() {}
+    virtual ~YExternalWidgetsFactory() {}
 
-}; // class YWidgetExtensionFactory
+}; // class YExternalWidgetsFactory
 
-#endif // YWidgetExtensionFactory_h
+#endif // YExternalWidgetsFactory_h

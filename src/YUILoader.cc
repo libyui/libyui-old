@@ -116,17 +116,17 @@ void YUILoader::loadPlugin( const std::string & name, bool withThreads )
     YUI_THROW( YUIPluginException( name ) );
 }
 
-void YUILoader::loadExtensionPlugin ( const std::string& name, const std::string& symbol )
+void YUILoader::loadExternalWidgetsPlugin ( const std::string& name, const std::string& symbol )
 {
   YUIPlugin uiPlugin ( name.c_str() );
 
   if ( uiPlugin.success() )
   {
-    createWEFunction_t createWE = ( createWEFunction_t ) uiPlugin.locateSymbol ( symbol.c_str() ); // createWE(void)
+    createEWFunction_t createWE = ( createEWFunction_t ) uiPlugin.locateSymbol ( symbol.c_str() ); // createWE(void)
 
     if ( createWE )
     {
-      YWE * we = createWE ( );
+      YExternalWidgets * we = createWE ( );
 
       if ( we )
         return;
@@ -135,7 +135,8 @@ void YUILoader::loadExtensionPlugin ( const std::string& name, const std::string
 
   YUI_THROW ( YUIPluginException ( name ) );
 }
-void YUILoader::loadWE ( const std::string& name, const std::string& symbol )
+
+void YUILoader::loadExternalWidgets ( const std::string& name, const std::string& symbol )
 {
     const char * envDisplay = getenv( "DISPLAY" );
 
@@ -162,7 +163,7 @@ void YUILoader::loadWE ( const std::string& name, const std::string& symbol )
         {
            try
            {
-              loadExtensionPlugin( wantedGUI, symbol );
+              loadExternalWidgetsPlugin( wantedGUI, symbol );
               return;
            }
            catch ( YUIException & ex)
@@ -181,7 +182,7 @@ void YUILoader::loadWE ( const std::string& name, const std::string& symbol )
         std::string wantedNcurses = name;
         wantedNcurses.append("-");
         wantedNcurses.append(YUIPlugin_NCurses);
-        loadExtensionPlugin( wantedNcurses, symbol );
+        loadExternalWidgetsPlugin( wantedNcurses, symbol );
         return;
     }
     catch ( YUIException & ex)
