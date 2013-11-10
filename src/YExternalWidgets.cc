@@ -20,7 +20,7 @@
 
 #include "YUI.h"
 #include "YUIException.h"
-#include "YWE.h"
+#include "YExternalWidgets.h"
 
 YExternalWidgets * YExternalWidgets::_externalWidgets = 0;
 

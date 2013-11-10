@@ -30,7 +30,7 @@
 #include <string>
 
 #include "YUI.h"
-#include "YWE.h"
+#include "YExternalWidgets.h"
 
 
 
