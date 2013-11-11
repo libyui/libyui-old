@@ -427,6 +427,7 @@ YButtonBox::buttonsByButtonOrder()
 	    case YCancelButton:
 	    case YApplyButton:
 	    case YHelpButton:
+	    case YRelNotesButton:
 
 		if ( specialButtons[ button->role() ] ) // Only one of each of those is allowed
 		{

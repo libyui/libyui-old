@@ -28,6 +28,7 @@
 
 #include "YSingleChildContainerWidget.h"
 #include <stack>
+#include <map>
 
 class YShortcutManager;
 class YPushButton;
@@ -343,6 +344,25 @@ public:
      * failure (no help text).
      **/
     static bool showHelpText( YWidget * widget );
+
+   /**
+     * Show the release notes
+     *
+     * If there are release notes, they are displayed in a pop-up dialog with a local
+     * event loop.
+     *
+     * This returns 'true' on success (there were relnotes) and 'false' on
+     * failure (no relnotes).
+     **/
+    static bool showRelNotesText( YWidget * widget );
+
+   /**
+     * Read release notes for all relevant products
+     *
+     * Return a map of product -> text, empty map if no RN available
+     *
+     **/
+    static std::map<std::string,std::string> readReleaseNotes();
 
 
 protected:

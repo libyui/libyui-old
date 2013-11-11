@@ -150,6 +150,25 @@ public:
     virtual void setHelpButton( bool helpButton = true );
 
     /**
+     * Returns 'true' if this is a "Release Notes" button.
+     *
+     * NOTE that this is only done during YDialog::waitForEvent() (i.e. in YCP
+     * UI::WaitForEvent(), UI::UserInput(), UI::TimeoutUserInput() ) and not
+     * during YDialog::pollEvent() (i.e. YCP UI::PollInput()) since displaying
+     * the release notes will block the application until the user closes the
+     * text.
+     **/
+    bool isRelNotesButton() const;
+
+    /**
+     * Make this button a release notes button.
+     *
+     * Derived classes are free to reimplement this, but they should call this
+     * base class method in the overloaded function.
+     **/
+    virtual void setRelNotesButton( bool relNotesButton = true );
+
+    /**
      * Set a property.
      * Reimplemented from YWidget.
      *
