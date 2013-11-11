@@ -132,7 +132,7 @@ public:
 
 	    if ( button && button->isRelNotesButton() )
 	    {
-		if ( YDialog::showRelNotesText( button ) )
+		if ( YDialog::showRelNotesText() )
 		{
 		    event = 0; // consume event
 		}
@@ -727,7 +727,7 @@ YDialog::showHelpText( YWidget * widget )
 }
 
 bool
-YDialog::showRelNotesText( YWidget * widget )
+YDialog::showRelNotesText()
 {
     yuiMilestone() <<"Showing Release Notes" << std::endl;
 

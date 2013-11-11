@@ -354,7 +354,7 @@ public:
      * This returns 'true' on success (there were relnotes) and 'false' on
      * failure (no relnotes).
      **/
-    static bool showRelNotesText( YWidget * widget );
+    static bool showRelNotesText();
 
    /**
      * Read release notes for all relevant products
