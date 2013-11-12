@@ -356,14 +356,6 @@ public:
      **/
     static bool showRelNotesText();
 
-   /**
-     * Read release notes for all relevant products
-     *
-     * Return a map of product -> text, empty map if no RN available
-     *
-     **/
-    static std::map<std::string,std::string> readReleaseNotes();
-
 
 protected:
 

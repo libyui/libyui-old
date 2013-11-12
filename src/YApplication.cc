@@ -54,6 +54,7 @@ struct YApplicationPrivate
     std::string applicationIcon;
     YFunctionKeyMap	defaultFunctionKey;
     YIconLoader*	iconLoader;
+    std::map<std::string,std::string>	releaseNotes;
 };
 
 
@@ -118,6 +119,17 @@ YApplication::productName() const
     return priv->productName;
 }
 
+void
+YApplication::setReleaseNotes( const std::map<std::string,std::string> & relNotes )
+{
+    priv->releaseNotes = relNotes;
+}
+
+std::map<std::string,std::string>
+YApplication::releaseNotes() const
+{
+    return priv->releaseNotes;
+}
 
 void
 YApplication::setReverseLayout( bool reverse )

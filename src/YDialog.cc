@@ -36,6 +36,7 @@
 #include "YButtonBox.h"
 
 #include "YUI.h"
+#include "YApplication.h"
 #include "YWidgetFactory.h"
 #include "YOptionalWidgetFactory.h"
 #include "YLayoutBox.h"
@@ -752,7 +753,7 @@ YDialog::showRelNotesText()
 
     try
     {
-	std::map<std::string,std::string> relnotes = readReleaseNotes();
+	std::map<std::string,std::string> relnotes = YUI::application()->releaseNotes();
 	if ( relnotes.size() == 0)
 	{
 	    return false;
@@ -818,35 +819,4 @@ YDialog::showRelNotesText()
 
     return true;
 
-}
-
-std::map<std::string,std::string>
-YDialog::readReleaseNotes()
-{
-    // No caching is intentional - one may add add-on product or download newer release notes
-    std::map<std::string,std::string> ret;
-    DIR *dp;
-    struct dirent *dirp;
-    std::string dir = "/usr/share/doc/release-notes/";
-    yuiMilestone() << "Reading release notes from " << dir << std::endl;
-    if((dp  = opendir(dir.c_str())) == NULL) {
-        yuiError() << "Error(" << errno << ") opening " << dir << std::endl;
-        return ret;
-    }
-
-    while ((dirp = readdir(dp)) != NULL) {
-	if ( std::string(dirp->d_name) != "." && std::string(dirp->d_name) != "..")
-	{
-	    std::string filename = dir + std::string(dirp->d_name) + "/RELEASE-NOTES.en.rtf";
-	    yuiDebug() << filename << std::endl;
-
-	    std::ifstream ifs(filename);
-	    std::string contents((std::istreambuf_iterator<char>(ifs)),
-                 std::istreambuf_iterator<char>());
-
-	    ret[std::string(dirp->d_name)] = contents;
-	}
-    }
-    closedir(dp);
-    return ret;
 }
