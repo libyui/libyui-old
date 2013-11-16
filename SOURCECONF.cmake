@@ -176,7 +176,7 @@ SET( ${TARGETLIB}_HEADERS
   YRpmGroupsTree.h
   YStringTree.h
   YTransText.h
-  YExternalWidgetsFactory.h
+  YExternalWidgetFactory.h
   YExternalWidgets.h
 )
 
