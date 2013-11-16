@@ -16,8 +16,8 @@
   Floor, Boston, MA 02110-1301 USA
 */
 
-#ifndef YWE_h
-#define YWE_h
+#ifndef YExternalWidgets_h
+#define YExternalWidgets_h
 
 class YExternalWidgetsFactory;
 
@@ -87,4 +87,4 @@ private:
     static YExternalWidgets *_externalWidgets;
 };
 
-#endif // YWE_h
+#endif // YExternalWidgets_h
