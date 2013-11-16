@@ -47,9 +47,9 @@ YExternalWidgets* YExternalWidgets::externalWidgets()
   return _externalWidgets;
 }
 
-YExternalWidgetsFactory* YExternalWidgets::externalWidgetsFactory()
+YExternalWidgetFactory* YExternalWidgets::externalWidgetFactory()
 {
-  static YExternalWidgetsFactory * factory = 0;
+  static YExternalWidgetFactory * factory = 0;
 
   if (!YUI::ui())
     YUI_THROW( YUIException( "UI must be initialized first" ) );
@@ -58,7 +58,7 @@ YExternalWidgetsFactory* YExternalWidgets::externalWidgetsFactory()
     YUI_THROW( YUIException( "WE (Widget Extension) must be initialized first" ) );
   
   if ( !factory )
-        factory = externalWidgets()->createExternalWidgetsFactory();
+        factory = externalWidgets()->createExternalWidgetFactory();
 
   YUI_CHECK_PTR( factory );
   

@@ -19,7 +19,7 @@
 #ifndef YExternalWidgets_h
 #define YExternalWidgets_h
 
-class YExternalWidgetsFactory;
+class YExternalWidgetFactory;
 
 /**
  * Abstract base class of a libYUI Widget Extension interface.
@@ -58,8 +58,8 @@ public:
      * the one and only (singleton) factory upon each subsequent call.
      * This may throw exceptions if the factory cannot be created.
      * 
-     * It is up to user extend YExternalWidgetsFactory to add createXY() methods in 
-     * his/her implementation. So once YExternalWidgetsFactory is extended with 
+     * It is up to user extend YExternalWidgetFactory to add createXY() methods in 
+     * his/her implementation. So once YExternalWidgetFactory is extended with 
      * all the createXY() methods, three sub-plugins must be defined one for each
      * supported graphical environment, e.g. Gtk, ncurses and QT, following the
      * libyui implementation rules.
@@ -69,7 +69,7 @@ public:
      * yui-foo-qt plugin implementation.
      * 
      **/
-    static YExternalWidgetsFactory * externalWidgetsFactory();
+    static YExternalWidgetFactory * externalWidgetFactory();
 
 protected:
 
@@ -80,7 +80,7 @@ protected:
      * real implementation is demanded to derived classes that implement Gtk, ncurses and QT
      * specialization.
      **/
-    virtual YExternalWidgetsFactory * createExternalWidgetsFactory() = 0;
+    virtual YExternalWidgetFactory * createExternalWidgetFactory() = 0;
 
 private:
 
