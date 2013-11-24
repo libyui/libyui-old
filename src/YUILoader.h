@@ -75,7 +75,7 @@ public:
      * 'symbol' is the function symbol to be loaded, e.g. YExternalWidgets* 'symbol'(void)
      *          usually YExternalWidgets* createWE(void) see createEWFunction_t
      **/
-    static void loadExternalWidgets( const std::string & name, const std::string & symbol="_Z8createWEv" );
+    static void loadExternalWidgets( const std::string & name, const std::string & symbol="_Z21createExternalWidgetsv" );
     
 private:
     YUILoader()  {}
