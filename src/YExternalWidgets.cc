@@ -15,7 +15,7 @@
   to the Free Software Foundation, Inc., 51 Franklin Street, Fifth
   Floor, Boston, MA 02110-1301 USA
 */
-#define YUILogComponent "we"
+#define YUILogComponent "ew"
 #include "YUILog.h"
 
 #include "YUI.h"
@@ -30,7 +30,7 @@ YExternalWidgets::YExternalWidgets()
   if (!YUI::ui())
     YUI_THROW( YUIException( "UI must be initialized first" ) );
   
-  yuiMilestone() << "Creating Libyui Widget Extension object" <<  std::endl;
+  yuiMilestone() << "Creating Libyui External Widgets object" <<  std::endl;
   
   _externalWidgets = this;
 }
@@ -55,7 +55,7 @@ YExternalWidgetFactory* YExternalWidgets::externalWidgetFactory()
     YUI_THROW( YUIException( "UI must be initialized first" ) );
   
   if (!_externalWidgets)
-    YUI_THROW( YUIException( "WE (Widget Extension) must be initialized first" ) );
+    YUI_THROW( YUIException( "EW (External Widgets) must be initialized first" ) );
   
   if ( !factory )
         factory = externalWidgets()->createExternalWidgetFactory();
@@ -69,7 +69,7 @@ YExternalWidgetFactory* YExternalWidgets::externalWidgetFactory()
 
 
 /**
- * Helper class to make sure the WE is properly shut down.
+ * Helper class to make sure the EW is properly shut down.
  **/
 class YExternalWidgetsTerminator
 {
@@ -79,7 +79,7 @@ public:
     /**
      * Destructor.
      *
-     * If there still is a WE, it will be deleted.
+     * If there still is a EW, it will be deleted.
      * If there is none, this will do nothing.
      **/
     ~YExternalWidgetsTerminator();
@@ -90,7 +90,7 @@ YExternalWidgetsTerminator::~YExternalWidgetsTerminator()
 {
     if ( YExternalWidgets::_externalWidgets )
     {
-        yuiMilestone() << "Shutting down WE" << std::endl;
+        yuiMilestone() << "Shutting down External Widgets" << std::endl;
         delete YExternalWidgets::_externalWidgets;
 
         YExternalWidgets::_externalWidgets = 0;
@@ -99,11 +99,11 @@ YExternalWidgetsTerminator::~YExternalWidgetsTerminator()
 
 
 /**
- * Static YExternalWidgetsTerminator instance: It will make sure the WE is deleted in its
- * global destructor. If the WE is already destroyed, it will do nothing. If
- * there still is a WE object, it will be deleted.
+ * Static YExternalWidgetsTerminator instance: It will make sure the EW is deleted in its
+ * global destructor. If the EW is already destroyed, it will do nothing. If
+ * there still is a EW object, it will be deleted.
  *
- * This is particularly important for the NCurses WE so the terminal settings
+ * This is particularly important for the NCurses EW so the terminal settings
  * are properly restored.
  **/
 static YExternalWidgetsTerminator weTerminator;
