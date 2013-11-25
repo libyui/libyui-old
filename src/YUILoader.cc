@@ -122,7 +122,7 @@ void YUILoader::loadExternalWidgetsPlugin ( const std::string& name, const std::
 
   if ( uiPlugin.success() )
   {
-    createEWFunction_t createWE = ( createEWFunction_t ) uiPlugin.locateSymbol ( symbol.c_str() ); // createWE(void)
+    createEWFunction_t createWE = ( createEWFunction_t ) uiPlugin.locateSymbol ( symbol.c_str() );
 
     if ( createWE )
     {
