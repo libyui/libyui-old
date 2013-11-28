@@ -5,6 +5,7 @@ SET( ${TARGETLIB}_SOURCES
   YOptionalWidgetFactory.cc
   YSettings.cc
   YPath.cc
+  YExternalWidgets.cc
 
   YCommandLine.cc
   YDialogSpy.cc
@@ -175,6 +176,8 @@ SET( ${TARGETLIB}_HEADERS
   YRpmGroupsTree.h
   YStringTree.h
   YTransText.h
+  YExternalWidgetFactory.h
+  YExternalWidgets.h
 )
 
 SET( EXAMPLES_LIST

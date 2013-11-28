@@ -116,6 +116,82 @@ void YUILoader::loadPlugin( const std::string & name, bool withThreads )
     YUI_THROW( YUIPluginException( name ) );
 }
 
+void YUILoader::loadExternalWidgetsPlugin ( const std::string& name, const std::string& symbol )
+{
+  YUIPlugin uiPlugin ( name.c_str() );
+
+  if ( uiPlugin.success() )
+  {
+    createEWFunction_t createWE = ( createEWFunction_t ) uiPlugin.locateSymbol ( symbol.c_str() );
+
+    if ( createWE )
+    {
+      YExternalWidgets * we = createWE ( );
+
+      if ( we )
+        return;
+    }
+  }
+
+  YUI_THROW ( YUIPluginException ( name ) );
+}
+
+void YUILoader::loadExternalWidgets ( const std::string& name, const std::string& symbol )
+{
+    const char * envDisplay = getenv( "DISPLAY" );
+
+    YCommandLine cmdline;
+
+    bool wantNcurses = cmdline.find("--ncurses") != -1;
+    bool wantQt = cmdline.find("--qt") != -1;
+    bool wantGtk = cmdline.find("--gtk") != -1;
+
+    bool haveQt = pluginExists( YUIPlugin_Qt );
+    bool haveGtk = pluginExists( YUIPlugin_Gtk );
+
+    if ( envDisplay && !wantNcurses )
+    {
+        std::string wantedGUI = name;
+        wantedGUI.append("-");
+
+        if ( haveQt && !wantGtk)
+           wantedGUI.append(YUIPlugin_Qt);
+        else if ( haveGtk && !wantQt )
+           wantedGUI.append(YUIPlugin_Gtk);
+
+        if ( strcmp( wantedGUI.c_str(), "" ) )
+        {
+           try
+           {
+              loadExternalWidgetsPlugin( wantedGUI, symbol );
+              return;
+           }
+           catch ( YUIException & ex)
+           {
+              YUI_CAUGHT( ex );
+           }
+        }
+    }
+
+    //
+    // NCurses UI (test on tty has already been done by loadUI)
+    //
+
+    try
+    {
+        std::string wantedNcurses = name;
+        wantedNcurses.append("-");
+        wantedNcurses.append(YUIPlugin_NCurses);
+        loadExternalWidgetsPlugin( wantedNcurses, symbol );
+        return;
+    }
+    catch ( YUIException & ex)
+    {
+        YUI_CAUGHT( ex );
+        YUI_RETHROW( ex ); // what else to do here?
+    }
+}
+
 bool YUILoader::pluginExists( const std::string & pluginBaseName )
 {
     struct stat fileinfo;

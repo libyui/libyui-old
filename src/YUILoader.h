@@ -30,6 +30,7 @@
 #include <string>
 
 #include "YUI.h"
+#include "YExternalWidgets.h"
 
 
 
@@ -59,10 +60,33 @@ public:
     static void loadPlugin( const std::string & name, bool withThreads = false );
 
     static bool pluginExists( const std::string & pluginBaseName );
-
+    
+    /**
+     * Load the given External Widgets plugin followed by its graphical extension implementation 
+     * in the following order in the same way as loadUI:
+     * - Qt, Gtk or NCurses 
+     * 
+     * 'name'   is the user defined plugin name, graphical extension implementations have to 
+     *          be called 'name'-qt, 'name'-gtk and 'name'-ncurses. Following this rule plugin
+     *          file names are as libyui-XX-YY.so.VER where:
+     *               XX  is the user defined name
+     *               YY  is the UI used (ncurses, gtk, qt)
+     *               VER is the libyui so version
+     * 'symbol' is the function symbol to be loaded, e.g. YExternalWidgets* 'symbol'(void)
+     *          usually YExternalWidgets* createWE(void) see createEWFunction_t
+     **/
+    static void loadExternalWidgets( const std::string & name, const std::string & symbol="_Z21createExternalWidgetsv" );
+    
 private:
     YUILoader()  {}
     ~YUILoader() {}
+    
+    /**
+     * Used by loadExternalWidgets to load the graphical plugin specialization.
+     * 
+     * This might throw exceptions.
+     **/
+    static void loadExternalWidgetsPlugin( const std::string & name, const std::string & symbol );
 };
 
 
@@ -76,5 +100,14 @@ private:
  **/
 typedef YUI * (*createUIFunction_t)( bool );
 
+/**
+ * Every WE extension plug-in has to provide a function
+ *
+ *     YExternalWidgets * createWE( )
+ *
+ * that creates a WE of that specific type upon the first call and returns that
+ * singleton for all subsequent calls.
+ **/
+typedef YExternalWidgets * (*createEWFunction_t)( void );
 
 #endif // YUILoader_h
