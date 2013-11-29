@@ -86,7 +86,7 @@ private:
      * Used by loadExternalWidgets to load the graphical plugin specialization.
      * 
      * 'name'        is the original plugin name (e.g. the one passed to loadExternalWidgets)
-     * 'plugin_name' is the graphical plugin specialization name (e.g. 'name'-[gtk|ncurses-qt])
+     * 'plugin_name' is the graphical plugin specialization name (e.g. 'name'-[gtk|ncurses|qt])
      * 'symbol'      is the function symbol to be loaded and executed (e.g. the one passed loadExternalWidgets)
      * This might throw exceptions:
      * YUIPluginException if the plugin has not been loaded
