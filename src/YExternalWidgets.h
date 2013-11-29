@@ -34,6 +34,8 @@ protected:
     /**
      * Constructor.
      * 'name' is the plugin name
+     * 
+     * throws a YUIException if the plugin 'name' has been alread created
      **/
     YExternalWidgets( const std::string& name );
 
@@ -74,7 +76,7 @@ public:
      * yui-foo-qt plugin implementation.
      * 
      **/
-    YExternalWidgetFactory * externalWidgetFactory(const std::string& name);
+    YExternalWidgetFactory * externalWidgetFactory();
 
 protected:
 

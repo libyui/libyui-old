@@ -65,13 +65,13 @@ YExternalWidgets* YExternalWidgets::externalWidgets(const std::string& name)
   return _externalWidgets[name];
 }
 
-YExternalWidgetFactory* YExternalWidgets::externalWidgetFactory(const std::string& name)
+YExternalWidgetFactory* YExternalWidgets::externalWidgetFactory()
 {
   if (!YUI::ui())
     YUI_THROW( YUIException( "UI must be initialized first" ) );
   
   if ( !_factory )
-        _factory = externalWidgets(name)->createExternalWidgetFactory();
+        _factory = this->createExternalWidgetFactory();
 
   YUI_CHECK_PTR( _factory );
   
