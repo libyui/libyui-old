@@ -84,6 +84,7 @@ enum YButtonRole
     YApplyButton,	// [Apply]
     YCancelButton,	// [Cancel]
     YHelpButton,	// [Help]
+    YRelNotesButton,	// [Release Notes]
 
     YMaxButtonRole	// For use as array size
 };

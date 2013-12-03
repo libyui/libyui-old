@@ -36,13 +36,21 @@
 #include "YButtonBox.h"
 
 #include "YUI.h"
+#include "YApplication.h"
 #include "YWidgetFactory.h"
+#include "YOptionalWidgetFactory.h"
 #include "YLayoutBox.h"
 #include "YRichText.h"
 #include "YAlignment.h"
 #include "YUIException.h"
 #include "YEventFilter.h"
+#include "YWidgetID.h"
+#include "YDumbTab.h"
 
+// needed in order to read release notes
+#include <sys/types.h>
+#include <dirent.h>
+#include <fstream>
 
 #define VERBOSE_DIALOGS			0
 #define VERBOSE_DISCARDED_EVENTS	0
@@ -105,6 +113,37 @@ public:
     }
 };
 
+/**
+ * Helper class: Event filter that handles "ReleaseNotes" buttons.
+ **/
+class YRelNotesButtonHandler: public YEventFilter
+{
+public:
+    YRelNotesButtonHandler( YDialog * dialog )
+	: YEventFilter( dialog )
+	{}
+
+    virtual ~YRelNotesButtonHandler() {}
+
+    YEvent * filter( YEvent * event )
+    {
+	if ( event && event->widget() )
+	{
+	    YPushButton * button = dynamic_cast<YPushButton *> ( event->widget() );
+
+	    if ( button && button->isRelNotesButton() )
+	    {
+		if ( YDialog::showRelNotesText() )
+		{
+		    event = 0; // consume event
+		}
+	    }
+	}
+
+	return event;
+    }
+};
+
 
 
 
@@ -121,6 +160,7 @@ YDialog::YDialog( YDialogType dialogType, YDialogColorMode colorMode )
 #endif
 
     new YHelpButtonHandler( this );
+    new YRelNotesButtonHandler( this );
 }
 
 
@@ -685,4 +725,98 @@ YDialog::showHelpText( YWidget * widget )
     }
 
     return ! helpText.empty();
+}
+
+bool
+YDialog::showRelNotesText()
+{
+    yuiMilestone() <<"Showing Release Notes" << std::endl;
+
+    // set help text dialog size to 80% of topmost dialog, respectively 45x15 (default)
+
+    unsigned int dialogWidth  = 45;
+    unsigned int dialogHeight = 15;
+
+    if ( ! _dialogStack.empty() )
+    {
+        YDialog * dialog = _dialogStack.top();
+        dialogWidth  = (unsigned int) ( (float) dialog->preferredWidth()  * 0.8 );
+        dialogHeight = (unsigned int) ( (float) dialog->preferredHeight() * 0.8 );
+    }
+
+    // limit dialog to a reasonable size
+    if ( dialogWidth > 80 || dialogHeight > 25 )
+    {
+        dialogWidth = 80;
+        dialogHeight = 25;
+    }
+
+    try
+    {
+	std::map<std::string,std::string> relnotes = YUI::application()->releaseNotes();
+	if ( relnotes.size() == 0)
+	{
+	    return false;
+	}
+	std::vector<std::string> keys;
+	for(std::map<std::string,std::string>::iterator it = relnotes.begin(); it != relnotes.end(); ++it) {
+	    keys.push_back(it->first);
+	}
+        YDialog     * dialog    = YUI::widgetFactory()->createPopupDialog();
+        YAlignment  * minSize   = YUI::widgetFactory()->createMinSize( dialog, dialogWidth, dialogHeight );
+        YLayoutBox  * vbox      = YUI::widgetFactory()->createVBox( minSize );
+        YDumbTab    * rnTab     = 0;
+        YRichText   * richtext  = 0;
+	// both QT and NCurses do support DumbTab
+        if (relnotes.size() > 1 && YUI::optionalWidgetFactory()->hasDumbTab())
+	{
+	    rnTab = YUI::optionalWidgetFactory()->createDumbTab( vbox );
+	    int index = 0;
+	    for(std::map<std::string,std::string>::const_iterator it = relnotes.begin(); it != relnotes.end(); it++)
+	    {
+		YItem * item = new YItem((*it).first );
+		item->setIndex( index++ );
+		rnTab->addItem( item );
+	    }
+	    richtext = YUI::widgetFactory()->createRichText( rnTab, (*(relnotes.begin())).second, false );
+	}
+	else
+	{
+	    richtext = YUI::widgetFactory()->createRichText( vbox, (*(relnotes.begin())).second, false );
+	}
+        YButtonBox  * buttonBox = YUI::widgetFactory()->createButtonBox( vbox );
+        YPushButton * okButton  = YUI::widgetFactory()->createPushButton( buttonBox, "&OK" );
+        okButton->setRole( YOKButton );
+        okButton->setDefaultButton();
+
+	while(true) {
+	    YEvent* event = dialog->waitForEvent();
+	    if ( event && event->eventType() == YEvent::MenuEvent && event->item())
+	    {
+		YItem * item = dynamic_cast<YItem *> ( event->item());
+		richtext->setValue( relnotes[keys[item->index()]] );
+	    }
+	    else if ( event && event->widget() )
+	    {
+		YPushButton * button = dynamic_cast<YPushButton *> ( event->widget() );
+		if ( button )
+		{
+		    if ( button->role() == YOKButton)
+		    {
+			break;
+		    }
+		}
+            }
+	}
+        dialog->destroy();
+    }
+    catch ( YUIException exception )
+    {
+        // Don't let the application die just because RN couldn't be displayed.
+
+        YUI_CAUGHT( exception );
+    }
+
+    return true;
+
 }
