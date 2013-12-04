@@ -77,6 +77,7 @@ public:
      * 
      **/
     YExternalWidgetFactory * externalWidgetFactory();
+    static YExternalWidgetFactory * externalWidgetFactory(const std::string& name);
 
 protected:
 

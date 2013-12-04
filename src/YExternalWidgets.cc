@@ -65,6 +65,11 @@ YExternalWidgets* YExternalWidgets::externalWidgets(const std::string& name)
   return _externalWidgets[name];
 }
 
+YExternalWidgetFactory* YExternalWidgets::externalWidgetFactory(const std::string& name)
+{
+  return YExternalWidgets::externalWidgets(name)->externalWidgetFactory();
+}
+
 YExternalWidgetFactory* YExternalWidgets::externalWidgetFactory()
 {
   if (!YUI::ui())
