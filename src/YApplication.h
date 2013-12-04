@@ -25,6 +25,7 @@
 #ifndef YApplication_h
 
 #include <string>
+#include <map>
 #include "YUI.h"
 #include "ImplPtr.h"
 #include "YMenuItem.h"
@@ -246,9 +247,20 @@ public:
     virtual void setProductName( const std::string & productName );
 
     /**
-     * Set the current product name ("openSUSE", "SLES", ...).
+     * Get the current product name ("openSUSE", "SLES", ...).
      **/
     std::string productName() const;
+
+    /**
+     * Set release notes; map product => text
+     *
+     */
+    void setReleaseNotes( const std::map<std::string,std::string> & relNotes );
+
+    /**
+     * Get the current release notes map
+     **/
+    std::map<std::string,std::string> releaseNotes() const;
 
     /**
      * Convert logical layout spacing units into device dependent units.

@@ -42,6 +42,7 @@ struct YPushButtonPrivate
 	, isDefaultButton( false )
 	, setDefaultButtonRecursive( false )
 	, isHelpButton( false )
+	, isRelNotesButton( false )
 	, role( YCustomButton )
 	{}
 
@@ -49,6 +50,7 @@ struct YPushButtonPrivate
     bool	isDefaultButton;
     bool	setDefaultButtonRecursive;
     bool	isHelpButton;
+    bool	isRelNotesButton;
     YButtonRole	role;
 };
 
@@ -132,6 +134,18 @@ void YPushButton::setHelpButton( bool helpButton )
 {
     priv->isHelpButton = helpButton;
     priv->role = YHelpButton;
+}
+
+bool YPushButton::isRelNotesButton() const
+{
+    return priv->isRelNotesButton;
+}
+
+
+void YPushButton::setRelNotesButton( bool relNotesButton )
+{
+    priv->isRelNotesButton = relNotesButton;
+    priv->role = YRelNotesButton;
 }
 
 /* setRole can try to guess function key, but only if there isn't a selected
@@ -249,6 +263,7 @@ std::ostream & operator<<( std::ostream & stream, YButtonRole role )
 	case YApplyButton:	stream << "YApplyButton"; 	break;
 	case YCancelButton:	stream << "YCancelButton";	break;
 	case YHelpButton:	stream << "YHelpButton";	break;
+	case YRelNotesButton:	stream << "YRelNotesButton";	break;
 
 	default:
 	    stream << "<Undefined button role #" << (int) role << ">";
