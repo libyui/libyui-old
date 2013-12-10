@@ -73,9 +73,10 @@ public:
      *               YY  is the UI used (ncurses, gtk, qt)
      *               VER is the libyui so version
      * 'symbol' is the function symbol to be loaded, e.g. YExternalWidgets* 'symbol'(void)
-     *          usually YExternalWidgets* createWE(void) see createEWFunction_t
+     *          (e.g. default YExternalWidgets* createExternalWidgets(const char *) 
+     *          see createEWFunction_t definition)
      **/
-    static void loadExternalWidgets( const std::string & name, const std::string & symbol="_Z21createExternalWidgetsv" );
+    static void loadExternalWidgets( const std::string & name, const std::string & symbol="_Z21createExternalWidgetsPKc" );
     
 private:
     YUILoader()  {}
@@ -84,9 +85,14 @@ private:
     /**
      * Used by loadExternalWidgets to load the graphical plugin specialization.
      * 
-     * This might throw exceptions.
+     * 'name'        is the original plugin name (e.g. the one passed to loadExternalWidgets)
+     * 'plugin_name' is the graphical plugin specialization name (e.g. 'name'-[gtk|ncurses|qt])
+     * 'symbol'      is the function symbol to be loaded and executed (e.g. the one passed loadExternalWidgets)
+     * This might throw exceptions:
+     * YUIPluginException if the plugin has not been loaded
+     * specific exception can be thrown by funtion invoked (param symbol)
      **/
-    static void loadExternalWidgetsPlugin( const std::string & name, const std::string & symbol );
+    static void loadExternalWidgetsPlugin( const std::string& name, const std::string& plugin_name, const std::string& symbol );
 };
 
 
@@ -108,6 +114,6 @@ typedef YUI * (*createUIFunction_t)( bool );
  * that creates a WE of that specific type upon the first call and returns that
  * singleton for all subsequent calls.
  **/
-typedef YExternalWidgets * (*createEWFunction_t)( void );
+typedef YExternalWidgets * (*createEWFunction_t)( const char * );
 
 #endif // YUILoader_h

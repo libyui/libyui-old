@@ -29,10 +29,6 @@
  **/
 class YExternalWidgetFactory
 {
-public:
-
-
-
 protected:
 
     friend class YUI;

@@ -18,6 +18,8 @@
 
 #ifndef YExternalWidgets_h
 #define YExternalWidgets_h
+#include <map>
+#include <string>
 
 class YExternalWidgetFactory;
 
@@ -31,8 +33,11 @@ class YExternalWidgets
 protected:
     /**
      * Constructor.
+     * 'name' is the plugin name
+     * 
+     * throws a YUIException if the plugin 'name' has been alread created
      **/
-    YExternalWidgets( );
+    YExternalWidgets( const std::string& name );
 
 public:
 
@@ -44,11 +49,13 @@ public:
 
     /**
      * Access the global YUI external widgets.
+     * 'name' is the plugin name
      * 
-     * NOTE that only one external widget plugin can be loaded, further implementation
-     *      may allow more.
+     * if plugin 'name' has not been explicitally loaded by YUILoader::loadExternalWidgets
+     * externalWidgets try loading it (exactly as YUI::ui does) with default function symbol 
+     * to be executed (see YUILoader::loadExternalWidgets for explanation)
      **/
-    static YExternalWidgets * externalWidgets();
+    static YExternalWidgets * externalWidgets(const std::string& name);
 
     /**
      * Return the external widget factory that provides all the createXY() methods for
@@ -69,7 +76,8 @@ public:
      * yui-foo-qt plugin implementation.
      * 
      **/
-    static YExternalWidgetFactory * externalWidgetFactory();
+    YExternalWidgetFactory * externalWidgetFactory();
+    static YExternalWidgetFactory * externalWidgetFactory(const std::string& name);
 
 protected:
 
@@ -83,8 +91,14 @@ protected:
     virtual YExternalWidgetFactory * createExternalWidgetFactory() = 0;
 
 private:
-
-    static YExternalWidgets *_externalWidgets;
+    /** Externale widgets plugin name */
+    std::string _name;
+    
+    /** Externale widget factory */ 
+    YExternalWidgetFactory* _factory;
+    
+    /** plugin instances */
+    static  std::map<std::string, YExternalWidgets *> _externalWidgets;
 };
 
 #endif // YExternalWidgets_h
