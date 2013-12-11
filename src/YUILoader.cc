@@ -116,24 +116,24 @@ void YUILoader::loadPlugin( const std::string & name, bool withThreads )
     YUI_THROW( YUIPluginException( name ) );
 }
 
-void YUILoader::loadExternalWidgetsPlugin ( const std::string& name, const std::string& symbol )
+void YUILoader::loadExternalWidgetsPlugin ( const std::string& name, const std::string& plugin_name, const std::string& symbol )
 {
-  YUIPlugin uiPlugin ( name.c_str() );
+  YUIPlugin uiPlugin ( plugin_name.c_str() );
 
   if ( uiPlugin.success() )
   {
-    createEWFunction_t createWE = ( createEWFunction_t ) uiPlugin.locateSymbol ( symbol.c_str() );
+    createEWFunction_t createEW = ( createEWFunction_t ) uiPlugin.locateSymbol ( symbol.c_str() );
 
-    if ( createWE )
+    if ( createEW )
     {
-      YExternalWidgets * we = createWE ( );
+      YExternalWidgets * we = createEW ( name.c_str() );
 
       if ( we )
         return;
     }
   }
 
-  YUI_THROW ( YUIPluginException ( name ) );
+  YUI_THROW ( YUIPluginException ( plugin_name ) );
 }
 
 void YUILoader::loadExternalWidgets ( const std::string& name, const std::string& symbol )
@@ -159,17 +159,14 @@ void YUILoader::loadExternalWidgets ( const std::string& name, const std::string
         else if ( haveGtk && !wantQt )
            wantedGUI.append(YUIPlugin_Gtk);
 
-        if ( strcmp( wantedGUI.c_str(), "" ) )
+        try
         {
-           try
-           {
-              loadExternalWidgetsPlugin( wantedGUI, symbol );
-              return;
-           }
-           catch ( YUIException & ex)
-           {
-              YUI_CAUGHT( ex );
-           }
+            loadExternalWidgetsPlugin(name, wantedGUI, symbol );
+            return;
+        }
+        catch ( YUIException & ex)
+        {
+            YUI_CAUGHT( ex );
         }
     }
 
@@ -182,7 +179,7 @@ void YUILoader::loadExternalWidgets ( const std::string& name, const std::string
         std::string wantedNcurses = name;
         wantedNcurses.append("-");
         wantedNcurses.append(YUIPlugin_NCurses);
-        loadExternalWidgetsPlugin( wantedNcurses, symbol );
+        loadExternalWidgetsPlugin(name, wantedNcurses, symbol );
         return;
     }
     catch ( YUIException & ex)

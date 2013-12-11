@@ -19,53 +19,69 @@
 #include "YUILog.h"
 
 #include "YUI.h"
+#include "YUILoader.h"
 #include "YUIException.h"
 #include "YExternalWidgets.h"
+#include "YExternalWidgetFactory.h"
 
-YExternalWidgets * YExternalWidgets::_externalWidgets = 0;
+#include <map>
+#include <string>
 
+std::map<std::string, YExternalWidgets *> YExternalWidgets::_externalWidgets;
 
-YExternalWidgets::YExternalWidgets()
+YExternalWidgets::YExternalWidgets(const std::string& name) : _name(name), _factory(0)
 {
   if (!YUI::ui())
     YUI_THROW( YUIException( "UI must be initialized first" ) );
   
   yuiMilestone() << "Creating Libyui External Widgets object" <<  std::endl;
   
-  _externalWidgets = this;
+  std::pair<std::map<std::string, YExternalWidgets *>::iterator, bool> ret;
+  ret = _externalWidgets.insert ( std::pair<std::string, YExternalWidgets *>(_name, this));
+  if (ret.second==false) {
+    std::string errorString = _name;
+    errorString.append(" already created");
+    YUI_THROW( YUIException( errorString ) );
+  }
 }
 
 YExternalWidgets::~YExternalWidgets()
 {
-  _externalWidgets = 0;
+  delete _factory;
+  
+  _externalWidgets.erase(_name);
 }
 
-YExternalWidgets* YExternalWidgets::externalWidgets()
+YExternalWidgets* YExternalWidgets::externalWidgets(const std::string& name)
 {
-  // we cannot ensure to have loaded it as for YUI, because the name 
-  // of the plugin is user dependent
-  return _externalWidgets;
+  std::map<std::string, YExternalWidgets *>::iterator it;
+  
+  it = _externalWidgets.find(name);
+  if (it == _externalWidgets.end())
+  {
+    YUILoader::loadExternalWidgets(name);
+  }
+  
+  return _externalWidgets[name];
+}
+
+YExternalWidgetFactory* YExternalWidgets::externalWidgetFactory(const std::string& name)
+{
+  return YExternalWidgets::externalWidgets(name)->externalWidgetFactory();
 }
 
 YExternalWidgetFactory* YExternalWidgets::externalWidgetFactory()
 {
-  static YExternalWidgetFactory * factory = 0;
-
   if (!YUI::ui())
     YUI_THROW( YUIException( "UI must be initialized first" ) );
   
-  if (!_externalWidgets)
-    YUI_THROW( YUIException( "EW (External Widgets) must be initialized first" ) );
-  
-  if ( !factory )
-        factory = externalWidgets()->createExternalWidgetFactory();
+  if ( !_factory )
+        _factory = this->createExternalWidgetFactory();
 
-  YUI_CHECK_PTR( factory );
+  YUI_CHECK_PTR( _factory );
   
-  return factory;
+  return _factory;
 }
-
-
 
 
 /**
@@ -88,13 +104,15 @@ public:
 
 YExternalWidgetsTerminator::~YExternalWidgetsTerminator()
 {
-    if ( YExternalWidgets::_externalWidgets )
-    {
-        yuiMilestone() << "Shutting down External Widgets" << std::endl;
-        delete YExternalWidgets::_externalWidgets;
+  // Let's copy map to avoid content deletion when removing ExternalWidgets objects
+  std::map <std::string, YExternalWidgets* > ew = YExternalWidgets::_externalWidgets;
+  std::map<std::string, YExternalWidgets *>::iterator it;
 
-        YExternalWidgets::_externalWidgets = 0;
-    }
+  for (it= ew.begin(); it != ew.end(); it++)
+  {
+    yuiMilestone() << "Shutting down " << it->first << " External Widgets" << std::endl;
+    delete it->second;
+  }
 }
 
 
