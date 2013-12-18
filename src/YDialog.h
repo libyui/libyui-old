@@ -32,15 +32,65 @@
 
 class YShortcutManager;
 class YPushButton;
+class YDialog;
 class YDialogPrivate;
+class YDialogStackPrivate;
 class YEvent;
 class YEventFilter;
 
 // See YTypes.h for enum YDialogType and enum YDialogColorMode
 
+class YDialogStack
+{
+public:
+    /**
+     * Constructor.
+     **/
+    YDialogStack();
+
+    /**
+     * Destructor.
+     * Clean out all dialogs on stack
+     **/
+    ~YDialogStack();
+
+    /**
+     * Pushes dialog on top of stack.
+     */
+    void push (YDialog* dialog);
+
+    /**
+     * Pulls top dialog from stack
+     */
+    void pop();
+
+    /**
+     * Gets the top dialog on stack
+     */
+    YDialog* top();
+
+    /**
+     * Detects if stack is empty?
+     */
+     bool empty() const;
+
+     /**
+      * Deletes all dialogs and keep stack empty
+      */
+     void deleteAll();
+
+    /**
+     * deletes top dialog and keep stack valid
+     */
+     void deleteTop();
+private:
+    ImplPtr<YDialogStackPrivate> priv;
+};
 
 class YDialog : public YSingleChildContainerWidget
 {
+    friend YDialogStack;
+
 protected:
     /**
      * Constructor.
@@ -62,6 +112,11 @@ protected:
     virtual ~YDialog();
 
 public:
+    /**
+     * Stack holding all currently existing dialogs.
+     **/
+    static YDialogStack stack;
+
     /**
      * Return a descriptive name of this widget class for logging,
      * debugging etc.
@@ -162,13 +217,10 @@ public:
      *
      * Returns 'true' if there is another open dialog after deleting,
      * 'false' if there is none.
+     *
+     * @deprecated use YDialog::stack.deleteTop()
      **/
     static bool deleteTopmostDialog( bool doThrow = true );
-
-    /**
-     * Delete all open dialogs.
-     **/
-    static void deleteAllDialogs();
 
     /**
      * Delete all dialogs from the topmost to the one specified.
@@ -176,21 +228,18 @@ public:
     static void deleteTo( YDialog * dialog );
 
     /**
-     * Returns the number of currently open dialogs (from 1 on), i.e., the
-     * depth of the dialog stack.
-     **/
-    static int openDialogsCount();
-
-    /**
      * Return the current (topmost) dialog.
      *
      * If there is none, throw a YUINoDialogException if 'doThrow' is 'true'
      * and return 0 if 'doThrow' is false.
+     *
+     * @deprecated use YDialog::stack.top()
      **/
     static YDialog * currentDialog( bool doThrow = true );
 
     /**
      * Alias for currentDialog().
+     * @deprecated see currentDialog
      **/
     static YDialog * topmostDialog( bool doThrow = true )
 	{ return currentDialog( doThrow ); }
@@ -398,11 +447,6 @@ protected:
      * Delete all (remaining) event filters.
      **/
     void deleteEventFilters();
-
-    /**
-     * Stack holding all currently existing dialogs.
-     **/
-    static std::stack<YDialog *> _dialogStack;
 
 private:
 

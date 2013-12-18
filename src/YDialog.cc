@@ -59,6 +59,58 @@
 
 typedef std::list<YEventFilter *> YEventFilterList;
 
+struct YDialogStackPrivate
+{
+    YDialogStackPrivate()
+	{}
+
+    std::stack<YDialog *> stack;
+};
+
+YDialogStack::YDialogStack() {}
+YDialogStack::~YDialogStack()
+{
+    deleteAll();
+}
+
+void YDialogStack::push( YDialog *dialog )
+{
+    priv->stack.push(dialog);
+}
+
+void YDialogStack::pop()
+{
+    priv->stack.pop();
+}
+
+YDialog* YDialogStack::top()
+{
+    return priv->stack.top();
+}
+
+bool YDialogStack::empty() const
+{
+    return priv->stack.empty();
+}
+
+void YDialogStack::deleteTop()
+{
+    if ( empty() )
+	YUI_THROW( YUINoDialogException() );
+
+    YDialog *dialog = top();
+    pop();
+    // delete after pop to ensure that destructor of YDialog to not cause another pop
+    delete dialog;
+}
+
+void YDialogStack::deleteAll()
+{
+    while ( ! empty() )
+    {
+        deleteTop();
+    }
+}
 
 struct YDialogPrivate
 {
@@ -153,7 +205,7 @@ YDialog::YDialog( YDialogType dialogType, YDialogColorMode colorMode )
 {
     YUI_CHECK_NEW( priv );
 
-    _dialogStack.push( this );
+    stack.push( this );
 
 #if VERBOSE_DIALOGS
     yuiDebug() << "New " << this << std::endl;
@@ -187,12 +239,12 @@ YDialog::~YDialog()
     // those installed by some child widget that are not deleted yet.
     deleteEventFilters();
 
-    if ( ! _dialogStack.empty() && _dialogStack.top() == this )
+    if ( ! stack.empty() && stack.top() == this )
     {
-	_dialogStack.pop();
+	stack.pop();
 
-	if ( ! _dialogStack.empty() )
-	    _dialogStack.top()->activate();
+	if ( ! stack.empty() )
+	    stack.top()->activate();
     }
     else
 	yuiError() << "Not top of dialog stack: " << this << std::endl;
@@ -223,13 +275,13 @@ YDialog::isOpen() const
 bool
 YDialog::isTopmostDialog() const
 {
-    if ( _dialogStack.empty() )
+    if ( stack.empty() )
     {
 	yuiError() << "Dialog stack empty, but dialog existing: " << this << std::endl;
 	return false;
     }
 
-    return _dialogStack.top() == this;
+    return stack.top() == this;
 }
 
 
@@ -530,52 +582,41 @@ YDialog::deleteEvent( YEvent * event )
 YDialog *
 YDialog::currentDialog( bool doThrow )
 {
-    if ( _dialogStack.empty() )
+    if ( stack.empty() )
     {
 	if ( doThrow )
 	    YUI_THROW( YUINoDialogException() );
 	return 0;
     }
     else
-	return _dialogStack.top();
+	return stack.top();
 }
 
 
 bool
 YDialog::deleteTopmostDialog( bool doThrow )
 {
-    if ( _dialogStack.empty() )
+    if ( stack.empty() )
     {
 	if ( doThrow )
 	    YUI_THROW( YUINoDialogException() );
     }
     else
     {
-	delete _dialogStack.top();
+	stack.deleteTop();
     }
 
-    return ! _dialogStack.empty();
+    return ! stack.empty();
 }
-
-
-void
-YDialog::deleteAllDialogs()
-{
-    while ( ! _dialogStack.empty() )
-    {
-	delete _dialogStack.top();
-    }
-}
-
 
 void
 YDialog::deleteTo( YDialog * targetDialog )
 {
     YUI_CHECK_WIDGET( targetDialog );
 
-    while ( ! _dialogStack.empty() )
+    while ( ! stack.empty() )
     {
-	YDialog * dialog = _dialogStack.top();
+	YDialog * dialog = stack.top();
 
 	delete dialog;
 
@@ -586,13 +627,6 @@ YDialog::deleteTo( YDialog * targetDialog )
     // If we ever get here, targetDialog was nowhere in the dialog stack.
 
     YUI_THROW( YUIDialogStackingOrderException() );
-}
-
-
-int
-YDialog::openDialogsCount()
-{
-    return _dialogStack.size();
 }
 
 
@@ -659,9 +693,9 @@ YDialog::showText( const std::string & text, bool useRichText )
     unsigned int dialogWidth  = 45;
     unsigned int dialogHeight = 15;
 
-    if ( ! _dialogStack.empty() )
+    if ( ! stack.empty() )
     {
-	YDialog * dialog = _dialogStack.top();
+	YDialog * dialog = stack.top();
         dialogWidth  = (unsigned int) ( (float) dialog->preferredWidth()  * 0.8 );
         dialogHeight = (unsigned int) ( (float) dialog->preferredHeight() * 0.8 );
     }
@@ -737,9 +771,9 @@ YDialog::showRelNotesText()
     unsigned int dialogWidth  = 45;
     unsigned int dialogHeight = 15;
 
-    if ( ! _dialogStack.empty() )
+    if ( ! stack.empty() )
     {
-        YDialog * dialog = _dialogStack.top();
+        YDialog * dialog = stack.top();
         dialogWidth  = (unsigned int) ( (float) dialog->preferredWidth()  * 0.8 );
         dialogHeight = (unsigned int) ( (float) dialog->preferredHeight() * 0.8 );
     }
@@ -820,3 +854,5 @@ YDialog::showRelNotesText()
     return true;
 
 }
+
+YDialogStack YDialog::stack; //initialize static stack

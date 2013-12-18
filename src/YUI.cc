@@ -54,11 +54,6 @@ using std::endl;
 // (set to "KDE" or "GNOME" - case insensitive)
 #define ENV_BUTTON_ORDER "Y2_BUTTON_ORDER"
 
-// Keep dialog stack before the YUITerminator
-// so that it is destroyed afterwards.
-// YUITerminator deletes _yui which calls YUI::~YUI
-// which accesses the dialog stack to remove all dialogs
-std::stack<YDialog *> YDialog::_dialogStack;
 YUI * YUI::_ui = 0;
 
 static bool uiDeleted = false;
@@ -90,13 +85,8 @@ YUI::~YUI()
 	    shutdownThreads();
 	}
 
-	if ( YDialog::openDialogsCount() > 0 )
-	    yuiError() << YDialog::openDialogsCount() << " open dialogs left over" << endl;
-
 	if ( _builtinCaller )
 	    delete _builtinCaller;
-
-	YDialog::deleteAllDialogs();
 
 	YMacro::deleteRecorder();
 	YMacro::deletePlayer();
@@ -110,7 +100,7 @@ YUI::~YUI()
 void
 YUI::uiThreadDestructor()
 {
-    YDialog::deleteAllDialogs();
+    YDialog::stack.deleteAll();
 }
 
 
