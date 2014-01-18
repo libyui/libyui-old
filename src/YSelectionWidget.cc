@@ -188,7 +188,10 @@ void YSelectionWidget::addItem( YItem * item )
 
     if ( priv->enforceSingleSelection )
     {
-	if ( item->selected() )
+        YItem * selectedChild = findSelectedItem( item->childrenBegin(),
+                                                 item->childrenEnd() );
+        
+	if ( item->selected() || selectedChild )
 	{
 	    YItem * oldSelectedItem = selectedItem();
 
@@ -203,10 +206,14 @@ void YSelectionWidget::addItem( YItem * item )
 	    // be more expensive. But then, this is a bug in that application
 	    // that needs to be fixed.
 
-	    if ( oldSelectedItem && oldSelectedItem != item )
+	    if ( oldSelectedItem) //&& oldSelectedItem != item )
 	    {
-		oldSelectedItem->setSelected( false );
-		item->setSelected( true );
+                if ((selectedChild && oldSelectedItem != selectedChild) || 
+                    (item->selected() && oldSelectedItem != item ) )
+                {
+                  oldSelectedItem->setSelected( false );
+                }
+// 		item->setSelected( true );
 	    }
 	}
 
@@ -331,8 +338,9 @@ YSelectionWidget::findSelectedItem( YItemConstIterator begin,
 	const YItem * item = *it;
 
 	if ( item->selected() )
+        {
 	    return *it;
-
+        }
 	if ( item->hasChildren() )
 	{
 	    YItem * selectedItem = findSelectedItem( item->childrenBegin(),
