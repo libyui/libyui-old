@@ -206,14 +206,13 @@ void YSelectionWidget::addItem( YItem * item )
 	    // be more expensive. But then, this is a bug in that application
 	    // that needs to be fixed.
 
-	    if ( oldSelectedItem) //&& oldSelectedItem != item )
+	    if ( oldSelectedItem)
 	    {
                 if ((selectedChild && oldSelectedItem != selectedChild) || 
                     (item->selected() && oldSelectedItem != item ) )
                 {
                   oldSelectedItem->setSelected( false );
                 }
-// 		item->setSelected( true );
 	    }
 	}
 
