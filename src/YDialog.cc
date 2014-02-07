@@ -767,6 +767,7 @@ YDialog::showRelNotesText()
         YLayoutBox  * vbox      = YUI::widgetFactory()->createVBox( minSize );
         YDumbTab    * rnTab     = 0;
         YRichText   * richtext  = 0;
+
 	// both QT and NCurses do support DumbTab
         if (relnotes.size() > 1 && YUI::optionalWidgetFactory()->hasDumbTab())
 	{
@@ -778,11 +779,11 @@ YDialog::showRelNotesText()
 		item->setIndex( index++ );
 		rnTab->addItem( item );
 	    }
-	    richtext = YUI::widgetFactory()->createRichText( rnTab, (*(relnotes.begin())).second, false );
+	    richtext = YUI::widgetFactory()->createRichText( rnTab, (*(relnotes.begin())).second, YUI::app()->isTextMode() );
 	}
 	else
 	{
-	    richtext = YUI::widgetFactory()->createRichText( vbox, (*(relnotes.begin())).second, false );
+	    richtext = YUI::widgetFactory()->createRichText( vbox, (*(relnotes.begin())).second, YUI::app()->isTextMode() );
 	}
         YButtonBox  * buttonBox = YUI::widgetFactory()->createButtonBox( vbox );
         YPushButton * okButton  = YUI::widgetFactory()->createPushButton( buttonBox, "&OK" );

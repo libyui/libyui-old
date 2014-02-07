@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Feb  7 11:43:20 UTC 2014 - jsrain@suse.cz
+
+- use text version of release notes with NCurses (bnc#862578)
+- 3.0.13
+
+-------------------------------------------------------------------
 Wed Dec 11 10:09:19 CET 2013 - anaselli@linux.it
 
 - added external widget plugin management
