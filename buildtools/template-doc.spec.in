@@ -1,7 +1,7 @@
 #
-# spec file for package @PROJECTNAME@ (Version @VERSION@)
+# spec file for package @PROJECTNAME@-doc
 #
-# Copyright (c) 2012 SUSE LINUX Products GmbH, Nuernberg, Germany.
+# Copyright (c) 2014 SUSE LINUX Products GmbH, Nuernberg, Germany.
 #
 # All modifications and additions to the file contributed by third parties
 # remain the property of their copyright owners, unless otherwise agreed
@@ -15,26 +15,26 @@
 # Please submit bugfixes or comments via http://bugs.opensuse.org/
 #
 
-Name:		@PROJECTNAME@-doc
-Version:	@VERSION@
-Release:	0
-License:	LGPL-2.1 or LGPL-3.0
-Source:		@PROJECTNAME@-%{version}.tar.bz2
-Group:		Documentation/HTML
 
-BuildArch:	noarch
+Name:           @PROJECTNAME@-doc
+Version:        @VERSION@
+Release:        0
+Source:         @PROJECTNAME@-%{version}.tar.bz2
 
+BuildArch:      noarch
+
+BuildRequires:  cmake >= 2.8
 BuildRequires:  doxygen
 BuildRequires:  fdupes
-BuildRequires:  graphviz-gnome
-BuildRequires:  texlive-latex
-BuildRequires:  cmake >= 2.8
 BuildRequires:  gcc-c++
+BuildRequires:  graphviz-gnome
 BuildRequires:  libyui-devel >= 3.0.4
+BuildRequires:  texlive-latex
 @BuildRequires@
-
-URL:		@URL@
-Summary:	@PROJECTNAME_UC@ documentation
+Url:            @URL@
+Summary:        @PROJECTNAME_UC@ documentation
+License:        LGPL-2.1 or LGPL-3.0
+Group:          Documentation/HTML
 
 %description
 @DESCRIPTION@
@@ -44,9 +44,7 @@ This package provides the documentation. (HTML & PDF)
 
 %prep
 
-
 %setup -n @PROJECTNAME@-%{version}
-
 
 %build
 
@@ -58,11 +56,10 @@ export CXXFLAGS="$RPM_OPT_FLAGS -DNDEBUG"
 mkdir build
 cd build
 cmake .. \
-	-DDOC_DIR=%{_docdir} \
-	-DDOCS_ONLY=ON
+        -DDOC_DIR=%{_docdir} \
+        -DDOCS_ONLY=ON
 
 make %{?jobs:-j%jobs} docs
-
 
 %install
 cd build
@@ -70,10 +67,8 @@ make install DESTDIR="$RPM_BUILD_ROOT"
 
 %fdupes -s $RPM_BUILD_ROOT/%_docdir/@PROJECTNAME@@SONAME_MAJOR@
 
-
 %clean
 rm -rf "$RPM_BUILD_ROOT"
-
 
 %files
 %defattr(-,root,root)
