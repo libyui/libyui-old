@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Fri Feb 21 14:54:17 UTC 2014 - mvidner@suse.com
+
+- now building on https://ci.opensuse.org/view/libyui/ !
+  - adapted CMake macros for PREFIX != /usr
+  - use Rakefile for making srcpackage for OBS
+
+-------------------------------------------------------------------
 Fri Feb  7 11:43:20 UTC 2014 - jsrain@suse.cz
 
 - use text version of release notes with NCurses (bnc#862578)
