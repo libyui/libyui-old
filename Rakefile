@@ -16,6 +16,7 @@ Packaging.configuration do |conf|
   conf.package_name = Dir.glob("*.spec.in").first.chomp(".spec.in")
   conf.package_dir = "#{BUILDDIR}/package"
 
+  conf.skip_license_check << /.*/ if conf.package_name =~ /^libyui-gtk/
   conf.skip_license_check << /bootstrap.sh|ChangeLog|Makefile.cvs/
   conf.skip_license_check << /^buildtools\/.*/
   conf.skip_license_check << /\.(cmake|gv|ui|xpm)$/
