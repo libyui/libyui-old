@@ -48,7 +48,7 @@ task :tarball do
        "-DENABLE_WERROR=OFF", # gtk needs this
        "..")
     sh "make clean"
-    sh "make"
+    sh "make -j$(nproc)"
     sh "make install"
     sh "make srcpackage"
   end
