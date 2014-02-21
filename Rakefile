@@ -27,13 +27,29 @@ task :test do
   puts 'No tests yet' if verbose
 end
 
+LIBYUI_PREFIX = ENV["HOME"] + "/libyui-prefix"
+LIBYUI_BASE = ENV.fetch("LIBYUI_BASE", "../libyui")
+
 # build the gem package
 desc 'Build a tarball for OBS'
 task :tarball do
-  sh "make -f Makefile.cvs"
+  rm_rf BUILDDIR
+  ln_sf "#{LIBYUI_BASE}/buildtools/CMakeLists.common", "CMakeLists.txt"
+  lib_dir = `rpm --eval '%{_lib}'`.chomp
+  mkdir_p BUILDDIR
   chdir BUILDDIR do
+    # unfortunately buildtools are set up in such a way that
+    # for making a package, all dependencies need to be present and installed :-/
+    sh("cmake",
+       "-DCMAKE_BUILD_TYPE=RELEASE",
+       "-DLIB_DIR=#{lib_dir}",
+       "-DPREFIX=#{LIBYUI_PREFIX}",
+       "-DCMAKE_PREFIX_PATH=#{LIBYUI_PREFIX}",
+       "-DENABLE_WERROR=OFF", # gtk needs this
+       "..")
     sh "make clean"
-#    sh "make"                   # river jenkins does it; should not be needed
+    sh "make"
+    sh "make install"
     sh "make srcpackage"
   end
 end
