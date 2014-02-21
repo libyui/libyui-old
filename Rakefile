@@ -20,6 +20,7 @@ Packaging.configuration do |conf|
   conf.skip_license_check << /^buildtools\/.*/
   conf.skip_license_check << /\.(cmake|gv|ui|xpm)$/
   conf.skip_license_check << /^src\/lang_fonts$/
+  conf.skip_license_check << /\.mng$/ # binary
 end
 
 desc 'Pretend to run the test suite'
