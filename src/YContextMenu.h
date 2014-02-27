@@ -44,6 +44,9 @@ class YContextMenuPrivate;
  * right away when the user selects an item (clicks on a menu item or activates
  * it with the keyboard). Items that have a submenu never send an event, they
  * simply open their submenu when activated.
+ *
+ * Note: unlike other widgets, this one is not created via YWidgetFactory
+ * or YOptionalWidgetFactory but with YApplication::openContextMenu()
  **/
 class YContextMenu : public YSelectionWidget
 {
