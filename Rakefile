@@ -11,12 +11,14 @@ Packaging::Tasks.load_tasks(:exclude => ["tarball.rake"])
 BUILDDIR = "build"
 
 Packaging.configuration do |conf|
+  spec_template = Dir.glob("*.spec.{in,cmake}").first
+
   conf.obs_project = "devel:libraries:libyui"
   conf.obs_sr_project = "openSUSE:Factory"
-  conf.package_name = Dir.glob("*.spec.in").first.chomp(".spec.in")
+  conf.package_name = spec_template[/(.*)\.spec\..*/, 1]
   conf.package_dir = "#{BUILDDIR}/package"
 
-  conf.skip_license_check << /.*/ if conf.package_name =~ /^libyui-gtk/
+  conf.skip_license_check << /.*/ if conf.package_name =~ /gtk|bindings/
   conf.skip_license_check << /bootstrap.sh|ChangeLog|Makefile.cvs/
   conf.skip_license_check << /^buildtools\/.*/
   conf.skip_license_check << /\.(cmake|gv|ui|xpm)$/
@@ -36,7 +38,9 @@ LIBYUI_BASE = ENV.fetch("LIBYUI_BASE", "../libyui")
 desc 'Build a tarball for OBS'
 task :tarball do
   rm_rf BUILDDIR
-  ln_sf "#{LIBYUI_BASE}/buildtools/CMakeLists.common", "CMakeLists.txt"
+  unless File.file? "CMakeLists.txt"
+    ln_sf "#{LIBYUI_BASE}/buildtools/CMakeLists.common", "CMakeLists.txt"
+  end
   lib_dir = `rpm --eval '%{_lib}'`.chomp
   mkdir_p BUILDDIR
   chdir BUILDDIR do
@@ -50,7 +54,7 @@ task :tarball do
        "-DENABLE_WERROR=OFF", # gtk needs this
        "..")
     sh "make clean"
-    sh "make -j$(nproc)"
+    sh "make -j$(nproc) VERBOSE=1"
     sh "make install"
     sh "make srcpackage"
   end
