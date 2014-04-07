@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Apr  7 21:33:55 CEST 2014 - anaselli@linux.it
+
+- fixed crash when loading extended widget first.
+- Version 3.0.14
+
+-------------------------------------------------------------------
 Fri Feb 21 14:54:17 UTC 2014 - mvidner@suse.com
 
 - now building on https://ci.opensuse.org/view/libyui/ !
