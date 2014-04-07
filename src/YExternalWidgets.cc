@@ -33,7 +33,7 @@ YExternalWidgets::YExternalWidgets(const std::string& name) : _name(name), _fact
 {
   if (!YUI::ui())
     YUI_THROW( YUIException( "UI must be initialized first" ) );
-  
+
   yuiMilestone() << "Creating Libyui External Widgets object" <<  std::endl;
   
   std::pair<std::map<std::string, YExternalWidgets *>::iterator, bool> ret;
@@ -56,6 +56,9 @@ YExternalWidgets* YExternalWidgets::externalWidgets(const std::string& name)
 {
   std::map<std::string, YExternalWidgets *>::iterator it;
   
+  if (!YUI::ui())
+    YUI_THROW( YUIException( "UI must be initialized first" ) );
+
   it = _externalWidgets.find(name);
   if (it == _externalWidgets.end())
   {
@@ -74,7 +77,7 @@ YExternalWidgetFactory* YExternalWidgets::externalWidgetFactory()
 {
   if (!YUI::ui())
     YUI_THROW( YUIException( "UI must be initialized first" ) );
-  
+
   if ( !_factory )
         _factory = this->createExternalWidgetFactory();
 
