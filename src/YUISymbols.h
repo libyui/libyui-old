@@ -233,6 +233,7 @@
 #define YUIOpt_okButton				"okButton"
 #define YUIOpt_outputField			"outputField"
 #define YUIOpt_plainText			"plainText"
+#define YUIOpt_recursiveSelection		"recursiveSelection"
 #define YUIOpt_relaxSanityCheck			"relaxSanityCheck"
 #define YUIOpt_repoMgr				"repoMgr"
 #define YUIOpt_repoMode				"repoMode"
@@ -243,6 +244,7 @@
 #define YUIOpt_summaryMode			"summaryMode"
 #define YUIOpt_testMode				"testMode"
 #define YUIOpt_tiled				"tiled"
+#define YUIOpt_titleOnLeft			"titleOnLeft"
 #define YUIOpt_treeEnabled			"treeEnabled"
 #define YUIOpt_updateMode			"updateMode"
 #define YUIOpt_vstretch				"vstretch"
@@ -251,7 +253,6 @@
 #define YUIOpt_youMode				"youMode"
 #define YUIOpt_zeroHeight			"zeroHeight"
 #define YUIOpt_zeroWidth			"zeroWidth"
-#define YUIOpt_recursiveSelection		"recursiveSelection"
 
 #define YUIOpt_key_F1				"key_F1"
 #define YUIOpt_key_F2				"key_F2"

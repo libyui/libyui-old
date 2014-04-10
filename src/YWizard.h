@@ -40,7 +40,8 @@ enum YWizardMode
 {
     YWizardMode_Standard,	// Normal wizard (help panel or nothing)
     YWizardMode_Steps,		// Steps visible in left side panel
-    YWizardMode_Tree		// Tree in left side panel
+    YWizardMode_Tree,		// Tree in left side panel
+    YWizardMode_TitleOnLeft     // Title on the left side
 };
 
 
@@ -123,7 +124,7 @@ public:
 
     /**
      * Return the wizard mode (what kind of wizard this is):
-     * YWizardMode_Standard, YWizardMode_Steps, YWizardMode_Tree
+     * YWizardMode_Standard, YWizardMode_Steps, YWizardMode_Tree, YWizardMode_TitleOnLeft
      **/
     YWizardMode wizardMode() const;
 

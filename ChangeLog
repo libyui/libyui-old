@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Apr  9 12:44:17 UTC 2014 - mvidner@suse.com
+
+- Added YUIOpt_titleOnLeft, YWizardMode_TitleOnLeft (bnc#868859)
+- 3.1.0
+
+-------------------------------------------------------------------
 Fri Feb 21 14:54:17 UTC 2014 - mvidner@suse.com
 
 - now building on https://ci.opensuse.org/view/libyui/ !
