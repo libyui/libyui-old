@@ -392,7 +392,6 @@ int main( int argc, char **argv )
     }
   }
 
-  std::string TEST = "Test string";
   frame			= YUI::widgetFactory()->createCheckBoxFrame( hbox, "Tree", false );
   {
     frame->setWeight( YD_HORIZ, 1 );
@@ -424,10 +423,12 @@ int main( int argc, char **argv )
       new YTreeItem( t, "Item 2" );
       new YTreeItem( t, "Item 3" );
       t = new YTreeItem( t, "Item 4" );
+      t->setSelected(true); // selected item
       new YTreeItem( t, "Item 1" );
       auto t2 = new YTreeItem( t, "Item 2" );
-      t2->setSelected(true);
-      new YTreeItem( t, "Item 3" );
+      t2->setSelected(true); // this selection is discarded as it is a child of a selected item
+      t2 = new YTreeItem( t, "Item 3" );
+      t2->setSelected(true); // this selection is discarded as it is a child of a selected item
       
       items.push_back( (t = new YTreeItem( "Item 123456" )) );
       new YTreeItem( t, "Item 1" );

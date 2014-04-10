@@ -1,7 +1,10 @@
 -------------------------------------------------------------------
 Mon Apr  7 21:33:55 CEST 2014 - anaselli@linux.it
 
-- fixed crash when loading extended widget first.
+- Fixed a crash when loading extended widget first.
+- Managed YTreeItem first item selection (children were not
+  searched but remeained as selected). Now as soon as an item or a 
+  child is found as selected all the other items are deselected.
 - Version 3.0.14
 
 -------------------------------------------------------------------
