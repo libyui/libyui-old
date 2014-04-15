@@ -263,6 +263,16 @@ public:
     std::map<std::string,std::string> releaseNotes() const;
 
     /**
+     * Set the file name to read the product logo for wizard title bar from
+     */
+    void setProductLogo( const std::string filename );
+
+    /**
+     * Get the file name of the product logo
+     */
+    std::string productLogo();
+
+    /**
      * Convert logical layout spacing units into device dependent units.
      * A default size dialog is assumed to be 80x25 layout spacing units.
      *

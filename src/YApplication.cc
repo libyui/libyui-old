@@ -55,6 +55,7 @@ struct YApplicationPrivate
     YFunctionKeyMap	defaultFunctionKey;
     YIconLoader*	iconLoader;
     std::map<std::string,std::string>	releaseNotes;
+    std::string		productLogoFileName;
 };
 
 
@@ -129,6 +130,18 @@ std::map<std::string,std::string>
 YApplication::releaseNotes() const
 {
     return priv->releaseNotes;
+}
+
+void
+YApplication::setProductLogo( const std::string filename )
+{
+    priv->productLogoFileName = filename;
+}
+
+std::string
+YApplication::productLogo()
+{
+    return priv->productLogoFileName;
 }
 
 void
