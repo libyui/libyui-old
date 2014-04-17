@@ -265,12 +265,12 @@ public:
     /**
      * Set the file name to read the product logo for wizard title bar from
      */
-    void setProductLogo( const std::string filename );
+    void setProductLogo( const std::string & filename );
 
     /**
      * Get the file name of the product logo
      */
-    std::string productLogo();
+    std::string productLogo() const;
 
     /**
      * Convert logical layout spacing units into device dependent units.

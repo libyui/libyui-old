@@ -133,13 +133,13 @@ YApplication::releaseNotes() const
 }
 
 void
-YApplication::setProductLogo( const std::string filename )
+YApplication::setProductLogo( const std::string & filename )
 {
     priv->productLogoFileName = filename;
 }
 
 std::string
-YApplication::productLogo()
+YApplication::productLogo() const
 {
     return priv->productLogoFileName;
 }
