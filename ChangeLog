@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Apr 16 14:20:41 UTC 2014 - mvidner@suse.com
+
+- Fix YQUI destruction (bnc#867296).
+- 3.1.1
+
+-------------------------------------------------------------------
 Wed Apr  9 12:44:17 UTC 2014 - mvidner@suse.com
 
 - Added YUIOpt_titleOnLeft, YWizardMode_TitleOnLeft (bnc#868859)
