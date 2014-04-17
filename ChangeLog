@@ -2,6 +2,12 @@
 Thu Apr 17 07:01:08 UTC 2014 - jsrain@suse.cz
 
 - Added handling of logo bar in wizard (bnc#868722)
+- 3.1.2
+
+-------------------------------------------------------------------
+Wed Apr 16 14:20:41 UTC 2014 - mvidner@suse.com
+
+- Fix YQUI destruction (bnc#867296).
 - 3.1.1
 
 -------------------------------------------------------------------

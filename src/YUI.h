@@ -48,7 +48,7 @@ class YMacroRecorder;
 class YUI
 {
     friend class YUIFunction;
-    friend class YUITerminator;
+    friend class YUILoader;
 
 protected:
     /**

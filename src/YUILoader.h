@@ -53,6 +53,16 @@ public:
     static void loadUI( bool withThreads = false );
 
     /**
+     * This will make sure the UI singleton is deleted.
+     * If the UI is already destroyed, it will do nothing. If
+     * there still is a UI object, it will be deleted.
+     *
+     * This is particularly important for the NCurses UI so that
+     * the terminal settings are properly restored.
+     **/
+    static void deleteUI();
+
+    /**
      * Load a UI plug-in. 'name' is one of the YUIPlugin_ -defines above.
      *
      * This might throw exceptions.
