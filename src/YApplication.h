@@ -263,6 +263,16 @@ public:
     std::map<std::string,std::string> releaseNotes() const;
 
     /**
+     * Set whether the product logo (in top bar) should be shown
+     */
+    void setShowProductLogo( bool show );
+
+    /**
+     * Return true if product logo should be shown
+     */
+    bool showProductLogo() const;
+
+    /**
      * Convert logical layout spacing units into device dependent units.
      * A default size dialog is assumed to be 80x25 layout spacing units.
      *
