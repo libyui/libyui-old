@@ -263,14 +263,14 @@ public:
     std::map<std::string,std::string> releaseNotes() const;
 
     /**
-     * Set the file name to read the product logo for wizard title bar from
+     * Set whether the product logo (in top bar) should be shown
      */
-    void setProductLogo( const std::string & filename );
+    void setShowProductLogo( bool show );
 
     /**
-     * Get the file name of the product logo
+     * Return true if product logo should be shown
      */
-    std::string productLogo() const;
+    bool showProductLogo() const;
 
     /**
      * Convert logical layout spacing units into device dependent units.

@@ -46,6 +46,7 @@ struct YApplicationPrivate
     YApplicationPrivate()
 	: productName( "openSUSE" )
 	, reverseLayout( false )
+	, showProductLogo( false )
 	{}
 
     std::string		productName;
@@ -55,7 +56,7 @@ struct YApplicationPrivate
     YFunctionKeyMap	defaultFunctionKey;
     YIconLoader*	iconLoader;
     std::map<std::string,std::string>	releaseNotes;
-    std::string		productLogoFileName;
+    bool		showProductLogo;
 };
 
 
@@ -133,15 +134,15 @@ YApplication::releaseNotes() const
 }
 
 void
-YApplication::setProductLogo( const std::string & filename )
+YApplication::setShowProductLogo( bool show )
 {
-    priv->productLogoFileName = filename;
+    priv->showProductLogo = show;
 }
 
-std::string
-YApplication::productLogo() const
+bool
+YApplication::showProductLogo() const
 {
-    return priv->productLogoFileName;
+    return priv->showProductLogo;
 }
 
 void
