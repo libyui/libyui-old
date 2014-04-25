@@ -13,10 +13,17 @@ BUILDDIR = "build"
 Packaging.configuration do |conf|
   spec_template = Dir.glob("*.spec.{in,cmake}").first
 
-  conf.obs_project = "devel:libraries:libyui"
-  conf.obs_sr_project = "openSUSE:Factory"
+  if ENV["LIBYUI_SUBMIT"] == "SLES"
+    conf.obs_api        = "https://api.suse.de/"
+    conf.obs_project    = "Devel:YaST:Head"
+    conf.obs_target     = "SLE-12"
+    conf.obs_sr_project = "SUSE:SLE-12:GA"
+  else
+    conf.obs_project    = "devel:libraries:libyui"
+    conf.obs_sr_project = "openSUSE:Factory"
+  end
   conf.package_name = spec_template[/(.*)\.spec\..*/, 1]
-  conf.package_dir = "#{BUILDDIR}/package"
+  conf.package_dir  = "#{BUILDDIR}/package"
 
   conf.skip_license_check << /.*/ if conf.package_name =~ /gtk|bindings/
   conf.skip_license_check << /bootstrap.sh|ChangeLog|Makefile.cvs/
