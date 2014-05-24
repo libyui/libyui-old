@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Sat May 24 20:48:47 UTC 2014 - bjoern.esser@gmail.com
+
+- pull in GPLv3-license, since LGPLv3 is additional rules on top
+- 3.1.3
+
+-------------------------------------------------------------------
 Thu Apr 17 07:01:08 UTC 2014 - jsrain@suse.cz
 
 - Added handling of logo bar in wizard (bnc#868722)
