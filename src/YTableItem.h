@@ -30,8 +30,14 @@
 
 class YTableCell;
 
+// without "documenting" the file, typedefs will be dropped
+//! @file
+
+//! Collection of pointers to YTableCell
 typedef std::vector<YTableCell *>		YTableCellCollection;
+//! Mutable iterator over @ref YTableCellCollection
 typedef YTableCellCollection::iterator		YTableCellIterator;
+//! Const   iterator over @ref YTableCellCollection
 typedef YTableCellCollection::const_iterator	YTableCellConstIterator;
 
 
