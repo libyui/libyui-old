@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Aug 25 12:41:39 UTC 2014 - lslezak@suse.cz
+
+- Detect lib64 in a Debian compatible way, for Travis CI.
+
+-------------------------------------------------------------------
 Sat May 24 20:48:47 UTC 2014 - bjoern.esser@gmail.com
 
 - pull in GPLv3-license, since LGPLv3 is additional rules on top
