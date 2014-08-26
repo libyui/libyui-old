@@ -29,7 +29,7 @@
 #include "YApplication.h"
 
 #define YUILogComponent "wf"
-#include <yui/YUILog.h>
+#include "YUILog.h"
 
 YWidgetFactory::YWidgetFactory()
 {
