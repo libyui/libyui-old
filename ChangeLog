@@ -1,7 +1,8 @@
 -------------------------------------------------------------------
 Tue Aug 26 21:39:01 CEST 2014 - anaselli@linux.it
 
-- YWidgetFactory needed YUILog.h to be installed to build
+- YWidgetFactory and YOptionalWidgetFactory needed YUILog.h to be 
+  installed to build
 - Fixed a crash when loading extended widget first.
 - Managed YTreeItem first item selection (children were not
   searched but remeained as selected). Now as soon as an item or a 

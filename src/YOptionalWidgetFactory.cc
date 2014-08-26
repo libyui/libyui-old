@@ -29,7 +29,7 @@
 #include "YUI.h"
 
 #define YUILogComponent "owf"
-#include <yui/YUILog.h>
+#include "YUILog.h"
 
 
 #define THROW_UNSUPPORTED( WIDGET_TYPE ) \
