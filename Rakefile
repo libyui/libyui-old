@@ -38,10 +38,9 @@ task :test do
   puts 'No tests yet' if verbose
 end
 
-LIBYUI_PREFIX = ENV["HOME"] + "/libyui-prefix"
-LIBYUI_BASE = ENV.fetch("LIBYUI_BASE", "../libyui")
+LIBYUI_PREFIX = ENV.fetch("LIBYUI_PREFIX", ENV["HOME"] + "/libyui-prefix")
+LIBYUI_BASE   = ENV.fetch("LIBYUI_BASE",   "../libyui")
 
-# build the gem package
 desc 'Build a tarball for OBS'
 task :tarball do
   rm_rf BUILDDIR

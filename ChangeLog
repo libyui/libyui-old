@@ -1,11 +1,16 @@
 -------------------------------------------------------------------
-Sat Jun 14 18 14:38:55 CEST 2014 - anaselli@linux.it
+Tue Aug 26 21:39:01 CEST 2014 - anaselli@linux.it
 
 - Fixed a crash when loading extended widget first.
 - Managed YTreeItem first item selection (children were not
   searched but remeained as selected). Now as soon as an item or a 
   child is found as selected all the other items are deselected.
 - Version 3.1.4
+
+-------------------------------------------------------------------
+Mon Aug 25 12:41:39 UTC 2014 - lslezak@suse.cz
+
+- Detect lib64 in a Debian compatible way, for Travis CI.
 
 -------------------------------------------------------------------
 Sat May 24 20:48:47 UTC 2014 - bjoern.esser@gmail.com
