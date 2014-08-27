@@ -44,7 +44,7 @@ typedef std::map<std::string, int> YFunctionKeyMap;
 struct YApplicationPrivate
 {
     YApplicationPrivate()
-	: productName( "openSUSE" )
+	: productName( "SUSE Linux" )
 	, reverseLayout( false )
 	, showProductLogo( false )
 	{}

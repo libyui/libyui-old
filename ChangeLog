@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Aug 27 16:32:52 CEST 2014 - locilka@suse.com
+
+- The default product name should be "SUSE Linux" (bnc#886608)
+- 3.1.4
+
+-------------------------------------------------------------------
 Mon Aug 25 12:41:39 UTC 2014 - lslezak@suse.cz
 
 - Detect lib64 in a Debian compatible way, for Travis CI.
