@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Jan 12 15:10:15 UTC 2015 - mvidner@suse.com
+
+- Fixed building with cmake 3.1 (-fPIC, PREFIX, boo#911875).
+- 3.1.5
+
+-------------------------------------------------------------------
 Wed Aug 27 16:32:52 CEST 2014 - locilka@suse.com
 
 - The default product name should be "SUSE Linux" (bnc#886608)
