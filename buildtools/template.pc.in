@@ -2,7 +2,7 @@
 #####   Pkg-Config file for @PROJECTNAME@
 ###############################
 
-prefix=@PREFIX@
+prefix=@YPREFIX@
 exec_prefix=${prefix}
 
 datarootdir=${exec_prefix}/@DATAROOTDIR@
