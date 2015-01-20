@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Jan 20 13:44:13 UTC 2015 - mvidner@suse.com
+
+- Fix cmake also in the spec file, duh.
+
+-------------------------------------------------------------------
 Mon Jan 12 15:10:15 UTC 2015 - mvidner@suse.com
 
 - Fixed building with cmake 3.1 (-fPIC, PREFIX, boo#911875).
