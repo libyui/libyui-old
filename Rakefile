@@ -55,7 +55,7 @@ task :tarball do
     sh("cmake",
        "-DCMAKE_BUILD_TYPE=RELEASE",
        "-DLIB_DIR=#{lib_dir}",
-       "-DPREFIX=#{LIBYUI_PREFIX}",
+       "-DYPREFIX=#{LIBYUI_PREFIX}",
        "-DCMAKE_PREFIX_PATH=#{LIBYUI_PREFIX}",
        "-DENABLE_WERROR=OFF", # gtk needs this
        "..")
