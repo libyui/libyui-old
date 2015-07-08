@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Jul  8 11:58:56 UTC 2015 - mvidner@suse.com
+
+- Added YApplication::openUI/closeUI (boo#937026)
+- 3.2.0
+
+-------------------------------------------------------------------
 Tue Jan 20 13:44:13 UTC 2015 - mvidner@suse.com
 
 - Fix cmake also in the spec file, duh.
