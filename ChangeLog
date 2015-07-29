@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Jul 29 20:14:58 UTC 2015 - besser82@fedoraproject.org
+
+- API-changes imply so-name bump
+- 3.2.1
+
+-------------------------------------------------------------------
 Wed Jul  8 11:58:56 UTC 2015 - mvidner@suse.com
 
 - Added YApplication::openUI/closeUI (boo#937026)
