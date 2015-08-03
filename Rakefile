@@ -16,8 +16,8 @@ Packaging.configuration do |conf|
   if ENV["LIBYUI_SUBMIT"] == "SLES"
     conf.obs_api        = "https://api.suse.de/"
     conf.obs_project    = "Devel:YaST:Head"
-    conf.obs_target     = "SLE-12"
-    conf.obs_sr_project = "SUSE:SLE-12:GA"
+    conf.obs_target     = "SLE-12-SP1"
+    conf.obs_sr_project = "SUSE:SLE-12-SP1:GA"
   else
     conf.obs_project    = "devel:libraries:libyui"
     conf.obs_sr_project = "openSUSE:Factory"
