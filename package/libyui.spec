@@ -1,5 +1,5 @@
 #
-# spec file for package @PROJECTNAME@
+# spec file for package libyui
 #
 # Copyright (c) 2014 SUSE LINUX Products GmbH, Nuernberg, Germany.
 #
@@ -16,36 +16,48 @@
 #
 
 
-Name:           @PROJECTNAME@
-Version:        @VERSION@
+Name:           libyui
+Version:        3.2.0
 Release:        0
-Source:         @PROJECTNAME@-%{version}.tar.bz2
+Source:         libyui-%{version}.tar.bz2
 
 BuildRequires:  boost-devel
 BuildRequires:  cmake >= 2.8
 BuildRequires:  gcc-c++
 BuildRequires:  pkg-config
 
-Url:            @URL@
-Summary:        @SUMMARY@
+Url:            http://github.com/libyui/
+Summary:        GUI-abstraction library
 License:        LGPL-2.1 or LGPL-3.0
 Group:          System/Libraries
 
 %description
-@DESCRIPTION@
+This is the user interface engine that provides the abstraction from
+graphical user interfaces (Qt, Gtk) and text based user interfaces
+(ncurses).
 
-%package -n @PROJECTNAME@@SONAME_MAJOR@
+Originally developed for YaST, it can now be used independently of
+YaST for generic (C++) applications. This package has very few
+dependencies.
+
+%package -n libyui6
 
 Provides:       yast2-libyui = 2.42.0
 Obsoletes:      yast2-libyui < 2.42.0
 Requires:       yui_backend = 6
 
-Url:            @URL@
-Summary:        @PROJECTNAME_UC@ - @SUMMARY@
+Url:            http://github.com/libyui/
+Summary:        Libyui - GUI-abstraction library
 Group:          System/Libraries
 
-%description -n @PROJECTNAME@@SONAME_MAJOR@
-@DESCRIPTION@
+%description -n libyui6
+This is the user interface engine that provides the abstraction from
+graphical user interfaces (Qt, Gtk) and text based user interfaces
+(ncurses).
+
+Originally developed for YaST, it can now be used independently of
+YaST for generic (C++) applications. This package has very few
+dependencies.
 
 
 %package devel
@@ -53,21 +65,27 @@ Group:          System/Libraries
 Requires:       boost-devel
 Requires:       glibc-devel
 Requires:       libstdc++-devel
-Requires:       @PROJECTNAME@@SONAME_MAJOR@ = %{version}
+Requires:       libyui6 = %{version}
 
-Url:            @URL@
-Summary:        @PROJECTNAME_UC@ header files
+Url:            http://github.com/libyui/
+Summary:        Libyui header files
 Group:          Development/Languages/C and C++
 
 %description devel
-@DESCRIPTION@
+This is the user interface engine that provides the abstraction from
+graphical user interfaces (Qt, Gtk) and text based user interfaces
+(ncurses).
+
+Originally developed for YaST, it can now be used independently of
+YaST for generic (C++) applications. This package has very few
+dependencies.
 
 This can be used independently of YaST for generic (C++) applications.
 This package has very few dependencies.
 
 
 %prep
-%setup -q -n @PROJECTNAME@-%{version}
+%setup -q -n libyui-%{version}
 
 %build
 
@@ -98,33 +116,33 @@ make %{?jobs:-j%jobs}
 %install
 cd build
 make install DESTDIR="$RPM_BUILD_ROOT"
-install -m0755 -d $RPM_BUILD_ROOT/%{_docdir}/@PROJECTNAME@@SONAME_MAJOR@/
-install -m0755 -d $RPM_BUILD_ROOT/%{_libdir}/@BASELIB@
-install -m0644 ../COPYING* $RPM_BUILD_ROOT/%{_docdir}/@PROJECTNAME@@SONAME_MAJOR@/
+install -m0755 -d $RPM_BUILD_ROOT/%{_docdir}/libyui6/
+install -m0755 -d $RPM_BUILD_ROOT/%{_libdir}/yui
+install -m0644 ../COPYING* $RPM_BUILD_ROOT/%{_docdir}/libyui6/
 
 %clean
 rm -rf "$RPM_BUILD_ROOT"
 
-%post -n @PROJECTNAME@@SONAME_MAJOR@ -p /sbin/ldconfig
+%post -n libyui6 -p /sbin/ldconfig
 
-%postun -n @PROJECTNAME@@SONAME_MAJOR@ -p /sbin/ldconfig
+%postun -n libyui6 -p /sbin/ldconfig
 
-%files -n @PROJECTNAME@@SONAME_MAJOR@
+%files -n libyui6
 %defattr(-,root,root)
-%dir %{_libdir}/@BASELIB@
-%dir %{_datadir}/@PROJECTNAME@
+%dir %{_libdir}/yui
+%dir %{_datadir}/libyui
 %{_libdir}/lib*.so.*
-%doc %dir %{_docdir}/@PROJECTNAME@@SONAME_MAJOR@
-%doc %{_docdir}/@PROJECTNAME@@SONAME_MAJOR@/COPYING*
+%doc %dir %{_docdir}/libyui6
+%doc %{_docdir}/libyui6/COPYING*
 
 %files devel
 %defattr(-,root,root)
-%dir %{_docdir}/@PROJECTNAME@@SONAME_MAJOR@
+%dir %{_docdir}/libyui6
 %{_libdir}/lib*.so
 %{_prefix}/include/yui
-%{_libdir}/pkgconfig/@PROJECTNAME@.pc
-%{_libdir}/cmake/@PROJECTNAME@
-%{_datadir}/@PROJECTNAME@/buildtools
-%doc %{_docdir}/@PROJECTNAME@@SONAME_MAJOR@/examples
+%{_libdir}/pkgconfig/libyui.pc
+%{_libdir}/cmake/libyui
+%{_datadir}/libyui/buildtools
+%doc %{_docdir}/libyui6/examples
 
 %changelog
