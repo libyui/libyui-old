@@ -3,16 +3,17 @@
 # Copyright © 2014 SUSE
 # MIT license
 
-require "packaging/tasks"
-require "packaging/configuration"
-# skip 'tarball' task, it's redefined here
-Packaging::Tasks.load_tasks(:exclude => ["tarball.rake"])
+require "packaging"
 
-BUILDDIR = "build"
+# @param s   [String] '... SET( VERSION_MAJOR "3") ...'
+# @param key [String] 'VERSION_MAJOR'
+# @return "3"
+def cmake_value(s, key)
+ m = /SET\s*\(\s#{key}\s"([^"]*)"\s*\)/.match(s)
+ m[1]
+end
 
 Packaging.configuration do |conf|
-  spec_template = Dir.glob("*.spec.{in,cmake}").first
-
   if ENV["LIBYUI_SUBMIT"] == "SLES"
     conf.obs_api        = "https://api.suse.de/"
     conf.obs_project    = "Devel:YaST:Head"
@@ -22,8 +23,12 @@ Packaging.configuration do |conf|
     conf.obs_project    = "devel:libraries:libyui"
     conf.obs_sr_project = "openSUSE:Factory"
   end
-  conf.package_name = spec_template[/(.*)\.spec\..*/, 1]
-  conf.package_dir  = "#{BUILDDIR}/package"
+
+  f = File.read "VERSION.cmake"
+  conf.version =
+    cmake_value(f, "VERSION_MAJOR") + "." +
+    cmake_value(f, "VERSION_MINOR") + "." +
+    cmake_value(f, "VERSION_PATCH")
 
   conf.skip_license_check << /.*/ if conf.package_name =~ /gtk|bindings/
   conf.skip_license_check << /bootstrap.sh|ChangeLog|Makefile.cvs/
@@ -36,32 +41,4 @@ end
 desc 'Pretend to run the test suite'
 task :test do
   puts 'No tests yet' if verbose
-end
-
-LIBYUI_PREFIX = ENV.fetch("LIBYUI_PREFIX", ENV["HOME"] + "/libyui-prefix")
-LIBYUI_BASE   = ENV.fetch("LIBYUI_BASE",   "../libyui")
-
-desc 'Build a tarball for OBS'
-task :tarball do
-  rm_rf BUILDDIR
-  unless File.file? "CMakeLists.txt"
-    ln_sf "#{LIBYUI_BASE}/buildtools/CMakeLists.common", "CMakeLists.txt"
-  end
-  lib_dir = `rpm --eval '%{_lib}'`.chomp
-  mkdir_p BUILDDIR
-  chdir BUILDDIR do
-    # unfortunately buildtools are set up in such a way that
-    # for making a package, all dependencies need to be present and installed :-/
-    sh("cmake",
-       "-DCMAKE_BUILD_TYPE=RELEASE",
-       "-DLIB_DIR=#{lib_dir}",
-       "-DYPREFIX=#{LIBYUI_PREFIX}",
-       "-DCMAKE_PREFIX_PATH=#{LIBYUI_PREFIX}",
-       "-DENABLE_WERROR=OFF", # gtk needs this
-       "..")
-    sh "make clean"
-    sh "make -j$(nproc) VERBOSE=1"
-    sh "make install"
-    sh "make srcpackage"
-  end
 end
