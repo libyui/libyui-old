@@ -17,7 +17,7 @@
 
 
 Name:           libyui
-Version:        3.2.0
+Version:        3.2.1
 Release:        0
 Source:         libyui-%{version}.tar.bz2
 
@@ -40,17 +40,17 @@ Originally developed for YaST, it can now be used independently of
 YaST for generic (C++) applications. This package has very few
 dependencies.
 
-%package -n libyui6
+%package -n libyui7
 
 Provides:       yast2-libyui = 2.42.0
 Obsoletes:      yast2-libyui < 2.42.0
-Requires:       yui_backend = 6
+Requires:       yui_backend = 7
 
 Url:            http://github.com/libyui/
 Summary:        Libyui - GUI-abstraction library
 Group:          System/Libraries
 
-%description -n libyui6
+%description -n libyui7
 This is the user interface engine that provides the abstraction from
 graphical user interfaces (Qt, Gtk) and text based user interfaces
 (ncurses).
@@ -65,7 +65,7 @@ dependencies.
 Requires:       boost-devel
 Requires:       glibc-devel
 Requires:       libstdc++-devel
-Requires:       libyui6 = %{version}
+Requires:       libyui7 = %{version}
 
 Url:            http://github.com/libyui/
 Summary:        Libyui header files
@@ -116,33 +116,33 @@ make %{?jobs:-j%jobs}
 %install
 cd build
 make install DESTDIR="$RPM_BUILD_ROOT"
-install -m0755 -d $RPM_BUILD_ROOT/%{_docdir}/libyui6/
+install -m0755 -d $RPM_BUILD_ROOT/%{_docdir}/libyui7/
 install -m0755 -d $RPM_BUILD_ROOT/%{_libdir}/yui
-install -m0644 ../COPYING* $RPM_BUILD_ROOT/%{_docdir}/libyui6/
+install -m0644 ../COPYING* $RPM_BUILD_ROOT/%{_docdir}/libyui7/
 
 %clean
 rm -rf "$RPM_BUILD_ROOT"
 
-%post -n libyui6 -p /sbin/ldconfig
+%post -n libyui7 -p /sbin/ldconfig
 
-%postun -n libyui6 -p /sbin/ldconfig
+%postun -n libyui7 -p /sbin/ldconfig
 
-%files -n libyui6
+%files -n libyui7
 %defattr(-,root,root)
 %dir %{_libdir}/yui
 %dir %{_datadir}/libyui
 %{_libdir}/lib*.so.*
-%doc %dir %{_docdir}/libyui6
-%doc %{_docdir}/libyui6/COPYING*
+%doc %dir %{_docdir}/libyui7
+%doc %{_docdir}/libyui7/COPYING*
 
 %files devel
 %defattr(-,root,root)
-%dir %{_docdir}/libyui6
+%dir %{_docdir}/libyui7
 %{_libdir}/lib*.so
 %{_prefix}/include/yui
 %{_libdir}/pkgconfig/libyui.pc
 %{_libdir}/cmake/libyui
 %{_datadir}/libyui/buildtools
-%doc %{_docdir}/libyui6/examples
+%doc %{_docdir}/libyui7/examples
 
 %changelog
