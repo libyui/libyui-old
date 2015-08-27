@@ -9,7 +9,7 @@ require "packaging"
 # @param key [String] 'VERSION_MAJOR'
 # @return "3"
 def cmake_value(s, key)
- m = /SET\s*\(\s#{key}\s"([^"]*)"\s*\)/.match(s)
+ m = /SET\s*\(\s*#{key}\s+"([^"]*)"\s*\)/.match(s)
  m[1]
 end
 
