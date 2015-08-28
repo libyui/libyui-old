@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Aug 28 10:31:15 UTC 2015 - mvidner@suse.com
+
+- Bump also the required yui_backend
+- 3.2.2
+
+-------------------------------------------------------------------
 Wed Jul 29 20:14:58 UTC 2015 - besser82@fedoraproject.org
 
 - API-changes imply so-name bump
