@@ -15,11 +15,13 @@
 # Please submit bugfixes or comments via http://bugs.opensuse.org/
 #
 
-
 Name:           libyui
 Version:        3.2.2
 Release:        0
 Source:         libyui-%{version}.tar.bz2
+
+%define so_version 7
+%define bin_name %{package}%{so_version}
 
 BuildRequires:  boost-devel
 BuildRequires:  cmake >= 2.8
@@ -40,17 +42,17 @@ Originally developed for YaST, it can now be used independently of
 YaST for generic (C++) applications. This package has very few
 dependencies.
 
-%package -n libyui7
+%package -n %{bin_name}
 
 Provides:       yast2-libyui = 2.42.0
 Obsoletes:      yast2-libyui < 2.42.0
-Requires:       yui_backend = 7
+Requires:       yui_backend = %{so_version}
 
 Url:            http://github.com/libyui/
 Summary:        Libyui - GUI-abstraction library
 Group:          System/Libraries
 
-%description -n libyui7
+%description -n %{bin_name}
 This is the user interface engine that provides the abstraction from
 graphical user interfaces (Qt, Gtk) and text based user interfaces
 (ncurses).
@@ -65,7 +67,7 @@ dependencies.
 Requires:       boost-devel
 Requires:       glibc-devel
 Requires:       libstdc++-devel
-Requires:       libyui7 = %{version}
+Requires:       %{bin_name} = %{version}
 
 Url:            http://github.com/libyui/
 Summary:        Libyui header files
@@ -116,33 +118,33 @@ make %{?jobs:-j%jobs}
 %install
 cd build
 make install DESTDIR="$RPM_BUILD_ROOT"
-install -m0755 -d $RPM_BUILD_ROOT/%{_docdir}/libyui7/
+install -m0755 -d $RPM_BUILD_ROOT/%{_docdir}/%{bin_name}/
 install -m0755 -d $RPM_BUILD_ROOT/%{_libdir}/yui
-install -m0644 ../COPYING* $RPM_BUILD_ROOT/%{_docdir}/libyui7/
+install -m0644 ../COPYING* $RPM_BUILD_ROOT/%{_docdir}/%{bin_name}/
 
 %clean
 rm -rf "$RPM_BUILD_ROOT"
 
-%post -n libyui7 -p /sbin/ldconfig
+%post -n %{bin_name} -p /sbin/ldconfig
 
-%postun -n libyui7 -p /sbin/ldconfig
+%postun -n %{bin_name} -p /sbin/ldconfig
 
-%files -n libyui7
+%files -n %{bin_name}
 %defattr(-,root,root)
 %dir %{_libdir}/yui
 %dir %{_datadir}/libyui
 %{_libdir}/lib*.so.*
-%doc %dir %{_docdir}/libyui7
-%doc %{_docdir}/libyui7/COPYING*
+%doc %dir %{_docdir}/%{bin_name}
+%doc %{_docdir}/%{bin_name}/COPYING*
 
 %files devel
 %defattr(-,root,root)
-%dir %{_docdir}/libyui7
+%dir %{_docdir}/%{bin_name}
 %{_libdir}/lib*.so
 %{_prefix}/include/yui
 %{_libdir}/pkgconfig/libyui.pc
 %{_libdir}/cmake/libyui
 %{_datadir}/libyui/buildtools
-%doc %{_docdir}/libyui7/examples
+%doc %{_docdir}/%{bin_name}/examples
 
 %changelog
