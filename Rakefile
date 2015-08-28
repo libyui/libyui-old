@@ -9,8 +9,9 @@ require "packaging"
 # @param key [String] 'VERSION_MAJOR'
 # @return "3"
 def cmake_value(s, key)
- m = /SET\s*\(\s*#{key}\s+"([^"]*)"\s*\)/.match(s)
- m[1]
+  e_key = Regexp.escape(key)
+  m = /SET\s*\(\s*#{e_key}\s+"([^"]*)"\s*\)/.match(s)
+  m[1]
 end
 
 Packaging.configuration do |conf|
