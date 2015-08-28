@@ -38,7 +38,7 @@ Group:          System/Libraries
 
 Provides:       yast2-libyui = 2.42.0
 Obsoletes:      yast2-libyui < 2.42.0
-Requires:       yui_backend = 6
+Requires:       yui_backend = @SONAME_MAJOR@
 
 Url:            @URL@
 Summary:        @PROJECTNAME_UC@ - @SUMMARY@
