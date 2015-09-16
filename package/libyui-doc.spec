@@ -16,10 +16,13 @@
 #
 
 
-Name:           libyui-doc
+%define parent libyui
+%define so_version 7
+
+Name:           %{parent}-doc
 Version:        3.2.0
 Release:        0
-Source:         libyui-%{version}.tar.bz2
+Source:         %{parent}-%{version}.tar.bz2
 
 BuildArch:      noarch
 
@@ -50,7 +53,7 @@ This package provides the documentation. (HTML & PDF)
 
 %prep
 
-%setup -n libyui-%{version}
+%setup -n %{parent}-%{version}
 
 %build
 
@@ -71,13 +74,13 @@ make %{?jobs:-j%jobs} docs
 cd build
 make install DESTDIR="$RPM_BUILD_ROOT"
 
-%fdupes -s $RPM_BUILD_ROOT/%_docdir/libyui6
+%fdupes -s $RPM_BUILD_ROOT/%_docdir/%{parent}%{so_version}
 
 %clean
 rm -rf "$RPM_BUILD_ROOT"
 
 %files
 %defattr(-,root,root)
-%doc %{_docdir}/libyui6
+%doc %{_docdir}/%{parent}%{so_version}
 
 %changelog
