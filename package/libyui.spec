@@ -18,7 +18,7 @@
 Name:           libyui
 Version:        3.2.2
 Release:        0
-Source:         libyui-%{version}.tar.bz2
+Source:         %{package}-%{version}.tar.bz2
 
 %define so_version 7
 %define bin_name %{package}%{so_version}
@@ -87,7 +87,7 @@ This package has very few dependencies.
 
 
 %prep
-%setup -q -n libyui-%{version}
+%setup -q -n %{package}-%{version}
 
 %build
 
@@ -142,8 +142,8 @@ rm -rf "$RPM_BUILD_ROOT"
 %dir %{_docdir}/%{bin_name}
 %{_libdir}/lib*.so
 %{_prefix}/include/yui
-%{_libdir}/pkgconfig/libyui.pc
-%{_libdir}/cmake/libyui
+%{_libdir}/pkgconfig/%{package}.pc
+%{_libdir}/cmake/%{package}
 %{_datadir}/libyui/buildtools
 %doc %{_docdir}/%{bin_name}/examples
 
