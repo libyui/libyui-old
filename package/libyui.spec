@@ -18,10 +18,10 @@
 Name:           libyui
 Version:        3.2.2
 Release:        0
-Source:         %{package}-%{version}.tar.bz2
+Source:         %{name}-%{version}.tar.bz2
 
 %define so_version 7
-%define bin_name %{package}%{so_version}
+%define bin_name %{name}%{so_version}
 
 BuildRequires:  boost-devel
 BuildRequires:  cmake >= 2.8
@@ -87,7 +87,7 @@ This package has very few dependencies.
 
 
 %prep
-%setup -q -n %{package}-%{version}
+%setup -q -n %{name}-%{version}
 
 %build
 
@@ -142,8 +142,8 @@ rm -rf "$RPM_BUILD_ROOT"
 %dir %{_docdir}/%{bin_name}
 %{_libdir}/lib*.so
 %{_prefix}/include/yui
-%{_libdir}/pkgconfig/%{package}.pc
-%{_libdir}/cmake/%{package}
+%{_libdir}/pkgconfig/%{name}.pc
+%{_libdir}/cmake/%{name}
 %{_datadir}/libyui/buildtools
 %doc %{_docdir}/%{bin_name}/examples
 
