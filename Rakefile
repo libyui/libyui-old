@@ -40,6 +40,10 @@ Packaging.configuration do |conf|
     conf.obs_sr_project = "openSUSE:Factory"
   end
 
+  # read package name from spec file name because CWD can have a -branch suffix
+  main_spec = Dir.glob("package/*.spec").sort.last
+  conf.package_name = main_spec[/package\/(.*)\.spec$/, 1]
+
   conf.version = cmake_version
 
   conf.skip_license_check << /.*/ if conf.package_name =~ /gtk|bindings/
