@@ -1,12 +1,24 @@
 -------------------------------------------------------------------
-unmerged changes - anaselli@linux.it
+Wed Sep 16 17:29:23 CEST 2015 - mvidner@suse.com
 
-- YWidgetFactory and YOptionalWidgetFactory needed YUILog.h to be 
-  installed to build
-- Fixed a crash when loading extended widget first.
-- Managed YTreeItem first item selection (children were not
-  searched but remeained as selected). Now as soon as an item or a 
-  child is found as selected all the other items are deselected.
+- Reorganized git for easier tarball creation:
+  - RPM spec files are kept in git verbatim, not as templates
+  - no longer call PREP_SPEC_FILES in CMakeLists.common
+- No functional change but version bumped to push the package
+  down the pipeline (boo#946079).
+
+-------------------------------------------------------------------
+Fri Aug 28 10:31:15 UTC 2015 - mvidner@suse.com
+
+- Bump also the required yui_backend
+- 3.2.2
+
+-------------------------------------------------------------------
+Wed Jul 29 20:14:58 UTC 2015 - besser82@fedoraproject.org
+
+- API-changes imply so-name bump
+- 3.2.1
+>>>>>>> upstream/master:package/libyui.changes
 
 -------------------------------------------------------------------
 Wed Jul  8 11:58:56 UTC 2015 - mvidner@suse.com
