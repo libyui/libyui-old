@@ -36,7 +36,9 @@
 #define YPkg_RepoMgr		1 << 6	// Add "Manage Repositories" to menu
 #define YPkg_ConfirmUnsupported	1 << 7	// Confirm unsupported packages
 
-
+/**
+ * A simple wrapper for an insanely complex UI for installing software.
+ **/
 class YPackageSelector : public YWidget
 {
 protected:

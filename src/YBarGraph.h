@@ -32,7 +32,11 @@
 class YBarGraphPrivate;
 class YBarGraphSegment;
 
-
+/**
+ * A graph showing partitioning of a whole.
+ * The whole is divided into YBarGraphSegment each of which has
+ * a relative size, a text color, a background color, and a label.
+ */
 class YBarGraph : public YWidget
 {
     friend class YBarGraphMultiUpdate;
@@ -176,7 +180,8 @@ private:
 
 
 /**
- * Helper class to describe one segment of a YBarGraph.
+ * One segment of a YBarGraph.
+ * It has a relative size, a label, label color and background color.
  **/
 class YBarGraphSegment
 {

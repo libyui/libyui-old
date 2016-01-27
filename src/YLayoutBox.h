@@ -31,7 +31,9 @@
 
 class YLayoutBoxPrivate;
 
-
+/**
+ * A vertical or horizontal stacking of widgets, implementing HBox and VBox.
+ **/
 class YLayoutBox : public YWidget
 {
 public:

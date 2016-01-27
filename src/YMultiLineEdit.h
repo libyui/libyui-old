@@ -29,7 +29,9 @@
 
 class YMultiLineEditPrivate;
 
-
+/**
+ * A multi-line plain-text area
+ **/
 class YMultiLineEdit : public YWidget
 {
 protected:

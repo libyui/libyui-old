@@ -14,13 +14,13 @@
 */
 
 
-/*-/
+/**
 
-  File:		YWizard.h
+  @file		YWizard.h
 
   Author:	Stefan Hundhammer <sh@suse.de>
 
-/-*/
+**/
 
 #ifndef YWizard_h
 #define YWizard_h
@@ -36,12 +36,15 @@ class YReplacePoint;
 #define YWizardContentsReplacePointID	"contents"
 
 
+/**
+ * Kind of the wizard layout
+ **/
 enum YWizardMode
 {
-    YWizardMode_Standard,	// Normal wizard (help panel or nothing)
-    YWizardMode_Steps,		// Steps visible in left side panel
-    YWizardMode_Tree,		// Tree in left side panel
-    YWizardMode_TitleOnLeft     // Title on the left side
+    YWizardMode_Standard,	///< Normal wizard (help panel or nothing)
+    YWizardMode_Steps,		///< Steps visible in left side panel
+    YWizardMode_Tree,		///< Tree in left side panel
+    YWizardMode_TitleOnLeft     ///< Title on the left side
 };
 
 
