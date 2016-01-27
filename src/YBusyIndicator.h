@@ -30,6 +30,11 @@
 class YBusyIndicatorPrivate;
 
 
+/**
+ * Indicates that something is in progress and has not frozen yet.
+ * It has a label and an "indeterminate" progress bar which will be "ticking"
+ * until a timeout occurs or until it receives an "alive" message.
+ */
 class YBusyIndicator : public YWidget
 {
 protected:

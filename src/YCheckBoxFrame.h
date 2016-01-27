@@ -32,6 +32,10 @@
 class YCheckBoxFramePrivate;
 
 
+/**
+ * A frame with a check-box, may auto-disable frame contents based on the check.
+ * See #setAutoEnable, #invertAutoEnable.
+ **/
 class YCheckBoxFrame : public YSingleChildContainerWidget
 {
 public:

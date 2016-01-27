@@ -32,6 +32,9 @@
 class YTimezoneSelectorPrivate;
 
 
+/**
+ * A fancy widget with a world map.
+ **/
 class YTimezoneSelector : public YWidget
 {
 protected:

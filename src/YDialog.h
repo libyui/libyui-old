@@ -39,6 +39,11 @@ class YEventFilter;
 // See YTypes.h for enum YDialogType and enum YDialogColorMode
 
 
+/**
+ * A window in the desktop environment.
+ * A YPopupDialog always has a dedicated window
+ * but YMainDialog may be stacked in a single window.
+ **/
 class YDialog : public YSingleChildContainerWidget
 {
 protected:

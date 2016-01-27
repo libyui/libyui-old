@@ -30,6 +30,9 @@
 class YProgressBarPrivate;
 
 
+/**
+ * A progress bar, showing completion of value() out of maxValue() parts.
+ **/
 class YProgressBar : public YWidget
 {
 protected:

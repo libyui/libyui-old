@@ -39,7 +39,9 @@
 
 class YGraphPrivate;
 
-
+/**
+ * A graph with nodes and edges, rendered with Graphviz.
+ **/
 class YGraph : public YWidget
 {
 protected:

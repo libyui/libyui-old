@@ -32,6 +32,9 @@
 class YFramePrivate;
 
 
+/**
+ * A labeled framed container.
+ **/
 class YFrame : public YSingleChildContainerWidget
 {
 protected:

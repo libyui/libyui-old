@@ -31,7 +31,9 @@
 
 class YEmptyPrivate;
 
-
+/**
+ * A widget with zero size, useful as a placeholder.
+ **/
 class YEmpty : public YWidget
 {
 protected:

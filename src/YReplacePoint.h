@@ -27,6 +27,9 @@
 
 #include "YSingleChildContainerWidget.h"
 
+/**
+ * A placeholder that can have its contents exchanged, using ReplaceWidget.
+ **/
 class YReplacePoint : public YSingleChildContainerWidget
 {
 protected:
