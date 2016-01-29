@@ -33,6 +33,9 @@
 class YRichTextPrivate;
 
 
+/**
+ * Text formatted with simple HTML-like tags, with "links" generating events.
+ **/
 class YRichText : public YWidget
 {
 public:

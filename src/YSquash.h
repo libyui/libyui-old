@@ -32,7 +32,7 @@
 class YSquashPrivate;
 
 /**
- * HSquash, VSquash HVSquash:
+ * HSquash, VSquash HVSquash: reduce child to its preferred size.
  *
  * Squash is a widget that "squashes" its one child during layout, i.e., it
  * reduces it in size down to its preferred size. It may squash vertically,

@@ -39,7 +39,10 @@ enum YCheckBoxState
     YCheckBox_on  	= 1
 };
 
-
+/**
+ * A tri-state check box. It can be toggled between ON and OFF by the user
+ * and additionally set to a DONT-CARE value programatically.
+ **/
 class YCheckBox : public YWidget
 {
 protected:

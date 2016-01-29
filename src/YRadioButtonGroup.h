@@ -35,6 +35,9 @@ typedef YRadioButtonList::iterator		YRadioButtonListIterator;
 typedef YRadioButtonList::const_iterator	YRadioButtonListConstIterator;
 
 
+/**
+ * A group of YRadioButton widgets.
+ **/
 class YRadioButtonGroup : public YSingleChildContainerWidget
 {
 protected:

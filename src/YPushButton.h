@@ -31,6 +31,9 @@ class YPushButtonPrivate;
 
 
 
+/**
+ * A push button; may have an icon, and a F-key shortcut.
+ **/
 class YPushButton : public YWidget
 {
 protected:

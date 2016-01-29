@@ -31,7 +31,9 @@
 
 class YImagePrivate;
 
-
+/**
+ * A picture, possibly animated, loaded from a file.
+ **/
 class YImage : public YWidget
 {
 public:

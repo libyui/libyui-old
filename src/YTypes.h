@@ -14,16 +14,15 @@
 */
 
 
-/*-/
-
-  File:		YTypes.h
+/**
+ @file		YTypes.h
 
   Author:	Stefan Hundhammer <sh@suse.de>
 
   Header file for frequently used simple types to reduce interdependencies
   between important headers (e.g., YWidget.h, YUI.h).
 
-/-*/
+**/
 
 
 #ifndef YTypes_h
@@ -61,6 +60,9 @@ enum YAlignmentType
 };
 
 
+/**
+ * Type of dialog: Main / Popup / Wizard.
+ **/
 enum YDialogType
 {
     YMainDialog,

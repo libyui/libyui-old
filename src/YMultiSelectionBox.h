@@ -30,6 +30,9 @@
 class YMultiSelectionBoxPrivate;
 
 
+/**
+ * A variant of YSelectionBox where more than one item can be selected.
+ **/
 class YMultiSelectionBox : public YSelectionWidget
 {
 protected:

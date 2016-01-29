@@ -45,9 +45,9 @@ class YSelectionBoxPrivate;
  * displayed above the list. The hotkey displayed in that caption label will
  * move the keyboard focus into the list.
  *
- * If multiple columns are needed, use the table widget instead.
- * For tree-like structures, use the tree widget.
- *
+ * If multiple columns are needed, use the YTable widget instead.
+ * For tree-like structures, use the YTree widget.
+ * Use YMultiSelectionBox if more than one item can be selected.
  *
  * (*) Not all UIs (in particular not text-based UIs) support displaying icons,
  * so an icon should never be an exclusive means to display any kind of

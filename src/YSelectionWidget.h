@@ -32,10 +32,10 @@
 class YSelectionWidgetPrivate;
 
 /**
- * Base class for selection widgets:
- *   - YSelectionBox
- *   - MultiselectionBox
- *   - YCombobox
+ * Base class for various kinds of multi-value widgets.
+ *   - YSelectionBox, YMultiSelectionBox, YComboBox
+ *   - YContextMenu, YMenuButton
+ *   - YTable
  *   - YTree
  *   - YDumbTab
  **/

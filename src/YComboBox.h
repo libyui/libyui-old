@@ -31,7 +31,7 @@ class YComboBoxPrivate;
 
 
 /**
- * ComboBox (a.k.a. "drop down box", "drop down selection"):
+ * ComboBox (or "drop down box", "drop down selection"); may be editable.
  *
  * A widget with a drop-down list of predefined values to select from.
  * Optionally, this widget can be created in "editable" mode which means that
