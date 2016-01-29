@@ -172,7 +172,7 @@ void YTableCell::reparent( YTableItem * parent, int column )
 {
     YUI_CHECK_PTR( parent );
 
-    if ( _parent && _parent != parent && column != column )
+    if ( _parent && _parent != parent && _column != column )
 	YUI_THROW( YUIException( std::string( "Cannot reparent YTableCell \"" )
 				 + _label
 				 + "to different parent." ) );
