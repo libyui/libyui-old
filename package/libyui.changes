@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Wed Mar 30 09:12:04 CEST 2016 - me@besser82.io
+
+- Fix 'Werror=nonnull-compare' for GCC 6
+  - Optimizations remove null pointer checks for 'this'
+- Clean-up trailing white-space
+- 3.2.5
+
+-------------------------------------------------------------------
 Fri Jan 29 13:11:27 UTC 2016 - mvidner@suse.com
 
 - Fixed a compilation error in YTableCell with GCC 6 (bsc#964144).
