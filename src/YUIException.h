@@ -172,11 +172,27 @@ class YWidget;
 /**
  * Check if a widget pointer is valid.
  * Throws YUIInvalidWidgetException if it is 0 or invalid (already deleted).
+ *
+ * Explicitly casting the memory-address stored in the given pointer to
+ * a boolean-type for null-pointer-checks is needed for GCC >= 6, because
+ * it introduces new optimizations to remove null-pointer-checks for 'this'.
+ *
+ * Not explicitly casting the pointer's memory-address, will cause the
+ * compilation to fail with an error, when using this macro in YDialog:
+ *
+ *     …/src/YDialog.cc: In member function 'bool YDialog::destroy(bool)':
+ *     …/src/YDialog.cc:254:24: error:
+ *         nonnull argument 'this' compared to NULL [-Werror=nonnull-compare]
+ *     YUI_CHECK_WIDGET( this );
+ *               ~~~~~~~~~^~~~~~
+ *
+ * See: https://gcc.gnu.org/gcc-6/porting_to.html
  **/
 #define YUI_CHECK_WIDGET( WIDGET )			\
     do							\
     {							\
-	if ( ! (WIDGET) || ! (WIDGET)->isValid() )	\
+	if ( ! ( static_cast<bool> (WIDGET) ) ||	\
+	     ! (WIDGET)->isValid() )			\
 	{						\
 	    YUI_THROW( YUIInvalidWidgetException() );	\
 	}						\
