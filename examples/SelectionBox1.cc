@@ -96,7 +96,7 @@ int main( int argc, char **argv )
 
 	    if ( event->widget() == closeButton )
 		break; // leave event loop
-		
+
 	    if ( event->widget() == valueButton ||
 		 event->widget() == selBox )		// selBox will only send events with setNotify()
 	    {

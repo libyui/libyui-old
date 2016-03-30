@@ -169,7 +169,7 @@ MACRO( SET_ENVIRONMENT )	# setup the environment vars
   ELSE ( EXTENSIONNAME )
     SET( INCLUDE_DIR "${INCLUDE_DIR}/${BASELIB}/${PROGSUBDIR_UC}/${PLUGINNAME}" )
   ENDIF ( EXTENSIONNAME )
-  
+
   # Only plugin go under libdir/yui, not extensions
   IF( PLUGINNAME )
     SET( LIB_DIR "${LIB_DIR}/${BASELIB}" )

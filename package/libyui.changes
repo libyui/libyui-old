@@ -213,7 +213,7 @@ Sat Jan 19 23:55:33 CET 2013 - anaselli@linux.it
 Fri Jan 18 14:51:40 CET 2013 - anaselli@linux.it
 
 - Fixed YSettings
-- Added setThemeDir(), getThemeDir(), setIconsDir() and 
+- Added setThemeDir(), getThemeDir(), setIconsDir() and
   getIconsDir() to YSettings
 
 -------------------------------------------------------------------
