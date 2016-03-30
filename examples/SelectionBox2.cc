@@ -205,7 +205,7 @@ int main( int argc, char **argv )
 		      event->widget() == valueButton )
 	    {
 		yuiMilestone() << "Event widget: " << event->widget() << std::endl;
-		
+
 		YItem * item = selBox->selectedItem();
 
 		if ( item )
