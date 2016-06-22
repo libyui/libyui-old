@@ -50,7 +50,31 @@ YPropertyValue::~YPropertyValue()
 {
 }
 
+bool YPropertyValue::operator==( const YPropertyValue &other ) const
+{
+    // compare the type first
+    if (_type != other.type()) return false;
 
+    // then compare the values
+    switch ( _type )
+    {
+    case YStringProperty:		return _stringVal == other.stringVal();
+    case YBoolProperty:         return _boolVal == other.boolVal();
+    case YIntegerProperty:		return _integerVal == other.integerVal();
+
+    case YUnknownPropertyType:
+    case YOtherProperty:
+        YUI_THROW( YUIException( "Cannot compare " + typeAsStr() + " properties") );
+    }
+
+    // FIXME: never reached, just make the compiler happy (can it be improved?)
+    return false;
+}
+
+bool YPropertyValue::operator!=( const YPropertyValue &other ) const
+{
+    return !(*this == other);
+}
 
 YPropertySet::YPropertySet()
 {

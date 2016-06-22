@@ -136,7 +136,6 @@ public:
      **/
     static bool isLayoutStretch( YWidget * child, YUIDimension dimension );
 
-
 protected:
 
     /**

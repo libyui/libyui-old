@@ -73,6 +73,18 @@ public:
     /**
      * Return an iterator that points to the first child.
      **/
+    typename ChildrenList::iterator begin()
+	{ return _children.begin(); }
+
+    /**
+     * Return an iterator that points after the last child.
+     **/
+    typename ChildrenList::iterator end()
+	{ return _children.end(); }
+
+    /**
+     * Return an iterator that points to the first child.
+     **/
     typename ChildrenList::const_iterator begin() const
 	{ return _children.begin(); }
 
