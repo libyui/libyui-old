@@ -111,7 +111,6 @@ struct YDialogSpyPrivate
 	, propButton( 0 )
 	, propReplacePoint( 0 )
 	, propTable( 0 )
-	, closeButton( 0 )
 	{}
 
     YDialog *		targetDialog;	// Dialog that is being inspected
@@ -124,7 +123,6 @@ struct YDialogSpyPrivate
     YPushButton * 	downButton;
     YReplacePoint *	propReplacePoint;
     YTable *		propTable;
-    YPushButton *	closeButton;
 };
 
 void fillWidgetTree(YDialog *target, YTree *widgetTree)
@@ -171,10 +169,6 @@ YDialogSpy::YDialogSpy( YDialog * targetDialog )
 
     priv->propReplacePoint = fac->createReplacePoint( vbox );
     fac->createEmpty( priv->propReplacePoint );
-
-    YButtonBox * buttonBox = fac->createButtonBox( vbox );
-    priv->closeButton      = fac->createPushButton( buttonBox, "&Close" );
-    priv->closeButton->setRole( YOKButton );
 }
 
 YDialogSpy::~YDialogSpy()
@@ -316,8 +310,8 @@ void YDialogSpy::exec()
 
 	if ( event )
 	{
-	    if ( event->widget()    == priv->closeButton ||
-		 event->eventType() == YEvent::CancelEvent ) // window manager "close window" button
+        // window manager "close window" button
+	    if ( event->eventType() == YEvent::CancelEvent )
 	    {
 		priv->targetDialog->highlight( 0 );
 		return;
