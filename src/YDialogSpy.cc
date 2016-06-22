@@ -118,12 +118,23 @@ struct YDialogSpyPrivate
     YDialog *		spyDialog;	// Debug dialog that shows widget data
     YTree *		widgetTree;	// Tree widget to show widget hierarchy
     YPushButton * 	propButton;
+    YPushButton * 	addButton;
+    YPushButton * 	deleteButton;
+    YPushButton * 	upButton;
+    YPushButton * 	downButton;
     YReplacePoint *	propReplacePoint;
     YTable *		propTable;
     YPushButton *	closeButton;
 };
 
-
+void fillWidgetTree(YDialog *target, YTree *widgetTree)
+{
+    YWidgetTreeItem * rootItem = new YWidgetTreeItem( target, true );
+    YUI_CHECK_NEW( rootItem );
+    fillTree( rootItem, target->childrenBegin(), target->childrenEnd(), 1 );
+    widgetTree->addItem( rootItem );
+    widgetTree->rebuildTree();
+}
 
 YDialogSpy::YDialogSpy( YDialog * targetDialog )
     : priv( new YDialogSpyPrivate() )
@@ -143,14 +154,21 @@ YDialogSpy::YDialogSpy( YDialog * targetDialog )
     priv->widgetTree     = fac->createTree( minSize, "Widget &Tree", false );
     priv->widgetTree->setNotify( true );
 
-    YWidgetTreeItem * rootItem = new YWidgetTreeItem( targetDialog, true );
-    YUI_CHECK_NEW( rootItem );
-    fillTree( rootItem, targetDialog->childrenBegin(), targetDialog->childrenEnd(), 1 );
-    priv->widgetTree->addItem( rootItem );
-    priv->widgetTree->rebuildTree();
+    fillWidgetTree(priv->targetDialog, priv->widgetTree);
 
-    YAlignment * alignment = fac->createLeft( vbox );
-    priv->propButton       = fac->createPushButton( alignment, "&Properties >>>" );
+    YLayoutBox * hbox = fac->createHBox( vbox );
+    priv->propButton = fac->createPushButton( hbox, "&Properties >>>" );
+    priv->addButton = fac->createPushButton( hbox, "&Add" );
+    // FIXME: not implemented yet
+    priv->addButton->setDisabled();
+    priv->deleteButton = fac->createPushButton( hbox, "&Delete" );
+    priv->upButton = fac->createPushButton( hbox, "↑ Up" );
+    // FIXME: not implemented yet
+    priv->upButton->setDisabled();
+    priv->downButton = fac->createPushButton( hbox, "↓ Down" );
+    // FIXME: not implemented yet
+    priv->downButton->setDisabled();
+
     priv->propReplacePoint = fac->createReplacePoint( vbox );
     fac->createEmpty( priv->propReplacePoint );
 
@@ -158,7 +176,6 @@ YDialogSpy::YDialogSpy( YDialog * targetDialog )
     priv->closeButton      = fac->createPushButton( buttonBox, "&Close" );
     priv->closeButton->setRole( YOKButton );
 }
-
 
 YDialogSpy::~YDialogSpy()
 {
@@ -317,9 +334,34 @@ void YDialogSpy::exec()
 		}
 	    }
 
+        YWidgetTreeItem * item = (YWidgetTreeItem *) priv->widgetTree->selectedItem();
+
+        if ( event->widget() == priv->deleteButton && item)
+        {
+            YWidget *parent = item->widget()->parent();
+            YWidget *w = item->widget();
+
+            if (w && parent)
+            {
+                yuiMilestone() << "removing widget: " << w;
+                parent->removeChild(w);
+
+                if ( w->isValid() )
+                {
+                    delete w;
+                }
+
+                // redraw the target dialog
+                priv->targetDialog->recalcLayout();
+
+                // refresh the spy dialog
+                priv->widgetTree->deleteAllItems();
+                fillWidgetTree(priv->targetDialog, priv->widgetTree);
+            }
+        }
+
 	    if ( event->widget() == priv->widgetTree || updateProp )
 	    {
-		YWidgetTreeItem * item = (YWidgetTreeItem *) priv->widgetTree->selectedItem();
 		yuiDebug() << "Highlighting " << item << std::endl;
 
 		if ( item )
