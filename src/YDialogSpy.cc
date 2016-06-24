@@ -517,11 +517,15 @@ void EditWidgetProperty(const std::string &name, YDialog *dialog, YWidget * widg
                 }
                 catch(std::out_of_range)
                 {
-                    yuiWarning() << "Value '" << value << "' is out of integer range.";
+                    std::string warning = "Value '" + value + "' is out of integer range.";
+                    yuiWarning() << warning;
+                    YDialog::showText(warning);
                 }
                 catch(std::invalid_argument)
                 {
-                    yuiWarning() << "Value '" << value << "' is not a valid string.";
+                    std::string warning = "Value '" + value + "' is not a valid integer.";
+                    yuiWarning() << warning;
+                    YDialog::showText(warning);
                 }
             }
         }
