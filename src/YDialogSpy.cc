@@ -369,6 +369,7 @@ void YDialogSpy::exec()
                     YTableCell *cell = selected->cell(0);
                     yuiMilestone() << "editing property: " << cell->label();
                     EditWidgetProperty(cell->label(), priv->targetDialog, item->widget());
+                    updateProp = true;
                 }
             }
 
