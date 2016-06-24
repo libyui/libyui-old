@@ -151,6 +151,14 @@ YDialogSpy::YDialogSpy( YDialog * targetDialog )
     YAlignment * diaMin	 = fac->createMinHeight( priv->spyDialog, DIA_HEIGHT );
     YLayoutBox * vbox    = fac->createVBox( diaMin );
 
+    YAlignment * alignment = fac->createLeft( vbox );
+    YMenuButton *fileMenu  = fac->createMenuButton( alignment, "&File" );
+
+    YItemCollection items;
+    YMenuItem *exp = new YMenuItem( "Export" );
+    items.push_back( exp );
+    fileMenu->addItems( items );
+
     YAlignment * minSize = fac->createMinSize( vbox, TREE_WIDTH, TREE_HEIGHT );
     minSize->setWeight( YD_VERT, TREE_VWEIGHT );
     priv->widgetTree     = fac->createTree( minSize, "Widget &Tree", false );
@@ -406,7 +414,7 @@ void EditWidgetProperty(const std::string &name, YDialog *dialog, YWidget * widg
     if (! widget) return;
 
     YPropertyValue property = widget->getProperty( name );
-    yuiMilestone() << "editing property \"" << name << "\" (" << property.typeAsStr() << ")";
+    yuiMilestone() << "editing property \"" << name << "\" (type: " << property.typeAsStr() << ")";
     yuiMilestone().flush();
 
     YPropertyType type = property.type();
