@@ -10,8 +10,9 @@ public:
     // 
     YPropertyEditor(YWidget * widget);
 
-    // display a popup for editing a property
-    void edit(const std::string &property);
+    //! display a popup for editing a property
+    //! \return true if the property has been changed
+    bool edit(const std::string &property);
     
 private:
     // TODO: use Impl.h

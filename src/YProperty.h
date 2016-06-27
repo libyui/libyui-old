@@ -149,6 +149,11 @@ public:
      **/
     ~YPropertyValue();
 
+    bool operator==( const YPropertyValue &other ) const;
+
+    // TODO: I guess != can be automatically added by some boost "magic"
+    bool operator!=( const YPropertyValue &other ) const;
+
     /**
      * Returns the type of this property value.
      * Use this to determine which xyVal() method to use.

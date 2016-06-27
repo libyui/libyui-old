@@ -44,9 +44,9 @@ bool YPropertyEditor::isReadOnly(const std::string &property)
 }
 
 // FIXME: split this too long method
-void YPropertyEditor::edit(const std::string &property)
+bool YPropertyEditor::edit(const std::string &property)
 {
-    if (!_widget) return;
+    if (!_widget) return false;
 
     YPropertyValue prop_value = _widget->getProperty( property );
     yuiMilestone() << "editing property \"" << property << "\" (type: " << prop_value.typeAsStr() << ")";
@@ -55,11 +55,15 @@ void YPropertyEditor::edit(const std::string &property)
     if (isReadOnly(property))
     {
         YPopupInternal::message("Property \"" + property + "\" is read only!");
-        return;
+        return false;
     }
 
     YPropertyType type = prop_value.type();
-    if (type != YBoolProperty && type != YStringProperty && type != YIntegerProperty) return;
+    // we cannot edit special properties
+    if (type != YBoolProperty && type != YStringProperty && type != YIntegerProperty)
+    {
+        return false;
+    }
 
     YPropertyValue orig = prop_value;
 
@@ -110,7 +114,15 @@ void YPropertyEditor::edit(const std::string &property)
             if (event->widget() == cancelButton || event->eventType() == YEvent::CancelEvent )
             {
                 // restore the original value
-                _widget->setProperty(property, orig);
+                if (_widget->getProperty( property ) != orig)
+                {
+                    _widget->setProperty(property, orig);
+
+                    // TODO: DRY this part
+                    auto dialog = _widget->findDialog();
+                    if (dialog) dialog->recalcLayout();
+                }
+
                 break;
             }
             else if (event->widget() == okButton)
@@ -132,24 +144,22 @@ void YPropertyEditor::edit(const std::string &property)
                 yuiMilestone() << "Value changed to " << value;
 
                 try {
-                    if (type == YIntegerProperty)
-                    {
-                        _widget->setProperty(property, YPropertyValue(std::stoi(value)));
-                    }
-                    else
-                    {
-                        _widget->setProperty(property, YPropertyValue(value));
-                    }
+                    YPropertyValue new_property = (type == YIntegerProperty) ?
+                        YPropertyValue(std::stoi(value)) : YPropertyValue(value);
+
+                    _widget->setProperty(property, new_property);
 
                     auto dialog = _widget->findDialog();
                     if (dialog) dialog->recalcLayout();
                 }
+                // thrown by std::stoi()
                 catch(std::out_of_range)
                 {
                     std::string warning = "Value '" + value + "' is out of integer range.";
                     yuiWarning() << warning;
                     YPopupInternal::message(warning);
                 }
+                // thrown by std::stoi()
                 catch(std::invalid_argument)
                 {
                     std::string warning = "Value '" + value + "' is not a valid integer.";
@@ -161,4 +171,6 @@ void YPropertyEditor::edit(const std::string &property)
     }
 
     popup->destroy();
+
+    return _widget->getProperty( property ) != orig;
 }

@@ -445,9 +445,8 @@ void YDialogSpy::exec()
 
                     YPropertyEditor editor(item->widget());
                     yuiMilestone() << "editing property: " << cell->label();
-                    editor.edit(cell->label());
-
-                    updateProp = true;
+                    // update the property table when only the property has been changed
+                    updateProp = editor.edit(cell->label());
                 }
             }
 
