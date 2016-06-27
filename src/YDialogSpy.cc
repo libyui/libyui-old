@@ -359,6 +359,14 @@ void YDialogSpy::exec()
                         delete w;
                     }
 
+                    // any other child left after the removal?
+                    if (!parent->hasChildren())
+                    {
+                        // add an Empty widget to have a valid widget tree
+                        // e.g. empty VBoxes are not allowed
+                        YUI::widgetFactory()->createEmpty(parent);
+                    }
+
                     // redraw the target dialog
                     priv->targetDialog->recalcLayout();
 
