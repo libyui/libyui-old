@@ -168,9 +168,62 @@ YDialogSpy::YDialogSpy( YDialog * targetDialog )
 
     YLayoutBox * hbox = fac->createHBox( vbox );
     priv->propButton = fac->createPushButton( hbox, "&Properties >>>" );
+
     priv->addButton = fac->createMenuButton( hbox, "&Add" );
-    // FIXME: not implemented yet
-    priv->addButton->setDisabled();
+    YItemCollection add_items;
+    YMenuItem *m1 = new YMenuItem( "Info" );
+    YMenuItem *m2 = new YMenuItem( "Buttons" );
+    YMenuItem *m3 = new YMenuItem( "Input" );
+    YMenuItem *m4 = new YMenuItem( "Layout" );
+    add_items.push_back( m1 );
+    add_items.push_back( m2 );
+    add_items.push_back( m3 );
+    add_items.push_back( m4 );
+
+    new YMenuItem( m1, "BarGraph (GUI Only)" );
+    new YMenuItem( m1, "Label" );
+    new YMenuItem( m1, "ProgressBar" );
+    new YMenuItem( m1, "RichText" );
+
+    new YMenuItem( m2, "PushButton" );
+    new YMenuItem( m2, "CheckBox" );
+    new YMenuItem( m2, "ComboBox" );
+    new YMenuItem( m2, "MenuButton" );
+    new YMenuItem( m2, "RadioButton" );
+
+    new YMenuItem( m3, "DateField" );
+    new YMenuItem( m3, "InputField" );
+    new YMenuItem( m3, "IntField" );
+    new YMenuItem( m3, "MultiLineEdit" );
+    new YMenuItem( m3, "MultiSelectionBox" );
+    new YMenuItem( m3, "Password" );
+    new YMenuItem( m3, "SelectionBox" );
+    new YMenuItem( m3, "Slider" );
+    new YMenuItem( m3, "TimeField" );
+    new YMenuItem( m3, "TimezoneSelector (GUI Only)" );
+
+    new YMenuItem( m4, "ButtonBox" );
+    new YMenuItem( m4, "CheckBoxFrame" );
+    new YMenuItem( m4, "DumbTab" );
+    new YMenuItem( m4, "Frame" );
+    new YMenuItem( m4, "HBox" );
+    new YMenuItem( m4, "HSpacing" );
+    new YMenuItem( m4, "HSquash" );
+    new YMenuItem( m4, "HWeight" );
+    new YMenuItem( m4, "Left" );
+    new YMenuItem( m4, "MarginBox" );
+    new YMenuItem( m4, "MinHeight" );
+    new YMenuItem( m4, "MinSize" );
+    new YMenuItem( m4, "MinWidth" );
+    new YMenuItem( m4, "ReplacePoint" );
+    new YMenuItem( m4, "Right" );
+    new YMenuItem( m4, "VBox" );
+    new YMenuItem( m4, "VSpacing" );
+    new YMenuItem( m4, "VSquash" );
+    new YMenuItem( m4, "VWeight" );
+
+    priv->addButton->addItems( add_items );
+
     priv->deleteButton = fac->createPushButton( hbox, "&Delete" );
     priv->upButton = fac->createPushButton( hbox, "↑ Up" );
     // FIXME: not implemented yet
@@ -330,6 +383,11 @@ void YDialogSpy::exec()
         		priv->targetDialog->highlight( 0 );
         		return;
     	    }
+
+            if ( event->eventType() == YEvent::MenuEvent)
+            {
+                continue;
+            }
 
     	    if ( event->widget() == priv->propButton )
     	    {
