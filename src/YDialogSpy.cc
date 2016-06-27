@@ -42,7 +42,7 @@
 #include <YComboBox.h>
 #include <YInputField.h>
 #include <YReplacePoint.h>
-#include <YPopupInternal.h>
+#include <YPropertyEditor.h>
 #include <YUI.h>
 
 #define TREE_VWEIGHT	40
@@ -442,8 +442,11 @@ void YDialogSpy::exec()
                 if (selected)
                 {
                     YTableCell *cell = selected->cell(0);
+
+                    YPropertyEditor editor(priv->targetDialog, item->widget());
                     yuiMilestone() << "editing property: " << cell->label();
-                    EditWidgetProperty(cell->label(), priv->targetDialog, item->widget());
+                    editor.edit(cell->label());
+
                     updateProp = true;
                 }
             }
@@ -462,7 +465,6 @@ void YDialogSpy::exec()
     }
 }
 
-
 void YDialogSpy::showDialogSpy( YDialog * dialog )
 {
     try
@@ -474,138 +476,4 @@ void YDialogSpy::showDialogSpy( YDialog * dialog )
     {
 	YUI_CAUGHT( exception );
     }
-}
-
-void EditWidgetProperty(const std::string &name, YDialog *dialog, YWidget * widget)
-{
-    if (! widget) return;
-
-    YPropertyValue property = widget->getProperty( name );
-    yuiMilestone() << "editing property \"" << name << "\" (type: " << property.typeAsStr() << ")";
-    yuiMilestone().flush();
-
-    YPropertyType type = property.type();
-
-    // is the property read-only?
-    YPropertySet propSet = widget->propertySet();
-    for ( YPropertySet::const_iterator it = propSet.propertiesBegin();
-          it != propSet.propertiesEnd();
-          ++it )
-    {
-        YProperty prop = *it;
-
-        if (prop.name() == name)
-        {
-            if (prop.isReadOnly())
-            {
-                YPopupInternal::message("Property \"" + name + "\" is read only!");
-                return;
-            }
-            else
-            {
-                // finish the check
-                break;
-            }
-        }
-    }
-
-    if (type != YBoolProperty && type != YStringProperty && type != YIntegerProperty) return;
-
-    YPropertyValue orig = property;
-
-    YWidgetFactory *f = YUI::widgetFactory();
-
-    YDialog *popup = f->createPopupDialog();
-    YLayoutBox *vbox = f->createVBox(popup);
-
-    YComboBox *combo = NULL;
-    YInputField *input = NULL;
-
-    if (type == YBoolProperty)
-    {
-        combo = f->createComboBox( vbox, name);
-        combo->setNotify( true );
-
-        YItemCollection items;
-        items.push_back( new YItem( "true" ) );
-        items.push_back( new YItem( "false" ) );
-        combo->addItems( items );
-        combo->setValue( property.boolVal() ? "true" : "false" );
-    }
-    else
-    {
-        input = f->createInputField(vbox, name);
-        input->setNotify( true );
-
-        if (type == YStringProperty)
-        {
-            input->setValue( property.stringVal() );
-        }
-        // Integer property
-        else
-        {
-            input->setValue( std::to_string(property.integerVal()) );
-        }
-    }
-
-    YButtonBox * bbox = f->createButtonBox( vbox );
-    YPushButton *okButton = f->createPushButton( bbox, "OK" );
-    YPushButton *cancelButton = f->createPushButton( bbox, "Cancel" );
-
-    while ( true )
-    {
-        YEvent * event = popup->waitForEvent();
-        if ( event )
-        {
-            if (event->widget() == cancelButton || event->eventType() == YEvent::CancelEvent )
-            {
-                // restore the original value
-                widget->setProperty(name, orig);
-                break;
-            }
-            else if (event->widget() == okButton)
-            {
-                break;
-            }
-            else if (event->widget() == combo)
-            {
-                std::string value = combo->value();
-                yuiMilestone() << "Value changed to " << value;
-                widget->setProperty(name, YPropertyValue(value == "true"));
-                dialog->recalcLayout();
-            }
-            else if (event->widget() == input)
-            {
-                std::string value = input->value();
-                yuiMilestone() << "Value changed to " << value;
-
-                try {
-                    if (type == YIntegerProperty)
-                    {
-                        widget->setProperty(name, YPropertyValue(std::stoi(value)));
-                    }
-                    else
-                    {
-                        widget->setProperty(name, YPropertyValue(value));
-                    }
-
-                    dialog->recalcLayout();
-                }
-                catch(std::out_of_range)
-                {
-                    std::string warning = "Value '" + value + "' is out of integer range.";
-                    yuiWarning() << warning;
-                    YPopupInternal::message(warning);
-                }
-                catch(std::invalid_argument)
-                {
-                    std::string warning = "Value '" + value + "' is not a valid integer.";
-                    yuiWarning() << warning;
-                    YPopupInternal::message(warning);
-                }
-            }
-        }
-    }
-
-    popup->destroy();
 }

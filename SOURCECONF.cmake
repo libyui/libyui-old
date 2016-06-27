@@ -81,6 +81,7 @@ SET( ${TARGETLIB}_SOURCES
   YRpmGroupsTree.cc
 
   YPopupInternal.cc
+  YPropertyEditor.cc
 )
 
 SET( ${TARGETLIB}_HEADERS
