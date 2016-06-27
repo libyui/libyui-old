@@ -42,6 +42,7 @@
 #include <YComboBox.h>
 #include <YInputField.h>
 #include <YReplacePoint.h>
+#include <YPopupInternal.h>
 #include <YUI.h>
 
 #define TREE_VWEIGHT	40
@@ -497,7 +498,7 @@ void EditWidgetProperty(const std::string &name, YDialog *dialog, YWidget * widg
         {
             if (prop.isReadOnly())
             {
-                YDialog::showText("Property \"" + name + "\" is read only!");
+                YPopupInternal::message("Property \"" + name + "\" is read only!");
                 return;
             }
             else
@@ -594,13 +595,13 @@ void EditWidgetProperty(const std::string &name, YDialog *dialog, YWidget * widg
                 {
                     std::string warning = "Value '" + value + "' is out of integer range.";
                     yuiWarning() << warning;
-                    YDialog::showText(warning);
+                    YPopupInternal::message(warning);
                 }
                 catch(std::invalid_argument)
                 {
                     std::string warning = "Value '" + value + "' is not a valid integer.";
                     yuiWarning() << warning;
-                    YDialog::showText(warning);
+                    YPopupInternal::message(warning);
                 }
             }
         }

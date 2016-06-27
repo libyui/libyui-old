@@ -79,6 +79,8 @@ SET( ${TARGETLIB}_SOURCES
   FSize.cc
   YStringTree.cc
   YRpmGroupsTree.cc
+
+  YPopupInternal.cc
 )
 
 SET( ${TARGETLIB}_HEADERS
