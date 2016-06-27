@@ -443,7 +443,7 @@ void YDialogSpy::exec()
                 {
                     YTableCell *cell = selected->cell(0);
 
-                    YPropertyEditor editor(priv->targetDialog, item->widget());
+                    YPropertyEditor editor(item->widget());
                     yuiMilestone() << "editing property: " << cell->label();
                     editor.edit(cell->label());
 

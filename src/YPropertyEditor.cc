@@ -16,8 +16,8 @@
 #define YUILogComponent "ui-property-editor"
 #include "YUILog.h"
 
-YPropertyEditor::YPropertyEditor(YDialog *dialog, YWidget * widget)
-: _dialog(dialog), _widget(widget)
+YPropertyEditor::YPropertyEditor(YWidget * widget)
+: _widget(widget)
 {}
 
 bool YPropertyEditor::isReadOnly(const std::string &property)
@@ -38,7 +38,7 @@ bool YPropertyEditor::isReadOnly(const std::string &property)
 
     // we cannot edit an unknown property, throw an exception
     YUI_THROW( YUIException( "Unknown property: " + property) );
-    
+
     // FIXME: never reached, just make the compiler happy (can it be improved?)
     return false;
 }
@@ -46,7 +46,7 @@ bool YPropertyEditor::isReadOnly(const std::string &property)
 // FIXME: split this too long method
 void YPropertyEditor::edit(const std::string &property)
 {
-    if (! _widget || !_dialog) return;
+    if (!_widget) return;
 
     YPropertyValue prop_value = _widget->getProperty( property );
     yuiMilestone() << "editing property \"" << property << "\" (type: " << prop_value.typeAsStr() << ")";
@@ -122,7 +122,9 @@ void YPropertyEditor::edit(const std::string &property)
                 std::string value = combo->value();
                 yuiMilestone() << "Value changed to " << value;
                 _widget->setProperty(property, YPropertyValue(value == "true"));
-                _dialog->recalcLayout();
+
+                auto dialog = _widget->findDialog();
+                if (dialog) dialog->recalcLayout();
             }
             else if (event->widget() == input)
             {
@@ -139,7 +141,8 @@ void YPropertyEditor::edit(const std::string &property)
                         _widget->setProperty(property, YPropertyValue(value));
                     }
 
-                    _dialog->recalcLayout();
+                    auto dialog = _widget->findDialog();
+                    if (dialog) dialog->recalcLayout();
                 }
                 catch(std::out_of_range)
                 {
