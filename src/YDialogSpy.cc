@@ -230,10 +230,10 @@ YDialogSpy::YDialogSpy( YDialog * targetDialog )
     priv->deleteButton = fac->createPushButton( hbox, "&Delete" );
     priv->upButton = fac->createPushButton( hbox, "↑ Up" );
     // FIXME: not implemented yet
-    priv->upButton->setDisabled();
+    // priv->upButton->setDisabled();
     priv->downButton = fac->createPushButton( hbox, "↓ Down" );
     // FIXME: not implemented yet
-    priv->downButton->setDisabled();
+    // priv->downButton->setDisabled();
 
     priv->propReplacePoint = fac->createReplacePoint( vbox );
     fac->createEmpty( priv->propReplacePoint );
@@ -392,10 +392,10 @@ void YDialogSpy::exec()
             if ( event->eventType() == YEvent::MenuEvent)
             {
                 auto fac = YUI::widgetFactory();
-                auto widget = item->widget();
 
-                if (event->item() && item && widget)
+                if (event->item() && item)
                 {
+                    auto widget = item->widget();
                     YItem * menu_item = dynamic_cast<YItem *>(event->item());
                     auto menu_label = menu_item->label();
                     yuiMilestone() << "Activated menu: " << menu_label;
@@ -439,6 +439,38 @@ void YDialogSpy::exec()
                 }
 
                 continue;
+            }
+
+            if ( event->widget() == priv->upButton || event->widget() == priv->downButton)
+            {
+                yuiMilestone() << "Up button\n";
+                auto target_widget = item->widget();
+                auto parent = target_widget->parent();
+
+                YLayoutBox * box = dynamic_cast<YLayoutBox *>(parent);
+
+                if (box)
+                {
+                    yuiMilestone() << "The selected widget is in a box\n";
+
+                    if (event->widget() == priv->upButton)
+                    {
+                        yuiMilestone() << "Moving up\n";
+                        box->move_up(target_widget);
+                    }
+                    else
+                    {
+                        yuiMilestone() << "Moving down\n";
+                        box->move_down(target_widget);
+                    }
+
+                    // redraw the target dialog
+                    priv->targetDialog->recalcLayout();
+
+                    // refresh the spy dialog
+                    priv->widgetTree->deleteAllItems();
+                    fillWidgetTree(priv->targetDialog, priv->widgetTree);
+                }
             }
 
     	    if ( event->widget() == priv->propButton )

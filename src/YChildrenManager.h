@@ -73,13 +73,13 @@ public:
     /**
      * Return an iterator that points to the first child.
      **/
-    typename ChildrenList::const_iterator begin() const
+    typename ChildrenList::iterator begin()
 	{ return _children.begin(); }
 
     /**
      * Return an iterator that points after the last child.
      **/
-    typename ChildrenList::const_iterator end() const
+    typename ChildrenList::iterator end()
 	{ return _children.end(); }
 
     /**
