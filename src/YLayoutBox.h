@@ -136,9 +136,6 @@ public:
      **/
     static bool isLayoutStretch( YWidget * child, YUIDimension dimension );
 
-    virtual void move_up(YWidget * child);
-    virtual void move_down(YWidget * child);
-
 protected:
 
     /**

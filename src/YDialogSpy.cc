@@ -228,12 +228,8 @@ YDialogSpy::YDialogSpy( YDialog * targetDialog )
     priv->addButton->addItems( add_items );
 
     priv->deleteButton = fac->createPushButton( hbox, "&Delete" );
-    priv->upButton = fac->createPushButton( hbox, "↑ Up" );
-    // FIXME: not implemented yet
-    // priv->upButton->setDisabled();
-    priv->downButton = fac->createPushButton( hbox, "↓ Down" );
-    // FIXME: not implemented yet
-    // priv->downButton->setDisabled();
+    priv->upButton = fac->createPushButton( hbox, "⬆⬅ Begin" );
+    priv->downButton = fac->createPushButton( hbox, "➡⬇ End" );
 
     priv->propReplacePoint = fac->createReplacePoint( vbox );
     fac->createEmpty( priv->propReplacePoint );
@@ -443,7 +439,6 @@ void YDialogSpy::exec()
 
             if ( event->widget() == priv->upButton || event->widget() == priv->downButton)
             {
-                yuiMilestone() << "Up button\n";
                 auto target_widget = item->widget();
                 auto parent = target_widget->parent();
 
@@ -455,13 +450,29 @@ void YDialogSpy::exec()
 
                     if (event->widget() == priv->upButton)
                     {
-                        yuiMilestone() << "Moving up\n";
-                        box->move_up(target_widget);
+                        // the first child cannot be moved further
+                        if (target_widget != parent->firstChild())
+                        {
+                            auto i = find( parent->childrenBegin(), parent->childrenEnd(), target_widget );
+                            if (i != parent->childrenEnd())
+                            {
+                                // swap with the preceeding widget
+                                std::swap(*(--i), *i);
+                            }
+                        }
                     }
                     else
                     {
-                        yuiMilestone() << "Moving down\n";
-                        box->move_down(target_widget);
+                        // the last child cannot be moved further
+                        if (target_widget != parent->lastChild())
+                        {
+                            auto i = find( parent->childrenBegin(), parent->childrenEnd(), target_widget );
+                            if (i != parent->childrenEnd())
+                            {
+                                // swap with the succeeding widget
+                                std::swap(*(++i), *i);
+                            }
+                        }
                     }
 
                     // redraw the target dialog

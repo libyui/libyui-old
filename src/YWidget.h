@@ -209,13 +209,26 @@ public:
      * Return an iterator that points to the first child or to childrenEnd() if
      * there are no children.
      **/
-    YWidgetListConstIterator childrenBegin() const
+    YWidgetListIterator childrenBegin() const
 	{ return childrenManager()->begin(); }
 
     /**
      * Return an interator that points after the last child.
      **/
-    YWidgetListConstIterator childrenEnd() const
+    YWidgetListIterator childrenEnd() const
+	{ return childrenManager()->end(); }
+
+    /**
+     * Return a const iterator that points to the first child or to childrenEnd() if
+     * there are no children.
+     **/
+    YWidgetListConstIterator childrenConstBegin() const
+	{ return childrenManager()->begin(); }
+
+    /**
+     * Return a const interator that points after the last child.
+     **/
+    YWidgetListConstIterator childrenConstEnd() const
 	{ return childrenManager()->end(); }
 
     /**
