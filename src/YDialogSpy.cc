@@ -431,10 +431,10 @@ void YDialogSpy::exec()
 
                         }
                     }
-                    // TODO: improve the exception handling
-                    catch (...)
+                    catch( YUIException & exception )
                     {
-                        YPopupInternal::message("Could not add a new widget.");
+                        YPopupInternal::message("Could not add a new widget:\n"
+                            + exception.msg());
                     }
                 }
 
