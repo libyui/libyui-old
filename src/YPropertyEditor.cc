@@ -12,6 +12,9 @@
 #include <YPopupInternal.h>
 #include <YComboBox.h>
 #include <YInputField.h>
+#include <YIntField.h>
+
+#include <limits>
 
 #define YUILogComponent "ui-property-editor"
 #include "YUILog.h"
@@ -73,6 +76,7 @@ bool YPropertyEditor::edit(const std::string &property)
     YLayoutBox *vbox = f->createVBox(popup);
 
     YComboBox *combo = NULL;
+    YIntField *intfield = NULL;
     YInputField *input = NULL;
 
     if (type == YBoolProperty)
@@ -86,20 +90,20 @@ bool YPropertyEditor::edit(const std::string &property)
         combo->addItems( items );
         combo->setValue( prop_value.boolVal() ? "true" : "false" );
     }
-    else
+    else if (type == YIntegerProperty)
+    {
+        intfield = f->createIntField(vbox, property,
+            // we do not know anything about that property so use the
+            // maximum and minimum values for an integer
+            std::numeric_limits<int>::min(), std::numeric_limits<int>::max(),
+            prop_value.integerVal());
+        intfield->setNotify( true );
+    }
+    else if (type == YStringProperty)
     {
         input = f->createInputField(vbox, property);
         input->setNotify( true );
-
-        if (type == YStringProperty)
-        {
-            input->setValue( prop_value.stringVal() );
-        }
-        // Integer property
-        else
-        {
-            input->setValue( std::to_string(prop_value.integerVal()) );
-        }
+        input->setValue( prop_value.stringVal() );
     }
 
     YButtonBox * bbox = f->createButtonBox( vbox );
@@ -143,29 +147,21 @@ bool YPropertyEditor::edit(const std::string &property)
                 std::string value = input->value();
                 yuiMilestone() << "Value changed to " << value;
 
-                try {
-                    YPropertyValue new_property = (type == YIntegerProperty) ?
-                        YPropertyValue(std::stoi(value)) : YPropertyValue(value);
+                _widget->setProperty(property, YPropertyValue(value));
 
-                    _widget->setProperty(property, new_property);
+                auto dialog = _widget->findDialog();
+                if (dialog) dialog->recalcLayout();
 
-                    auto dialog = _widget->findDialog();
-                    if (dialog) dialog->recalcLayout();
-                }
-                // thrown by std::stoi()
-                catch(std::out_of_range)
-                {
-                    std::string warning = "Value '" + value + "' is out of integer range.";
-                    yuiWarning() << warning;
-                    YPopupInternal::message(warning);
-                }
-                // thrown by std::stoi()
-                catch(std::invalid_argument)
-                {
-                    std::string warning = "Value '" + value + "' is not a valid integer.";
-                    yuiWarning() << warning;
-                    YPopupInternal::message(warning);
-                }
+            }
+            else if (event->widget() == intfield)
+            {
+                int value = intfield->value();
+                yuiMilestone() << "Value changed to " << value;
+
+                _widget->setProperty(property, YPropertyValue(value));
+
+                auto dialog = _widget->findDialog();
+                if (dialog) dialog->recalcLayout();
             }
         }
     }
