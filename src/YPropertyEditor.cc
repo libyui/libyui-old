@@ -24,6 +24,16 @@ YPropertyEditor::YPropertyEditor(YWidget * widget)
 {}
 
 /**
+ * Refresh the dialog containing the widget
+ * @param widget [description]
+ */
+void refreshDialog(YWidget *widget)
+{
+    auto dialog = widget->findDialog();
+    if (dialog) dialog->recalcLayout();
+}
+
+/**
  * Is the widget property read only?
  * @param  property name of the property
  * @return          true if it is read only
@@ -73,6 +83,8 @@ bool YPropertyEditor::edit(const std::string &property)
         return false;
     }
 
+    // backup the original property value so it can be restored after
+    // clicking the [Cancel] button
     YPropertyValue orig = prop_value;
 
     YWidgetFactory *f = YUI::widgetFactory();
@@ -126,10 +138,7 @@ bool YPropertyEditor::edit(const std::string &property)
                 if (_widget->getProperty( property ) != orig)
                 {
                     _widget->setProperty(property, orig);
-
-                    // TODO: DRY this part
-                    auto dialog = _widget->findDialog();
-                    if (dialog) dialog->recalcLayout();
+                    refreshDialog(_widget);
                 }
 
                 break;
@@ -143,9 +152,7 @@ bool YPropertyEditor::edit(const std::string &property)
                 std::string value = combo->value();
                 yuiMilestone() << "Value changed to " << value;
                 _widget->setProperty(property, YPropertyValue(value == "true"));
-
-                auto dialog = _widget->findDialog();
-                if (dialog) dialog->recalcLayout();
+                refreshDialog(_widget);
             }
             else if (event->widget() == input)
             {
@@ -153,10 +160,7 @@ bool YPropertyEditor::edit(const std::string &property)
                 yuiMilestone() << "Value changed to " << value;
 
                 _widget->setProperty(property, YPropertyValue(value));
-
-                auto dialog = _widget->findDialog();
-                if (dialog) dialog->recalcLayout();
-
+                refreshDialog(_widget);
             }
             else if (event->widget() == intfield)
             {
@@ -164,9 +168,7 @@ bool YPropertyEditor::edit(const std::string &property)
                 yuiMilestone() << "Value changed to " << value;
 
                 _widget->setProperty(property, YPropertyValue(value));
-
-                auto dialog = _widget->findDialog();
-                if (dialog) dialog->recalcLayout();
+                refreshDialog(_widget);
             }
         }
     }
