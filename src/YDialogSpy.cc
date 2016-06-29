@@ -58,7 +58,10 @@
 #define PROP_HEIGHT	12
 #define PROP_WIDTH	50
 
-void EditWidgetProperty(const std::string &name, YDialog *dialog, YWidget * widget);
+// helper methods
+bool parentIsBox(YWidget *widget);
+bool isBox(YWidget *widget);
+
 
 /**
  * Custom tree item class to map tree items to widgets
@@ -442,12 +445,8 @@ void YDialogSpy::exec()
                 auto target_widget = item->widget();
                 auto parent = target_widget->parent();
 
-                YLayoutBox * box = dynamic_cast<YLayoutBox *>(parent);
-
-                if (box)
+                if (isBox(parent))
                 {
-                    yuiMilestone() << "The selected widget is in a box\n";
-
                     if (event->widget() == priv->upButton)
                     {
                         // the first child cannot be moved further
@@ -568,4 +567,26 @@ void YDialogSpy::showDialogSpy( YDialog * dialog )
     {
 	YUI_CAUGHT( exception );
     }
+}
+
+/**
+ * Is the widget a VBox or Hbox?
+ * @param  widget the widget
+ * @return        true if the widget is a VBox or HBox
+ */
+bool isBox(YWidget *widget)
+{
+    return dynamic_cast<YLayoutBox *>(widget);
+}
+
+/**
+ * Is the widget placed in a VBox or Hbox?
+ * (i.e. Is the parent widget a VBox or HBox?)
+ * @param  widget the widget
+ * @return        true if the widget is in a VBox or HBox
+ */
+bool parentIsBox(YWidget *widget)
+{
+    auto parent = widget->parent();
+    return dynamic_cast<YLayoutBox *>(parent);
 }

@@ -23,6 +23,11 @@ YPropertyEditor::YPropertyEditor(YWidget * widget)
 : _widget(widget)
 {}
 
+/**
+ * Is the widget property read only?
+ * @param  property name of the property
+ * @return          true if it is read only
+ */
 bool YPropertyEditor::isReadOnly(const std::string &property)
 {
     // is the property read-only?
