@@ -41,8 +41,10 @@
 #include <YMenuButton.h>
 #include <YComboBox.h>
 #include <YInputField.h>
+#include <YLabel.h>
 #include <YReplacePoint.h>
 #include <YPropertyEditor.h>
+#include <YPopupInternal.h>
 #include <YUI.h>
 
 #define TREE_VWEIGHT	40
@@ -385,8 +387,57 @@ void YDialogSpy::exec()
         		return;
     	    }
 
+            YWidgetTreeItem * item = (YWidgetTreeItem *) priv->widgetTree->selectedItem();
+
             if ( event->eventType() == YEvent::MenuEvent)
             {
+                auto fac = YUI::widgetFactory();
+                auto widget = item->widget();
+
+                if (event->item() && item && widget)
+                {
+                    YItem * menu_item = dynamic_cast<YItem *>(event->item());
+                    auto menu_label = menu_item->label();
+                    yuiMilestone() << "Activated menu: " << menu_label;
+                    yuiMilestone().flush();
+
+                    try
+                    {
+                        if (menu_label == "Label")
+                        {
+                            YLabel *label_widget = fac->createLabel(widget, "Label");
+                            // redraw the target dialog
+                            priv->targetDialog->recalcLayout();
+
+                            YPropertyEditor editor(label_widget);
+                            editor.edit("Label");
+
+                            // refresh the spy dialog
+                            priv->widgetTree->deleteAllItems();
+                            fillWidgetTree(priv->targetDialog, priv->widgetTree);
+                        }
+                        else if (menu_label == "PushButton")
+                        {
+                            auto button_widget = fac->createPushButton(widget, "Button");
+                            // redraw the target dialog
+                            priv->targetDialog->recalcLayout();
+
+                            YPropertyEditor editor(button_widget);
+                            editor.edit("Label");
+
+                            // refresh the spy dialog
+                            priv->widgetTree->deleteAllItems();
+                            fillWidgetTree(priv->targetDialog, priv->widgetTree);
+
+                        }
+                    }
+                    // TODO: improve the exception handling
+                    catch (...)
+                    {
+                        YPopupInternal::message("Could not add a new widget.");
+                    }
+                }
+
                 continue;
             }
 
@@ -401,7 +452,6 @@ void YDialogSpy::exec()
         		}
     	    }
 
-            YWidgetTreeItem * item = (YWidgetTreeItem *) priv->widgetTree->selectedItem();
 
             if ( event->widget() == priv->deleteButton && item)
             {
