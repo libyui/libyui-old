@@ -157,6 +157,7 @@ private:
     void hideProperties();
     bool propertiesShown() const;
     void targetDialogUpdated();
+    void refreshButtonStates();
 };
 
 YDialogSpyPrivate::~YDialogSpyPrivate()
@@ -260,11 +261,13 @@ YDialogSpy::YDialogSpy( YDialog * targetDialog )
     priv->addButton->addItems( add_items );
 
     priv->deleteButton = fac->createPushButton( hbox, "&Delete" );
-    priv->upButton = fac->createPushButton( hbox, "⬆⬅ Begin" );
-    priv->downButton = fac->createPushButton( hbox, "➡⬇ End" );
+    priv->upButton = fac->createPushButton( hbox, "⬆ Up" );
+    priv->downButton = fac->createPushButton( hbox, "⬇ Down" );
 
     priv->propReplacePoint = fac->createReplacePoint( vbox );
     fac->createEmpty( priv->propReplacePoint );
+
+    priv->selectedWidgetChanged();
 }
 
 YDialogSpy::~YDialogSpy()
@@ -420,12 +423,12 @@ void YDialogSpy::exec()
 	    if ( event->eventType() == YEvent::CancelEvent ) break;
         else if ( event->eventType() == YEvent::MenuEvent)
         {
-            if (event->item())
-            {
-                YItem * menu_item = dynamic_cast<YItem *>(event->item());
-                auto menu_label = menu_item->label();
-                yuiMilestone() << "Activated menu: " << menu_label << std::endl;
+            YItem * menu_item = dynamic_cast<YItem *>(event->item());
 
+            if (menu_item)
+            {
+                auto menu_label = menu_item->label();
+                yuiMilestone() << "Activated menu item: " << menu_label << std::endl;
                 priv->addWidget(menu_label);
             }
 
@@ -444,12 +447,12 @@ void YDialogSpy::showDialogSpy( YDialog * dialog )
 {
     try
     {
-	YDialogSpy dialogSpy( dialog );
-	dialogSpy.exec();
+    	YDialogSpy dialogSpy( dialog );
+    	dialogSpy.exec();
     }
     catch ( YUIException & exception )
     {
-	YUI_CAUGHT( exception );
+    	YUI_CAUGHT( exception );
     }
 }
 
@@ -461,6 +464,12 @@ void YDialogSpy::showDialogSpy( YDialog * dialog )
 bool isBox(YWidget *widget)
 {
     return dynamic_cast<YLayoutBox *>(widget);
+}
+
+bool isVBox(YWidget *widget)
+{
+    auto box = dynamic_cast<YLayoutBox *>(widget);
+    return box && box->primary() == YD_VERT;
 }
 
 /**
@@ -486,6 +495,7 @@ void YDialogSpyPrivate::selectedWidgetChanged()
 {
     highlightWidget();
     refreshProperties();
+    refreshButtonStates();
 }
 
 void YDialogSpyPrivate::editProperty()
@@ -610,4 +620,23 @@ void YDialogSpyPrivate::targetDialogUpdated()
     // refresh the spy dialog
     widgetTree->deleteAllItems();
     fillWidgetTree(targetDialog, widgetTree);
+}
+
+void YDialogSpyPrivate::refreshButtonStates()
+{
+    auto widget = selectedWidget();
+    auto parent = widget ? widget->parent() : 0;
+
+    if (widget && parent && isBox(parent))
+    {
+        upButton->setEnabled(widget != parent->firstChild());
+        upButton->setLabel(isVBox(parent) ? "⬆ Up" : "⬅ Left");
+        downButton->setEnabled(widget != parent->lastChild());
+        downButton->setLabel(isVBox(parent) ? "⬇ Down" : "➡ Right");
+    }
+    else
+    {
+        upButton->setEnabled(false);
+        downButton->setEnabled(false);
+    }
 }
