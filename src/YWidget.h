@@ -393,7 +393,7 @@ public:
      *
      * Widget IDs are purely for application use. C++ applications don't need
      * to use them; they are much better off using widget pointers. For other
-     * languages, though, that can't use C++ pointers (e.g., YCP) it makes
+     * languages, though, that can't use C++ pointers (e.g. Ruby) it makes
      * sense to have widget IDs to identify widgets.
      **/
     void setId( YWidgetID * newId_disown );

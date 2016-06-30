@@ -41,6 +41,13 @@
 #include <YMenuButton.h>
 #include <YComboBox.h>
 #include <YInputField.h>
+#include <YCheckBox.h>
+#include <YRadioButton.h>
+#include <YProgressBar.h>
+#include <YRichText.h>
+#include <YBusyIndicator.h>
+#include <YSelectionBox.h>
+#include <YMultiSelectionBox.h>
 #include <YLabel.h>
 #include <YReplacePoint.h>
 #include <YPropertyEditor.h>
@@ -158,6 +165,7 @@ private:
     bool propertiesShown() const;
     void targetDialogUpdated();
     void refreshButtonStates();
+    void editWidget(YWidget *widget, const std::string &property="Label");
 };
 
 YDialogSpyPrivate::~YDialogSpyPrivate()
@@ -210,16 +218,24 @@ YDialogSpy::YDialogSpy( YDialog * targetDialog )
     YMenuItem *m1 = new YMenuItem( "Info" );
     YMenuItem *m2 = new YMenuItem( "Buttons" );
     YMenuItem *m3 = new YMenuItem( "Input" );
-    YMenuItem *m4 = new YMenuItem( "Layout" );
+    YMenuItem *m4 = new YMenuItem( "Alignment" );
+    YMenuItem *m5 = new YMenuItem( "Size" );
+    YMenuItem *m6 = new YMenuItem( "Containers" );
+    YMenuItem *m7 = new YMenuItem( "Special" );
     add_items.push_back( m1 );
     add_items.push_back( m2 );
     add_items.push_back( m3 );
     add_items.push_back( m4 );
+    add_items.push_back( m5 );
+    add_items.push_back( m6 );
+    add_items.push_back( m7 );
 
     new YMenuItem( m1, "BarGraph (GUI Only)" );
     new YMenuItem( m1, "Label" );
-    new YMenuItem( m1, "ProgressBar" );
+    new YMenuItem( m1, "Heading" );
     new YMenuItem( m1, "RichText" );
+    new YMenuItem( m1, "ProgressBar" );
+    new YMenuItem( m1, "BusyIndicator" );
 
     new YMenuItem( m2, "PushButton" );
     new YMenuItem( m2, "CheckBox" );
@@ -236,27 +252,37 @@ YDialogSpy::YDialogSpy( YDialog * targetDialog )
     new YMenuItem( m3, "SelectionBox" );
     new YMenuItem( m3, "Slider" );
     new YMenuItem( m3, "TimeField" );
-    new YMenuItem( m3, "TimezoneSelector (GUI Only)" );
 
-    new YMenuItem( m4, "ButtonBox" );
-    new YMenuItem( m4, "CheckBoxFrame" );
-    new YMenuItem( m4, "DumbTab" );
-    new YMenuItem( m4, "Frame" );
-    new YMenuItem( m4, "HBox" );
-    new YMenuItem( m4, "HSpacing" );
-    new YMenuItem( m4, "HSquash" );
-    new YMenuItem( m4, "HWeight" );
     new YMenuItem( m4, "Left" );
-    new YMenuItem( m4, "MarginBox" );
-    new YMenuItem( m4, "MinHeight" );
-    new YMenuItem( m4, "MinSize" );
-    new YMenuItem( m4, "MinWidth" );
-    new YMenuItem( m4, "ReplacePoint" );
     new YMenuItem( m4, "Right" );
-    new YMenuItem( m4, "VBox" );
-    new YMenuItem( m4, "VSpacing" );
-    new YMenuItem( m4, "VSquash" );
-    new YMenuItem( m4, "VWeight" );
+    new YMenuItem( m4, "Top" );
+    new YMenuItem( m4, "Bottom" );
+    new YMenuItem( m4, "HCenter" );
+    new YMenuItem( m4, "VCenter" );
+    new YMenuItem( m4, "HVCenter" );
+
+    new YMenuItem( m5, "MinHeight" );
+    new YMenuItem( m5, "MinWidth" );
+    new YMenuItem( m5, "MinSize" );
+    new YMenuItem( m5, "HSquash" );
+    new YMenuItem( m5, "VSquash" );
+    new YMenuItem( m5, "HVSquash" );
+    new YMenuItem( m5, "HWeight" );
+    new YMenuItem( m5, "VWeight" );
+
+    new YMenuItem( m6, "MarginBox" );
+    new YMenuItem( m6, "ButtonBox" );
+    new YMenuItem( m6, "CheckBoxFrame" );
+    new YMenuItem( m6, "DumbTab" );
+    new YMenuItem( m6, "Frame" );
+    new YMenuItem( m6, "HBox" );
+    new YMenuItem( m6, "HSpacing" );
+    new YMenuItem( m6, "ReplacePoint" );
+    new YMenuItem( m6, "VBox" );
+    new YMenuItem( m6, "VSpacing" );
+
+    new YMenuItem( m7, "TimezoneSelector" );
+    new YMenuItem( m7, "PackageSelector" );
 
     priv->addButton->addItems( add_items );
 
@@ -583,24 +609,84 @@ void YDialogSpyPrivate::addWidget(const std::string &type)
 
     try
     {
-        auto fac = YUI::widgetFactory();
+        auto f = YUI::widgetFactory();
         if (type == "Label")
         {
-            YLabel *label_widget = fac->createLabel(widget, "Label");
-            // redraw the target dialog
-            targetDialog->recalcLayout();
-
-            YPropertyEditor editor(label_widget);
-            editor.edit("Label");
+            editWidget(f->createLabel(widget, "Label"));
+        }
+        else if (type == "Heading")
+        {
+            editWidget(f->createHeading(widget, "Heading"));
         }
         else if (type == "PushButton")
         {
-            auto button_widget = fac->createPushButton(widget, "Button");
-            // redraw the target dialog
-            targetDialog->recalcLayout();
-
-            YPropertyEditor editor(button_widget);
-            editor.edit("Label");
+            editWidget(f->createPushButton(widget, "Button"));
+        }
+        else if (type == "InputField" || type == "Password")
+        {
+            editWidget(f->createInputField(widget, "Input", type == "Password"));
+        }
+        else if (type == "RichText")
+        {
+            editWidget(f->createRichText(widget, "This is a <b>RichText</b>."));
+        }
+        else if (type == "CheckBox")
+        {
+            editWidget(f->createCheckBox(widget, "Check Box"));
+        }
+        else if (type == "RadioButton")
+        {
+            editWidget(f->createRadioButton(widget, "Radio Button"));
+        }
+        else if (type == "ComboBox")
+        {
+            editWidget(f->createComboBox(widget, "Combo Box"));
+        }
+        else if (type == "SelectionBox")
+        {
+            editWidget(f->createSelectionBox(widget, "Selection Box"));
+        }
+        else if (type == "MultiSelectionBox")
+        {
+            editWidget(f->createMultiSelectionBox(widget, "MultiSelection Box"));
+        }
+        else if (type == "ProgressBar")
+        {
+            editWidget(f->createProgressBar(widget, "Progress"));
+        }
+        else if (type == "BusyIndicator")
+        {
+            editWidget(f->createBusyIndicator(widget, "Busy Indicator"));
+        }
+        else if (type == "HBox")
+        {
+            editWidget(f->createHBox(widget));
+        }
+        else if (type == "VBox")
+        {
+            editWidget(f->createVBox(widget));
+        }
+        else if (type == "Left")
+        {
+            editWidget(f->createLeft(widget));
+        }
+        else if (type == "Right")
+        {
+            editWidget(f->createRight(widget));
+        }
+        else if (type == "Top")
+        {
+            editWidget(f->createTop(widget));
+        }
+        else if (type == "Bottom")
+        {
+            editWidget(f->createBottom(widget));
+        }
+        else
+        {
+            YPopupInternal::message(
+                "Adding \"" + type + "\" widget type is not supported.");
+            return;
         }
 
         targetDialogUpdated();
@@ -627,6 +713,8 @@ void YDialogSpyPrivate::refreshButtonStates()
     auto widget = selectedWidget();
     auto parent = widget ? widget->parent() : 0;
 
+    // Enable the moving buttons ony when the selected widget is inside
+    // a VBox/HBox container, set the labels according to stacking direction.
     if (widget && parent && isBox(parent))
     {
         upButton->setEnabled(widget != parent->firstChild());
@@ -639,4 +727,23 @@ void YDialogSpyPrivate::refreshButtonStates()
         upButton->setEnabled(false);
         downButton->setEnabled(false);
     }
+
+    // TODO: Enable the [Add] menu button only when a widget can be added
+    // inside the current widget (i.e. it is a container).
+
+    // Disable the [Delete] button when for the top level widget (YDialog)
+    // TODO: disable it for the YQWizardButtons (Next, Back, ...), they cannot be
+    // removed from the dialog.
+    deleteButton->setEnabled(parent);
+}
+
+void YDialogSpyPrivate::editWidget(YWidget *widget, const std::string &property)
+{
+    // redraw the target dialog
+    targetDialog->recalcLayout();
+
+    if (!widget->propertySet().contains(property)) return;
+
+    YPropertyEditor editor(widget);
+    editor.edit(property);
 }
