@@ -138,23 +138,25 @@ public:
     YReplacePoint *	propReplacePoint;
     YTable *		propTable;
 
-    void selectedWidgetChanged();
 
     YWidget * selectedWidget();
-    void deleteWidget();
-    void addWidget(const std::string &type);
-    bool editProperty();
-    void moveSelectedUp() { moveSelected(true); }
-    void moveSelectedDown() { moveSelected(false); }
-
+    void selectedWidgetChanged();
+    void refreshProperties();
     bool toggleProperties();
     void highlightWidget(bool enable = true);
+
+    void deleteWidget();
+    void addWidget(const std::string &type);
+    void editProperty();
+    void moveSelectedUp() { moveSelected(true); }
+    void moveSelectedDown() { moveSelected(false); }
 
 private:
     void moveSelected(bool up);
     void showProperties();
     void hideProperties();
     bool propertiesShown() const;
+    void targetDialogUpdated();
 };
 
 YDialogSpyPrivate::~YDialogSpyPrivate()
@@ -326,22 +328,27 @@ bool YDialogSpyPrivate::toggleProperties()
     bool ret = !propertiesShown();
 
     if (ret)
+    {
         showProperties();
+        refreshProperties();
+    }
     else
         hideProperties();
 
     return ret;
 }
 
-void YDialogSpy::showProperties( YWidget * widget )
+void YDialogSpyPrivate::refreshProperties()
 {
-    if ( ! priv->propTable )
+    // properties shown?
+    if ( !propTable )
 	return;
 
-    priv->propTable->deleteAllItems();
+    propTable->deleteAllItems();
 
-    if ( widget )
-    {
+    auto widget = selectedWidget();
+    if (!widget) return;
+
 	YPropertySet propSet = widget->propertySet();
 	YItemCollection items;
 	items.reserve( propSet.size() );
@@ -365,11 +372,7 @@ void YDialogSpy::showProperties( YWidget * widget )
 		    break;
 
 		case YIntegerProperty:
-		    {
-			std::ostringstream str;
-			str << propVal.integerVal();
-			propValStr = str.str();
-		    }
+			propValStr = std::to_string(propVal.integerVal());
 		    break;
 
 		default:
@@ -382,9 +385,8 @@ void YDialogSpy::showProperties( YWidget * widget )
 	    items.push_back( item );
 	}
 
-	priv->propTable->addItems( items );
-	priv->propTable->deselectAllItems();
-    }
+	propTable->addItems( items );
+	propTable->deselectAllItems();
 }
 
 
@@ -410,13 +412,12 @@ void YDialogSpy::exec()
 
     while ( true )
     {
-    	bool updateProp = false;
     	YEvent * event = priv->spyDialog->waitForEvent();
         yuiMilestone() << "event: " << event;
         if (!event) continue;
 
         // window manager "close window" button
-	    if ( event->eventType() == YEvent::CancelEvent ) return;
+	    if ( event->eventType() == YEvent::CancelEvent ) break;
         else if ( event->eventType() == YEvent::MenuEvent)
         {
             if (event->item())
@@ -424,25 +425,18 @@ void YDialogSpy::exec()
                 YItem * menu_item = dynamic_cast<YItem *>(event->item());
                 auto menu_label = menu_item->label();
                 yuiMilestone() << "Activated menu: " << menu_label << std::endl;
-                
+
                 priv->addWidget(menu_label);
             }
 
             continue;
         }
-
-        if ( event->widget() == priv->upButton ) priv->moveSelectedUp();
-        if ( event->widget() == priv->downButton)  priv->moveSelectedDown();
-        if ( event->widget() == priv->propButton ) updateProp = priv->toggleProperties();
-        if ( event->widget() == priv->deleteButton) priv->deleteWidget();
-        if ( event->widget() == priv->propTable )  updateProp = priv->editProperty();
-	    if ( event->widget() == priv->widgetTree || updateProp )
-	    {
-            YWidgetTreeItem * item = (YWidgetTreeItem *) priv->widgetTree->selectedItem();
-
-            priv->highlightWidget();
-    		showProperties( item->widget() );
-	    }
+        else if ( event->widget() == priv->upButton ) priv->moveSelectedUp();
+        else if ( event->widget() == priv->downButton)  priv->moveSelectedDown();
+        else if ( event->widget() == priv->propButton ) priv->toggleProperties();
+        else if ( event->widget() == priv->deleteButton) priv->deleteWidget();
+        else if ( event->widget() == priv->propTable )  priv->editProperty();
+	    else if ( event->widget() == priv->widgetTree ) priv->selectedWidgetChanged();
     }
 }
 
@@ -490,20 +484,21 @@ YWidget * YDialogSpyPrivate::selectedWidget()
 
 void YDialogSpyPrivate::selectedWidgetChanged()
 {
-
+    highlightWidget();
+    refreshProperties();
 }
 
-bool YDialogSpyPrivate::editProperty()
+void YDialogSpyPrivate::editProperty()
 {
     YTableItem *selected_item = dynamic_cast<YTableItem *>(propTable->selectedItem());
-    if (!selected_item) return false;
-
-    YPropertyEditor editor(selectedWidget());
+    if (!selected_item) return;
 
     YTableCell *cell = selected_item->cell(0);
     yuiMilestone() << "editing property: " << cell->label();
+
+    YPropertyEditor editor(selectedWidget());
     // update the property table when only the property has been changed
-    return editor.edit(cell->label());
+    if (editor.edit(cell->label())) refreshProperties();
 }
 
 void YDialogSpyPrivate::deleteWidget()
@@ -530,12 +525,7 @@ void YDialogSpyPrivate::deleteWidget()
         YUI::widgetFactory()->createEmpty(parent);
     }
 
-    // redraw the target dialog
-    targetDialog->recalcLayout();
-
-    // refresh the spy dialog
-    widgetTree->deleteAllItems();
-    fillWidgetTree(targetDialog, widgetTree);
+    targetDialogUpdated();
 }
 
 void YDialogSpyPrivate::moveSelected(bool up)
@@ -573,13 +563,7 @@ void YDialogSpyPrivate::moveSelected(bool up)
         }
     }
 
-    // redraw the target dialog
-    targetDialog->recalcLayout();
-
-    // refresh the spy dialog
-    widgetTree->deleteAllItems();
-    fillWidgetTree(targetDialog, widgetTree);
-
+    targetDialogUpdated();
 }
 
 void YDialogSpyPrivate::addWidget(const std::string &type)
@@ -598,10 +582,6 @@ void YDialogSpyPrivate::addWidget(const std::string &type)
 
             YPropertyEditor editor(label_widget);
             editor.edit("Label");
-
-            // refresh the spy dialog
-            widgetTree->deleteAllItems();
-            fillWidgetTree(targetDialog, widgetTree);
         }
         else if (type == "PushButton")
         {
@@ -611,15 +591,23 @@ void YDialogSpyPrivate::addWidget(const std::string &type)
 
             YPropertyEditor editor(button_widget);
             editor.edit("Label");
-
-            // refresh the spy dialog
-            widgetTree->deleteAllItems();
-            fillWidgetTree(targetDialog, widgetTree);
         }
+
+        targetDialogUpdated();
     }
     catch( const YUIException & exception )
     {
         YPopupInternal::message("Could not add a new widget:\n"
             + exception.msg());
     }
+}
+
+void YDialogSpyPrivate::targetDialogUpdated()
+{
+    // redraw the target dialog
+    targetDialog->recalcLayout();
+
+    // refresh the spy dialog
+    widgetTree->deleteAllItems();
+    fillWidgetTree(targetDialog, widgetTree);
 }
