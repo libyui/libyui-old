@@ -59,8 +59,8 @@
 #define PROP_WIDTH	50
 
 // helper methods
-bool parentIsBox(YWidget *widget);
-bool isBox(YWidget *widget);
+// static bool parentIsBox(YWidget *widget);
+static bool isBox(YWidget *widget);
 
 
 /**
@@ -125,6 +125,8 @@ public:
 	, propTable( 0 )
 	{}
 
+    ~YDialogSpyPrivate();
+
     YDialog *		targetDialog;	// Dialog that is being inspected
     YDialog *		spyDialog;	// Debug dialog that shows widget data
     YTree *		widgetTree;	// Tree widget to show widget hierarchy
@@ -139,12 +141,14 @@ public:
     void selectedWidgetChanged();
 
     YWidget * selectedWidget();
-    void deleteSelectedWidget();
+    void deleteWidget();
+    void addWidget(const std::string &type);
     bool editProperty();
     void moveSelectedUp() { moveSelected(true); }
     void moveSelectedDown() { moveSelected(false); }
 
     bool toggleProperties();
+    void highlightWidget(bool enable = true);
 
 private:
     void moveSelected(bool up);
@@ -152,6 +156,11 @@ private:
     void hideProperties();
     bool propertiesShown() const;
 };
+
+YDialogSpyPrivate::~YDialogSpyPrivate()
+{
+    highlightWidget(false);
+}
 
 void fillWidgetTree(YDialog *target, YTree *widgetTree)
 {
@@ -268,6 +277,10 @@ bool YDialogSpyPrivate::propertiesShown() const
     return propTable != 0;
 }
 
+void YDialogSpyPrivate::highlightWidget(bool enable)
+{
+    if (targetDialog) targetDialog->highlight( enable ? selectedWidget() : 0);
+}
 
 void YDialogSpyPrivate::showProperties()
 {
@@ -399,143 +412,37 @@ void YDialogSpy::exec()
     {
     	bool updateProp = false;
     	YEvent * event = priv->spyDialog->waitForEvent();
-    	yuiMilestone() << "dialog: " << priv->spyDialog->preferredHeight();
-    	yuiMilestone() << "tree: " << priv->widgetTree->preferredHeight();
+        yuiMilestone() << "event: " << event;
+        if (!event) continue;
 
-        if ( event )
+        // window manager "close window" button
+	    if ( event->eventType() == YEvent::CancelEvent ) return;
+        else if ( event->eventType() == YEvent::MenuEvent)
         {
-            yuiMilestone() << "event: " << event;
+            if (event->item())
+            {
+                YItem * menu_item = dynamic_cast<YItem *>(event->item());
+                auto menu_label = menu_item->label();
+                yuiMilestone() << "Activated menu: " << menu_label << std::endl;
+                
+                priv->addWidget(menu_label);
+            }
 
-            // window manager "close window" button
-    	    if ( event->eventType() == YEvent::CancelEvent )
-    	    {
-        		priv->targetDialog->highlight( 0 );
-        		return;
-    	    }
+            continue;
+        }
 
+        if ( event->widget() == priv->upButton ) priv->moveSelectedUp();
+        if ( event->widget() == priv->downButton)  priv->moveSelectedDown();
+        if ( event->widget() == priv->propButton ) updateProp = priv->toggleProperties();
+        if ( event->widget() == priv->deleteButton) priv->deleteWidget();
+        if ( event->widget() == priv->propTable )  updateProp = priv->editProperty();
+	    if ( event->widget() == priv->widgetTree || updateProp )
+	    {
             YWidgetTreeItem * item = (YWidgetTreeItem *) priv->widgetTree->selectedItem();
 
-            if ( event->eventType() == YEvent::MenuEvent)
-            {
-                auto fac = YUI::widgetFactory();
-
-                if (event->item() && item)
-                {
-                    auto widget = item->widget();
-                    YItem * menu_item = dynamic_cast<YItem *>(event->item());
-                    auto menu_label = menu_item->label();
-                    yuiMilestone() << "Activated menu: " << menu_label;
-                    yuiMilestone().flush();
-
-                    try
-                    {
-                        if (menu_label == "Label")
-                        {
-                            YLabel *label_widget = fac->createLabel(widget, "Label");
-                            // redraw the target dialog
-                            priv->targetDialog->recalcLayout();
-
-                            YPropertyEditor editor(label_widget);
-                            editor.edit("Label");
-
-                            // refresh the spy dialog
-                            priv->widgetTree->deleteAllItems();
-                            fillWidgetTree(priv->targetDialog, priv->widgetTree);
-                        }
-                        else if (menu_label == "PushButton")
-                        {
-                            auto button_widget = fac->createPushButton(widget, "Button");
-                            // redraw the target dialog
-                            priv->targetDialog->recalcLayout();
-
-                            YPropertyEditor editor(button_widget);
-                            editor.edit("Label");
-
-                            // refresh the spy dialog
-                            priv->widgetTree->deleteAllItems();
-                            fillWidgetTree(priv->targetDialog, priv->widgetTree);
-
-                        }
-                    }
-                    catch( YUIException & exception )
-                    {
-                        YPopupInternal::message("Could not add a new widget:\n"
-                            + exception.msg());
-                    }
-                }
-
-                continue;
-            }
-
-            if ( event->widget() == priv->upButton || event->widget() == priv->downButton)
-            {
-                auto target_widget = item->widget();
-                auto parent = target_widget->parent();
-
-                if (isBox(parent))
-                {
-                    if (event->widget() == priv->upButton)
-                    {
-                        // the first child cannot be moved further
-                        if (target_widget != parent->firstChild())
-                        {
-                            auto i = find( parent->childrenBegin(), parent->childrenEnd(), target_widget );
-                            if (i != parent->childrenEnd())
-                            {
-                                // swap with the preceeding widget
-                                std::swap(*(--i), *i);
-                            }
-                        }
-                    }
-                    else
-                    {
-                        // the last child cannot be moved further
-                        if (target_widget != parent->lastChild())
-                        {
-                            auto i = find( parent->childrenBegin(), parent->childrenEnd(), target_widget );
-                            if (i != parent->childrenEnd())
-                            {
-                                // swap with the succeeding widget
-                                std::swap(*(++i), *i);
-                            }
-                        }
-                    }
-
-                    // redraw the target dialog
-                    priv->targetDialog->recalcLayout();
-
-                    // refresh the spy dialog
-                    priv->widgetTree->deleteAllItems();
-                    fillWidgetTree(priv->targetDialog, priv->widgetTree);
-                }
-            }
-
-    	    if ( event->widget() == priv->propButton )
-    	    {
-                updateProp = priv->toggleProperties();
-    	    }
-
-            if ( event->widget() == priv->deleteButton)
-            {
-                priv->deleteSelectedWidget();
-            }
-
-            if ( event->widget() == priv->propTable )
-            {
-                updateProp = priv->editProperty();
-            }
-
-    	    if ( event->widget() == priv->widgetTree || updateProp )
-    	    {
-        		yuiDebug() << "Highlighting " << item << std::endl;
-
-        		if ( item )
-        		{
-        		    priv->targetDialog->highlight( item->widget() );
-        		    showProperties( item->widget() );
-        		}
-    	    }
-        }
+            priv->highlightWidget();
+    		showProperties( item->widget() );
+	    }
     }
 }
 
@@ -568,11 +475,11 @@ bool isBox(YWidget *widget)
  * @param  widget the widget
  * @return        true if the widget is in a VBox or HBox
  */
-bool parentIsBox(YWidget *widget)
-{
-    auto parent = widget->parent();
-    return dynamic_cast<YLayoutBox *>(parent);
-}
+// bool parentIsBox(YWidget *widget)
+// {
+//     auto parent = widget->parent();
+//     return dynamic_cast<YLayoutBox *>(parent);
+// }
 
 YWidget * YDialogSpyPrivate::selectedWidget()
 {
@@ -599,7 +506,7 @@ bool YDialogSpyPrivate::editProperty()
     return editor.edit(cell->label());
 }
 
-void YDialogSpyPrivate::deleteSelectedWidget()
+void YDialogSpyPrivate::deleteWidget()
 {
     YWidget *w = selectedWidget();
     if (!w) return;
@@ -607,7 +514,7 @@ void YDialogSpyPrivate::deleteSelectedWidget()
     YWidget *parent = w->parent();
     if (!parent) return;
 
-    yuiMilestone() << "removing widget: " << w;
+    yuiMilestone() << "removing widget: " << w << std::endl;
     parent->removeChild(w);
 
     if ( w->isValid() )
@@ -629,4 +536,90 @@ void YDialogSpyPrivate::deleteSelectedWidget()
     // refresh the spy dialog
     widgetTree->deleteAllItems();
     fillWidgetTree(targetDialog, widgetTree);
+}
+
+void YDialogSpyPrivate::moveSelected(bool up)
+{
+    auto target_widget = selectedWidget();
+    if (!target_widget) return;
+
+    auto parent = target_widget->parent();
+    if (!parent || !isBox(parent)) return;
+
+    if (up)
+    {
+        // the first child cannot be moved further
+        if (target_widget != parent->firstChild())
+        {
+            auto i = find( parent->childrenBegin(), parent->childrenEnd(), target_widget );
+            if (i != parent->childrenEnd())
+            {
+                // swap with the preceeding widget
+                std::swap(*(--i), *i);
+            }
+        }
+    }
+    else
+    {
+        // the last child cannot be moved further to the end
+        if (target_widget != parent->lastChild())
+        {
+            auto i = find( parent->childrenBegin(), parent->childrenEnd(), target_widget );
+            if (i != parent->childrenEnd())
+            {
+                // swap with the succeeding widget
+                std::swap(*(++i), *i);
+            }
+        }
+    }
+
+    // redraw the target dialog
+    targetDialog->recalcLayout();
+
+    // refresh the spy dialog
+    widgetTree->deleteAllItems();
+    fillWidgetTree(targetDialog, widgetTree);
+
+}
+
+void YDialogSpyPrivate::addWidget(const std::string &type)
+{
+    auto widget = selectedWidget();
+    if (!widget) return;
+
+    try
+    {
+        auto fac = YUI::widgetFactory();
+        if (type == "Label")
+        {
+            YLabel *label_widget = fac->createLabel(widget, "Label");
+            // redraw the target dialog
+            targetDialog->recalcLayout();
+
+            YPropertyEditor editor(label_widget);
+            editor.edit("Label");
+
+            // refresh the spy dialog
+            widgetTree->deleteAllItems();
+            fillWidgetTree(targetDialog, widgetTree);
+        }
+        else if (type == "PushButton")
+        {
+            auto button_widget = fac->createPushButton(widget, "Button");
+            // redraw the target dialog
+            targetDialog->recalcLayout();
+
+            YPropertyEditor editor(button_widget);
+            editor.edit("Label");
+
+            // refresh the spy dialog
+            widgetTree->deleteAllItems();
+            fillWidgetTree(targetDialog, widgetTree);
+        }
+    }
+    catch( const YUIException & exception )
+    {
+        YPopupInternal::message("Could not add a new widget:\n"
+            + exception.msg());
+    }
 }
