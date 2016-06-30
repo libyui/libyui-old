@@ -112,8 +112,10 @@ static void fillTree( YWidgetTreeItem * 		parent,
 
 
 
-struct YDialogSpyPrivate
+class YDialogSpyPrivate
 {
+public:
+
     YDialogSpyPrivate()
 	: targetDialog( 0 )
 	, spyDialog( 0 )
@@ -133,6 +135,22 @@ struct YDialogSpyPrivate
     YPushButton * 	downButton;
     YReplacePoint *	propReplacePoint;
     YTable *		propTable;
+
+    void selectedWidgetChanged();
+
+    YWidget * selectedWidget();
+    void deleteSelectedWidget();
+    bool editProperty();
+    void moveSelectedUp() { moveSelected(true); }
+    void moveSelectedDown() { moveSelected(false); }
+
+    bool toggleProperties();
+
+private:
+    void moveSelected(bool up);
+    void showProperties();
+    void hideProperties();
+    bool propertiesShown() const;
 };
 
 void fillWidgetTree(YDialog *target, YTree *widgetTree)
@@ -245,21 +263,21 @@ YDialogSpy::~YDialogSpy()
 }
 
 
-bool YDialogSpy::propertiesShown() const
+bool YDialogSpyPrivate::propertiesShown() const
 {
-    return priv->propTable != 0;
+    return propTable != 0;
 }
 
 
-void YDialogSpy::showProperties()
+void YDialogSpyPrivate::showProperties()
 {
-    if ( ! propertiesShown() )
-    {
-	priv->propReplacePoint->deleteChildren();
-	priv->propReplacePoint->setWeight( YD_VERT, PROP_VWEIGHT );
+    if ( propertiesShown() ) return;
+
+	propReplacePoint->deleteChildren();
+	propReplacePoint->setWeight( YD_VERT, PROP_VWEIGHT );
 
 	YWidgetFactory * fac = YUI::widgetFactory();
-	YAlignment * minSize = fac->createMinSize( priv->propReplacePoint,
+	YAlignment * minSize = fac->createMinSize( propReplacePoint,
 						   PROP_WIDTH, PROP_HEIGHT );
 	YTableHeader * header = new YTableHeader();
 	YUI_CHECK_NEW( header );
@@ -267,31 +285,40 @@ void YDialogSpy::showProperties()
 	header->addColumn( "Value" );
 	header->addColumn( "Type" );
 
-	priv->propTable = fac->createTable( minSize, header );
-	priv->propTable->setNotify( true );
+	propTable = fac->createTable( minSize, header );
+	propTable->setNotify( true );
 
-	priv->propButton->setLabel( "<<< &Properties" );
-	priv->propReplacePoint->showChild();
-	priv->spyDialog->recalcLayout();
-    }
+	propButton->setLabel( "<<< &Properties" );
+	propReplacePoint->showChild();
+	spyDialog->recalcLayout();
 }
 
 
-void YDialogSpy::hideProperties()
+void YDialogSpyPrivate::hideProperties()
 {
-    if ( propertiesShown() )
-    {
-	priv->propReplacePoint->deleteChildren();
-	priv->propReplacePoint->setWeight( YD_VERT, 0 );
-	priv->propTable = 0;
-	YUI::widgetFactory()->createEmpty( priv->propReplacePoint );
+    if ( !propertiesShown() ) return;
 
-	priv->propButton->setLabel( "&Properties >>>" );
-	priv->propReplacePoint->showChild();
-	priv->spyDialog->recalcLayout();
-    }
+	propReplacePoint->deleteChildren();
+	propReplacePoint->setWeight( YD_VERT, 0 );
+	propTable = 0;
+	YUI::widgetFactory()->createEmpty( propReplacePoint );
+
+	propButton->setLabel( "&Properties >>>" );
+	propReplacePoint->showChild();
+	spyDialog->recalcLayout();
 }
 
+bool YDialogSpyPrivate::toggleProperties()
+{
+    bool ret = !propertiesShown();
+
+    if (ret)
+        showProperties();
+    else
+        hideProperties();
+
+    return ret;
+}
 
 void YDialogSpy::showProperties( YWidget * widget )
 {
@@ -485,61 +512,17 @@ void YDialogSpy::exec()
 
     	    if ( event->widget() == priv->propButton )
     	    {
-        		if ( propertiesShown() )
-        		    hideProperties();
-        		else
-        		{
-        		    showProperties();
-        		    updateProp = true;
-        		}
+                updateProp = priv->toggleProperties();
     	    }
 
-
-            if ( event->widget() == priv->deleteButton && item)
+            if ( event->widget() == priv->deleteButton)
             {
-                YWidget *parent = item->widget()->parent();
-                YWidget *w = item->widget();
-
-                if (w && parent)
-                {
-                    yuiMilestone() << "removing widget: " << w;
-                    parent->removeChild(w);
-
-                    if ( w->isValid() )
-                    {
-                        delete w;
-                    }
-
-                    // any other child left after the removal?
-                    if (!parent->hasChildren())
-                    {
-                        // add an Empty widget to have a valid widget tree
-                        // e.g. empty VBoxes are not allowed
-                        YUI::widgetFactory()->createEmpty(parent);
-                    }
-
-                    // redraw the target dialog
-                    priv->targetDialog->recalcLayout();
-
-                    // refresh the spy dialog
-                    priv->widgetTree->deleteAllItems();
-                    fillWidgetTree(priv->targetDialog, priv->widgetTree);
-                }
+                priv->deleteSelectedWidget();
             }
 
             if ( event->widget() == priv->propTable )
             {
-                YTableItem *selected = dynamic_cast<YTableItem *>(priv->propTable->selectedItem());
-
-                if (selected)
-                {
-                    YTableCell *cell = selected->cell(0);
-
-                    YPropertyEditor editor(item->widget());
-                    yuiMilestone() << "editing property: " << cell->label();
-                    // update the property table when only the property has been changed
-                    updateProp = editor.edit(cell->label());
-                }
+                updateProp = priv->editProperty();
             }
 
     	    if ( event->widget() == priv->widgetTree || updateProp )
@@ -589,4 +572,61 @@ bool parentIsBox(YWidget *widget)
 {
     auto parent = widget->parent();
     return dynamic_cast<YLayoutBox *>(parent);
+}
+
+YWidget * YDialogSpyPrivate::selectedWidget()
+{
+    YWidgetTreeItem * item = (YWidgetTreeItem *) widgetTree->selectedItem();
+
+    return (item) ? item->widget() : 0;
+}
+
+void YDialogSpyPrivate::selectedWidgetChanged()
+{
+
+}
+
+bool YDialogSpyPrivate::editProperty()
+{
+    YTableItem *selected_item = dynamic_cast<YTableItem *>(propTable->selectedItem());
+    if (!selected_item) return false;
+
+    YPropertyEditor editor(selectedWidget());
+
+    YTableCell *cell = selected_item->cell(0);
+    yuiMilestone() << "editing property: " << cell->label();
+    // update the property table when only the property has been changed
+    return editor.edit(cell->label());
+}
+
+void YDialogSpyPrivate::deleteSelectedWidget()
+{
+    YWidget *w = selectedWidget();
+    if (!w) return;
+
+    YWidget *parent = w->parent();
+    if (!parent) return;
+
+    yuiMilestone() << "removing widget: " << w;
+    parent->removeChild(w);
+
+    if ( w->isValid() )
+    {
+        delete w;
+    }
+
+    // any other child left after the removal?
+    if (!parent->hasChildren())
+    {
+        // add an Empty widget to have a valid widget tree
+        // e.g. empty VBoxes are not allowed
+        YUI::widgetFactory()->createEmpty(parent);
+    }
+
+    // redraw the target dialog
+    targetDialog->recalcLayout();
+
+    // refresh the spy dialog
+    widgetTree->deleteAllItems();
+    fillWidgetTree(targetDialog, widgetTree);
 }
