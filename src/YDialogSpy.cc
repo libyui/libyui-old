@@ -48,7 +48,15 @@
 #include <YBusyIndicator.h>
 #include <YSelectionBox.h>
 #include <YMultiSelectionBox.h>
+#include <YMultiLineEdit.h>
 #include <YLabel.h>
+#include <YLogView.h>
+#include <YIntField.h>
+#include <YImage.h>
+#include <YSpacing.h>
+#include <YFrame.h>
+#include <YEmpty.h>
+#include <YPackageSelector.h>
 #include <YReplacePoint.h>
 #include <YPropertyEditor.h>
 #include <YPopupInternal.h>
@@ -610,78 +618,73 @@ void YDialogSpyPrivate::addWidget(const std::string &type)
     try
     {
         auto f = YUI::widgetFactory();
-        if (type == "Label")
-        {
-            editWidget(f->createLabel(widget, "Label"));
-        }
-        else if (type == "Heading")
-        {
-            editWidget(f->createHeading(widget, "Heading"));
-        }
-        else if (type == "PushButton")
-        {
-            editWidget(f->createPushButton(widget, "Button"));
-        }
-        else if (type == "InputField" || type == "Password")
-        {
-            editWidget(f->createInputField(widget, "Input", type == "Password"));
-        }
-        else if (type == "RichText")
-        {
-            editWidget(f->createRichText(widget, "This is a <b>RichText</b>."));
-        }
-        else if (type == "CheckBox")
-        {
-            editWidget(f->createCheckBox(widget, "Check Box"));
-        }
-        else if (type == "RadioButton")
-        {
-            editWidget(f->createRadioButton(widget, "Radio Button"));
-        }
-        else if (type == "ComboBox")
-        {
-            editWidget(f->createComboBox(widget, "Combo Box"));
-        }
-        else if (type == "SelectionBox")
-        {
-            editWidget(f->createSelectionBox(widget, "Selection Box"));
-        }
-        else if (type == "MultiSelectionBox")
-        {
-            editWidget(f->createMultiSelectionBox(widget, "MultiSelection Box"));
-        }
-        else if (type == "ProgressBar")
-        {
-            editWidget(f->createProgressBar(widget, "Progress"));
-        }
-        else if (type == "BusyIndicator")
-        {
-            editWidget(f->createBusyIndicator(widget, "Busy Indicator"));
-        }
-        else if (type == "HBox")
-        {
-            editWidget(f->createHBox(widget));
-        }
-        else if (type == "VBox")
-        {
-            editWidget(f->createVBox(widget));
-        }
-        else if (type == "Left")
-        {
-            editWidget(f->createLeft(widget));
-        }
-        else if (type == "Right")
-        {
-            editWidget(f->createRight(widget));
-        }
-        else if (type == "Top")
-        {
-            editWidget(f->createTop(widget));
-        }
-        else if (type == "Bottom")
-        {
+
+        if (type == "Bottom")
             editWidget(f->createBottom(widget));
-        }
+        else if (type == "BusyIndicator")
+            editWidget(f->createBusyIndicator(widget, "Busy Indicator"));
+        else if (type == "ButtonBox")
+            editWidget(f->createButtonBox(widget));
+        else if (type == "ComboBox")
+            editWidget(f->createComboBox(widget, "Combo Box"));
+        else if (type == "Empty")
+            editWidget(f->createEmpty(widget));
+        else if (type == "Frame")
+            editWidget(f->createFrame(widget, "Frame"));
+        else if (type == "HBox")
+            editWidget(f->createHBox(widget));
+        else if (type == "Heading")
+            editWidget(f->createHeading(widget, "Heading"));
+        else if (type == "HSpacing")
+            editWidget(f->createHSpacing(widget));
+        else if (type == "HStretch")
+            editWidget(f->createHStretch(widget));
+        else if (type == "CheckBox")
+            editWidget(f->createCheckBox(widget, "Check Box"));
+        else if (type == "Image")
+            editWidget(f->createImage(widget, ""));
+        else if (type == "InputField")
+            editWidget(f->createInputField(widget, "Input"));
+        else if (type == "IntField")
+            editWidget(f->createIntField(widget, "Integer Field", 0, 100, 50));
+        else if (type == "Label")
+            editWidget(f->createLabel(widget, "Label"));
+        else if (type == "Left")
+            editWidget(f->createLeft(widget));
+        else if (type == "LogView")
+            editWidget(f->createLogView(widget, "Log View", 12));
+        else if (type == "MultiLineEdit")
+            editWidget(f->createMultiLineEdit(widget, "MultiLineEdit"));
+        else if (type == "MultiSelectionBox")
+            editWidget(f->createMultiSelectionBox(widget, "MultiSelection Box"));
+        else if (type == "OutputField")
+            editWidget(f->createOutputField(widget, "Output Field"));
+        else if (type == "PackageSelector")
+            editWidget(f->createPackageSelector(widget));
+        else if (type == "Password")
+            editWidget(f->createPasswordField(widget, "Password"));
+        else if (type == "ProgressBar")
+            editWidget(f->createProgressBar(widget, "Progress"));
+        else if (type == "PushButton")
+            editWidget(f->createPushButton(widget, "Button"));
+        else if (type == "RadioButton")
+            editWidget(f->createRadioButton(widget, "Radio Button"));
+        else if (type == "Right")
+            editWidget(f->createRight(widget));
+        else if (type == "RichText")
+            editWidget(f->createRichText(widget, "This is a <b>RichText</b>."));
+        else if (type == "SelectionBox")
+            editWidget(f->createSelectionBox(widget, "Selection Box"));
+        else if (type == "Top")
+            editWidget(f->createTop(widget));
+        else if (type == "Tree")
+            editWidget(f->createTree(widget, "Tree"));
+        else if (type == "VBox")
+            editWidget(f->createVBox(widget));
+        else if (type == "VSpacing")
+            editWidget(f->createVSpacing(widget));
+        else if (type == "VStretch")
+            editWidget(f->createVStretch(widget));
         else
         {
             YPopupInternal::message(
