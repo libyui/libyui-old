@@ -60,6 +60,9 @@
 #include <YReplacePoint.h>
 #include <YPropertyEditor.h>
 #include <YPopupInternal.h>
+#include <YAlignment.h>
+#include <YCheckBoxFrame.h>
+#include <YRadioButtonGroup.h>
 #include <YUI.h>
 
 #define TREE_VWEIGHT	40
@@ -641,6 +644,9 @@ void YDialogSpyPrivate::addWidget(const std::string &type)
             editWidget(f->createHStretch(widget));
         else if (type == "CheckBox")
             editWidget(f->createCheckBox(widget, "Check Box"));
+        else if (type == "CheckBoxFrame")
+            // make it checked by default
+            editWidget(f->createCheckBoxFrame(widget, "Check Box Frame", true));
         else if (type == "Image")
             editWidget(f->createImage(widget, ""));
         else if (type == "InputField")
@@ -653,6 +659,12 @@ void YDialogSpyPrivate::addWidget(const std::string &type)
             editWidget(f->createLeft(widget));
         else if (type == "LogView")
             editWidget(f->createLogView(widget, "Log View", 12));
+        else if (type == "MinHeight")
+            editWidget(f->createMinHeight(widget, 10));
+        else if (type == "MinWidth")
+            editWidget(f->createMinWidth(widget, 10));
+        else if (type == "MinSize")
+            editWidget(f->createMinSize(widget, 10, 10));
         else if (type == "MultiLineEdit")
             editWidget(f->createMultiLineEdit(widget, "MultiLineEdit"));
         else if (type == "MultiSelectionBox")
@@ -669,6 +681,10 @@ void YDialogSpyPrivate::addWidget(const std::string &type)
             editWidget(f->createPushButton(widget, "Button"));
         else if (type == "RadioButton")
             editWidget(f->createRadioButton(widget, "Radio Button"));
+        else if (type == "RadioButtonGroup")
+            editWidget(f->createRadioButtonGroup(widget));
+        else if (type == "ReplacePoint")
+            editWidget(f->createReplacePoint(widget));
         else if (type == "Right")
             editWidget(f->createRight(widget));
         else if (type == "RichText")
