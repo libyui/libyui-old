@@ -241,12 +241,12 @@ YDialogSpy::YDialogSpy( YDialog * targetDialog )
     add_items.push_back( m6 );
     add_items.push_back( m7 );
 
-    new YMenuItem( m1, "BarGraph (GUI Only)" );
     new YMenuItem( m1, "Label" );
     new YMenuItem( m1, "Heading" );
     new YMenuItem( m1, "RichText" );
     new YMenuItem( m1, "ProgressBar" );
     new YMenuItem( m1, "BusyIndicator" );
+    new YMenuItem( m1, "Table" );
 
     new YMenuItem( m2, "PushButton" );
     new YMenuItem( m2, "CheckBox" );
@@ -254,15 +254,12 @@ YDialogSpy::YDialogSpy( YDialog * targetDialog )
     new YMenuItem( m2, "MenuButton" );
     new YMenuItem( m2, "RadioButton" );
 
-    new YMenuItem( m3, "DateField" );
     new YMenuItem( m3, "InputField" );
     new YMenuItem( m3, "IntField" );
     new YMenuItem( m3, "MultiLineEdit" );
     new YMenuItem( m3, "MultiSelectionBox" );
     new YMenuItem( m3, "Password" );
     new YMenuItem( m3, "SelectionBox" );
-    new YMenuItem( m3, "Slider" );
-    new YMenuItem( m3, "TimeField" );
 
     new YMenuItem( m4, "Left" );
     new YMenuItem( m4, "Right" );
@@ -284,7 +281,6 @@ YDialogSpy::YDialogSpy( YDialog * targetDialog )
     new YMenuItem( m6, "MarginBox" );
     new YMenuItem( m6, "ButtonBox" );
     new YMenuItem( m6, "CheckBoxFrame" );
-    new YMenuItem( m6, "DumbTab" );
     new YMenuItem( m6, "Frame" );
     new YMenuItem( m6, "HBox" );
     new YMenuItem( m6, "HSpacing" );
@@ -292,8 +288,14 @@ YDialogSpy::YDialogSpy( YDialog * targetDialog )
     new YMenuItem( m6, "VBox" );
     new YMenuItem( m6, "VSpacing" );
 
+    // TODO: these are not available in ncurses UI
+    new YMenuItem( m7, "BarGraph" );
+    new YMenuItem( m7, "DateField" );
+    new YMenuItem( m7, "DumbTab" );
+    new YMenuItem( m7, "Graph" );
+    new YMenuItem( m7, "Slider" );
+    new YMenuItem( m3, "TimeField" );
     new YMenuItem( m7, "TimezoneSelector" );
-    new YMenuItem( m7, "PackageSelector" );
 
     priv->addButton->addItems( add_items );
 
@@ -625,11 +627,25 @@ void YDialogSpyPrivate::addWidget(const std::string &type)
         if (type == "Bottom")
             editWidget(f->createBottom(widget));
         else if (type == "BusyIndicator")
-            editWidget(f->createBusyIndicator(widget, "Busy Indicator"));
+            editWidget(f->createBusyIndicator(widget, "Busy Indicator", 10000));
         else if (type == "ButtonBox")
             editWidget(f->createButtonBox(widget));
         else if (type == "ComboBox")
-            editWidget(f->createComboBox(widget, "Combo Box"));
+        {
+            auto cb = f->createComboBox(widget, "Combo Box");
+            editWidget(cb);
+
+            YPopupInternal::StringArray arr { "", "", "" };
+
+            // edit the item list and update the widget after pressing OK
+            if (YPopupInternal::editStringArray(arr, "Menu Items"))
+            {
+                YItemCollection add_items;
+                // access by reference
+                for(auto&& str: arr) add_items.push_back( new YMenuItem( str ) );
+                cb->addItems( add_items );
+            }
+        }
         else if (type == "Empty")
             editWidget(f->createEmpty(widget));
         else if (type == "Frame")
@@ -659,6 +675,22 @@ void YDialogSpyPrivate::addWidget(const std::string &type)
             editWidget(f->createLeft(widget));
         else if (type == "LogView")
             editWidget(f->createLogView(widget, "Log View", 12));
+        else if (type == "MenuButton")
+        {
+            auto menu = f->createMenuButton( widget, "Menu" );
+            editWidget(menu);
+
+            YPopupInternal::StringArray arr { "", "", "" };
+
+            // edit the item list and update the widget after pressing OK
+            if (YPopupInternal::editStringArray(arr, "Menu Items"))
+            {
+                YItemCollection add_items;
+                // access by reference
+                for(auto&& str: arr) add_items.push_back( new YMenuItem( str ) );//menu->addItem(new YItem (str));
+                menu->addItems( add_items );
+            }
+        }
         else if (type == "MinHeight")
             editWidget(f->createMinHeight(widget, 10));
         else if (type == "MinWidth")
@@ -668,11 +700,19 @@ void YDialogSpyPrivate::addWidget(const std::string &type)
         else if (type == "MultiLineEdit")
             editWidget(f->createMultiLineEdit(widget, "MultiLineEdit"));
         else if (type == "MultiSelectionBox")
-            editWidget(f->createMultiSelectionBox(widget, "MultiSelection Box"));
+        {
+            auto msb = f->createMultiSelectionBox(widget, "MultiSelection Box");
+            editWidget(msb);
+
+            YPopupInternal::StringArray arr { "", "", "" };
+
+            // edit the item list and update the widget after pressing OK
+            if (YPopupInternal::editStringArray(arr, "Items"))
+                // access by reference
+                for(auto&& str: arr) msb->addItem(str);
+        }
         else if (type == "OutputField")
             editWidget(f->createOutputField(widget, "Output Field"));
-        else if (type == "PackageSelector")
-            editWidget(f->createPackageSelector(widget));
         else if (type == "Password")
             editWidget(f->createPasswordField(widget, "Password"));
         else if (type == "ProgressBar")
@@ -691,6 +731,21 @@ void YDialogSpyPrivate::addWidget(const std::string &type)
             editWidget(f->createRichText(widget, "This is a <b>RichText</b>."));
         else if (type == "SelectionBox")
             editWidget(f->createSelectionBox(widget, "Selection Box"));
+        else if (type == "Table")
+        {
+            YPopupInternal::StringArray arr { "", "", "" };
+
+            // abort adding if Cancel has been pressed
+            if (YPopupInternal::editStringArray(arr, "Table Columns"))
+            {
+                YTableHeader *header = new YTableHeader();
+
+                // access by reference
+                for(auto&& str: arr) header->addColumn(str);
+
+                editWidget(f->createTable(widget, header));
+            }
+        }
         else if (type == "Top")
             editWidget(f->createTop(widget));
         else if (type == "Tree")
