@@ -82,6 +82,7 @@ SET( ${TARGETLIB}_SOURCES
 
   YPopupInternal.cc
   YPropertyEditor.cc
+  YYastRubyExporter.cc
 )
 
 SET( ${TARGETLIB}_HEADERS

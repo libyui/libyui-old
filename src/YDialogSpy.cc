@@ -23,6 +23,7 @@
 /-*/
 
 #include <sstream>
+#include <fstream>
 
 #define YUILogComponent "ui-dialog-spy"
 #include "YUILog.h"
@@ -63,6 +64,8 @@
 #include <YAlignment.h>
 #include <YCheckBoxFrame.h>
 #include <YRadioButtonGroup.h>
+#include <YApplication.h>
+#include <YYastRubyExporter.h>
 #include <YUI.h>
 
 #define TREE_VWEIGHT	40
@@ -155,7 +158,7 @@ public:
     YPushButton * 	downButton;
     YReplacePoint *	propReplacePoint;
     YTable *		propTable;
-
+    YMenuItem * exportYastRubyItem;
 
     YWidget * selectedWidget();
     void selectedWidgetChanged();
@@ -207,12 +210,13 @@ YDialogSpy::YDialogSpy( YDialog * targetDialog )
     YLayoutBox * vbox    = fac->createVBox( diaMin );
 
     YAlignment * alignment = fac->createLeft( vbox );
-    YMenuButton *fileMenu  = fac->createMenuButton( alignment, "&File" );
+    auto fileButton  = fac->createMenuButton( alignment, "&File" );
 
     YItemCollection items;
     YMenuItem *exp = new YMenuItem( "Export" );
     items.push_back( exp );
-    fileMenu->addItems( items );
+    priv->exportYastRubyItem = new YMenuItem( exp, "As YaST Ruby File..." );
+    fileButton->addItems( items );
 
     YAlignment * minSize = fac->createMinSize( vbox, TREE_WIDTH, TREE_HEIGHT );
     minSize->setWeight( YD_VERT, TREE_VWEIGHT );
@@ -455,23 +459,42 @@ void YDialogSpy::exec()
     while ( true )
     {
     	YEvent * event = priv->spyDialog->waitForEvent();
-        yuiMilestone() << "event: " << event;
         if (!event) continue;
+        yuiMilestone() << "event: " << event << ", widget: " << event->widget() << std::endl;
+        yuiMilestone() << "proptable: " << priv->propTable << std::endl;
 
         // window manager "close window" button
 	    if ( event->eventType() == YEvent::CancelEvent ) break;
         else if ( event->eventType() == YEvent::MenuEvent)
         {
             YItem * menu_item = dynamic_cast<YItem *>(event->item());
+            if (!menu_item) continue;
 
-            if (menu_item)
+            if (menu_item == priv->exportYastRubyItem)
+            {
+                yuiMilestone() << "Exporting in YaST Ruby format... " << std::endl;
+                // auto file = YUI::app()->askForSaveFileName("~", "*.rb", "Export to a Ruby file");
+
+                if (true /*!file.empty()*/)
+                {
+                    // std::filebuf fb;
+                    // fb.open(file, std::ios::out);
+                    // std::ostream ostr(&fb);
+                    std::ostringstream ostr;
+
+                    YYastRubyExporter exporter(priv->targetDialog->firstChild());
+                    exporter.serialize(ostr);
+
+                    // fb.close();
+                    yuiMilestone() << ostr.str() << std::endl;
+                }
+            }
+            else
             {
                 auto menu_label = menu_item->label();
                 yuiMilestone() << "Activated menu item: " << menu_label << std::endl;
                 priv->addWidget(menu_label);
             }
-
-            continue;
         }
         else if ( event->widget() == priv->upButton ) priv->moveSelectedUp();
         else if ( event->widget() == priv->downButton)  priv->moveSelectedDown();
