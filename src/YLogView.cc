@@ -204,6 +204,10 @@ YLogView::appendLine( const std::string & line )
 void
 YLogView::setLogText(const std::string & text)
 {
+  // optimize for regular updating widget when no new content appear
+  if (text == logText())
+    return;
+
   priv->logText.clear();
   appendLines(text);
 }
