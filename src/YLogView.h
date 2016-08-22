@@ -119,8 +119,7 @@ public:
     /**
      * Set (replace) the entire log text and trigger a display update.
      **/
-    void setLogText( const std::string & text )
-	{ clearText(); appendLines( text ); }
+    void setLogText( const std::string & text );
 
     /**
      * Return the last log line.

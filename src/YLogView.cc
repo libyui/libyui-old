@@ -201,6 +201,13 @@ YLogView::appendLine( const std::string & line )
     }
 }
 
+void
+YLogView::setLogText(const std::string & text)
+{
+  priv->logText.clear();
+  appendLines(text);
+}
+
 
 void
 YLogView::clearText()
