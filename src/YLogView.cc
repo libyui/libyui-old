@@ -201,6 +201,18 @@ YLogView::appendLine( const std::string & line )
     }
 }
 
+void
+YLogView::setLogText(const std::string & text)
+{
+  // optimize for regular updating widget when no new content appear
+  if (text == logText())
+    return;
+
+  // do not use clearText as it do render and cause segfault in qt (bnc#989155)
+  priv->logText.clear();
+  appendLines(text);
+}
+
 
 void
 YLogView::clearText()
