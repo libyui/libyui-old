@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon Aug 22 13:05:24 UTC 2016 - jreidinger@suse.com
+
+- prevent double rendering of content causing segfault in qt and
+  slow down elsewhere (bnc#989155)
+- 3.2.6
+
+-------------------------------------------------------------------
 Wed Mar 30 09:12:04 CEST 2016 - me@besser82.io
 
 - Fix 'Werror=nonnull-compare' for GCC 6 (bsc#964144)
