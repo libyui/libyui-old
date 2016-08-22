@@ -208,6 +208,7 @@ YLogView::setLogText(const std::string & text)
   if (text == logText())
     return;
 
+  // do not use clearText as it do render and cause segfault in qt (bnc#989155)
   priv->logText.clear();
   appendLines(text);
 }
