@@ -24,20 +24,15 @@ YPropertyEditor::YPropertyEditor(YWidget * widget)
 {}
 
 /**
- * Refresh the dialog containing the widget
+ * Helper method - refresh the dialog containing the widget
  * @param widget [description]
  */
-void refreshDialog(YWidget *widget)
+static void refreshDialog(YWidget *widget)
 {
     auto dialog = widget->findDialog();
     if (dialog) dialog->recalcLayout();
 }
 
-/**
- * Is the widget property read only?
- * @param  property name of the property
- * @return          true if it is read only
- */
 bool YPropertyEditor::isReadOnly(const std::string &property)
 {
     // is the property read-only?

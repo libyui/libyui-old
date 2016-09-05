@@ -76,11 +76,6 @@
 #define PROP_HEIGHT	12
 #define PROP_WIDTH	50
 
-// helper methods
-// static bool parentIsBox(YWidget *widget);
-static bool isBox(YWidget *widget);
-
-
 /**
  * Custom tree item class to map tree items to widgets
  **/
@@ -179,11 +174,17 @@ private:
     void editWidget(YWidget *widget, const std::string &property="Label");
 };
 
+/** Destructor - switch off widget highlighting at the end
+*/
 YDialogSpyPrivate::~YDialogSpyPrivate()
 {
     highlightWidget(false);
 }
 
+/** Fill the widget tree content
+* @param target the target dialog which will be examined
+* @param widgetTree where to display the structure
+*/
 void fillWidgetTree(YDialog *target, YTree *widgetTree)
 {
     YWidgetTreeItem * rootItem = new YWidgetTreeItem( target, true );
@@ -193,6 +194,8 @@ void fillWidgetTree(YDialog *target, YTree *widgetTree)
     widgetTree->rebuildTree();
 }
 
+/** Constructor - create the main spy dialog
+*/
 YDialogSpy::YDialogSpy( YDialog * targetDialog )
     : priv( new YDialogSpyPrivate() )
 {
@@ -309,23 +312,34 @@ YDialogSpy::YDialogSpy( YDialog * targetDialog )
     priv->selectedWidgetChanged();
 }
 
+/**
+ * Destructor
+ */
 YDialogSpy::~YDialogSpy()
 {
     if ( priv->spyDialog )
 	priv->spyDialog->destroy();
 }
 
-
+/** Is the property dialog displayed?
+ * @return true if the dialog is displayed
+ */
 bool YDialogSpyPrivate::propertiesShown() const
 {
     return propTable != 0;
 }
 
+/**
+ * Highlight the currently selected widget in the spy dialog
+ */
 void YDialogSpyPrivate::highlightWidget(bool enable)
 {
     if (targetDialog) targetDialog->highlight( enable ? selectedWidget() : 0);
 }
 
+/**
+ * Display details about the currently selected widget
+ */
 void YDialogSpyPrivate::showProperties()
 {
     if ( propertiesShown() ) return;
@@ -350,7 +364,9 @@ void YDialogSpyPrivate::showProperties()
 	spyDialog->recalcLayout();
 }
 
-
+/**
+ * Hide property details
+ */
 void YDialogSpyPrivate::hideProperties()
 {
     if ( !propertiesShown() ) return;
@@ -365,6 +381,10 @@ void YDialogSpyPrivate::hideProperties()
 	spyDialog->recalcLayout();
 }
 
+/**
+ * Hide or show the properties dialog
+ * @return true if the dialog is now displayed
+ */
 bool YDialogSpyPrivate::toggleProperties()
 {
     bool ret = !propertiesShown();
@@ -379,7 +399,9 @@ bool YDialogSpyPrivate::toggleProperties()
 
     return ret;
 }
-
+/**
+ * Refresh the displayed properties
+ */
 void YDialogSpyPrivate::refreshProperties()
 {
     // properties shown?
@@ -431,7 +453,13 @@ void YDialogSpyPrivate::refreshProperties()
 	propTable->deselectAllItems();
 }
 
-
+/**
+ * Fill the widget tree dialog
+ * @param parent    widget tree item
+ * @param begin     iterator pointing to the first item
+ * @param end       iterator pointing to the last item
+ * @param treeLevel current tree level (nesting)
+ */
 void fillTree( YWidgetTreeItem * 		parent,
 	       YWidgetListConstIterator 	begin,
 	       YWidgetListConstIterator		end,
@@ -447,7 +475,9 @@ void fillTree( YWidgetTreeItem * 		parent,
     }
 }
 
-
+/**
+ * The main loop of the spy dialog
+ */
 void YDialogSpy::exec()
 {
     YUI_CHECK_PTR( priv->spyDialog );
@@ -482,6 +512,10 @@ void YDialogSpy::exec()
     }
 }
 
+/**
+ * Run the spy dialog for selected UI dialog
+ * @param dialog UI dialog to examine
+ */
 void YDialogSpy::showDialogSpy( YDialog * dialog )
 {
     try
@@ -496,33 +530,9 @@ void YDialogSpy::showDialogSpy( YDialog * dialog )
 }
 
 /**
- * Is the widget a VBox or Hbox?
- * @param  widget the widget
- * @return        true if the widget is a VBox or HBox
+ * The currently selected wiget
+ * @return The currently selected widget (or 0 if nothing is selected)
  */
-bool isBox(YWidget *widget)
-{
-    return dynamic_cast<YLayoutBox *>(widget);
-}
-
-bool isVBox(YWidget *widget)
-{
-    auto box = dynamic_cast<YLayoutBox *>(widget);
-    return box && box->primary() == YD_VERT;
-}
-
-/**
- * Is the widget placed in a VBox or Hbox?
- * (i.e. Is the parent widget a VBox or HBox?)
- * @param  widget the widget
- * @return        true if the widget is in a VBox or HBox
- */
-// bool parentIsBox(YWidget *widget)
-// {
-//     auto parent = widget->parent();
-//     return dynamic_cast<YLayoutBox *>(parent);
-// }
-
 YWidget * YDialogSpyPrivate::selectedWidget()
 {
     YWidgetTreeItem * item = (YWidgetTreeItem *) widgetTree->selectedItem();
@@ -530,6 +540,9 @@ YWidget * YDialogSpyPrivate::selectedWidget()
     return (item) ? item->widget() : 0;
 }
 
+/**
+ * The selected item has been changed, refresh the UI
+ */
 void YDialogSpyPrivate::selectedWidgetChanged()
 {
     highlightWidget();
@@ -537,6 +550,9 @@ void YDialogSpyPrivate::selectedWidgetChanged()
     refreshButtonStates();
 }
 
+/**
+ * Run the property editor for the current widget
+ */
 void YDialogSpyPrivate::editProperty()
 {
     YTableItem *selected_item = dynamic_cast<YTableItem *>(propTable->selectedItem());
@@ -550,6 +566,9 @@ void YDialogSpyPrivate::editProperty()
     if (editor.edit(cell->label())) refreshProperties();
 }
 
+/**
+ * Delete the currently selected widget
+ */
 void YDialogSpyPrivate::deleteWidget()
 {
     YWidget *w = selectedWidget();
@@ -577,6 +596,33 @@ void YDialogSpyPrivate::deleteWidget()
     targetDialogUpdated();
 }
 
+/**
+ * Helper method - Is the widget a VBox or Hbox?
+ * @param  widget the widget
+ * @return        true if the widget is a VBox or HBox
+ */
+bool isBox(YWidget *widget)
+{
+    return dynamic_cast<YLayoutBox *>(widget);
+}
+
+/**
+ * Helper method - Is the widget a VBox?
+ * @param  widget the widget
+ * @return        true if the widget is a VBox
+ */
+bool isVBox(YWidget *widget)
+{
+    auto box = dynamic_cast<YLayoutBox *>(widget);
+    return box && box->primary() == YD_VERT;
+}
+
+/**
+ * Move the selected widget up/left or down/right. The visual direction
+ * actually depends on the widget, it just moves the widget to the begining
+ * or the end of the container.
+ * @param true = up move to the begining (up/left), false = to the end (down/right)
+ */
 void YDialogSpyPrivate::moveSelected(bool up)
 {
     auto target_widget = selectedWidget();
@@ -615,6 +661,10 @@ void YDialogSpyPrivate::moveSelected(bool up)
     targetDialogUpdated();
 }
 
+/**
+ * Generic handler for adding widgets
+ * @param type Type of the widget to add
+ */
 void YDialogSpyPrivate::addWidget(const std::string &type)
 {
     auto widget = selectedWidget();
@@ -772,6 +822,9 @@ void YDialogSpyPrivate::addWidget(const std::string &type)
     }
 }
 
+/**
+ * Refresh the target dialog after modifying it.
+ */
 void YDialogSpyPrivate::targetDialogUpdated()
 {
     // redraw the target dialog
@@ -782,6 +835,9 @@ void YDialogSpyPrivate::targetDialogUpdated()
     fillWidgetTree(targetDialog, widgetTree);
 }
 
+/**
+ * Refresh button states in the main spy dialog
+ */
 void YDialogSpyPrivate::refreshButtonStates()
 {
     auto widget = selectedWidget();
@@ -811,6 +867,11 @@ void YDialogSpyPrivate::refreshButtonStates()
     deleteButton->setEnabled(parent);
 }
 
+/**
+ * Edit widget property
+ * @param widget   selected widget
+ * @param property property name
+ */
 void YDialogSpyPrivate::editWidget(YWidget *widget, const std::string &property)
 {
     // redraw the target dialog

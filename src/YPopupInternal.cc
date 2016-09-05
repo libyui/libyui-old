@@ -14,7 +14,6 @@
 
 #include <YPopupInternal.h>
 
-// For internal use in libyui itself
 void YPopupInternal::message(const std::string &label)
 {
     auto f = YUI::widgetFactory();
@@ -39,6 +38,11 @@ void YPopupInternal::message(const std::string &label)
     popup->destroy();
 }
 
+/**
+ * Helper method for adding new input fields
+ * @param parent Where to add the widget
+ * @param val    The initial value
+ */
 static void addTextField(YWidget *parent, const std::string &val)
 {
     auto new_item = YUI::widgetFactory()->createInputField(parent, "");

@@ -149,9 +149,17 @@ public:
      **/
     ~YPropertyValue();
 
+    /**
+     * Equyality operator, can compare with another YPropertyValue.
+     * @return true if the value is the same, throws an exception for
+     *   incompatible property types.
+     */
     bool operator==( const YPropertyValue &other ) const;
 
-    // TODO: I guess != can be automatically added by some boost "magic"
+    /** Inequality operator
+     * TODO:  Maybe it can be added automatically by some boost "magic"...
+     * @see operator==
+     */
     bool operator!=( const YPropertyValue &other ) const;
 
     /**

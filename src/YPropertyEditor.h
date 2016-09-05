@@ -19,10 +19,16 @@ public:
      * @return          true if the property has been changed
      */
     bool edit(const std::string &property);
-    
+
 private:
-    // TODO: use Impl.h ?
+
+    // TODO: use the Pimpl idiom here?
 
     YWidget * _widget;
+    /**
+     * Is the property read-only?
+     * @param  property property name
+     * @return true if it is read-only, false if it can be changed
+     */
     bool isReadOnly(const std::string &property);
 };
