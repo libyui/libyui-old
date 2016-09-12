@@ -497,6 +497,8 @@ void YDialogSpy::exec()
             // TODO: handle the export menu item
             if (menu_item == priv->exportMenu) continue;
 
+            // handle all unhandled menu items as "Add" menu items, this is much
+            // simpler than comparing it with the huge amount of menu item pointers
             if (menu_item)
             {
                 auto menu_label = menu_item->label();
@@ -528,7 +530,9 @@ void YDialogSpy::showDialogSpy( YDialog * dialog )
     }
     catch ( YUIException & exception )
     {
+        // ignore all YUI exceptions which might happen when playing with the layout
     	YUI_CAUGHT( exception );
+        YPopupInternal::message("Error:\n" + exception.msg());
     }
 }
 
@@ -637,27 +641,25 @@ void YDialogSpyPrivate::moveSelected(bool up)
     if (up)
     {
         // the first child cannot be moved further
-        if (target_widget != parent->firstChild())
+        if (target_widget == parent->firstChild()) return;
+
+        auto i = find( parent->childrenBegin(), parent->childrenEnd(), target_widget );
+        if (i != parent->childrenEnd())
         {
-            auto i = find( parent->childrenBegin(), parent->childrenEnd(), target_widget );
-            if (i != parent->childrenEnd())
-            {
-                // swap with the preceeding widget
-                std::swap(*(--i), *i);
-            }
+            // swap with the preceeding widget
+            std::swap(*(--i), *i);
         }
     }
     else
     {
         // the last child cannot be moved further to the end
-        if (target_widget != parent->lastChild())
+        if (target_widget == parent->lastChild()) return;
+
+        auto i = find( parent->childrenBegin(), parent->childrenEnd(), target_widget );
+        if (i != parent->childrenEnd())
         {
-            auto i = find( parent->childrenBegin(), parent->childrenEnd(), target_widget );
-            if (i != parent->childrenEnd())
-            {
-                // swap with the succeeding widget
-                std::swap(*(++i), *i);
-            }
+            // swap with the succeeding widget
+            std::swap(*(++i), *i);
         }
     }
 

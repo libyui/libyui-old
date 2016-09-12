@@ -16,13 +16,11 @@ public:
     /**
      * Display a popup for editing a widget property.
      * @param  property name of the property to edit
-     * @return          true if the property has been changed
+     * @return true if the property has been changed, false otherwise
      */
     bool edit(const std::string &property);
 
 private:
-
-    // TODO: use the Pimpl idiom here?
 
     YWidget * _widget;
     /**
