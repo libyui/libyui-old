@@ -83,6 +83,19 @@ public:
 	{ return _children.end(); }
 
     /**
+     * Return an iterator that points to the first child.
+     **/
+    typename ChildrenList::const_iterator begin() const
+	{ return _children.begin(); }
+
+    /**
+     * Return an iterator that points after the last child.
+     **/
+    typename ChildrenList::const_iterator end() const
+	{ return _children.end(); }
+
+
+    /**
      * Return a reverse iterator that points to the last child.
      **/
     typename ChildrenList::const_reverse_iterator rbegin() const
