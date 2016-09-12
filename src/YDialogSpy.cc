@@ -150,7 +150,7 @@ public:
     YPushButton * 	downButton;
     YReplacePoint *	propReplacePoint;
     YTable *		propTable;
-
+    YMenuItem *exportMenu;
 
     YWidget * selectedWidget();
     void selectedWidgetChanged();
@@ -213,8 +213,8 @@ YDialogSpy::YDialogSpy( YDialog * targetDialog )
     YMenuButton *fileMenu  = fac->createMenuButton( alignment, "&File" );
 
     YItemCollection items;
-    YMenuItem *exp = new YMenuItem( "Export" );
-    items.push_back( exp );
+    priv->exportMenu = new YMenuItem( "Export (TODO)" );
+    items.push_back( priv->exportMenu );
     fileMenu->addItems( items );
 
     YAlignment * minSize = fac->createMinSize( vbox, TREE_WIDTH, TREE_HEIGHT );
@@ -492,7 +492,10 @@ void YDialogSpy::exec()
 	    if ( event->eventType() == YEvent::CancelEvent ) break;
         else if ( event->eventType() == YEvent::MenuEvent)
         {
-            YItem * menu_item = dynamic_cast<YItem *>(event->item());
+            YMenuItem * menu_item = dynamic_cast<YMenuItem *>(event->item());
+
+            // TODO: handle export menu item
+            if (menu_item == priv->exportMenu) continue;
 
             if (menu_item)
             {

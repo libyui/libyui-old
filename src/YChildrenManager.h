@@ -94,7 +94,6 @@ public:
     typename ChildrenList::const_iterator end() const
 	{ return _children.end(); }
 
-
     /**
      * Return a reverse iterator that points to the last child.
      **/
