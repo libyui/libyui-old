@@ -209,22 +209,22 @@ YDialogSpy::YDialogSpy( YDialog * targetDialog )
     YAlignment * diaMin	 = fac->createMinHeight( priv->spyDialog, DIA_HEIGHT );
     YLayoutBox * vbox    = fac->createVBox( diaMin );
 
-    YAlignment * alignment = fac->createLeft( vbox );
-    YMenuButton *fileMenu  = fac->createMenuButton( alignment, "&File" );
+    auto alignment = fac->createLeft( vbox );
+    auto fileMenu  = fac->createMenuButton( alignment, "&File" );
 
     YItemCollection items;
     priv->exportMenu = new YMenuItem( "Export (TODO)" );
     items.push_back( priv->exportMenu );
     fileMenu->addItems( items );
 
-    YAlignment * minSize = fac->createMinSize( vbox, TREE_WIDTH, TREE_HEIGHT );
+    auto minSize = fac->createMinSize( vbox, TREE_WIDTH, TREE_HEIGHT );
     minSize->setWeight( YD_VERT, TREE_VWEIGHT );
     priv->widgetTree     = fac->createTree( minSize, "Widget &Tree", false );
     priv->widgetTree->setNotify( true );
 
     fillWidgetTree(priv->targetDialog, priv->widgetTree);
 
-    YLayoutBox * hbox = fac->createHBox( vbox );
+    auto hbox = fac->createHBox( vbox );
     priv->propButton = fac->createPushButton( hbox, "&Properties >>>" );
 
     priv->addButton = fac->createMenuButton( hbox, "&Add" );
@@ -347,10 +347,10 @@ void YDialogSpyPrivate::showProperties()
 	propReplacePoint->deleteChildren();
 	propReplacePoint->setWeight( YD_VERT, PROP_VWEIGHT );
 
-	YWidgetFactory * fac = YUI::widgetFactory();
-	YAlignment * minSize = fac->createMinSize( propReplacePoint,
+	auto fac = YUI::widgetFactory();
+	auto minSize = fac->createMinSize( propReplacePoint,
 						   PROP_WIDTH, PROP_HEIGHT );
-	YTableHeader * header = new YTableHeader();
+	auto header = new YTableHeader();
 	YUI_CHECK_NEW( header );
 	header->addColumn( "Property" );
 	header->addColumn( "Value" );
@@ -413,7 +413,7 @@ void YDialogSpyPrivate::refreshProperties()
     auto widget = selectedWidget();
     if (!widget) return;
 
-	YPropertySet propSet = widget->propertySet();
+	auto propSet = widget->propertySet();
 	YItemCollection items;
 	items.reserve( propSet.size() );
 
@@ -444,7 +444,7 @@ void YDialogSpyPrivate::refreshProperties()
 		    break;
 	    }
 
-	    YTableItem * item = new YTableItem( prop.name(), propValStr, prop.typeAsStr() );
+	    auto item = new YTableItem( prop.name(), propValStr, prop.typeAsStr() );
 	    YUI_CHECK_NEW( item );
 	    items.push_back( item );
 	}
@@ -468,7 +468,7 @@ void fillTree( YWidgetTreeItem * 		parent,
     for ( YWidgetListConstIterator it = begin; it != end; ++it )
     {
 	YWidget * widget = *it;
-	YWidgetTreeItem * item = new YWidgetTreeItem( parent, widget, treeLevel < 4 );
+	auto item = new YWidgetTreeItem( parent, widget, treeLevel < 4 );
 
 	if ( widget->hasChildren() )
 	    fillTree( item, widget->childrenBegin(), widget->childrenEnd(), treeLevel+1 );
@@ -484,7 +484,7 @@ void YDialogSpy::exec()
 
     while ( true )
     {
-    	YEvent * event = priv->spyDialog->waitForEvent();
+        auto event = priv->spyDialog->waitForEvent();
         yuiMilestone() << "event: " << event;
         if (!event) continue;
 
@@ -494,7 +494,7 @@ void YDialogSpy::exec()
         {
             YMenuItem * menu_item = dynamic_cast<YMenuItem *>(event->item());
 
-            // TODO: handle export menu item
+            // TODO: handle the export menu item
             if (menu_item == priv->exportMenu) continue;
 
             if (menu_item)
@@ -538,7 +538,7 @@ void YDialogSpy::showDialogSpy( YDialog * dialog )
  */
 YWidget * YDialogSpyPrivate::selectedWidget()
 {
-    YWidgetTreeItem * item = (YWidgetTreeItem *) widgetTree->selectedItem();
+    auto item = (YWidgetTreeItem *) widgetTree->selectedItem();
 
     return (item) ? item->widget() : 0;
 }
@@ -558,10 +558,10 @@ void YDialogSpyPrivate::selectedWidgetChanged()
  */
 void YDialogSpyPrivate::editProperty()
 {
-    YTableItem *selected_item = dynamic_cast<YTableItem *>(propTable->selectedItem());
+    auto selected_item = dynamic_cast<YTableItem *>(propTable->selectedItem());
     if (!selected_item) return;
 
-    YTableCell *cell = selected_item->cell(0);
+    auto cell = selected_item->cell(0);
     yuiMilestone() << "editing property: " << cell->label();
 
     YPropertyEditor editor(selectedWidget());
@@ -574,10 +574,10 @@ void YDialogSpyPrivate::editProperty()
  */
 void YDialogSpyPrivate::deleteWidget()
 {
-    YWidget *w = selectedWidget();
+    auto w = selectedWidget();
     if (!w) return;
 
-    YWidget *parent = w->parent();
+    auto parent = w->parent();
     if (!parent) return;
 
     yuiMilestone() << "removing widget: " << w << std::endl;
@@ -740,7 +740,7 @@ void YDialogSpyPrivate::addWidget(const std::string &type)
             {
                 YItemCollection add_items;
                 // access by reference
-                for(auto&& str: arr) add_items.push_back( new YMenuItem( str ) );//menu->addItem(new YItem (str));
+                for(auto&& str: arr) add_items.push_back( new YMenuItem( str ) );
                 menu->addItems( add_items );
             }
         }
@@ -791,7 +791,7 @@ void YDialogSpyPrivate::addWidget(const std::string &type)
             // abort adding if Cancel has been pressed
             if (YPopupInternal::editStringArray(arr, "Table Columns"))
             {
-                YTableHeader *header = new YTableHeader();
+                auto header = new YTableHeader();
 
                 // access by reference
                 for(auto&& str: arr) header->addColumn(str);
