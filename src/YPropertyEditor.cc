@@ -56,40 +56,19 @@ bool YPropertyEditor::isReadOnly(const std::string &property)
     return false;
 }
 
-// FIXME: split this too long method
-bool YPropertyEditor::edit(const std::string &property)
+void YPropertyEditor::show(const std::string &property)
 {
-    if (!_widget) return false;
-
     YPropertyValue prop_value = _widget->getProperty( property );
-    yuiMilestone() << "editing property \"" << property << "\" (type: " << prop_value.typeAsStr() << ")";
-
-    // is the property read-only?
-    if (isReadOnly(property))
-    {
-        YPopupInternal::message("Property \"" + property + "\" is read only!");
-        return false;
-    }
-
     YPropertyType type = prop_value.type();
-    // we cannot edit special properties
-    if (type != YBoolProperty && type != YStringProperty && type != YIntegerProperty)
-    {
-        return false;
-    }
 
     // backup the original property value so it can be restored after
-    // clicking the [Cancel] button
-    YPropertyValue orig = prop_value;
+    // clicking the [Cancel] button later
+    orig = prop_value;
 
-    YWidgetFactory *f = YUI::widgetFactory();
+    auto f = YUI::widgetFactory();
 
-    YDialog *popup = f->createPopupDialog();
-    YLayoutBox *vbox = f->createVBox(popup);
-
-    YComboBox *combo = NULL;
-    YIntField *intfield = NULL;
-    YInputField *input = NULL;
+    popup = f->createPopupDialog();
+    auto vbox = f->createVBox(popup);
 
     if (type == YBoolProperty)
     {
@@ -118,10 +97,26 @@ bool YPropertyEditor::edit(const std::string &property)
         input->setValue( prop_value.stringVal() );
     }
 
-    YButtonBox * bbox = f->createButtonBox( vbox );
-    YPushButton *okButton = f->createPushButton( bbox, "OK" );
-    YPushButton *cancelButton = f->createPushButton( bbox, "Cancel" );
+    auto bbox = f->createButtonBox( vbox );
+    okButton = f->createPushButton( bbox, "OK" );
+    cancelButton = f->createPushButton( bbox, "Cancel" );
+}
 
+void YPropertyEditor::close()
+{
+    popup->destroy();
+
+    // nullify the widgets, just to be sure...
+    popup = NULL;
+    okButton = NULL;
+    cancelButton = NULL;
+    combo = NULL;
+    intfield = NULL;
+    input = NULL;
+}
+
+void YPropertyEditor::run(const std::string &property)
+{
     while ( true )
     {
         YEvent * event = popup->waitForEvent();
@@ -167,8 +162,43 @@ bool YPropertyEditor::edit(const std::string &property)
             }
         }
     }
+}
 
-    popup->destroy();
+bool YPropertyEditor::editable(const std::string &property)
+{
+    YPropertyValue prop_value = _widget->getProperty(property);
 
-    return _widget->getProperty( property ) != orig;
+    // is the property read-only?
+    if (isReadOnly(property))
+    {
+        YPopupInternal::message("Property \"" + property + "\" is read only!");
+        return false;
+    }
+
+    YPropertyType type = prop_value.type();
+    // edit special properties cannot be edited
+    if (type != YBoolProperty && type != YStringProperty && type != YIntegerProperty)
+    {
+        return false;
+    }
+
+    return true;
+}
+
+bool YPropertyEditor::edit(const std::string &property)
+{
+    if (!_widget || !editable(property)) return false;
+
+    yuiMilestone() << "editing property \"" << property << "\" (type: " <<
+        _widget->getProperty(property).typeAsStr() << ")";
+
+    show(property);
+
+    run(property);
+
+    bool changed = _widget->getProperty(property) != orig;
+
+    close();
+
+    return changed;
 }
