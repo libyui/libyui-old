@@ -34,11 +34,11 @@ public:
 private:
 
     YWidget * _widget;
-    YPropertyValue orig;
+
 
     /**
      * Is the property read-only?
-     * @param  property property name
+     * @param  property Name of the property
      * @return true if it is read-only, false if it can be changed
      */
     bool isReadOnly(const std::string &property);
@@ -56,13 +56,29 @@ private:
     YPushButton *okButton;
     YPushButton *cancelButton;
 
-    // dialog handlers
-    // show the dialog on the screen
+    /**
+     * show the dialog on the screen
+     * @param property Name of the property to edit
+     */
     void show(const std::string &property);
-    // run the main event loop
-    void run(const std::string &property);
-    // close the dialog
+
+    /**
+     * Run the main event loop
+     * @param  property Name of the property to edit
+     * @return true if the value has been changed, false otherwise
+     */
+
+    bool run(const std::string &property);
+    /**
+     * Close the dialog window
+     */
+
     void close();
-    // is the property editable?
+    /**
+     * Is the property editable? Editable property is not read-only and
+     * it is String, Integer or Boolean type.
+     * @param  property Name of the property
+     * @return true if the property can be changed
+     */
     bool editable(const std::string &property);
 };

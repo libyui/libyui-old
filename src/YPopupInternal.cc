@@ -23,13 +23,13 @@ void YPopupInternal::message(const std::string &label)
     auto vbox = f->createVBox(mb);
     f->createLabel(vbox, label);
 
-    auto bbox = f->createButtonBox( vbox );
-    auto okButton = f->createPushButton( bbox, "OK" );
+    auto bbox = f->createButtonBox(vbox);
+    auto okButton = f->createPushButton(bbox, "OK");
 
-    while ( true )
+    while (true)
     {
         auto event = popup->waitForEvent();
-        if ( event && (event->widget() == okButton || event->eventType() == YEvent::CancelEvent ))
+        if (event && (event->widget() == okButton || event->eventType() == YEvent::CancelEvent))
         {
             break;
         }
@@ -50,7 +50,7 @@ static void addTextField(YWidget *parent, const std::string &val)
     new_item->setProperty("HStretch", YPropertyValue(true));
 }
 
-bool YPopupInternal::editStringArray(StringArray &array, const std::string &label )
+bool YPopupInternal::editStringArray(StringArray &array, const std::string &label)
 {
     auto f = YUI::widgetFactory();
 
@@ -63,44 +63,41 @@ bool YPopupInternal::editStringArray(StringArray &array, const std::string &labe
     // access by reference
     for(auto&& str: array) addTextField(arrayBox, str);
 
-    auto addButton = f->createPushButton( vbox, "Add Item" );
+    auto addButton = f->createPushButton(vbox, "Add Item");
 
-    auto spacing = f->createVSpacing( vbox, 1 );
+    auto spacing = f->createVSpacing(vbox, 1);
     spacing->setProperty("VStretch", YPropertyValue(true));
 
-    auto bbox = f->createButtonBox( vbox );
-    auto okButton = f->createPushButton( bbox, "OK" );
-    auto cancelButton = f->createPushButton( bbox, "Cancel" );
+    auto bbox = f->createButtonBox(vbox);
+    auto okButton = f->createPushButton(bbox, "OK");
+    auto cancelButton = f->createPushButton(bbox, "Cancel");
 
     bool ret;
 
-    while ( true )
+    while (true)
     {
         auto event = popup->waitForEvent();
 
         if (!event) continue;
 
-        if ( event->widget() == cancelButton || event->eventType() == YEvent::CancelEvent )
+        if (event->widget() == cancelButton || event->eventType() == YEvent::CancelEvent)
         {
             ret = false;
             break;
         }
-        else if ( event->widget() == okButton )
+        else if (event->widget() == okButton)
         {
             array.clear();
-            for ( auto it = arrayBox->childrenBegin(); it != arrayBox->childrenEnd(); ++it )
+            for (auto it = arrayBox->childrenBegin(); it != arrayBox->childrenEnd(); ++it)
             {
                 auto widget = dynamic_cast<YInputField*>(*it);
-
-                if (!widget) continue;
-
-                array.push_back(widget->value());
+                if (widget) array.push_back(widget->value());
             }
 
             ret = true;
             break;
         }
-        else if ( event->widget() == addButton )
+        else if (event->widget() == addButton)
         {
             addTextField(arrayBox, "");
             popup->recalcLayout();

@@ -58,12 +58,8 @@ bool YPropertyEditor::isReadOnly(const std::string &property)
 
 void YPropertyEditor::show(const std::string &property)
 {
-    YPropertyValue prop_value = _widget->getProperty( property );
+    YPropertyValue prop_value = _widget->getProperty(property);
     YPropertyType type = prop_value.type();
-
-    // backup the original property value so it can be restored after
-    // clicking the [Cancel] button later
-    orig = prop_value;
 
     auto f = YUI::widgetFactory();
 
@@ -72,41 +68,41 @@ void YPropertyEditor::show(const std::string &property)
 
     if (type == YBoolProperty)
     {
-        combo = f->createComboBox( vbox, property);
-        combo->setNotify( true );
+        combo = f->createComboBox(vbox, property);
+        combo->setNotify(true);
 
         YItemCollection items;
-        items.push_back( new YItem( "true" ) );
-        items.push_back( new YItem( "false" ) );
-        combo->addItems( items );
-        combo->setValue( prop_value.boolVal() ? "true" : "false" );
+        items.push_back(new YItem("true"));
+        items.push_back(new YItem("false"));
+        combo->addItems(items);
+        combo->setValue(prop_value.boolVal() ? "true" : "false");
     }
     else if (type == YIntegerProperty)
     {
         intfield = f->createIntField(vbox, property,
             // we do not know anything about that property so use the
-            // maximum and minimum values for an integer
+            // max int and min int values here
             std::numeric_limits<int>::min(), std::numeric_limits<int>::max(),
             prop_value.integerVal());
-        intfield->setNotify( true );
+        intfield->setNotify(true);
     }
     else if (type == YStringProperty)
     {
         input = f->createInputField(vbox, property);
-        input->setNotify( true );
-        input->setValue( prop_value.stringVal() );
+        input->setNotify(true);
+        input->setValue(prop_value.stringVal());
     }
 
-    auto bbox = f->createButtonBox( vbox );
-    okButton = f->createPushButton( bbox, "OK" );
-    cancelButton = f->createPushButton( bbox, "Cancel" );
+    auto bbox = f->createButtonBox(vbox);
+    okButton = f->createPushButton(bbox, "OK");
+    cancelButton = f->createPushButton(bbox, "Cancel");
 }
 
 void YPropertyEditor::close()
 {
     popup->destroy();
 
-    // nullify the widgets, just to be sure...
+    // nullify the widget pointers, just to be sure...
     popup = NULL;
     okButton = NULL;
     cancelButton = NULL;
@@ -115,14 +111,18 @@ void YPropertyEditor::close()
     input = NULL;
 }
 
-void YPropertyEditor::run(const std::string &property)
+bool YPropertyEditor::run(const std::string &property)
 {
-    while ( true )
+    // backup the original property value so it can be restored after
+    // clicking the [Cancel] button later
+    YPropertyValue orig = prop_value;
+
+    while (true)
     {
         YEvent * event = popup->waitForEvent();
-        if ( event )
+        if (event)
         {
-            if (event->widget() == cancelButton || event->eventType() == YEvent::CancelEvent )
+            if (event->widget() == cancelButton || event->eventType() == YEvent::CancelEvent)
             {
                 // restore the original value
                 if (_widget->getProperty( property ) != orig)
@@ -131,11 +131,12 @@ void YPropertyEditor::run(const std::string &property)
                     refreshDialog(_widget);
                 }
 
-                break;
+                // not modified
+                return false;
             }
             else if (event->widget() == okButton)
             {
-                break;
+                return _widget->getProperty(property) != orig;
             }
             else if (event->widget() == combo)
             {
@@ -194,9 +195,7 @@ bool YPropertyEditor::edit(const std::string &property)
 
     show(property);
 
-    run(property);
-
-    bool changed = _widget->getProperty(property) != orig;
+    bool changed = run(property);
 
     close();
 
