@@ -25,6 +25,7 @@ void YPopupInternal::message(const std::string &label)
 
     auto bbox = f->createButtonBox(vbox);
     auto okButton = f->createPushButton(bbox, "OK");
+    okButton->setRole(YOKButton);
 
     while (true)
     {
@@ -70,7 +71,9 @@ bool YPopupInternal::editStringArray(StringArray &array, const std::string &labe
 
     auto bbox = f->createButtonBox(vbox);
     auto okButton = f->createPushButton(bbox, "OK");
+    okButton->setRole(YOKButton);
     auto cancelButton = f->createPushButton(bbox, "Cancel");
+    cancelButton->setRole(YCancelButton);
 
     bool ret;
 
