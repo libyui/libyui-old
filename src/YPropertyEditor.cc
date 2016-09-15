@@ -182,6 +182,7 @@ void YPropertyEditorPriv::show(const std::string &property)
     auto bbox = f->createButtonBox(vbox);
     okButton = f->createPushButton(bbox, "OK");
     okButton->setRole(YOKButton);
+    okButton->setDefaultButton();
     cancelButton = f->createPushButton(bbox, "Cancel");
     cancelButton->setRole(YCancelButton);
 }
