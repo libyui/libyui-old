@@ -4,6 +4,8 @@
 
 #include <string>
 
+#include "ImplPtr.h"
+
 class YWidget;
 class YPropertyEditorPriv;
 
@@ -31,7 +33,7 @@ public:
 
 private:
 
-    YPropertyEditorPriv *priv;
+    ImplPtr<YPropertyEditorPriv> priv;
 };
 
 #endif

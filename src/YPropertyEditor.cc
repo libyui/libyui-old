@@ -93,7 +93,6 @@ YPropertyEditor::YPropertyEditor(YWidget * widget)
 
 YPropertyEditor::~YPropertyEditor()
 {
-    delete priv;
 }
 
 /**
