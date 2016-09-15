@@ -58,7 +58,7 @@ bool YPopupInternal::editStringArray(StringArray &array, const std::string &labe
     auto mb = f->createMarginBox(popup, 1, 0.1);
     auto vbox = f->createVBox(mb);
     f->createHeading(vbox, label);
-    auto arrayBox = f->createVBox(vbox);
+    YWidget *arrayBox = f->createVBox(vbox);
 
     // access by reference
     for(auto&& str: array) addTextField(arrayBox, str);
@@ -80,6 +80,7 @@ bool YPopupInternal::editStringArray(StringArray &array, const std::string &labe
 
         if (!event) continue;
 
+        // cancel button or the window manager close button
         if (event->widget() == cancelButton || event->eventType() == YEvent::CancelEvent)
         {
             ret = false;
@@ -88,10 +89,12 @@ bool YPopupInternal::editStringArray(StringArray &array, const std::string &labe
         else if (event->widget() == okButton)
         {
             array.clear();
-            for (auto it = arrayBox->childrenBegin(); it != arrayBox->childrenEnd(); ++it)
+
+            // put all input field values into the target array
+            for(auto&& widget: *arrayBox)
             {
-                auto widget = dynamic_cast<YInputField*>(*it);
-                if (widget) array.push_back(widget->value());
+                auto input = dynamic_cast<YInputField*>(widget);
+                if (input) array.push_back(input->value());
             }
 
             ret = true;

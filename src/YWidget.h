@@ -232,6 +232,20 @@ public:
 	{ return childrenManager()->end(); }
 
     /**
+     * A helper for the range-based "for" loop
+     * @return Iterator pointing to the beginning of the children list
+     */
+    YWidgetListIterator begin()
+    { return childrenBegin(); }
+
+    /**
+     * A helper for the range-based "for" loop
+     * @return Iterator pointing to the end of the children list
+     */
+    YWidgetListIterator end()
+    { return childrenEnd(); }
+
+    /**
      * Returns the current number of children.
      **/
     int childrenCount() const { return childrenManager()->count(); }

@@ -130,12 +130,12 @@ class YDialogSpyPrivate
 public:
 
     YDialogSpyPrivate()
-	: targetDialog( 0 )
-	, spyDialog( 0 )
-	, widgetTree( 0 )
-	, propButton( 0 )
-	, propReplacePoint( 0 )
-	, propTable( 0 )
+	: targetDialog( nullptr )
+	, spyDialog( nullptr )
+	, widgetTree( nullptr )
+	, propButton( nullptr )
+	, propReplacePoint( nullptr )
+	, propTable( nullptr )
 	{}
 
     ~YDialogSpyPrivate();
@@ -161,11 +161,17 @@ public:
     void deleteWidget();
     void addWidget(const std::string &type);
     void editProperty();
-    void moveSelectedUp() { moveSelected(true); }
-    void moveSelectedDown() { moveSelected(false); }
+    void moveSelectedUp() { moveSelected(MOVE_UP); }
+    void moveSelectedDown() { moveSelected(MOVE_DOWN); }
 
 private:
-    void moveSelected(bool up);
+    enum Direction
+    {
+        MOVE_UP = 0,
+        MOVE_DOWN
+    };
+
+    void moveSelected(Direction direction);
     void showProperties();
     void hideProperties();
     bool propertiesShown() const;
@@ -229,76 +235,76 @@ YDialogSpy::YDialogSpy( YDialog * targetDialog )
 
     priv->addButton = fac->createMenuButton( hbox, "&Add" );
     YItemCollection add_items;
-    YMenuItem *m1 = new YMenuItem( "Info" );
-    YMenuItem *m2 = new YMenuItem( "Buttons" );
-    YMenuItem *m3 = new YMenuItem( "Input" );
-    YMenuItem *m4 = new YMenuItem( "Alignment" );
-    YMenuItem *m5 = new YMenuItem( "Size" );
-    YMenuItem *m6 = new YMenuItem( "Containers" );
-    YMenuItem *m7 = new YMenuItem( "Special" );
-    add_items.push_back( m1 );
-    add_items.push_back( m2 );
-    add_items.push_back( m3 );
-    add_items.push_back( m4 );
-    add_items.push_back( m5 );
-    add_items.push_back( m6 );
-    add_items.push_back( m7 );
+    YMenuItem *menu_info = new YMenuItem( "Info" );
+    YMenuItem *menu_buttons = new YMenuItem( "Buttons" );
+    YMenuItem *menu_input = new YMenuItem( "Input" );
+    YMenuItem *menu_align = new YMenuItem( "Alignment" );
+    YMenuItem *menu_size = new YMenuItem( "Size" );
+    YMenuItem *menu_containers = new YMenuItem( "Containers" );
+    YMenuItem *menu_special = new YMenuItem( "Special" );
+    add_items.push_back( menu_info );
+    add_items.push_back( menu_buttons );
+    add_items.push_back( menu_input );
+    add_items.push_back( menu_align );
+    add_items.push_back( menu_size );
+    add_items.push_back( menu_containers );
+    add_items.push_back( menu_special );
 
-    new YMenuItem( m1, "Label" );
-    new YMenuItem( m1, "Heading" );
-    new YMenuItem( m1, "RichText" );
-    new YMenuItem( m1, "ProgressBar" );
-    new YMenuItem( m1, "BusyIndicator" );
-    new YMenuItem( m1, "Table" );
+    new YMenuItem( menu_info, "Label" );
+    new YMenuItem( menu_info, "Heading" );
+    new YMenuItem( menu_info, "RichText" );
+    new YMenuItem( menu_info, "ProgressBar" );
+    new YMenuItem( menu_info, "BusyIndicator" );
+    new YMenuItem( menu_info, "Table" );
 
-    new YMenuItem( m2, "PushButton" );
-    new YMenuItem( m2, "CheckBox" );
-    new YMenuItem( m2, "ComboBox" );
-    new YMenuItem( m2, "MenuButton" );
-    new YMenuItem( m2, "RadioButton" );
+    new YMenuItem( menu_buttons, "PushButton" );
+    new YMenuItem( menu_buttons, "CheckBox" );
+    new YMenuItem( menu_buttons, "ComboBox" );
+    new YMenuItem( menu_buttons, "MenuButton" );
+    new YMenuItem( menu_buttons, "RadioButton" );
 
-    new YMenuItem( m3, "InputField" );
-    new YMenuItem( m3, "IntField" );
-    new YMenuItem( m3, "MultiLineEdit" );
-    new YMenuItem( m3, "MultiSelectionBox" );
-    new YMenuItem( m3, "Password" );
-    new YMenuItem( m3, "SelectionBox" );
+    new YMenuItem( menu_input, "InputField" );
+    new YMenuItem( menu_input, "IntField" );
+    new YMenuItem( menu_input, "MultiLineEdit" );
+    new YMenuItem( menu_input, "MultiSelectionBox" );
+    new YMenuItem( menu_input, "Password" );
+    new YMenuItem( menu_input, "SelectionBox" );
 
-    new YMenuItem( m4, "Left" );
-    new YMenuItem( m4, "Right" );
-    new YMenuItem( m4, "Top" );
-    new YMenuItem( m4, "Bottom" );
-    new YMenuItem( m4, "HCenter" );
-    new YMenuItem( m4, "VCenter" );
-    new YMenuItem( m4, "HVCenter" );
+    new YMenuItem( menu_align, "Left" );
+    new YMenuItem( menu_align, "Right" );
+    new YMenuItem( menu_align, "Top" );
+    new YMenuItem( menu_align, "Bottom" );
+    new YMenuItem( menu_align, "HCenter" );
+    new YMenuItem( menu_align, "VCenter" );
+    new YMenuItem( menu_align, "HVCenter" );
 
-    new YMenuItem( m5, "MinHeight" );
-    new YMenuItem( m5, "MinWidth" );
-    new YMenuItem( m5, "MinSize" );
-    new YMenuItem( m5, "HSquash" );
-    new YMenuItem( m5, "VSquash" );
-    new YMenuItem( m5, "HVSquash" );
-    new YMenuItem( m5, "HWeight" );
-    new YMenuItem( m5, "VWeight" );
+    new YMenuItem( menu_size, "MinHeight" );
+    new YMenuItem( menu_size, "MinWidth" );
+    new YMenuItem( menu_size, "MinSize" );
+    new YMenuItem( menu_size, "HSquash" );
+    new YMenuItem( menu_size, "VSquash" );
+    new YMenuItem( menu_size, "HVSquash" );
+    new YMenuItem( menu_size, "HWeight" );
+    new YMenuItem( menu_size, "VWeight" );
 
-    new YMenuItem( m6, "MarginBox" );
-    new YMenuItem( m6, "ButtonBox" );
-    new YMenuItem( m6, "CheckBoxFrame" );
-    new YMenuItem( m6, "Frame" );
-    new YMenuItem( m6, "HBox" );
-    new YMenuItem( m6, "HSpacing" );
-    new YMenuItem( m6, "ReplacePoint" );
-    new YMenuItem( m6, "VBox" );
-    new YMenuItem( m6, "VSpacing" );
+    new YMenuItem( menu_containers, "MarginBox" );
+    new YMenuItem( menu_containers, "ButtonBox" );
+    new YMenuItem( menu_containers, "CheckBoxFrame" );
+    new YMenuItem( menu_containers, "Frame" );
+    new YMenuItem( menu_containers, "HBox" );
+    new YMenuItem( menu_containers, "HSpacing" );
+    new YMenuItem( menu_containers, "ReplacePoint" );
+    new YMenuItem( menu_containers, "VBox" );
+    new YMenuItem( menu_containers, "VSpacing" );
 
     // TODO: these are not available in ncurses UI
-    new YMenuItem( m7, "BarGraph" );
-    new YMenuItem( m7, "DateField" );
-    new YMenuItem( m7, "DumbTab" );
-    new YMenuItem( m7, "Graph" );
-    new YMenuItem( m7, "Slider" );
-    new YMenuItem( m3, "TimeField" );
-    new YMenuItem( m7, "TimezoneSelector" );
+    new YMenuItem( menu_special, "BarGraph" );
+    new YMenuItem( menu_special, "DateField" );
+    new YMenuItem( menu_special, "DumbTab" );
+    new YMenuItem( menu_special, "Graph" );
+    new YMenuItem( menu_special, "Slider" );
+    new YMenuItem( menu_input, "TimeField" );
+    new YMenuItem( menu_special, "TimezoneSelector" );
 
     priv->addButton->addItems( add_items );
 
@@ -326,7 +332,7 @@ YDialogSpy::~YDialogSpy()
  */
 bool YDialogSpyPrivate::propertiesShown() const
 {
-    return propTable != 0;
+    return propTable != nullptr;
 }
 
 /**
@@ -334,7 +340,7 @@ bool YDialogSpyPrivate::propertiesShown() const
  */
 void YDialogSpyPrivate::highlightWidget(bool enable)
 {
-    if (targetDialog) targetDialog->highlight( enable ? selectedWidget() : 0);
+    if (targetDialog) targetDialog->highlight( enable ? selectedWidget() : nullptr);
 }
 
 /**
@@ -373,7 +379,7 @@ void YDialogSpyPrivate::hideProperties()
 
 	propReplacePoint->deleteChildren();
 	propReplacePoint->setWeight( YD_VERT, 0 );
-	propTable = 0;
+	propTable = nullptr;
 	YUI::widgetFactory()->createEmpty( propReplacePoint );
 
 	propButton->setLabel( "&Properties >>>" );
@@ -538,13 +544,13 @@ void YDialogSpy::showDialogSpy( YDialog * dialog )
 
 /**
  * The currently selected wiget
- * @return The currently selected widget (or 0 if nothing is selected)
+ * @return The currently selected widget (or nullptr if nothing is selected)
  */
 YWidget * YDialogSpyPrivate::selectedWidget()
 {
-    auto item = (YWidgetTreeItem *) widgetTree->selectedItem();
+    auto item = dynamic_cast<YWidgetTreeItem *>(widgetTree->selectedItem());
 
-    return (item) ? item->widget() : 0;
+    return item ? item->widget() : nullptr;
 }
 
 /**
@@ -608,9 +614,9 @@ void YDialogSpyPrivate::deleteWidget()
  * @param  widget the widget
  * @return        true if the widget is a VBox or HBox
  */
-bool isBox(YWidget *widget)
+bool isBox(const YWidget *widget)
 {
-    return dynamic_cast<YLayoutBox *>(widget);
+    return dynamic_cast<const YLayoutBox *>(widget);
 }
 
 /**
@@ -618,9 +624,9 @@ bool isBox(YWidget *widget)
  * @param  widget the widget
  * @return        true if the widget is a VBox
  */
-bool isVBox(YWidget *widget)
+bool isVBox(const YWidget *widget)
 {
-    auto box = dynamic_cast<YLayoutBox *>(widget);
+    auto box = dynamic_cast<const YLayoutBox *>(widget);
     return box && box->primary() == YD_VERT;
 }
 
@@ -630,7 +636,7 @@ bool isVBox(YWidget *widget)
  * or the end of the container.
  * @param true = up move to the begining (up/left), false = to the end (down/right)
  */
-void YDialogSpyPrivate::moveSelected(bool up)
+void YDialogSpyPrivate::moveSelected(Direction direction)
 {
     auto target_widget = selectedWidget();
     if (!target_widget) return;
@@ -638,7 +644,7 @@ void YDialogSpyPrivate::moveSelected(bool up)
     auto parent = target_widget->parent();
     if (!parent || !isBox(parent)) return;
 
-    if (up)
+    if (direction == MOVE_UP)
     {
         // the first child cannot be moved further
         if (target_widget == parent->firstChild()) return;
@@ -647,10 +653,13 @@ void YDialogSpyPrivate::moveSelected(bool up)
         if (i != parent->childrenEnd())
         {
             // swap with the preceeding widget
-            std::swap(*(--i), *i);
+            // Note: use a temporary variable to not rely on the argument evaluation order!
+            auto second = i--;
+            std::swap(*second, *i);
         }
     }
     else
+    // moving down
     {
         // the last child cannot be moved further to the end
         if (target_widget == parent->lastChild()) return;
@@ -659,7 +668,9 @@ void YDialogSpyPrivate::moveSelected(bool up)
         if (i != parent->childrenEnd())
         {
             // swap with the succeeding widget
-            std::swap(*(++i), *i);
+            // Note: use a temporary variable to not rely on the argument evaluation order!
+            auto second = i++;
+            std::swap(*second, *i);
         }
     }
 
@@ -846,7 +857,7 @@ void YDialogSpyPrivate::targetDialogUpdated()
 void YDialogSpyPrivate::refreshButtonStates()
 {
     auto widget = selectedWidget();
-    auto parent = widget ? widget->parent() : 0;
+    auto parent = widget ? widget->parent() : nullptr;
 
     // Enable the moving buttons ony when the selected widget is inside
     // a VBox/HBox container, set the labels according to stacking direction.
