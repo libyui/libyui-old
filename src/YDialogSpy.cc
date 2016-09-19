@@ -495,7 +495,7 @@ void YDialogSpy::exec()
         if (!event) continue;
 
         // window manager "close window" button
-	    if ( event->eventType() == YEvent::CancelEvent ) break;
+        if ( event->eventType() == YEvent::CancelEvent ) break;
         else if ( event->eventType() == YEvent::MenuEvent)
         {
             YMenuItem * menu_item = dynamic_cast<YMenuItem *>(event->item());
@@ -519,7 +519,7 @@ void YDialogSpy::exec()
         else if ( event->widget() == priv->propButton ) priv->toggleProperties();
         else if ( event->widget() == priv->deleteButton) priv->deleteWidget();
         else if ( event->widget() == priv->propTable )  priv->editProperty();
-	    else if ( event->widget() == priv->widgetTree ) priv->selectedWidgetChanged();
+        else if ( event->widget() == priv->widgetTree ) priv->selectedWidgetChanged();
     }
 }
 
@@ -654,8 +654,8 @@ void YDialogSpyPrivate::moveSelected(Direction direction)
         {
             // swap with the preceeding widget
             // Note: use a temporary variable to not rely on the argument evaluation order!
-            auto second = i--;
-            std::swap(*second, *i);
+            auto other = i--;
+            std::swap(*other, *i);
         }
     }
     else
@@ -669,8 +669,8 @@ void YDialogSpyPrivate::moveSelected(Direction direction)
         {
             // swap with the succeeding widget
             // Note: use a temporary variable to not rely on the argument evaluation order!
-            auto second = i++;
-            std::swap(*second, *i);
+            auto other = i++;
+            std::swap(*other, *i);
         }
     }
 
