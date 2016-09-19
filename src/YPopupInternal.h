@@ -2,7 +2,7 @@
 #include <string>
 #include <vector>
 
-// Internal helper class
+// Internal helper class for YDialogSpy and YPropertyEditor
 class YPopupInternal
 {
 public:
@@ -22,4 +22,11 @@ public:
      * @return true if dialog was closed by [OK], false otherwise
      */
     static bool editStringArray(StringArray &array, const std::string &label);
+
+    /**
+     * Display a popup dialog with 3 initially empty input fields
+     * @param  label title of the dialog
+     * @return Entered values in a StringArray, if canceled the array is empty.
+     */
+    static StringArray editNewStringArray(const std::string &label);
 };

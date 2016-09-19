@@ -67,8 +67,9 @@ bool YPropertyValue::operator==( const YPropertyValue &other ) const
         YUI_THROW( YUIException( "Cannot compare " + typeAsStr() + " properties") );
     }
 
-    // FIXME: never reached, just make the compiler happy (can it be improved?)
-    return false;
+    // mark this part as unreachable to avoid "end of non-void function" error,
+    // YUI_THROW is a macro for a function template and cannot be marked as "noreturn"
+    __builtin_unreachable();
 }
 
 bool YPropertyValue::operator!=( const YPropertyValue &other ) const

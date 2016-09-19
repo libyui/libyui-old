@@ -118,3 +118,14 @@ bool YPopupInternal::editStringArray(StringArray &array, const std::string &labe
 
     return ret;
 }
+
+YPopupInternal::StringArray YPopupInternal::editNewStringArray(const std::string &label)
+{
+    YPopupInternal::StringArray ret { "", "", "" };
+
+    if (editStringArray(ret, label))
+        return ret;
+    else
+        // empty array
+        return StringArray();
+}

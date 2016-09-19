@@ -12,6 +12,7 @@ class YPropertyEditorPriv;
 /**
  * An internal helper class for displaying the widget property editor
  * in the spy dialog.
+ * @see YDialogSpy
  */
 class YPropertyEditor
 {

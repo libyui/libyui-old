@@ -86,15 +86,6 @@ private:
     bool editable(const std::string &property);
 };
 
-YPropertyEditor::YPropertyEditor(YWidget * widget)
-: priv(new YPropertyEditorPriv(widget))
-{
-}
-
-YPropertyEditor::~YPropertyEditor()
-{
-}
-
 /**
  * Helper method - refresh the dialog containing the widget
  * @param widget [description]
@@ -278,4 +269,13 @@ bool YPropertyEditorPriv::editable(const std::string &property)
 bool YPropertyEditor::edit(const std::string &property)
 {
     return priv->edit(property);
+}
+
+YPropertyEditor::YPropertyEditor(YWidget * widget)
+: priv(new YPropertyEditorPriv(widget))
+{
+}
+
+YPropertyEditor::~YPropertyEditor()
+{
 }

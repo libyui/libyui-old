@@ -701,16 +701,12 @@ void YDialogSpyPrivate::addWidget(const std::string &type)
             auto cb = f->createComboBox(widget, "Combo Box");
             editWidget(cb);
 
-            YPopupInternal::StringArray arr { "", "", "" };
+            YPopupInternal::StringArray items(YPopupInternal::editNewStringArray("Menu Items"));
 
-            // edit the item list and update the widget after pressing OK
-            if (YPopupInternal::editStringArray(arr, "Menu Items"))
-            {
-                YItemCollection add_items;
-                // access by reference
-                for(auto&& str: arr) add_items.push_back( new YMenuItem( str ) );
-                cb->addItems( add_items );
-            }
+            YItemCollection add_items;
+            // access by reference
+            for(auto&& str: items) add_items.push_back( new YMenuItem( str ) );
+            cb->addItems( add_items );
         }
         else if (type == "Empty")
             editWidget(f->createEmpty(widget));
@@ -746,16 +742,12 @@ void YDialogSpyPrivate::addWidget(const std::string &type)
             auto menu = f->createMenuButton( widget, "Menu" );
             editWidget(menu);
 
-            YPopupInternal::StringArray arr { "", "", "" };
+            YPopupInternal::StringArray items(YPopupInternal::editNewStringArray("Menu Items"));
 
-            // edit the item list and update the widget after pressing OK
-            if (YPopupInternal::editStringArray(arr, "Menu Items"))
-            {
-                YItemCollection add_items;
-                // access by reference
-                for(auto&& str: arr) add_items.push_back( new YMenuItem( str ) );
-                menu->addItems( add_items );
-            }
+            YItemCollection add_items;
+            // access by reference
+            for(auto&& str: items) add_items.push_back( new YMenuItem( str ) );
+            menu->addItems( add_items );
         }
         else if (type == "MinHeight")
             editWidget(f->createMinHeight(widget, 10));
@@ -770,12 +762,10 @@ void YDialogSpyPrivate::addWidget(const std::string &type)
             auto msb = f->createMultiSelectionBox(widget, "MultiSelection Box");
             editWidget(msb);
 
-            YPopupInternal::StringArray arr { "", "", "" };
-
             // edit the item list and update the widget after pressing OK
-            if (YPopupInternal::editStringArray(arr, "Items"))
-                // access by reference
-                for(auto&& str: arr) msb->addItem(str);
+            YPopupInternal::StringArray items(YPopupInternal::editNewStringArray("Items"));
+            // access by reference
+            for(auto&& str: items) msb->addItem(str);
         }
         else if (type == "OutputField")
             editWidget(f->createOutputField(widget, "Output Field"));
@@ -799,15 +789,15 @@ void YDialogSpyPrivate::addWidget(const std::string &type)
             editWidget(f->createSelectionBox(widget, "Selection Box"));
         else if (type == "Table")
         {
-            YPopupInternal::StringArray arr { "", "", "" };
+            YPopupInternal::StringArray items(YPopupInternal::editNewStringArray("Table Columns"));
 
             // abort adding if Cancel has been pressed
-            if (YPopupInternal::editStringArray(arr, "Table Columns"))
+            if (!items.empty())
             {
                 auto header = new YTableHeader();
 
                 // access by reference
-                for(auto&& str: arr) header->addColumn(str);
+                for(auto&& str: items) header->addColumn(str);
 
                 editWidget(f->createTable(widget, header));
             }
@@ -875,7 +865,8 @@ void YDialogSpyPrivate::refreshButtonStates()
     }
 
     // TODO: Enable the [Add] menu button only when a widget can be added
-    // inside the current widget (i.e. it is a container).
+    // inside the current widget (i.e. it is a container). Check the widget's
+    // child manager wheter it is YSingleWidgetChildManager or a YWidgetChildrenRejector.
 
     // Disable the [Delete] button when for the top level widget (YDialog)
     // TODO: disable it for the YQWizardButtons (Next, Back, ...), they cannot be
