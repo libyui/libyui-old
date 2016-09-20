@@ -20,7 +20,7 @@
 %define so_version 7
 
 Name:           %{parent}-doc
-Version:        3.2.6
+Version:        3.2.7
 Release:        0
 Source:         %{parent}-%{version}.tar.bz2
 

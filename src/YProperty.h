@@ -150,6 +150,19 @@ public:
     ~YPropertyValue();
 
     /**
+     * Equality operator, can compare with another YPropertyValue.
+     * @throw YUIException for incompatible property types
+     * @return true if the value is the same
+     */
+    bool operator==( const YPropertyValue &other ) const;
+
+    /** Inequality operator
+     * @throw YUIException for incompatible property types
+     * @see operator==
+     */
+    bool operator!=( const YPropertyValue &other ) const;
+
+    /**
      * Returns the type of this property value.
      * Use this to determine which xyVal() method to use.
      **/

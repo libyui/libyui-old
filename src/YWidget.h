@@ -209,14 +209,41 @@ public:
      * Return an iterator that points to the first child or to childrenEnd() if
      * there are no children.
      **/
-    YWidgetListConstIterator childrenBegin() const
+    YWidgetListIterator childrenBegin() const
 	{ return childrenManager()->begin(); }
 
     /**
      * Return an interator that points after the last child.
      **/
-    YWidgetListConstIterator childrenEnd() const
+    YWidgetListIterator childrenEnd() const
 	{ return childrenManager()->end(); }
+
+    /**
+     * Return a const iterator that points to the first child or to childrenEnd() if
+     * there are no children.
+     **/
+    YWidgetListConstIterator childrenConstBegin() const
+	{ return childrenManager()->begin(); }
+
+    /**
+     * Return a const interator that points after the last child.
+     **/
+    YWidgetListConstIterator childrenConstEnd() const
+	{ return childrenManager()->end(); }
+
+    /**
+     * A helper for the range-based "for" loop
+     * @return Iterator pointing to the beginning of the children list
+     */
+    YWidgetListIterator begin()
+    { return childrenBegin(); }
+
+    /**
+     * A helper for the range-based "for" loop
+     * @return Iterator pointing to the end of the children list
+     */
+    YWidgetListIterator end()
+    { return childrenEnd(); }
 
     /**
      * Returns the current number of children.
@@ -380,7 +407,7 @@ public:
      *
      * Widget IDs are purely for application use. C++ applications don't need
      * to use them; they are much better off using widget pointers. For other
-     * languages, though, that can't use C++ pointers (e.g., YCP) it makes
+     * languages, though, that can't use C++ pointers (e.g. Ruby) it makes
      * sense to have widget IDs to identify widgets.
      **/
     void setId( YWidgetID * newId_disown );

@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Wed Sep 14 07:47:48 UTC 2016 - lslezak@suse.cz
+
+- Added editing abilities to the spy dialog (Ctrl+Shift+Alt+Y
+  in the Qt UI) (bsc#998593)
+- 3.2.7
+
+-------------------------------------------------------------------
 Mon Aug 22 13:05:24 UTC 2016 - jreidinger@suse.com
 
 - prevent double rendering of content causing segfault in qt and
