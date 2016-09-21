@@ -514,7 +514,12 @@ void YDialogSpy::exec()
 
             continue;
         }
-        else if ( event->widget() == priv->upButton ) priv->moveSelectedUp();
+
+        // check for NULL which is generated for timeout events which can be
+        // triggered by the original dialog
+        if (!event->widget()) continue;
+
+        if ( event->widget() == priv->upButton ) priv->moveSelectedUp();
         else if ( event->widget() == priv->downButton)  priv->moveSelectedDown();
         else if ( event->widget() == priv->propButton ) priv->toggleProperties();
         else if ( event->widget() == priv->deleteButton) priv->deleteWidget();
