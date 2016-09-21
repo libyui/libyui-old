@@ -514,7 +514,11 @@ void YDialogSpy::exec()
 
             continue;
         }
-        else if ( event->widget() == priv->upButton ) priv->moveSelectedUp();
+
+        // just make sure we do not use NULL in some unexpected case
+        if (!event->widget()) continue;
+
+        if ( event->widget() == priv->upButton ) priv->moveSelectedUp();
         else if ( event->widget() == priv->downButton)  priv->moveSelectedDown();
         else if ( event->widget() == priv->propButton ) priv->toggleProperties();
         else if ( event->widget() == priv->deleteButton) priv->deleteWidget();
