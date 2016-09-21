@@ -515,8 +515,7 @@ void YDialogSpy::exec()
             continue;
         }
 
-        // check for NULL which is generated for timeout events which can be
-        // triggered by the original dialog
+        // just make sure we do not use NULL in some unexpected case
         if (!event->widget()) continue;
 
         if ( event->widget() == priv->upButton ) priv->moveSelectedUp();

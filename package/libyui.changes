@@ -1,11 +1,4 @@
 -------------------------------------------------------------------
-Wed Sep 21 11:18:09 UTC 2016 - lslezak@suse.cz
-
-- Fixed a crash in the spy dialog caused by a timeout event
-  received from the original dialog (bsc#998593)
-- 3.2.8
-
--------------------------------------------------------------------
 Wed Sep 14 07:47:48 UTC 2016 - lslezak@suse.cz
 
 - Added editing abilities to the spy dialog (Ctrl+Shift+Alt+Y
