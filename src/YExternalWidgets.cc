@@ -1,14 +1,14 @@
 /*
   Copyright (C) 2013 Angelo Naselli <anaselli at linux dot it>
-  
+
   This file is part of libyui project
-  
+
   This library is free software; you can redistribute it and/or modify
   it under the terms of the GNU Lesser General Public License as
   published by the Free Software Foundation; either version 2.1 of the
   License, or (at your option) version 3.0 of the License. This library
   is distributed in the hope that it will be useful, but WITHOUT ANY
-  WARRANTY; without even the implied warranty of MERCHANTABILITY or 
+  WARRANTY; without even the implied warranty of MERCHANTABILITY or
   FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
   License for more details. You should have received a copy of the GNU
   Lesser General Public License along with this library; if not, write
@@ -35,7 +35,7 @@ YExternalWidgets::YExternalWidgets(const std::string& name) : _name(name), _fact
     YUI_THROW( YUIException( "UI must be initialized first" ) );
 
   yuiMilestone() << "Creating Libyui External Widgets object" <<  std::endl;
-  
+
   std::pair<std::map<std::string, YExternalWidgets *>::iterator, bool> ret;
   ret = _externalWidgets.insert ( std::pair<std::string, YExternalWidgets *>(_name, this));
   if (ret.second==false) {
@@ -48,14 +48,14 @@ YExternalWidgets::YExternalWidgets(const std::string& name) : _name(name), _fact
 YExternalWidgets::~YExternalWidgets()
 {
   delete _factory;
-  
+
   _externalWidgets.erase(_name);
 }
 
 YExternalWidgets* YExternalWidgets::externalWidgets(const std::string& name)
 {
   std::map<std::string, YExternalWidgets *>::iterator it;
-  
+
   if (!YUI::ui())
     YUI_THROW( YUIException( "UI must be initialized first" ) );
 
@@ -64,7 +64,7 @@ YExternalWidgets* YExternalWidgets::externalWidgets(const std::string& name)
   {
     YUILoader::loadExternalWidgets(name);
   }
-  
+
   return _externalWidgets[name];
 }
 
@@ -82,7 +82,7 @@ YExternalWidgetFactory* YExternalWidgets::externalWidgetFactory()
         _factory = this->createExternalWidgetFactory();
 
   YUI_CHECK_PTR( _factory );
-  
+
   return _factory;
 }
 

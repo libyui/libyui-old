@@ -79,6 +79,9 @@ SET( ${TARGETLIB}_SOURCES
   FSize.cc
   YStringTree.cc
   YRpmGroupsTree.cc
+
+  YPopupInternal.cc
+  YPropertyEditor.cc
 )
 
 SET( ${TARGETLIB}_HEADERS

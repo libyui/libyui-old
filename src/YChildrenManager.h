@@ -5,7 +5,7 @@
   published by the Free Software Foundation; either version 2.1 of the
   License, or (at your option) version 3.0 of the License. This library
   is distributed in the hope that it will be useful, but WITHOUT ANY
-  WARRANTY; without even the implied warranty of MERCHANTABILITY or 
+  WARRANTY; without even the implied warranty of MERCHANTABILITY or
   FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
   License for more details. You should have received a copy of the GNU
   Lesser General Public License along with this library; if not, write
@@ -69,6 +69,18 @@ public:
      * Returns the number of children.
      **/
     int	count() const { return _children.size(); }
+
+    /**
+     * Return an iterator that points to the first child.
+     **/
+    typename ChildrenList::iterator begin()
+	{ return _children.begin(); }
+
+    /**
+     * Return an iterator that points after the last child.
+     **/
+    typename ChildrenList::iterator end()
+	{ return _children.end(); }
 
     /**
      * Return an iterator that points to the first child.

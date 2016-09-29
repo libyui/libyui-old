@@ -5,7 +5,7 @@
   published by the Free Software Foundation; either version 2.1 of the
   License, or (at your option) version 3.0 of the License. This library
   is distributed in the hope that it will be useful, but WITHOUT ANY
-  WARRANTY; without even the implied warranty of MERCHANTABILITY or 
+  WARRANTY; without even the implied warranty of MERCHANTABILITY or
   FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
   License for more details. You should have received a copy of the GNU
   Lesser General Public License along with this library; if not, write
@@ -50,7 +50,32 @@ YPropertyValue::~YPropertyValue()
 {
 }
 
+bool YPropertyValue::operator==( const YPropertyValue &other ) const
+{
+    // compare the type first
+    if (_type != other.type()) return false;
 
+    // then compare the values
+    switch ( _type )
+    {
+    case YStringProperty:		return _stringVal == other.stringVal();
+    case YBoolProperty:         return _boolVal == other.boolVal();
+    case YIntegerProperty:		return _integerVal == other.integerVal();
+
+    case YUnknownPropertyType:
+    case YOtherProperty:
+        YUI_THROW( YUIException( "Cannot compare " + typeAsStr() + " properties") );
+    }
+
+    // mark this part as unreachable to avoid "end of non-void function" error,
+    // YUI_THROW is a macro for a function template and cannot be marked as "noreturn"
+    __builtin_unreachable();
+}
+
+bool YPropertyValue::operator!=( const YPropertyValue &other ) const
+{
+    return !(*this == other);
+}
 
 YPropertySet::YPropertySet()
 {

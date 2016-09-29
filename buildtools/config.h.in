@@ -43,6 +43,6 @@
 #define PLUGIN_PREFIX	"lib@BASELIB@-"
 #define PLUGIN_SUFFIX	".so.@SONAME_MAJOR@"
 #define LIBYUI_VERSION_NUM (((@VERSION_MAJOR@) << 16) | ((@VERSION_MINOR@) << 8) | (@VERSION_PATCH@))
-#define LIBYUI_VERSION_AT_LEAST(M,N,O) LIBYUI_VERSION_NUM >= (((M) << 16) | ((N) << 8) | (O)) 
+#define LIBYUI_VERSION_AT_LEAST(M,N,O) LIBYUI_VERSION_NUM >= (((M) << 16) | ((N) << 8) | (O))
 
 #endif // @PROJECTNAME_UC@_CONFIG_H
