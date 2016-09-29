@@ -28,6 +28,8 @@
 #include "YUI.h"
 #include "YApplication.h"
 
+#define YUILogComponent "wf"
+#include "YUILog.h"
 
 YWidgetFactory::YWidgetFactory()
 {
@@ -37,6 +39,7 @@ YWidgetFactory::YWidgetFactory()
 YWidgetFactory::~YWidgetFactory()
 {
     // NOP
+    yuiMilestone() << "YWidgetFactory removed" << std::endl;
 }
 
 

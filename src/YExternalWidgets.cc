@@ -56,6 +56,9 @@ YExternalWidgets* YExternalWidgets::externalWidgets(const std::string& name)
 {
   std::map<std::string, YExternalWidgets *>::iterator it;
 
+  if (!YUI::ui())
+    YUI_THROW( YUIException( "UI must be initialized first" ) );
+
   it = _externalWidgets.find(name);
   if (it == _externalWidgets.end())
   {
