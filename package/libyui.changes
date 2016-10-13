@@ -1,3 +1,6 @@
+- Added ui test before loading extended widget plugin, to avoid
+  a crash
+
 -------------------------------------------------------------------
 Wed Sep 14 07:47:48 UTC 2016 - lslezak@suse.cz
 
