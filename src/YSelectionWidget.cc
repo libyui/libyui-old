@@ -188,26 +188,26 @@ void YSelectionWidget::addItem( YItem * item )
 
     if ( priv->enforceSingleSelection )
     {
-	if ( item->selected() )
+        YItem* newItemSelected = NULL;
+        if ( item->selected() )
+        {
+           newItemSelected = item;
+        }
+        else
+        {
+           newItemSelected = findSelectedItem( item->childrenBegin(),
+                                               item->childrenEnd() );
+        }
+
+	if ( newItemSelected )
 	{
-	    YItem * oldSelectedItem = selectedItem();
-
-	    // This looks expensive, but it is not: Even though selectedItem()
-	    // searches the complete item list until it finds a selected item,
-	    // this happens only if a new item is to be inserted that has the
-	    // "selected" flag on. In the normal case, this will only be one
-	    // item.
-	    //
-	    // Only if the calling application does this systematically wrong
-	    // and sets the "selected" flag for ALL items it inserts this will
-	    // be more expensive. But then, this is a bug in that application
-	    // that needs to be fixed.
-
-	    if ( oldSelectedItem && oldSelectedItem != item )
-	    {
-		oldSelectedItem->setSelected( false );
-		item->setSelected( true );
-	    }
+            // This looks expensive, but it is not: Even though deselectAllItems()
+            // searches the complete item list and de select all.
+            //
+            // This prevents the calling application does this systematically wrong
+            // and sets the "selected" flag for more items or children
+            deselectAllItems();
+            newItemSelected->setSelected( true );
 	}
 
 
@@ -331,8 +331,9 @@ YSelectionWidget::findSelectedItem( YItemConstIterator begin,
 	const YItem * item = *it;
 
 	if ( item->selected() )
+        {
 	    return *it;
-
+        }
 	if ( item->hasChildren() )
 	{
 	    YItem * selectedItem = findSelectedItem( item->childrenBegin(),

@@ -1,6 +1,9 @@
 -------------------------------------------------------------------
-Fri Oct 14 10:19:50 CEST 2016 - anaselli@linux.it
+Fri Oct 14 11:16:30 CEST 2016 - anaselli@linux.it
 
+- Fix pre-selecting a tree item when adding it, in ncurses 
+  (gh#libyui/libyui#86). The very first item would be selected, 
+  ignoring YTreeItem::setSelected. 
 - Added ui test before loading extended widget plugin, to avoid
   a crash
 
