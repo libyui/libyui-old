@@ -35,7 +35,7 @@
 
 class YWidget;
 class YWidgetID;
-class YApplicationPrivate;
+struct YApplicationPrivate;
 
 
 /**
