@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Oct 14 10:19:50 CEST 2016 - anaselli@linux.it
+
+- Added ui test before loading extended widget plugin, to avoid
+  a crash
+
+-------------------------------------------------------------------
 Wed Sep 14 07:47:48 UTC 2016 - lslezak@suse.cz
 
 - Added editing abilities to the spy dialog (Ctrl+Shift+Alt+Y

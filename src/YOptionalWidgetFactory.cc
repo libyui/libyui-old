@@ -28,6 +28,9 @@
 #include "YLabel.h"
 #include "YUI.h"
 
+#define YUILogComponent "owf"
+#include "YUILog.h"
+
 
 #define THROW_UNSUPPORTED( WIDGET_TYPE ) \
     YUI_THROW( YUIUnsupportedWidgetException( WIDGET_TYPE ) );	\
@@ -43,6 +46,8 @@ YOptionalWidgetFactory::YOptionalWidgetFactory()
 YOptionalWidgetFactory::~YOptionalWidgetFactory()
 {
     // NOP
+  yuiMilestone() << "YOptionalWidgetFactory removed" << std::endl;
+
 }
 
 
