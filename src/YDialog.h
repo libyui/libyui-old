@@ -94,7 +94,7 @@ private:
  **/
 class YDialog : public YSingleChildContainerWidget
 {
-    friend YDialogStack;
+    friend class YDialogStack;
 
 protected:
     /**
