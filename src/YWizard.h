@@ -5,7 +5,7 @@
   published by the Free Software Foundation; either version 2.1 of the
   License, or (at your option) version 3.0 of the License. This library
   is distributed in the hope that it will be useful, but WITHOUT ANY
-  WARRANTY; without even the implied warranty of MERCHANTABILITY or 
+  WARRANTY; without even the implied warranty of MERCHANTABILITY or
   FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
   License for more details. You should have received a copy of the GNU
   Lesser General Public License along with this library; if not, write
@@ -14,13 +14,13 @@
 */
 
 
-/*-/
+/**
 
-  File:		YWizard.h
+  @file		YWizard.h
 
   Author:	Stefan Hundhammer <sh@suse.de>
 
-/-*/
+**/
 
 #ifndef YWizard_h
 #define YWizard_h
@@ -36,11 +36,15 @@ class YReplacePoint;
 #define YWizardContentsReplacePointID	"contents"
 
 
+/**
+ * Kind of the wizard layout
+ **/
 enum YWizardMode
 {
-    YWizardMode_Standard,	// Normal wizard (help panel or nothing)
-    YWizardMode_Steps,		// Steps visible in left side panel
-    YWizardMode_Tree		// Tree in left side panel
+    YWizardMode_Standard,	///< Normal wizard (help panel or nothing)
+    YWizardMode_Steps,		///< Steps visible in left side panel
+    YWizardMode_Tree,		///< Tree in left side panel
+    YWizardMode_TitleOnLeft     ///< Title on the left side
 };
 
 
@@ -123,7 +127,7 @@ public:
 
     /**
      * Return the wizard mode (what kind of wizard this is):
-     * YWizardMode_Standard, YWizardMode_Steps, YWizardMode_Tree
+     * YWizardMode_Standard, YWizardMode_Steps, YWizardMode_Tree, YWizardMode_TitleOnLeft
      **/
     YWizardMode wizardMode() const;
 

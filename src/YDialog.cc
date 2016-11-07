@@ -5,7 +5,7 @@
   published by the Free Software Foundation; either version 2.1 of the
   License, or (at your option) version 3.0 of the License. This library
   is distributed in the hope that it will be useful, but WITHOUT ANY
-  WARRANTY; without even the implied warranty of MERCHANTABILITY or 
+  WARRANTY; without even the implied warranty of MERCHANTABILITY or
   FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
   License for more details. You should have received a copy of the GNU
   Lesser General Public License along with this library; if not, write
@@ -801,6 +801,7 @@ YDialog::showRelNotesText()
         YLayoutBox  * vbox      = YUI::widgetFactory()->createVBox( minSize );
         YDumbTab    * rnTab     = 0;
         YRichText   * richtext  = 0;
+
 	// both QT and NCurses do support DumbTab
         if (relnotes.size() > 1 && YUI::optionalWidgetFactory()->hasDumbTab())
 	{
@@ -812,11 +813,11 @@ YDialog::showRelNotesText()
 		item->setIndex( index++ );
 		rnTab->addItem( item );
 	    }
-	    richtext = YUI::widgetFactory()->createRichText( rnTab, (*(relnotes.begin())).second, false );
+	    richtext = YUI::widgetFactory()->createRichText( rnTab, (*(relnotes.begin())).second, YUI::app()->isTextMode() );
 	}
 	else
 	{
-	    richtext = YUI::widgetFactory()->createRichText( vbox, (*(relnotes.begin())).second, false );
+	    richtext = YUI::widgetFactory()->createRichText( vbox, (*(relnotes.begin())).second, YUI::app()->isTextMode() );
 	}
         YButtonBox  * buttonBox = YUI::widgetFactory()->createButtonBox( vbox );
         YPushButton * okButton  = YUI::widgetFactory()->createPushButton( buttonBox, "&OK" );

@@ -5,7 +5,7 @@
   published by the Free Software Foundation; either version 2.1 of the
   License, or (at your option) version 3.0 of the License. This library
   is distributed in the hope that it will be useful, but WITHOUT ANY
-  WARRANTY; without even the implied warranty of MERCHANTABILITY or 
+  WARRANTY; without even the implied warranty of MERCHANTABILITY or
   FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
   License for more details. You should have received a copy of the GNU
   Lesser General Public License along with this library; if not, write
@@ -28,6 +28,9 @@
 #include "YLabel.h"
 #include "YUI.h"
 
+#define YUILogComponent "owf"
+#include "YUILog.h"
+
 
 #define THROW_UNSUPPORTED( WIDGET_TYPE ) \
     YUI_THROW( YUIUnsupportedWidgetException( WIDGET_TYPE ) );	\
@@ -43,6 +46,8 @@ YOptionalWidgetFactory::YOptionalWidgetFactory()
 YOptionalWidgetFactory::~YOptionalWidgetFactory()
 {
     // NOP
+  yuiMilestone() << "YOptionalWidgetFactory removed" << std::endl;
+
 }
 
 

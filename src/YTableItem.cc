@@ -5,7 +5,7 @@
   published by the Free Software Foundation; either version 2.1 of the
   License, or (at your option) version 3.0 of the License. This library
   is distributed in the hope that it will be useful, but WITHOUT ANY
-  WARRANTY; without even the implied warranty of MERCHANTABILITY or 
+  WARRANTY; without even the implied warranty of MERCHANTABILITY or
   FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
   License for more details. You should have received a copy of the GNU
   Lesser General Public License along with this library; if not, write
@@ -172,7 +172,7 @@ void YTableCell::reparent( YTableItem * parent, int column )
 {
     YUI_CHECK_PTR( parent );
 
-    if ( _parent && _parent != parent && column != column )
+    if ( _parent && _parent != parent && _column != column )
 	YUI_THROW( YUIException( std::string( "Cannot reparent YTableCell \"" )
 				 + _label
 				 + "to different parent." ) );

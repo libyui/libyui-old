@@ -5,7 +5,7 @@
   published by the Free Software Foundation; either version 2.1 of the
   License, or (at your option) version 3.0 of the License. This library
   is distributed in the hope that it will be useful, but WITHOUT ANY
-  WARRANTY; without even the implied warranty of MERCHANTABILITY or 
+  WARRANTY; without even the implied warranty of MERCHANTABILITY or
   FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
   License for more details. You should have received a copy of the GNU
   Lesser General Public License along with this library; if not, write
@@ -27,6 +27,8 @@
 #include <sys/stat.h>
 #include <string.h>
 
+#define YUILogComponent "ui"
+#include "YUILog.h"
 #include "YCommandLine.h"
 #include "YUILoader.h"
 #include "YUIPlugin.h"
@@ -95,6 +97,16 @@ void YUILoader::loadUI( bool withThreads )
     }
 }
 
+void YUILoader::deleteUI()
+{
+    if ( YUI::_ui )
+    {
+        yuiMilestone() << "Shutting down UI" << std::endl;
+        delete YUI::_ui;
+
+        YUI::_ui = 0;
+    }
+}
 
 void YUILoader::loadPlugin( const std::string & name, bool withThreads )
 {
@@ -107,6 +119,14 @@ void YUILoader::loadPlugin( const std::string & name, bool withThreads )
 	if ( createUI )
 	{
 	    YUI * ui = createUI( withThreads ); // no threads
+
+            // At this point the concrete UI will have loaded its own
+            // internal plugins and registered their destructors.
+            // Our destructor must get called before those get dlclose'd.
+            //
+            // Formerly ~YUI was called quite late, which called ~YQUI
+            // and that ran code in the already unloaded Qt internal plugins.
+            atexit(deleteUI);
 
 	    if ( ui )
 		return;

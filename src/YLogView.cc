@@ -5,7 +5,7 @@
   published by the Free Software Foundation; either version 2.1 of the
   License, or (at your option) version 3.0 of the License. This library
   is distributed in the hope that it will be useful, but WITHOUT ANY
-  WARRANTY; without even the implied warranty of MERCHANTABILITY or 
+  WARRANTY; without even the implied warranty of MERCHANTABILITY or
   FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
   License for more details. You should have received a copy of the GNU
   Lesser General Public License along with this library; if not, write
@@ -199,6 +199,18 @@ YLogView::appendLine( const std::string & line )
     {
         priv->logText.pop_front();
     }
+}
+
+void
+YLogView::setLogText(const std::string & text)
+{
+  // optimize for regular updating widget when no new content appear
+  if (text == logText())
+    return;
+
+  // do not use clearText as it do render and cause segfault in qt (bnc#989155)
+  priv->logText.clear();
+  appendLines(text);
 }
 
 

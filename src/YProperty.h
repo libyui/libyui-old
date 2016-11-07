@@ -5,7 +5,7 @@
   published by the Free Software Foundation; either version 2.1 of the
   License, or (at your option) version 3.0 of the License. This library
   is distributed in the hope that it will be useful, but WITHOUT ANY
-  WARRANTY; without even the implied warranty of MERCHANTABILITY or 
+  WARRANTY; without even the implied warranty of MERCHANTABILITY or
   FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
   License for more details. You should have received a copy of the GNU
   Lesser General Public License along with this library; if not, write
@@ -148,6 +148,19 @@ public:
      * Destructor.
      **/
     ~YPropertyValue();
+
+    /**
+     * Equality operator, can compare with another YPropertyValue.
+     * @throw YUIException for incompatible property types
+     * @return true if the value is the same
+     */
+    bool operator==( const YPropertyValue &other ) const;
+
+    /** Inequality operator
+     * @throw YUIException for incompatible property types
+     * @see operator==
+     */
+    bool operator!=( const YPropertyValue &other ) const;
 
     /**
      * Returns the type of this property value.

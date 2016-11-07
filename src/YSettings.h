@@ -1,5 +1,5 @@
 /*
-  Copyright (c) 2012 Björn Esser 
+  Copyright (c) 2012 Björn Esser
 
   Permission is hereby granted, free of charge, to any person obtaining
   a copy of this software and associated documentation files (the
@@ -55,7 +55,7 @@ public:
      * Returns the value of your program's subdir.
      **/
     static std::string progDir ();
-    
+
     /**
      * This can be used to set a subdir ICONDIR,
      * where your program stores a custom icons.
@@ -68,7 +68,7 @@ public:
      * Returns the value of your program's icons subdir.
      **/
     static std::string iconDir ();
-    
+
     /**
      * This can be used to set a subdir THEMEDIR,
      * where your program stores a custom icons.
@@ -100,7 +100,7 @@ private:
     static std::string _iconDir;
     static std::string _themeDir;
     static std::string _localeDir;
-    
+
     YSettings ();
     YSettings ( const YSettings& );
     ~YSettings ();

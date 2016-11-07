@@ -44,8 +44,9 @@ typedef std::map<std::string, int> YFunctionKeyMap;
 struct YApplicationPrivate
 {
     YApplicationPrivate()
-	: productName( "openSUSE" )
+	: productName( "SUSE Linux" )
 	, reverseLayout( false )
+	, showProductLogo( false )
 	{}
 
     std::string		productName;
@@ -55,6 +56,7 @@ struct YApplicationPrivate
     YFunctionKeyMap	defaultFunctionKey;
     YIconLoader*	iconLoader;
     std::map<std::string,std::string>	releaseNotes;
+    bool		showProductLogo;
 };
 
 
@@ -129,6 +131,18 @@ std::map<std::string,std::string>
 YApplication::releaseNotes() const
 {
     return priv->releaseNotes;
+}
+
+void
+YApplication::setShowProductLogo( bool show )
+{
+    priv->showProductLogo = show;
+}
+
+bool
+YApplication::showProductLogo() const
+{
+    return priv->showProductLogo;
 }
 
 void

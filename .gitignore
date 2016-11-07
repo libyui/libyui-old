@@ -110,6 +110,3 @@ tmp
 
 # Subversion
 .svn/
-
-# OBS commit
-package/

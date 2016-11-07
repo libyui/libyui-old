@@ -5,7 +5,7 @@
   published by the Free Software Foundation; either version 2.1 of the
   License, or (at your option) version 3.0 of the License. This library
   is distributed in the hope that it will be useful, but WITHOUT ANY
-  WARRANTY; without even the implied warranty of MERCHANTABILITY or 
+  WARRANTY; without even the implied warranty of MERCHANTABILITY or
   FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
   License for more details. You should have received a copy of the GNU
   Lesser General Public License along with this library; if not, write
@@ -53,6 +53,16 @@ public:
     static void loadUI( bool withThreads = false );
 
     /**
+     * This will make sure the UI singleton is deleted.
+     * If the UI is already destroyed, it will do nothing. If
+     * there still is a UI object, it will be deleted.
+     *
+     * This is particularly important for the NCurses UI so that
+     * the terminal settings are properly restored.
+     **/
+    static void deleteUI();
+
+    /**
      * Load a UI plug-in. 'name' is one of the YUIPlugin_ -defines above.
      *
      * This might throw exceptions.
@@ -60,31 +70,31 @@ public:
     static void loadPlugin( const std::string & name, bool withThreads = false );
 
     static bool pluginExists( const std::string & pluginBaseName );
-    
+
     /**
-     * Load the given External Widgets plugin followed by its graphical extension implementation 
+     * Load the given External Widgets plugin followed by its graphical extension implementation
      * in the following order in the same way as loadUI:
-     * - Qt, Gtk or NCurses 
-     * 
-     * 'name'   is the user defined plugin name, graphical extension implementations have to 
+     * - Qt, Gtk or NCurses
+     *
+     * 'name'   is the user defined plugin name, graphical extension implementations have to
      *          be called 'name'-qt, 'name'-gtk and 'name'-ncurses. Following this rule plugin
      *          file names are as libyui-XX-YY.so.VER where:
      *               XX  is the user defined name
      *               YY  is the UI used (ncurses, gtk, qt)
      *               VER is the libyui so version
      * 'symbol' is the function symbol to be loaded, e.g. YExternalWidgets* 'symbol'(void)
-     *          (e.g. default YExternalWidgets* createExternalWidgets(const char *) 
+     *          (e.g. default YExternalWidgets* createExternalWidgets(const char *)
      *          see createEWFunction_t definition)
      **/
     static void loadExternalWidgets( const std::string & name, const std::string & symbol="_Z21createExternalWidgetsPKc" );
-    
+
 private:
     YUILoader()  {}
     ~YUILoader() {}
-    
+
     /**
      * Used by loadExternalWidgets to load the graphical plugin specialization.
-     * 
+     *
      * 'name'        is the original plugin name (e.g. the one passed to loadExternalWidgets)
      * 'plugin_name' is the graphical plugin specialization name (e.g. 'name'-[gtk|ncurses|qt])
      * 'symbol'      is the function symbol to be loaded and executed (e.g. the one passed loadExternalWidgets)

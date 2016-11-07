@@ -5,7 +5,7 @@
   published by the Free Software Foundation; either version 2.1 of the
   License, or (at your option) version 3.0 of the License. This library
   is distributed in the hope that it will be useful, but WITHOUT ANY
-  WARRANTY; without even the implied warranty of MERCHANTABILITY or 
+  WARRANTY; without even the implied warranty of MERCHANTABILITY or
   FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
   License for more details. You should have received a copy of the GNU
   Lesser General Public License along with this library; if not, write
@@ -31,8 +31,14 @@
 
 class YItem;
 
+// without "documenting" the file, typedefs will be dropped
+//! @file
+
+//! Collection of pointers to YItem.
 typedef std::vector<YItem *> 			YItemCollection;
+//! Mutable iterator over @ref YItemCollection.
 typedef YItemCollection::iterator		YItemIterator;
+//! Const   iterator over @ref YItemCollection.
 typedef YItemCollection::const_iterator		YItemConstIterator;
 
 

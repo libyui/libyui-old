@@ -5,7 +5,7 @@
   published by the Free Software Foundation; either version 2.1 of the
   License, or (at your option) version 3.0 of the License. This library
   is distributed in the hope that it will be useful, but WITHOUT ANY
-  WARRANTY; without even the implied warranty of MERCHANTABILITY or 
+  WARRANTY; without even the implied warranty of MERCHANTABILITY or
   FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
   License for more details. You should have received a copy of the GNU
   Lesser General Public License along with this library; if not, write
@@ -35,7 +35,7 @@
 
 class YWidget;
 class YWidgetID;
-class YApplicationPrivate;
+struct YApplicationPrivate;
 
 
 /**
@@ -263,6 +263,16 @@ public:
     std::map<std::string,std::string> releaseNotes() const;
 
     /**
+     * Set whether the product logo (in top bar) should be shown
+     */
+    void setShowProductLogo( bool show );
+
+    /**
+     * Return true if product logo should be shown
+     */
+    bool showProductLogo() const;
+
+    /**
      * Convert logical layout spacing units into device dependent units.
      * A default size dialog is assumed to be 80x25 layout spacing units.
      *
@@ -359,6 +369,17 @@ public:
     virtual int runInTerminal( const std::string & command );
 
 
+    /// @{
+    /**
+     * To mix TUI (NCurses) with stdio, enclose the UI parts
+     * within openUI/closeUI
+     *
+     * This default implementation does nothing.
+     */
+    virtual void openUI() {}
+    virtual void closeUI() {}
+    /// @}
+
     //
     // Display information.
     //
@@ -396,22 +417,22 @@ public:
      * Set the application title
      **/
     virtual void setApplicationTitle ( const std::string& title );
-    
+
     /**
      * Get the application title
-     * 
+     *
      * Default title is the running command (argv[0])
      **/
     virtual const std::string& applicationTitle() const;
-    
+
     /**
      * Set the application Icon
-     **/    
+     **/
     virtual void setApplicationIcon ( const std::string& icon );
-    
+
     /**
      * Get the application Icon
-     * 
+     *
      * Default icon is an empty string
      **/
      virtual const std::string& applicationIcon() const;

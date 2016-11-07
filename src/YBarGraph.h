@@ -5,7 +5,7 @@
   published by the Free Software Foundation; either version 2.1 of the
   License, or (at your option) version 3.0 of the License. This library
   is distributed in the hope that it will be useful, but WITHOUT ANY
-  WARRANTY; without even the implied warranty of MERCHANTABILITY or 
+  WARRANTY; without even the implied warranty of MERCHANTABILITY or
   FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
   License for more details. You should have received a copy of the GNU
   Lesser General Public License along with this library; if not, write
@@ -32,7 +32,11 @@
 class YBarGraphPrivate;
 class YBarGraphSegment;
 
-
+/**
+ * A graph showing partitioning of a whole.
+ * The whole is divided into YBarGraphSegment each of which has
+ * a relative size, a text color, a background color, and a label.
+ */
 class YBarGraph : public YWidget
 {
     friend class YBarGraphMultiUpdate;
@@ -176,7 +180,8 @@ private:
 
 
 /**
- * Helper class to describe one segment of a YBarGraph.
+ * One segment of a YBarGraph.
+ * It has a relative size, a label, label color and background color.
  **/
 class YBarGraphSegment
 {

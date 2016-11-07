@@ -5,7 +5,7 @@
   published by the Free Software Foundation; either version 2.1 of the
   License, or (at your option) version 3.0 of the License. This library
   is distributed in the hope that it will be useful, but WITHOUT ANY
-  WARRANTY; without even the implied warranty of MERCHANTABILITY or 
+  WARRANTY; without even the implied warranty of MERCHANTABILITY or
   FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
   License for more details. You should have received a copy of the GNU
   Lesser General Public License along with this library; if not, write
@@ -30,6 +30,11 @@
 class YBusyIndicatorPrivate;
 
 
+/**
+ * Indicates that something is in progress and has not frozen yet.
+ * It has a label and an "indeterminate" progress bar which will be "ticking"
+ * until a timeout occurs or until it receives an "alive" message.
+ */
 class YBusyIndicator : public YWidget
 {
 protected:

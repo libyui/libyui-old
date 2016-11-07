@@ -5,7 +5,7 @@
   published by the Free Software Foundation; either version 2.1 of the
   License, or (at your option) version 3.0 of the License. This library
   is distributed in the hope that it will be useful, but WITHOUT ANY
-  WARRANTY; without even the implied warranty of MERCHANTABILITY or 
+  WARRANTY; without even the implied warranty of MERCHANTABILITY or
   FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
   License for more details. You should have received a copy of the GNU
   Lesser General Public License along with this library; if not, write
@@ -36,6 +36,7 @@
 #define YUIBuiltin_OpenContextMenu		"OpenContextMenu"
 #define YUIBuiltin_ChangeWidget			"ChangeWidget"
 #define YUIBuiltin_CloseDialog			"CloseDialog"
+#define YUIBuiltin_CloseUI			"CloseUI"
 #define YUIBuiltin_DumpWidgetTree		"DumpWidgetTree"
 #define YUIBuiltin_GetDisplayInfo		"GetDisplayInfo"
 #define YUIBuiltin_GetLanguage			"GetLanguage"
@@ -45,6 +46,7 @@
 #define YUIBuiltin_MakeScreenShot		"MakeScreenShot"
 #define YUIBuiltin_NormalCursor			"NormalCursor"
 #define YUIBuiltin_OpenDialog			"OpenDialog"
+#define YUIBuiltin_OpenUI			"OpenUI"
 #define YUIBuiltin_PollInput			"PollInput"
 #define YUIBuiltin_QueryWidget			"QueryWidget"
 #define YUIBuiltin_RecalcLayout			"RecalcLayout"
@@ -233,6 +235,7 @@
 #define YUIOpt_okButton				"okButton"
 #define YUIOpt_outputField			"outputField"
 #define YUIOpt_plainText			"plainText"
+#define YUIOpt_recursiveSelection		"recursiveSelection"
 #define YUIOpt_relaxSanityCheck			"relaxSanityCheck"
 #define YUIOpt_repoMgr				"repoMgr"
 #define YUIOpt_repoMode				"repoMode"
@@ -243,6 +246,7 @@
 #define YUIOpt_summaryMode			"summaryMode"
 #define YUIOpt_testMode				"testMode"
 #define YUIOpt_tiled				"tiled"
+#define YUIOpt_titleOnLeft			"titleOnLeft"
 #define YUIOpt_treeEnabled			"treeEnabled"
 #define YUIOpt_updateMode			"updateMode"
 #define YUIOpt_vstretch				"vstretch"
@@ -251,7 +255,6 @@
 #define YUIOpt_youMode				"youMode"
 #define YUIOpt_zeroHeight			"zeroHeight"
 #define YUIOpt_zeroWidth			"zeroWidth"
-#define YUIOpt_recursiveSelection		"recursiveSelection"
 
 #define YUIOpt_key_F1				"key_F1"
 #define YUIOpt_key_F2				"key_F2"

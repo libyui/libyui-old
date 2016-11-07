@@ -135,16 +135,17 @@ ENDMACRO( SET_BUILD_FLAGS )
 MACRO( SET_LIBDIR )
 
   IF( NOT LIB_DIR )
-    IF (CMAKE_SIZEOF_VOID_P MATCHES "8")
+    GET_PROPERTY( LIB64 GLOBAL PROPERTY FIND_LIBRARY_USE_LIB64_PATHS )
+    IF( "${LIB64}" STREQUAL "TRUE" )
       SET( LIB_DIR "lib64" )
-    ELSE (CMAKE_SIZEOF_VOID_P MATCHES "8")
-      SET( LIB_DIR "lib" )
-    ENDIF (CMAKE_SIZEOF_VOID_P MATCHES "8")
+    ELSE()
+     SET( LIB_DIR "lib" )
+    ENDIF()
   ELSE( NOT LIB_DIR )
-    STRING( REPLACE "${PREFIX}/" "" LIB_DIR "${LIB_DIR}" )
+    STRING( REPLACE "${YPREFIX}/" "" LIB_DIR "${LIB_DIR}" )
   ENDIF( NOT LIB_DIR )
 
-  SET( CMAKE_LIBRARY_PATH ${CMAKE_LIBRARY_PATH} "${PREFIX}/${LIB_DIR}" "${PREFIX}/${LIB_DIR}/${BASELIB}" )
+  SET( CMAKE_LIBRARY_PATH ${CMAKE_LIBRARY_PATH} "${YPREFIX}/${LIB_DIR}" "${YPREFIX}/${LIB_DIR}/${BASELIB}" )
 
 ENDMACRO( SET_LIBDIR )
 
@@ -153,11 +154,11 @@ MACRO( SET_ENVIRONMENT )	# setup the environment vars
   IF( NOT INCLUDE_DIR )
     SET( INCLUDE_DIR "include")
   ELSE( NOT INCLUDE_DIR )
-    STRING( REPLACE REGEX "^${PREFIX}/" "" INCLUDE_DIR "${INCLUDE_DIR}" )
+    STRING( REPLACE REGEX "^${YPREFIX}/" "" INCLUDE_DIR "${INCLUDE_DIR}" )
   ENDIF( NOT INCLUDE_DIR )
 
-  SET( CMAKE_PREFIX_PATH "${CMAKE_PREFIX_PATH}" "${PREFIX}" )
-  SET( CMAKE_INSTALL_PREFIX "${PREFIX}" )
+  SET( CMAKE_PREFIX_PATH "${CMAKE_PREFIX_PATH}" "${YPREFIX}" )
+  SET( CMAKE_INSTALL_PREFIX "${YPREFIX}" )
   SET( CMAKE_INCLUDE_PATH ${EXTRA_INCLUDES} ${CMAKE_INCLUDE_PATH} )
   SET( INSTALL_CMAKE_DIR ${LIB_DIR}/cmake/${PROJECTNAME} CACHE PATH "Installation directory for CMake files" )
   SET( INSTALL_PKGCONFIG_DIR ${LIB_DIR}/pkgconfig CACHE PATH "Installation directory for pkgconfig files" )
@@ -168,7 +169,7 @@ MACRO( SET_ENVIRONMENT )	# setup the environment vars
   ELSE ( EXTENSIONNAME )
     SET( INCLUDE_DIR "${INCLUDE_DIR}/${BASELIB}/${PROGSUBDIR_UC}/${PLUGINNAME}" )
   ENDIF ( EXTENSIONNAME )
-  
+
   # Only plugin go under libdir/yui, not extensions
   IF( PLUGINNAME )
     SET( LIB_DIR "${LIB_DIR}/${BASELIB}" )
@@ -191,7 +192,7 @@ MACRO( SET_ENVIRONMENT )	# setup the environment vars
   IF( NOT DEFINED DOC_DIR )
     SET( DOC_DIR "${DATAROOTDIR}/doc" )
   ELSE( NOT DEFINED DOC_DIR )
-    STRING( REPLACE "${PREFIX}/" "" DOC_DIR "${DOC_DIR}" )
+    STRING( REPLACE "${YPREFIX}/" "" DOC_DIR "${DOC_DIR}" )
   ENDIF( NOT DEFINED DOC_DIR )
 
   IF( NOT DEFINED DOC_SUBDIR )
@@ -205,7 +206,7 @@ MACRO( SET_ENVIRONMENT )	# setup the environment vars
   FOREACH( p "DOC" LIB INCLUDE CMAKE PKGCONFIG BUILDTOOLS )
     SET( var "INSTALL_${p}_DIR" )
     IF( NOT IS_ABSOLUTE "${${var}}" )
-      SET( ${var}_PREFIX "${PREFIX}/${${var}}" )
+      SET( ${var}_PREFIX "${YPREFIX}/${${var}}" )
     ENDIF( NOT IS_ABSOLUTE "${${var}}" )
   ENDFOREACH()
 
@@ -258,9 +259,9 @@ ENDMACRO( FIND_LINKER_LIBS )
 MACRO( CHECK_PREFIX )		# check if all internal libyui-dependecies are in prefix, too.
   FOREACH ( p ${INTERNAL_DEPS} )
     STRING(TOUPPER ${p} pU)
-    IF( NOT "${${pU}_PREFIX}" STREQUAL "${PREFIX}" )
-       MESSAGE( FATAL_ERROR "${p} must be installed in ${PREFIX} first! (found in ${${pU}_PREFIX})" )
-    ENDIF( NOT "${${pU}_PREFIX}" STREQUAL "${PREFIX}" )
+    IF( NOT "${${pU}_PREFIX}" STREQUAL "${YPREFIX}" )
+       MESSAGE( FATAL_ERROR "${p} must be installed in ${YPREFIX} first! (found in ${${pU}_PREFIX})" )
+    ENDIF( NOT "${${pU}_PREFIX}" STREQUAL "${YPREFIX}" )
   ENDFOREACH ()
 
 ENDMACRO ( CHECK_PREFIX )
@@ -436,7 +437,23 @@ MACRO( PREP_OBS_TARBALL )	# prepare dist-tarball - This is a shameless rip-off f
   SET( CPACK_PACKAGE_VERSION_MAJOR ${VERSION_MAJOR} )
   SET( CPACK_PACKAGE_VERSION_MINOR ${VERSION_MINOR} )
   SET( CPACK_PACKAGE_VERSION_PATCH ${VERSION_PATCH} )
-  SET( CPACK_GENERATOR "TBZ2" )
+  if (GENERATE)
+    SET(CPACK_PACKAGE_CONTACT "SUSE")
+    # rpm
+    SET(CPACK_RPM_PACKAGE_LICENSE LGPL)
+    SET(CPACK_RPM_PACKAGE_VERSION "${CPACK_PACKAGE_VERSION_MAJOR}.${CPACK_PACKAGE_VERSION_MINOR}.${CPACK_PACKAGE_VERSION_PATCH}")
+    SET(CPACK_RPM_PACKAGE_RELEASE 1)
+
+    SET(CPACK_PACKAGE_FILE_NAME "${PROJECTNAME}-${CPACK_RPM_PACKAGE_VERSION}-${CPACK_RPM_PACKAGE_RELEASE}")
+    # deb
+    SET(CPACK_DEBIAN_PACKAGE_NAME "${CPACK_PACKAGE_FILE_NAME}")
+    SET(CPACK_DEBIAN_PACKAGE_VERSION "${CPACK_RPM_PACKAGE_VERSION}-${CPACK_RPM_PACKAGE_RELEASE}")
+    SET(CPACK_GENERATOR ${GENERATE})
+  else (GENERATE)
+    # tbz2
+    SET(CPACK_PACKAGE_FILE_NAME "${PROJECTNAME}-bin-${PACKAGE_FILE_VERSION}")
+    SET( CPACK_GENERATOR "TBZ2" )
+  endif (GENERATE)
   SET( CPACK_SOURCE_GENERATOR "TBZ2" )
   SET( CPACK_SOURCE_PACKAGE_FILE_NAME "${PROJECTNAME}-${VERSION}" )
   SET( CPACK_SOURCE_IGNORE_FILES
@@ -532,14 +549,14 @@ MACRO( SUMMARY )		# prints a brief summary to stdout
   ENDIF( ENABLE_DEBUG OR ${CMAKE_BUILD_TYPE} STREQUAL "RELWITHDEBINFO" )
 
   MESSAGE( STATUS "" )
-  MESSAGE( STATUS "     Install to Prefix:                     ${PREFIX}" )
-  MESSAGE( STATUS "     use Shared-Dir:                        ${PREFIX}/${DATAROOTDIR}" )
-  MESSAGE( STATUS "     use Library-Dir:                       ${PREFIX}/${INSTALL_LIB_DIR}" )
-  MESSAGE( STATUS "     use Include-Dir:                       ${PREFIX}/${INSTALL_INCLUDE_DIR}" )
-  MESSAGE( STATUS "     use CMake Plugin-InstallDir:           ${PREFIX}/${INSTALL_CMAKE_DIR}" )
-  MESSAGE( STATUS "     use Doc-Dir:                           ${PREFIX}/${INSTALL_DOC_DIR}" )
-  MESSAGE( STATUS "     Data-Dir:                              ${PREFIX}/${FULL_DATA_DIR}" )
-  MESSAGE( STATUS "     Theme-Dir:                             ${PREFIX}/${THEME_DIR}" )
+  MESSAGE( STATUS "     Install to Prefix:                     ${YPREFIX}" )
+  MESSAGE( STATUS "     use Shared-Dir:                        ${YPREFIX}/${DATAROOTDIR}" )
+  MESSAGE( STATUS "     use Library-Dir:                       ${YPREFIX}/${INSTALL_LIB_DIR}" )
+  MESSAGE( STATUS "     use Include-Dir:                       ${YPREFIX}/${INSTALL_INCLUDE_DIR}" )
+  MESSAGE( STATUS "     use CMake Plugin-InstallDir:           ${YPREFIX}/${INSTALL_CMAKE_DIR}" )
+  MESSAGE( STATUS "     use Doc-Dir:                           ${YPREFIX}/${INSTALL_DOC_DIR}" )
+  MESSAGE( STATUS "     Data-Dir:                              ${YPREFIX}/${FULL_DATA_DIR}" )
+  MESSAGE( STATUS "     Theme-Dir:                             ${YPREFIX}/${THEME_DIR}" )
   MESSAGE( STATUS "" )
   MESSAGE( STATUS "     Disable shared library:                ${DISABLE_SHARED}" )
   IF( ENABLE_DEBUG OR ${CMAKE_BUILD_TYPE} STREQUAL "RELWITHDEBINFO" OR ${CMAKE_BUILD_TYPE} STREQUAL "DEBUG" )
@@ -690,7 +707,7 @@ ENDMACRO( PROCESS_SOURCES )
 
 MACRO( PROCESS_EXAMPLES )
 
-  INCLUDE_DIRECTORIES( "${CMAKE_CURRENT_SOURCE_DIR}" "${PROJECT_SOURCE_DIR}/src")
+  INCLUDE_DIRECTORIES( "${CMAKE_CURRENT_SOURCE_DIR}" "${PROJECT_SOURCE_DIR}/src" ${CMAKE_INCLUDE_PATH})
 
   FOREACH( EXAMPLE ${EXAMPLES_LIST} )
     IF( ENABLE_EXAMPLES )

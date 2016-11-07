@@ -44,7 +44,7 @@ std::string  YSettings::_iconDir = "";
 std::string  YSettings::_themeDir = "";
 std::string  YSettings::_localeDir = "";
 
-YSettings::YSettings() 
+YSettings::YSettings()
 {
 }
 
@@ -101,7 +101,7 @@ std::string YSettings::iconDir ()
   }
   else if (_progDir.size())
     return _progDir + "/icons/";
-  
+
   return THEMEDIR "/icons/";
 }
 

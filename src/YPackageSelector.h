@@ -5,7 +5,7 @@
   published by the Free Software Foundation; either version 2.1 of the
   License, or (at your option) version 3.0 of the License. This library
   is distributed in the hope that it will be useful, but WITHOUT ANY
-  WARRANTY; without even the implied warranty of MERCHANTABILITY or 
+  WARRANTY; without even the implied warranty of MERCHANTABILITY or
   FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
   License for more details. You should have received a copy of the GNU
   Lesser General Public License along with this library; if not, write
@@ -36,7 +36,9 @@
 #define YPkg_RepoMgr		1 << 6	// Add "Manage Repositories" to menu
 #define YPkg_ConfirmUnsupported	1 << 7	// Confirm unsupported packages
 
-
+/**
+ * A simple wrapper for an insanely complex UI for installing software.
+ **/
 class YPackageSelector : public YWidget
 {
 protected:
