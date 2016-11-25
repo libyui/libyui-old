@@ -110,3 +110,9 @@ tmp
 
 # Subversion
 .svn/
+
+# Examples
+/examples/*
+# but keep sources and cmake
+!/examples/CMakeList.txt
+!/examples/*.cc
