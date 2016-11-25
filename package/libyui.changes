@@ -1,7 +1,14 @@
 -------------------------------------------------------------------
+Fri Nov 25 09:22:14 UTC 2016 - jreidinger@suse.com
+
+- implement shortcut conflicts resolver for menu buttons
+  (bsc#940817)
+- 3.2.9
+
+-------------------------------------------------------------------
 Fri Oct 14 10:22:44 UTC 2016 - jreidinger@suse.com
 
-- Fixed a Wmismatched-tags warning on clang/OSX (gh#libyui/libyui#33)
+- Fixed a mismatched-tags warning on clang/OSX (gh#libyui/libyui#33)
 - 3.2.8
 
 -------------------------------------------------------------------
