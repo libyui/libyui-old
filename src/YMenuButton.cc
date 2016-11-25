@@ -134,7 +134,7 @@ YMenuButton::findMenuItem( int wantedIndex, YItemConstIterator begin, YItemConst
     return 0;
 }
 
-static void resolveShortcutsConflictFlat(YItemIterator begin, YItemIterator end)
+static void resolveShortcutsConflictFlat(YItemConstIterator begin, YItemConstIterator end)
 {
     bool used[ sizeof( char ) << 8 ];
     for ( unsigned i=0; i < sizeof( char ) << 8; i++ )
@@ -152,17 +152,12 @@ static void resolveShortcutsConflictFlat(YItemIterator begin, YItemIterator end)
 		resolveShortcutsConflictFlat(item->childrenBegin(), item->childrenEnd() );
 	    }
 
-            char shortcut = YShortcut::findShortcut(item->label());
+            char shortcut = YShortcut::normalized(YShortcut::findShortcut(item->label()));
 
             if (shortcut == 0)
             {
                 conflicts.push_back(item);
-                yuiMilestone() << "No shortcut found " << item->label() << std::endl;
-            }
-            else if (!YShortcut::isValid(shortcut))
-            {
-                conflicts.push_back(item);
-                yuiWarning() << "Invalid shortcut '" << shortcut << "' found " << item->label() << std::endl;
+                yuiMilestone() << "No or invalid shortcut found " << item->label() << std::endl;
             }
             else if (used[(unsigned)shortcut])
             {
@@ -189,8 +184,9 @@ static void resolveShortcutsConflictFlat(YItemIterator begin, YItemIterator end)
         size_t index = 0;
         for (; index < clean.size(); ++index)
         {
-            char ch = clean[index];
-            if (YShortcut::isValid(ch) && !used[(unsigned)ch])
+            char ch = YShortcut::normalized(clean[index]);
+            // ch is set to 0 by normalized if not valid
+            if (ch != 0 && !used[(unsigned)ch])
             {
                 new_c = ch;
                 used[(unsigned)ch] = true;

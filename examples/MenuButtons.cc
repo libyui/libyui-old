@@ -1,5 +1,5 @@
 /*
-  Copyright (c) 2000 - 2012 Novell, Inc.
+  Copyright (c) 2016 SUSE LCC
 
   Permission is hereby granted, free of charge, to any person obtaining
   a copy of this software and associated documentation files (the
@@ -45,7 +45,7 @@ int main( int argc, char **argv )
     YMenuItem *inner_item = new YMenuItem("&menu1");
     top->addItem(inner_item);
     top->addItem(new YMenuItem("&menu2"));
-    top->addItem(new YMenuItem("&menu3"));
+    top->addItem(new YMenuItem("&Menu3")); // test upper letter as shortcut
     top->addItem(new YMenuItem("menu4")); // even without shortcut marker it should find shortcut if possible
     new YMenuItem(inner_item, "&submenu1");
     new YMenuItem(inner_item, "&submenu2");
