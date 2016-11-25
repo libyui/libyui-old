@@ -98,6 +98,12 @@ public:
      * items in this MenuButton. That index can be used later with
      * findMenuItem() to find the item by that index.
      *
+     * @note please do not forget to call after adding all elements
+     * #resolveShortcutConflicts and #rebuildMenuTree in this order. It is
+     * important to call it after all submenus are added otherwise it won't
+     * have proper shortcuts and won't be rendered.
+     * @see examples/MenuButton.cc.
+     *
      * Reimplemented from YSelectionWidget.
      **/
     virtual void addItem( YItem * item_disown );

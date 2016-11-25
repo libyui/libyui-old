@@ -29,6 +29,7 @@
 #include "YUISymbols.h"
 #include "YMenuButton.h"
 #include "YMenuItem.h"
+#include "YShortcut.h"
 
 
 struct YMenuButtonPrivate
@@ -133,19 +134,85 @@ YMenuButton::findMenuItem( int wantedIndex, YItemConstIterator begin, YItemConst
     return 0;
 }
 
+static void resolveShortcutsConflictFlat(YItemIterator begin, YItemIterator end)
+{
+    bool used[ sizeof( char ) << 8 ];
+    for ( unsigned i=0; i < sizeof( char ) << 8; i++ )
+	used[i] = false;
+    std::vector<YMenuItem*> conflicts;
+
+    for ( YItemConstIterator it = begin; it != end; ++it )
+    {
+	YMenuItem * item = dynamic_cast<YMenuItem *> (*it);
+
+	if ( item )
+	{
+	    if ( item->hasChildren() )
+	    {
+		resolveShortcutsConflictFlat(item->childrenBegin(), item->childrenEnd() );
+	    }
+
+            std::string::size_type marker_position = YShortcut::findShortcutPos(item->label());
+
+            char shortcut = YShortcut::findShortcut(item->label());
+
+            if (shortcut == 0)
+            {
+                conflicts.push_back(item);
+                yuiMilestone() << "No shortcut found " << item->label() << std::endl;
+            }
+            else if (!YShortcut::isValid(shortcut))
+            {
+                conflicts.push_back(item);
+                yuiWarning() << "Invalid shortcut '" << shortcut << "' found " << item->label() << std::endl;
+            }
+            else if (used[(unsigned)shortcut])
+            {
+                conflicts.push_back(item);
+                yuiWarning() << "Conflicting shortcut found " << item->label() << std::endl;
+            }
+            else
+            {
+                used[(unsigned)shortcut] = true;
+            }
+	}
+        else
+        {
+          yuiWarning() << "non menu item used in call " << (*it)->label() << std::endl;
+        }
+    }
+
+    // cannot use YShortcut directly as YItem is not YWidget
+    for(YMenuItem *i: conflicts)
+    {
+        std::string clean = YShortcut::cleanShortcutString(i->label());
+        char new_c = 0;
+
+        size_t index = 0;
+        for (; index < clean.size(); ++index)
+        {
+            char ch = clean[index];
+            if (YShortcut::isValid(ch) && !used[(unsigned)ch])
+            {
+                new_c = ch;
+                used[(unsigned)ch] = true;
+                break;
+            }
+        }
+
+        if (new_c != 0)
+        {
+            clean.insert(index, 1, YShortcut::shortcutMarker());
+            yuiMilestone() << "New label used: " << clean << std::endl;
+        }
+        i->setLabel(clean);
+    }
+}
 
 void
 YMenuButton::resolveShortcutConflicts()
 {
-    // TO DO
-    // TO DO
-    // TO DO
-
-    // For every menu level, make sure keyboard shortcuts are unique within that menu level.
-    // If necessary, change some of them (move the '&' character to some other character).
-
-
-    // See YShortcutManager for more hints.
+    resolveShortcutsConflictFlat(itemsBegin(), itemsEnd());
 }
 
 
