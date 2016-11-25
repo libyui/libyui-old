@@ -134,7 +134,7 @@ YMenuButton::findMenuItem( int wantedIndex, YItemConstIterator begin, YItemConst
     return 0;
 }
 
-static void resolveShortcutsConflictFlat(YItemIterator begin, YItemIterator end)
+static void resolveShortcutsConflictFlat(YItemConstIterator begin, YItemConstIterator end)
 {
     bool used[ sizeof( char ) << 8 ];
     for ( unsigned i=0; i < sizeof( char ) << 8; i++ )
