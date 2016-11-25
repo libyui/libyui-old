@@ -152,8 +152,6 @@ static void resolveShortcutsConflictFlat(YItemIterator begin, YItemIterator end)
 		resolveShortcutsConflictFlat(item->childrenBegin(), item->childrenEnd() );
 	    }
 
-            std::string::size_type marker_position = YShortcut::findShortcutPos(item->label());
-
             char shortcut = YShortcut::findShortcut(item->label());
 
             if (shortcut == 0)
