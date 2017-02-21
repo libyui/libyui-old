@@ -36,6 +36,8 @@ BuildRequires:  boost-devel
 BuildRequires:  cmake >= 2.8
 BuildRequires:  gcc-c++
 BuildRequires:  pkg-config
+BuildRequires:  libmicrohttpd-devel
+BuildRequires:  jsoncpp-devel
 
 %if %{with coverage}
 # normally the coverage feature should not be used out of CI

@@ -48,6 +48,7 @@
 #include "YEnvVar.h"
 #include "YBuiltinCaller.h"
 #include "YWidgetID.h"
+#include "YHttpServer.h"
 
 using std::endl;
 
@@ -61,6 +62,7 @@ using std::endl;
 // which accesses the dialog stack to remove all dialogs
 std::stack<YDialog *> YDialog::_dialogStack;
 YUI * YUI::_ui = 0;
+YHttpServer *YUI::_server = nullptr;
 
 static bool uiDeleted = false;
 
@@ -76,12 +78,22 @@ YUI::YUI( bool withThreads )
 {
     yuiMilestone() << "This is libyui " << VERSION << std::endl;
     yuiMilestone() << "Creating UI " << ( withThreads ? "with" : "without" ) << " threads" << endl;
+
+    if (YHttpServer::enabled())
+    {
+        yuiMilestone() << "Enabled HTTP server" << endl;
+        _server = new YHttpServer();
+        _server->start();
+    }
+
     _ui = this;
 }
 
 
 YUI::~YUI()
 {
+    delete _server;
+
     if ( _ui )
     {
 	if ( _withThreads && _uiThread )
@@ -120,6 +132,11 @@ YUI::ui()
 {
     ensureUICreated();
     return _ui;
+}
+
+YHttpServer *YUI::server()
+{
+    return _server;
 }
 
 

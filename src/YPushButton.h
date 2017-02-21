@@ -216,6 +216,13 @@ public:
 	{ setLabel( str ); }
 
 
+    /**
+     * Activate the button. Can be used in tests to simulate user input.
+     *
+     * Derived classes are required to implement this.
+     **/
+    virtual void activate() = 0;
+
 private:
 
     ImplPtr<YPushButtonPrivate> priv;
