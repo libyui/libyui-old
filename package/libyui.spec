@@ -31,6 +31,8 @@ BuildRequires:  boost-devel
 BuildRequires:  cmake >= 2.8
 BuildRequires:  gcc-c++
 BuildRequires:  pkg-config
+BuildRequires:  libmicrohttpd-devel
+BuildRequires:  jsoncpp-devel
 
 Url:            http://github.com/libyui/
 Summary:        GUI-abstraction library

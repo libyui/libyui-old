@@ -183,10 +183,19 @@ public:
     virtual void setDialogTitle( const std::string & titleText ) = 0;
 
     /**
+     * Get the current dialog title shown in the window manager's title bar.
+     **/
+    virtual std::string getDialogTitle() = 0;
+
+    /**
      * Set the dialog heading.
      **/
     virtual void setDialogHeading( const std::string & headingText ) = 0;
 
+    /**
+     * Get the dialog heading.
+     **/
+    virtual std::string getDialogHeading() = 0;
 
     //
     // Steps handling

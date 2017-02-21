@@ -40,7 +40,7 @@ class YBuiltinCaller;
 class YDialog;
 class YMacroPlayer;
 class YMacroRecorder;
-
+class YHttpServer;
 
 /**
  * Abstract base class of a libYUI user interface.
@@ -74,6 +74,12 @@ public:
      * Access the global UI.
      **/
     static YUI * ui();
+
+    /**
+     * The debugging HTTP server providing the YUI REST API
+     * nullptr if not used
+     **/
+    static YHttpServer *server();
 
     /**
      * Return the widget factory that provides all the createXY() methods for
@@ -369,6 +375,7 @@ protected:
 private:
 
     static YUI * _ui;
+    static YHttpServer * _server;
 };
 
 

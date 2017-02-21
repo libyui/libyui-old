@@ -82,6 +82,16 @@ SET( ${TARGETLIB}_SOURCES
 
   YPopupInternal.cc
   YPropertyEditor.cc
+  YHttpServer.cc
+  YHttpHandler.cc
+  YHttpDialogHandler.cc
+  YHttpRootHandler.cc
+  YHttpAppHandler.cc
+  YHttpWidgetsHandler.cc
+  YHttpWidgetsActionHandler.cc
+  YHttpMount.cc
+  YJsonSerializer.cc
+  YWidgetFinder.cc
 )
 
 SET( ${TARGETLIB}_HEADERS
@@ -181,6 +191,17 @@ SET( ${TARGETLIB}_HEADERS
   YTransText.h
   YExternalWidgetFactory.h
   YExternalWidgets.h
+  YHttpServer.h
+  YHttpServerSockets.h
+  YHttpHandler.h
+  YHttpDialogHandler.h
+  YHttpRootHandler.h
+  YHttpAppHandler.h
+  YHttpWidgetsHandler.h
+  YHttpWidgetsActionHandler.h
+  YHttpMount.h
+  YWidgetFinder.h
+  YJsonSerializer.h
 )
 
 SET( EXAMPLES_LIST

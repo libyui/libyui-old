@@ -6,7 +6,7 @@ SET( BASELIB		"yui" )		# don't change this
 
 SET( SUBDIRS		src examples )
 SET( LIB_DEPS		Boost )
-SET( LIB_LINKER		dl pthread )
+SET( LIB_LINKER		dl pthread microhttpd jsoncpp )
 SET( EXTRA_INCLUDES     )         # set include-dir which are not picked by CMake automagically here.
 SET( URL		"http://github.com/libyui/" )
 SET( SUMMARY		"GUI-abstraction library" )
