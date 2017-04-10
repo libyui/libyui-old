@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon Apr 10 23:54:00 UTC 2017 - besser82@fedoraproject.org
+
+- Last version introduced a new symbol, thus so-name and minor
+  version must be bumped
+- 3.3.0
+
+-------------------------------------------------------------------
 Fri Nov 25 09:22:14 UTC 2016 - jreidinger@suse.com
 
 - implement shortcut conflicts resolver for menu buttons
