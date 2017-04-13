@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Apr 13 19:32:00 CEST 2017 - besser82@fedoraproject.org
+
+- Fix detection of Desktop Environments
+- 3.3.1
+
+-------------------------------------------------------------------
 Thu Apr 13 10:44:07 CEST 2017 - besser82@fedoraproject.org
 
 - Add YSettings::loadedUI option (gh#libyui/libyui#35)
