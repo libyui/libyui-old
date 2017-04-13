@@ -49,30 +49,32 @@ void YUILoader::loadUI( bool withThreads )
     yuiMilestone () << "XDG_CURRENT_DESKTOP: \"" << envDesktop << "\"" << std::endl;
 
     // Taken from: https://specifications.freedesktop.org/menu-spec/menu-spec-1.1.html#onlyshowin-registry
-    isGtk = ( strpbrk( "Cinnamon", envDesktop ) || isGtk );
-    isGtk = ( strpbrk( "GNOME", envDesktop ) || isGtk );
-    isGtk = ( strpbrk( "LXDE", envDesktop ) || isGtk );
-    isGtk = ( strpbrk( "MATE", envDesktop ) || isGtk );
-    isGtk = ( strpbrk( "Pantheon", envDesktop ) || isGtk );
-    isGtk = ( strpbrk( "ROX", envDesktop ) || isGtk );
-    isGtk = ( strpbrk( "Unity", envDesktop ) || isGtk );
-    isGtk = ( strpbrk( "XFCE", envDesktop ) || isGtk );
+    isGtk = ( ( strstr( envDesktop, "Cinnamon" ) != NULL ) || isGtk );
+    isGtk = ( ( strstr( envDesktop, "GNOME"    ) != NULL ) || isGtk );
+    isGtk = ( ( strstr( envDesktop, "LXDE"     ) != NULL ) || isGtk );
+    isGtk = ( ( strstr( envDesktop, "MATE"     ) != NULL ) || isGtk );
+    isGtk = ( ( strstr( envDesktop, "Pantheon" ) != NULL ) || isGtk );
+    isGtk = ( ( strstr( envDesktop, "ROX"      ) != NULL ) || isGtk );
+    isGtk = ( ( strstr( envDesktop, "Unity"    ) != NULL ) || isGtk );
+    isGtk = ( ( strstr( envDesktop, "XFCE"     ) != NULL ) || isGtk );
 
     if( isGtk )
-    yuiMilestone () << "Detected a Gtk-based desktop environment." << std::endl;
-    yuiMilestone () << "Prefering Gtk-UI if available." << std::endl;
+    {
+	yuiMilestone () << "Detected a Gtk-based desktop environment." << std::endl;
+	yuiMilestone () << "Prefering Gtk-UI if available." << std::endl;
+    }
 
     YCommandLine cmdline;
 
     bool wantNcurses = cmdline.find("--ncurses") != -1;
     if( wantNcurses )
-      yuiMilestone () << "Using UI-backend: \"" << YUIPlugin_NCurses << "\". Forced on command-line." << std::endl;
+	yuiMilestone () << "Using UI-backend: \"" << YUIPlugin_NCurses << "\". Forced on command-line." << std::endl;
     bool wantQt = cmdline.find("--qt") != -1;
     if( wantQt )
-      yuiMilestone () << "Using UI-backend: \"" << YUIPlugin_Qt << "\". Forced on command-line." << std::endl;
+	yuiMilestone () << "Using UI-backend: \"" << YUIPlugin_Qt << "\". Forced on command-line." << std::endl;
     bool wantGtk = cmdline.find("--gtk") != -1;
     if( wantGtk )
-      yuiMilestone () << "Using UI-backend: \"" << YUIPlugin_Gtk << "\". Forced on command-line." << std::endl;
+	yuiMilestone () << "Using UI-backend: \"" << YUIPlugin_Gtk << "\". Forced on command-line." << std::endl;
 
     bool haveQt = pluginExists( YUIPlugin_Qt );
     bool haveGtk = pluginExists( YUIPlugin_Gtk );
