@@ -35,6 +35,12 @@
 
 #include <string>
 
+
+/**
+ * Predeclaration of YUILoader
+ **/
+class YUILoader;
+
 /**
  * Settings for libyui
  *
@@ -42,6 +48,8 @@
  **/
 class YSettings
 {
+friend YUILoader;
+
 public:
     /**
      * This can be used to set a subdir beneath PLUGINDIR or THEMEDIR,
@@ -95,11 +103,33 @@ public:
      **/
     static std::string localeDir ();
 
+    /**
+     * This can be used to set the loaded UI-backend.
+     *
+     * Once this is set, it can't be altered. If you do so although an
+     * exception will be thrown.
+     **/
+    static void loadedUI ( std::string ui );
+    /**
+     * Returns the value of the loaded UI-backend.
+     **/
+    static std::string loadedUI ();
+
+protected:
+    /**
+     * This can be used to set the loaded UI-backend.
+     *
+     * Once this is set, it can't be altered, except if you force it.
+     * If you do so without force an exception will be thrown.
+     **/
+    static void loadedUI ( std::string ui, bool force );
+
 private:
     static std::string _progDir;
     static std::string _iconDir;
     static std::string _themeDir;
     static std::string _localeDir;
+    static std::string _loadedUI;
 
     YSettings ();
     YSettings ( const YSettings& );
