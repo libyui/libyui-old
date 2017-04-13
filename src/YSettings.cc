@@ -43,6 +43,7 @@ std::string  YSettings::_progDir = "";
 std::string  YSettings::_iconDir = "";
 std::string  YSettings::_themeDir = "";
 std::string  YSettings::_localeDir = "";
+std::string  YSettings::_loadedUI = "";
 
 YSettings::YSettings()
 {
@@ -170,4 +171,30 @@ std::string YSettings::localeDir ()
   return "/usr/share/locale/";
 }
 
+void YSettings::loadedUI( std::string ui, bool force )
+{
+  if ( _loadedUI.empty() || force )
+  {
+    _loadedUI = ui;
+    yuiMilestone () << "Set loadedUI to \"" << ui << "\"" << endl;
+    yuiMilestone () << "loadedUI is now locked." << endl;
+  }
+  else
+  {
+    yuiMilestone () << "Can't set loadedUI to \"" << ui << "\"" << endl;
+    yuiMilestone () << "It is locked to: \"" << _loadedUI << "\"" << endl;
+    YUI_THROW ( YUIException ( "loadedUI is locked to: \"" + _loadedUI + "\"" ) );
+  }
+}
 
+void YSettings::loadedUI( std::string ui )
+{
+  loadedUI( ui, false );
+}
+
+std::string YSettings::loadedUI ()
+{
+  yuiMilestone () << "loadedUI: \"" << _loadedUI << "\"" << endl;
+
+  return _loadedUI;
+}
