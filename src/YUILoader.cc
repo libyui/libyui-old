@@ -34,40 +34,69 @@
 #include "YUIPlugin.h"
 #include "YUIException.h"
 #include "YPath.h"
+#include "YSettings.h"
 
 #include "Libyui_config.h"
 
 
 void YUILoader::loadUI( bool withThreads )
 {
+    bool isGtk = false;
     const char * envDisplay = getenv( "DISPLAY" );
+    const char * envDesktop = getenv( "XDG_CURRENT_DESKTOP" );
+    std::string wantedGUI;
+
+    yuiMilestone () << "XDG_CURRENT_DESKTOP: \"" << envDesktop << "\"" << std::endl;
+
+    // Taken from: https://specifications.freedesktop.org/menu-spec/menu-spec-1.1.html#onlyshowin-registry
+    isGtk = ( strpbrk( "Cinnamon", envDesktop ) || isGtk );
+    isGtk = ( strpbrk( "GNOME", envDesktop ) || isGtk );
+    isGtk = ( strpbrk( "LXDE", envDesktop ) || isGtk );
+    isGtk = ( strpbrk( "MATE", envDesktop ) || isGtk );
+    isGtk = ( strpbrk( "Pantheon", envDesktop ) || isGtk );
+    isGtk = ( strpbrk( "ROX", envDesktop ) || isGtk );
+    isGtk = ( strpbrk( "Unity", envDesktop ) || isGtk );
+    isGtk = ( strpbrk( "XFCE", envDesktop ) || isGtk );
+
+    if( isGtk )
+    yuiMilestone () << "Detected a Gtk-based desktop environment." << std::endl;
+    yuiMilestone () << "Prefering Gtk-UI if available." << std::endl;
 
     YCommandLine cmdline;
 
     bool wantNcurses = cmdline.find("--ncurses") != -1;
+    if( wantNcurses )
+      yuiMilestone () << "Using UI-backend: \"" << YUIPlugin_NCurses << "\". Forced on command-line." << std::endl;
     bool wantQt = cmdline.find("--qt") != -1;
+    if( wantQt )
+      yuiMilestone () << "Using UI-backend: \"" << YUIPlugin_Qt << "\". Forced on command-line." << std::endl;
     bool wantGtk = cmdline.find("--gtk") != -1;
+    if( wantGtk )
+      yuiMilestone () << "Using UI-backend: \"" << YUIPlugin_Gtk << "\". Forced on command-line." << std::endl;
 
     bool haveQt = pluginExists( YUIPlugin_Qt );
     bool haveGtk = pluginExists( YUIPlugin_Gtk );
 
     if ( envDisplay && !wantNcurses )
     {
-	std::string wantedGUI;
-
-	if ( haveQt && !wantGtk)
+	// Qt is default if available.
+	if ( haveQt )
 	   wantedGUI = YUIPlugin_Qt;
-	else if ( haveGtk && !wantQt )
+
+	// Do we want to use Gtk instead?
+	if ( haveGtk && ( isGtk || wantGtk ) && !wantQt )
 	   wantedGUI = YUIPlugin_Gtk;
 
 	if ( strcmp( wantedGUI.c_str(), "" ) )
 	{
+	   yuiMilestone () << "Using UI-backend: \"" << wantedGUI << "\""<< std::endl;
 	   try
 	   {
+	      YSettings::loadedUI( wantedGUI, true );
 	      loadPlugin( wantedGUI, withThreads );
 	      return;
 	   }
-	   catch ( YUIException & ex)
+	   catch ( YUIException & ex )
 	   {
 	      YUI_CAUGHT( ex );
 	   }
@@ -80,12 +109,16 @@ void YUILoader::loadUI( bool withThreads )
 	// NCurses UI
 	//
 
+	wantedGUI = YUIPlugin_NCurses;
+	yuiMilestone () << "Using UI-backend: \"" << wantedGUI << "\""<< std::endl;
+
 	try
 	{
-	    loadPlugin( YUIPlugin_NCurses, withThreads );
+	    YSettings::loadedUI( wantedGUI, true );
+	    loadPlugin( wantedGUI, withThreads );
 	    return;
 	}
-	catch ( YUIException & ex)
+	catch ( YUIException & ex )
 	{
 	    YUI_CAUGHT( ex );
 	    YUI_RETHROW( ex ); // what else to do here?
@@ -158,51 +191,16 @@ void YUILoader::loadExternalWidgetsPlugin ( const std::string& name, const std::
 
 void YUILoader::loadExternalWidgets ( const std::string& name, const std::string& symbol )
 {
-    const char * envDisplay = getenv( "DISPLAY" );
-
-    YCommandLine cmdline;
-
-    bool wantNcurses = cmdline.find("--ncurses") != -1;
-    bool wantQt = cmdline.find("--qt") != -1;
-    bool wantGtk = cmdline.find("--gtk") != -1;
-
-    bool haveQt = pluginExists( YUIPlugin_Qt );
-    bool haveGtk = pluginExists( YUIPlugin_Gtk );
-
-    if ( envDisplay && !wantNcurses )
-    {
-        std::string wantedGUI = name;
-        wantedGUI.append("-");
-
-        if ( haveQt && !wantGtk)
-           wantedGUI.append(YUIPlugin_Qt);
-        else if ( haveGtk && !wantQt )
-           wantedGUI.append(YUIPlugin_Gtk);
-
-        try
-        {
-            loadExternalWidgetsPlugin(name, wantedGUI, symbol );
-            return;
-        }
-        catch ( YUIException & ex)
-        {
-            YUI_CAUGHT( ex );
-        }
-    }
-
-    //
-    // NCurses UI (test on tty has already been done by loadUI)
-    //
+    std::string wantedGUI = name;
+    wantedGUI.append( "-" );
+    wantedGUI.append( YSettings::loadedUI() );
 
     try
     {
-        std::string wantedNcurses = name;
-        wantedNcurses.append("-");
-        wantedNcurses.append(YUIPlugin_NCurses);
-        loadExternalWidgetsPlugin(name, wantedNcurses, symbol );
+        loadExternalWidgetsPlugin(name, wantedGUI, symbol );
         return;
     }
-    catch ( YUIException & ex)
+    catch ( YUIException & ex )
     {
         YUI_CAUGHT( ex );
         YUI_RETHROW( ex ); // what else to do here?
