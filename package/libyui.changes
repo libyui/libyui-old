@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Fri Apr 14 11:02:37 CEST 2017 - besser82@fedoraproject.org
+
+- Add $(ENV:YUI_PREFERED_BACKEND) to set prefered UI-backend
+- Avoid several warnings from CMake
+- 3.3.2
+
+-------------------------------------------------------------------
 Thu Apr 13 19:32:00 CEST 2017 - besser82@fedoraproject.org
 
 - Fix detection of Desktop Environments

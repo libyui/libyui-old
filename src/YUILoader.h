@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2000-2012 Novell, Inc
+  Copyright (C) 2000-2017 Novell, Inc
   This library is free software; you can redistribute it and/or modify
   it under the terms of the GNU Lesser General Public License as
   published by the Free Software Foundation; either version 2.1 of the
@@ -46,9 +46,44 @@ class YUILoader
 {
 public:
     /**
-     * Load any of the available UI plug-ins in this order:
-     * - Qt      if $DISPLAY is set
-     * - NCurses if stdout is a tty
+     * Load any of the available UI-plugins by this order and criteria:
+     *
+     * - Qt:
+     *    - if $DISPLAY is set
+     *    - NCurses is user-selected and stdout is *not* a TTY
+     *
+     * - Gtk:
+     *    - if $DISPLAY is set and Qt is not available,
+     *    - a GTK-based desktop environment is detected
+     *      from the environment variable XDG_CURRENT_DESKTOP
+     *    - any of the above pre-conditions are met and
+     *      NCurses is user-selected, but stdout is *not* a TTY
+     *
+     * - NCurses:
+     *    - if $DISPLAY is *not* set and stdout is a TTY
+     *    - Qt and Gtk are not available and stdout is a TTY
+     *
+     * This can be overridden by either:
+     *
+     * - specifing one of the switches on the
+     *   command-line of the program
+     *    - '--gtk',
+     *    - '--ncurses', or
+     *    - '--qt'
+     *
+     * - setting the environment variable
+     *   YUI_PREFERED_BACKEND to one of
+     *    - 'gtk',
+     *    - 'ncurses', or
+     *    - 'qt'
+     *
+     * If a command-line switch is given to the program, the
+     * setting from the environment variable will be overridden
+     * by the UI-plugin chosen with the switch.
+     *
+     * If the user-selected UI-plugin is not installed on the
+     * system, an installed UI-plugin will be chosen by the
+     * above criteria.
      **/
     static void loadUI( bool withThreads = false );
 

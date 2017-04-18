@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2000-2012 Novell, Inc
+  Copyright (C) 2000-2017 Novell, Inc
   This library is free software; you can redistribute it and/or modify
   it under the terms of the GNU Lesser General Public License as
   published by the Free Software Foundation; either version 2.1 of the
@@ -42,11 +42,14 @@
 void YUILoader::loadUI( bool withThreads )
 {
     bool isGtk = false;
-    const char * envDisplay = getenv( "DISPLAY" );
-    const char * envDesktop = getenv( "XDG_CURRENT_DESKTOP" );
+    const char * envDesktop = getenv( "XDG_CURRENT_DESKTOP" )  ?: "";
+    const char * envDisplay = getenv( "DISPLAY" )              ?: "";
+    const char * envPreset  = getenv( "YUI_PREFERED_BACKEND" ) ?: "";
     std::string wantedGUI;
 
-    yuiMilestone () << "XDG_CURRENT_DESKTOP: \"" << envDesktop << "\"" << std::endl;
+    yuiMilestone () << "DISPLAY: \""              << envDisplay << "\"" << std::endl;
+    yuiMilestone () << "XDG_CURRENT_DESKTOP: \""  << envDesktop << "\"" << std::endl;
+    yuiMilestone () << "YUI_PREFERED_BACKEND: \"" << envPreset  << "\"" << std::endl;
 
     // Taken from: https://specifications.freedesktop.org/menu-spec/menu-spec-1.1.html#onlyshowin-registry
     isGtk = ( ( strstr( envDesktop, "Cinnamon" ) != NULL ) || isGtk );
@@ -58,74 +61,95 @@ void YUILoader::loadUI( bool withThreads )
     isGtk = ( ( strstr( envDesktop, "Unity"    ) != NULL ) || isGtk );
     isGtk = ( ( strstr( envDesktop, "XFCE"     ) != NULL ) || isGtk );
 
-    if( isGtk )
-    {
-	yuiMilestone () << "Detected a Gtk-based desktop environment." << std::endl;
-	yuiMilestone () << "Prefering Gtk-UI if available." << std::endl;
-    }
+    if( isGtk ) yuiMilestone () << "Detected a Gtk-based desktop environment." << std::endl
+                                << "Prefering Gtk-UI if available and no" << std::endl
+                                << "user-selected override is present." << std::endl;
 
     YCommandLine cmdline;
 
-    bool wantNcurses = cmdline.find("--ncurses") != -1;
-    if( wantNcurses )
-	yuiMilestone () << "Using UI-backend: \"" << YUIPlugin_NCurses << "\". Forced on command-line." << std::endl;
-    bool wantQt = cmdline.find("--qt") != -1;
-    if( wantQt )
-	yuiMilestone () << "Using UI-backend: \"" << YUIPlugin_Qt << "\". Forced on command-line." << std::endl;
-    bool wantGtk = cmdline.find("--gtk") != -1;
-    if( wantGtk )
-	yuiMilestone () << "Using UI-backend: \"" << YUIPlugin_Gtk << "\". Forced on command-line." << std::endl;
+    bool wantGtk      = ( cmdline.find( "--gtk" )     != -1 );
+    bool wantNcurses  = ( cmdline.find( "--ncurses" ) != -1 );
+    bool wantQt       = ( cmdline.find( "--qt" )      != -1 );
+    bool haveUIPreset = ( wantGtk || wantNcurses || wantQt );
 
-    bool haveQt = pluginExists( YUIPlugin_Qt );
-    bool haveGtk = pluginExists( YUIPlugin_Gtk );
+    if( !haveUIPreset )
+    {
+	wantGtk     = ( strcmp( envPreset, YUIPlugin_Gtk )     == 0 );
+	wantNcurses = ( strcmp( envPreset, YUIPlugin_NCurses ) == 0 );
+	wantQt      = ( strcmp( envPreset, YUIPlugin_Qt )      == 0 );
+    }
 
-    if ( envDisplay && !wantNcurses )
+    if( wantGtk )     wantedGUI = YUIPlugin_Gtk;
+    if( wantNcurses ) wantedGUI = YUIPlugin_NCurses;
+    if( wantQt )      wantedGUI = YUIPlugin_Qt;
+
+    yuiMilestone () << "User-selected UI-plugin: \"" << wantedGUI << "\"" << std::endl;
+
+    bool haveGtk     = pluginExists( YUIPlugin_Gtk );
+    bool haveNcurses = pluginExists( YUIPlugin_NCurses );
+    bool haveQt      = pluginExists( YUIPlugin_Qt );
+
+    // This reset is intentional, so the loader can work it's magic
+    // selecting an UI-plugin as described in the documentation.
+    wantedGUI="";
+
+    // Set the UI-Plugin
+    if ( ( haveGtk || haveQt ) && strcmp ( envDisplay, "" ) &&
+	 ( !wantNcurses || !isatty( STDOUT_FILENO ) ) )
     {
 	// Qt is default if available.
 	if ( haveQt )
-	   wantedGUI = YUIPlugin_Qt;
+	    wantedGUI = YUIPlugin_Qt;
 
 	// Do we want to use Gtk instead?
-	if ( haveGtk && ( isGtk || wantGtk ) && !wantQt )
-	   wantedGUI = YUIPlugin_Gtk;
-
-	if ( strcmp( wantedGUI.c_str(), "" ) )
-	{
-	   yuiMilestone () << "Using UI-backend: \"" << wantedGUI << "\""<< std::endl;
-	   try
-	   {
-	      YSettings::loadedUI( wantedGUI, true );
-	      loadPlugin( wantedGUI, withThreads );
-	      return;
-	   }
-	   catch ( YUIException & ex )
-	   {
-	      YUI_CAUGHT( ex );
-	   }
-	}
+	if ( haveGtk && ( ( ( isGtk || wantGtk ) && !wantQt ) || !haveQt ) )
+	    wantedGUI = YUIPlugin_Gtk;
     }
 
-    if ( isatty( STDOUT_FILENO ) )
+    else if ( haveNcurses && isatty( STDOUT_FILENO ) )
     {
-	//
-	// NCurses UI
-	//
-
+	// We use NCurses.
 	wantedGUI = YUIPlugin_NCurses;
-	yuiMilestone () << "Using UI-backend: \"" << wantedGUI << "\""<< std::endl;
+    }
+
+    // Load the wanted UI-plugin.
+    if( wantedGUI != "" )
+    {
+	yuiMilestone () << "Using UI-plugin: \"" << wantedGUI << "\""<< std::endl;
+	YSettings::loadedUI( wantedGUI, true );
 
 	try
 	{
-	    YSettings::loadedUI( wantedGUI, true );
 	    loadPlugin( wantedGUI, withThreads );
 	    return;
 	}
+
 	catch ( YUIException & ex )
 	{
 	    YUI_CAUGHT( ex );
+
+	    // Default to NCurses, if possible.
+	    if( wantedGUI != YUIPlugin_NCurses && haveNcurses && isatty( STDOUT_FILENO ) )
+	    {
+		yuiWarning () << "Defaulting to: \"" << YUIPlugin_NCurses << "\""<< std::endl;
+		YSettings::loadedUI( YUIPlugin_NCurses, true );
+
+		try
+		{
+		    loadPlugin( YUIPlugin_NCurses, withThreads );
+		    return;
+		}
+
+		catch ( YUIException & ex )
+		{
+		    YUI_CAUGHT( ex );
+		}
+	    }
+
 	    YUI_RETHROW( ex ); // what else to do here?
 	}
     }
+
     else
     {
 	YUI_THROW( YUICantLoadAnyUIException() );
@@ -197,15 +221,25 @@ void YUILoader::loadExternalWidgets ( const std::string& name, const std::string
     wantedGUI.append( "-" );
     wantedGUI.append( YSettings::loadedUI() );
 
-    try
+    bool haveExternal = pluginExists( wantedGUI );
+
+    if( haveExternal )
     {
-        loadExternalWidgetsPlugin(name, wantedGUI, symbol );
-        return;
+	try
+	{
+	    loadExternalWidgetsPlugin(name, wantedGUI, symbol );
+	    return;
+	}
+	catch ( YUIException & ex )
+	{
+	    YUI_CAUGHT( ex );
+	    YUI_RETHROW( ex ); // what else to do here?
+	}
     }
-    catch ( YUIException & ex )
+
+    else
     {
-        YUI_CAUGHT( ex );
-        YUI_RETHROW( ex ); // what else to do here?
+	YUI_THROW( YUICantLoadAnyUIException() );
     }
 }
 
