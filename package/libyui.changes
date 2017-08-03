@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Aug  3 12:51:02 CEST 2017 - besser82@fedoraproject.org
+
+- CMake 3.9 warns about CMP0028 being obsolete
+- 3.3.3
+
+-------------------------------------------------------------------
 Fri Apr 14 11:02:37 CEST 2017 - besser82@fedoraproject.org
 
 - Add $(ENV:YUI_PREFERED_BACKEND) to set prefered UI-backend
