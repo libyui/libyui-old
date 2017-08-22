@@ -68,3 +68,12 @@ Then to build the package run:
 ```
 rake osc:build
 ```
+
+### Versioning
+
+Changing `SONAME_MAJOR` in VERSION.cmake currently means that you must also
+change `so_version` in libyui.spec *and also in **all** other* libyui-*.spec
+files in the other repositories. Yes, such a design is suboptimal.
+
+This is because the program-libyui API is not distinct
+from the libyui-plugin API.
