@@ -29,6 +29,7 @@
 
 #include <YDialogSpy.h>
 #include <YWidgetFactory.h>
+#include <YWidgetID.h>
 #include <YDialog.h>
 #include <YEvent.h>
 #include <YTable.h>
@@ -418,9 +419,8 @@ void YDialogSpyPrivate::refreshProperties()
 
     auto widget = selectedWidget();
     if (!widget) return;
-
+    YItemCollection items;
 	auto propSet = widget->propertySet();
-	YItemCollection items;
 	items.reserve( propSet.size() );
 
 	for ( YPropertySet::const_iterator it = propSet.propertiesBegin();

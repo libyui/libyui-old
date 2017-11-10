@@ -32,7 +32,7 @@ BuildRequires:  cmake >= 2.8
 BuildRequires:  gcc-c++
 BuildRequires:  pkg-config
 
-Url:            http://github.com/libyui/
+Url:            http://github.com/rwx788/
 Summary:        GUI-abstraction library
 License:        LGPL-2.1 or LGPL-3.0
 Group:          System/Libraries
@@ -52,7 +52,7 @@ Provides:       yast2-libyui = 2.42.0
 Obsoletes:      yast2-libyui < 2.42.0
 Requires:       yui_backend = %{so_version}
 
-Url:            http://github.com/libyui/
+Url:            http://github.com/rwx788/
 Summary:        Libyui - GUI-abstraction library
 Group:          System/Libraries
 
@@ -65,7 +65,6 @@ Originally developed for YaST, it can now be used independently of
 YaST for generic (C++) applications. This package has very few
 dependencies.
 
-
 %package devel
 
 %if 0%{?suse_version} > 1325
@@ -77,7 +76,7 @@ Requires:       glibc-devel
 Requires:       libstdc++-devel
 Requires:       %{bin_name} = %{version}
 
-Url:            http://github.com/libyui/
+Url:            http://github.com/rwx788/
 Summary:        Libyui header files
 Group:          Development/Languages/C and C++
 
@@ -92,7 +91,6 @@ dependencies.
 
 This can be used independently of YaST for generic (C++) applications.
 This package has very few dependencies.
-
 
 %prep
 %setup -q -n %{name}-%{version}

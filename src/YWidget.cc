@@ -402,6 +402,7 @@ YWidget::propertySet()
 	 * @property boolean		ContextMenu	the current contextmenu state (see also `opt( `notifyContextMenu ))
 	 * @property std::string	WidgetClass	the widget class of this widget (YLabel, YPushButton, ...)
 	 * @property std::string	DebugLabel	(possibly translated) text describing this widget for debugging
+         * @property std::string	ID       	widget id as a read-only property
 	 * @property std::string	HelpText	help text
 	 * @property integer		HWeight		horizontal layout weight (same as `HWeight(widget())
 	 * @property integer		VWeight		vertical   layout weight (same as `VWeight(widget())
@@ -413,6 +414,7 @@ YWidget::propertySet()
 	propSet.add( YProperty( YUIProperty_Notify,		YBoolProperty	 ) );
 	propSet.add( YProperty( YUIProperty_WidgetClass,	YStringProperty, true	) ); // read-only
 	propSet.add( YProperty( YUIProperty_DebugLabel,		YStringProperty, true	) ); // read-only
+        propSet.add( YProperty( YUIProperty_ID,		        YStringProperty, true	) ); // read-only
 	propSet.add( YProperty( YUIProperty_HelpText,		YStringProperty  ) );
 	propSet.add( YProperty( YUIProperty_HWeight,		YIntegerProperty ) );
 	propSet.add( YProperty( YUIProperty_VWeight,		YIntegerProperty ) );
@@ -472,6 +474,7 @@ YWidget::getProperty( const std::string & propertyName )
     if ( propertyName == YUIProperty_VWeight		) return YPropertyValue( weight( YD_VERT  ) );
     if ( propertyName == YUIProperty_HStretch		) return YPropertyValue( stretchable( YD_HORIZ ) );
     if ( propertyName == YUIProperty_VStretch		) return YPropertyValue( stretchable( YD_VERT  ) );
+    if ( propertyName == YUIProperty_ID	&& this->hasId() ) return YPropertyValue(this->id()->toString());
 
     return YPropertyValue( false ); // NOTREACHED
 }
