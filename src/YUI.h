@@ -230,6 +230,15 @@ public:
      **/
     virtual YEvent * runPkgSelection( YWidget * packageSelector ) = 0;
 
+    /**
+     * Send a widget ID. This implementation simply sets the keyboard focus to
+     * that widget.  If there is no widget with that ID, this will throw a
+     * YUIWidgetNotFoundException.  This function returns the widget that was
+     * found in case the caller wants to do more with it than just set the
+     * keyboard focus to it.
+     **/
+    YWidget * sendWidgetID( const std::string & id );
+
 
 protected:
 

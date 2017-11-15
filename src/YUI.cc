@@ -47,6 +47,7 @@
 #include "YButtonBox.h"
 #include "YEnvVar.h"
 #include "YBuiltinCaller.h"
+#include "YWidgetID.h"
 
 using std::endl;
 
@@ -475,6 +476,31 @@ void YUI::setButtonOrderFromEnvironment()
 		       << endl;
     }
 }
+
+
+YWidget *
+YUI::sendWidgetID( const std::string & id_str )
+{
+    yuiMilestone() << "Sending ID \"" << id_str << "\"" << endl;
+    YWidget * widget = 0;
+
+    try
+    {
+        YDialog * dialog = YDialog::currentDialog(); // may throw
+        YStringWidgetID id( id_str );
+        widget = dialog->findWidget( &id );
+        widget->setKeyboardFocus();
+    }
+    catch ( YUINoDialogException & ex )
+    {
+        YUI_CAUGHT( ex );
+    }
+    // Cascading any YUIWidgetNotFoundException one level up
+
+    return widget;
+}
+
+
 
 
 //
