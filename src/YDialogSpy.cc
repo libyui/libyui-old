@@ -419,44 +419,44 @@ void YDialogSpyPrivate::refreshProperties()
 
     auto widget = selectedWidget();
     if (!widget) return;
+    items.reserve( propSet.size() );
+    auto propSet = widget->propertySet();
     YItemCollection items;
-	auto propSet = widget->propertySet();
-	items.reserve( propSet.size() );
 
-	for ( YPropertySet::const_iterator it = propSet.propertiesBegin();
-	      it != propSet.propertiesEnd();
-	      ++it )
-	{
-	    YProperty		prop    = *it;
-	    YPropertyValue	propVal = widget->getProperty( prop.name() );
-	    std::string		propValStr;
+    for ( YPropertySet::const_iterator it = propSet.propertiesBegin();
+          it != propSet.propertiesEnd();
+          ++it )
+    {
+        YProperty	prop    = *it;
+        YPropertyValue	propVal = widget->getProperty( prop.name() );
+        std::string	propValStr;
 
-	    switch ( prop.type() )
-	    {
-		case YStringProperty:
-		    propValStr = propVal.stringVal();
-		    break;
+        switch ( prop.type() )
+        {
+            case YStringProperty:
+                propValStr = propVal.stringVal();
+                break;
 
-		case YBoolProperty:
-		    propValStr = propVal.boolVal() ? "true" : "false";
-		    break;
+            case YBoolProperty:
+                propValStr = propVal.boolVal() ? "true" : "false";
+                break;
 
-		case YIntegerProperty:
-			propValStr = std::to_string(propVal.integerVal());
-		    break;
+            case YIntegerProperty:
+                propValStr = std::to_string(propVal.integerVal());
+                break;
 
-		default:
-		    propValStr = "???";
-		    break;
-	    }
+            default:
+                propValStr = "???";
+                break;
+        }
 
-	    auto item = new YTableItem( prop.name(), propValStr, prop.typeAsStr() );
-	    YUI_CHECK_NEW( item );
-	    items.push_back( item );
-	}
+        auto item = new YTableItem( prop.name(), propValStr, prop.typeAsStr() );
+        YUI_CHECK_NEW( item );
+        items.push_back( item );
+    }
 
-	propTable->addItems( items );
-	propTable->deselectAllItems();
+    propTable->addItems( items );
+    propTable->deselectAllItems();
 }
 
 /**
