@@ -32,7 +32,7 @@ BuildRequires:  cmake >= 2.8
 BuildRequires:  gcc-c++
 BuildRequires:  pkg-config
 
-Url:            http://github.com/rwx788/
+Url:            http://github.com/libyui/
 Summary:        GUI-abstraction library
 License:        LGPL-2.1 or LGPL-3.0
 Group:          System/Libraries
@@ -52,7 +52,7 @@ Provides:       yast2-libyui = 2.42.0
 Obsoletes:      yast2-libyui < 2.42.0
 Requires:       yui_backend = %{so_version}
 
-Url:            http://github.com/rwx788/
+Url:            http://github.com/libyui/
 Summary:        Libyui - GUI-abstraction library
 Group:          System/Libraries
 
@@ -76,7 +76,7 @@ Requires:       glibc-devel
 Requires:       libstdc++-devel
 Requires:       %{bin_name} = %{version}
 
-Url:            http://github.com/rwx788/
+Url:            http://github.com/libyui/
 Summary:        Libyui header files
 Group:          Development/Languages/C and C++
 
