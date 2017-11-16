@@ -1,5 +1,5 @@
 -------------------------------------------------------------------
-Wed Nov 15 17:06:20 CET 2017 - shundhammer@suse.de
+Wed Nov 15 17:06:20 CEST 2017 - shundhammer@suse.de
 
 - Support for sending a widget ID with Shift-F6 for automated testing
   (fate#324098)
@@ -1010,7 +1010,7 @@ Thu Jun 21 12:30:00 CEST 2007 - sh@suse.de
   - void setShrinkable( bool shrinkable = true );
 
 -------------------------------------------------------------------
-Thu Jan  1 00:00:00 CET 1970 - sh@suse.de
+Wed Jun 21 00:00:00 CEST 2007 - sh@suse.de
 
 * Parameter YRadioButtonGroup now obsolete:
 
