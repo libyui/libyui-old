@@ -406,6 +406,8 @@ bool YDialogSpyPrivate::toggleProperties()
 
     return ret;
 }
+
+
 /**
  * Refresh the displayed properties
  */
@@ -416,12 +418,14 @@ void YDialogSpyPrivate::refreshProperties()
 	return;
 
     propTable->deleteAllItems();
-
     auto widget = selectedWidget();
-    if (!widget) return;
-    items.reserve( propSet.size() );
-    auto propSet = widget->propertySet();
+
+    if ( !widget )
+        return;
+
     YItemCollection items;
+    auto propSet = widget->propertySet();
+    items.reserve( propSet.size() );
 
     for ( YPropertySet::const_iterator it = propSet.propertiesBegin();
           it != propSet.propertiesEnd();
