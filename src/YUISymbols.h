@@ -177,6 +177,7 @@
 #define YUIProperty_InputMaxLength		"InputMaxLength"
 #define YUIProperty_HWeight			"HWeight"
 #define YUIProperty_HStretch			"HStretch"
+#define YUIProperty_ID   			"ID"
 #define YUIProperty_Item			"Item"
 #define YUIProperty_Items			"Items"
 #define YUIProperty_Label			"Label"

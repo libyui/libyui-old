@@ -29,6 +29,7 @@
 
 #include <YDialogSpy.h>
 #include <YWidgetFactory.h>
+#include <YWidgetID.h>
 #include <YDialog.h>
 #include <YEvent.h>
 #include <YTable.h>
@@ -405,6 +406,8 @@ bool YDialogSpyPrivate::toggleProperties()
 
     return ret;
 }
+
+
 /**
  * Refresh the displayed properties
  */
@@ -415,48 +418,49 @@ void YDialogSpyPrivate::refreshProperties()
 	return;
 
     propTable->deleteAllItems();
-
     auto widget = selectedWidget();
-    if (!widget) return;
 
-	auto propSet = widget->propertySet();
-	YItemCollection items;
-	items.reserve( propSet.size() );
+    if ( !widget )
+        return;
 
-	for ( YPropertySet::const_iterator it = propSet.propertiesBegin();
-	      it != propSet.propertiesEnd();
-	      ++it )
-	{
-	    YProperty		prop    = *it;
-	    YPropertyValue	propVal = widget->getProperty( prop.name() );
-	    std::string		propValStr;
+    YItemCollection items;
+    auto propSet = widget->propertySet();
+    items.reserve( propSet.size() );
 
-	    switch ( prop.type() )
-	    {
-		case YStringProperty:
-		    propValStr = propVal.stringVal();
-		    break;
+    for ( YPropertySet::const_iterator it = propSet.propertiesBegin();
+          it != propSet.propertiesEnd();
+          ++it )
+    {
+        YProperty	prop    = *it;
+        YPropertyValue	propVal = widget->getProperty( prop.name() );
+        std::string	propValStr;
 
-		case YBoolProperty:
-		    propValStr = propVal.boolVal() ? "true" : "false";
-		    break;
+        switch ( prop.type() )
+        {
+            case YStringProperty:
+                propValStr = propVal.stringVal();
+                break;
 
-		case YIntegerProperty:
-			propValStr = std::to_string(propVal.integerVal());
-		    break;
+            case YBoolProperty:
+                propValStr = propVal.boolVal() ? "true" : "false";
+                break;
 
-		default:
-		    propValStr = "???";
-		    break;
-	    }
+            case YIntegerProperty:
+                propValStr = std::to_string(propVal.integerVal());
+                break;
 
-	    auto item = new YTableItem( prop.name(), propValStr, prop.typeAsStr() );
-	    YUI_CHECK_NEW( item );
-	    items.push_back( item );
-	}
+            default:
+                propValStr = "???";
+                break;
+        }
 
-	propTable->addItems( items );
-	propTable->deselectAllItems();
+        auto item = new YTableItem( prop.name(), propValStr, prop.typeAsStr() );
+        YUI_CHECK_NEW( item );
+        items.push_back( item );
+    }
+
+    propTable->addItems( items );
+    propTable->deselectAllItems();
 }
 
 /**

@@ -16,7 +16,7 @@
 #
 
 Name:           libyui
-Version:        3.3.3
+Version:        3.4.0
 Release:        0
 Source:         %{name}-%{version}.tar.bz2
 
@@ -65,7 +65,6 @@ Originally developed for YaST, it can now be used independently of
 YaST for generic (C++) applications. This package has very few
 dependencies.
 
-
 %package devel
 
 %if 0%{?suse_version} > 1325
@@ -92,7 +91,6 @@ dependencies.
 
 This can be used independently of YaST for generic (C++) applications.
 This package has very few dependencies.
-
 
 %prep
 %setup -q -n %{name}-%{version}
