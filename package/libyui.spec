@@ -16,7 +16,7 @@
 #
 
 Name:           libyui
-Version:        4.0.0
+Version:        3.4.0
 Release:        0
 Source:         %{name}-%{version}.tar.bz2
 

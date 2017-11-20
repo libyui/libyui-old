@@ -1,9 +1,9 @@
 -------------------------------------------------------------------
-Wed Nov 15 17:06:20 CEST 2017 - shundhammer@suse.de
+Wed Nov 15 15:06:20 UTC 2017 - shundhammer@suse.de
 
 - Support for sending a widget ID with Shift-F6 for automated testing
   (fate#324098)
-- 4.0.0
+- 3.4.0
 
 -------------------------------------------------------------------
 Thu Aug  3 12:51:02 CEST 2017 - besser82@fedoraproject.org
