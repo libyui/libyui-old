@@ -687,7 +687,7 @@ YDialog::showText( const std::string & text, bool useRichText )
 	dialog->waitForEvent();
 	dialog->destroy();
     }
-    catch ( YUIException exception )
+    catch ( const YUIException & exception )
     {
 	// Don't let the application die just because help couldn't be displayed.
 
@@ -811,7 +811,7 @@ YDialog::showRelNotesText()
 	}
         dialog->destroy();
     }
-    catch ( YUIException exception )
+    catch ( const YUIException & exception )
     {
         // Don't let the application die just because RN couldn't be displayed.
 

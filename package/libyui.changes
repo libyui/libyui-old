@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed May  9 07:34:16 UTC 2018 - mliska@suse.cz
+
+- Fix GCC 8 warning: -Werror=catch-value.
+- 3.4.1
+
+-------------------------------------------------------------------
 Wed Nov 15 15:06:20 UTC 2017 - shundhammer@suse.de
 
 - Support for sending a widget ID with Shift-F6 for automated testing
