@@ -6,4 +6,4 @@
 
 require "libyui/rake"
 
-Libyui::Tasks.submit_to :sle12sp3
+Libyui::Tasks.submit_to :sle12sp4
