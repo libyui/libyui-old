@@ -27,7 +27,7 @@
 
 #include "YWidget.h"
 
-class YLogViewPrivate;
+struct YLogViewPrivate;
 
 
 /**

@@ -27,7 +27,7 @@
 
 #include "YWidget.h"
 
-class YPushButtonPrivate;
+struct YPushButtonPrivate;
 
 
 

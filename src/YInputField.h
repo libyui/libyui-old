@@ -28,7 +28,7 @@
 #include <string>
 #include "YWidget.h"
 
-class YInputFieldPrivate;
+struct YInputFieldPrivate;
 
 
 

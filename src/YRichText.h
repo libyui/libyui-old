@@ -30,7 +30,7 @@
 #include "ImplPtr.h"
 
 
-class YRichTextPrivate;
+struct YRichTextPrivate;
 
 
 /**

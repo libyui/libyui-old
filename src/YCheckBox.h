@@ -30,7 +30,7 @@
 #include "YWidget.h"
 #include "ImplPtr.h"
 
-class YCheckBoxPrivate;
+struct YCheckBoxPrivate;
 
 enum YCheckBoxState
 {

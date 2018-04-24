@@ -27,7 +27,7 @@
 
 #include "YSelectionWidget.h"
 
-class YComboBoxPrivate;
+struct YComboBoxPrivate;
 
 
 /**

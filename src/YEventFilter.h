@@ -32,7 +32,7 @@
 class YEvent;
 class YDialog;
 
-class YEventFilterPrivate;
+struct YEventFilterPrivate;
 
 
 /**

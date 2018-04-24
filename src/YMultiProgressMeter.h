@@ -28,7 +28,7 @@
 #include "YWidget.h"
 #include <vector>
 
-class YMultiProgressMeterPrivate;
+struct YMultiProgressMeterPrivate;
 
 
 /**

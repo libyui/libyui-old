@@ -28,7 +28,7 @@
 #include "YSelectionWidget.h"
 
 class YTreeItem;
-class YTreePrivate;
+struct YTreePrivate;
 
 
 /**

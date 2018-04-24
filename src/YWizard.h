@@ -28,7 +28,7 @@
 #include "YWidget.h"
 
 class YMacroRecorder;
-class YWizardPrivate;
+struct YWizardPrivate;
 class YPushButton;
 class YReplacePoint;
 

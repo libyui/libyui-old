@@ -27,7 +27,7 @@
 
 #include "YSelectionWidget.h"
 
-class YDumbTabPrivate;
+struct YDumbTabPrivate;
 
 /**
  * DumbTab: A very simple tab widget that can display and switch between a

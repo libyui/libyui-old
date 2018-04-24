@@ -30,7 +30,7 @@
 #include "YTableItem.h"
 #include "YTableHeader.h"
 
-class YTablePrivate;
+struct YTablePrivate;
 
 
 

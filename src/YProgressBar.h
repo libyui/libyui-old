@@ -27,7 +27,7 @@
 
 #include "YWidget.h"
 
-class YProgressBarPrivate;
+struct YProgressBarPrivate;
 
 
 /**

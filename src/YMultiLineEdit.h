@@ -27,7 +27,7 @@
 
 #include "YWidget.h"
 
-class YMultiLineEditPrivate;
+struct YMultiLineEditPrivate;
 
 /**
  * A multi-line plain-text area

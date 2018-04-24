@@ -28,7 +28,7 @@
 #include "YWidget.h"
 
 class YRadioButtonGroup;
-class YRadioButtonPrivate;
+struct YRadioButtonPrivate;
 
 
 /**

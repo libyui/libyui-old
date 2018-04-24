@@ -45,7 +45,7 @@ typedef YChildrenManager<YWidget>	YWidgetChildrenManager;
 typedef YSingleChildManager<YWidget>	YSingleWidgetChildManager;
 typedef YChildrenRejector<YWidget>	YWidgetChildrenRejector;
 
-class YWidgetPrivate;
+struct YWidgetPrivate;
 
 
 /**

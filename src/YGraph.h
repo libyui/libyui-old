@@ -37,7 +37,7 @@
  * For that reason a lot of functions simply take a void* instead of graph_t*.
  */
 
-class YGraphPrivate;
+struct YGraphPrivate;
 
 /**
  * A graph with nodes and edges, rendered with Graphviz.

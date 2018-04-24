@@ -27,7 +27,7 @@
 
 #include "YSimpleInputField.h"
 
-class YTimeFieldPrivate;
+struct YTimeFieldPrivate;
 
 
 /**

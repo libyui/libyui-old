@@ -27,7 +27,7 @@
 
 #include "YIntField.h"
 
-class YSliderPrivate;
+struct YSliderPrivate;
 
 
 /**

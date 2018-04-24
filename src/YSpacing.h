@@ -28,7 +28,7 @@
 #include "YWidget.h"
 #include "ImplPtr.h"
 
-class YSpacingPrivate;
+struct YSpacingPrivate;
 
 
 /**

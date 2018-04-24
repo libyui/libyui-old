@@ -29,7 +29,7 @@
 #include "YItem.h"
 #include "ImplPtr.h"
 
-class YSelectionWidgetPrivate;
+struct YSelectionWidgetPrivate;
 
 /**
  * Base class for various kinds of multi-value widgets.

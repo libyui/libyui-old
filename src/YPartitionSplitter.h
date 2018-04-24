@@ -28,7 +28,7 @@
 #include "YWidget.h"
 
 
-class YPartitionSplitterPrivate;
+struct YPartitionSplitterPrivate;
 
 
 /**

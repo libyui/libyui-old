@@ -28,7 +28,7 @@
 #include <string>
 #include "ImplPtr.h"
 
-class YCommandLinePrivate;
+struct YCommandLinePrivate;
 
 
 /**

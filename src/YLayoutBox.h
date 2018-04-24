@@ -29,7 +29,7 @@
 #include "YWidget.h"
 
 
-class YLayoutBoxPrivate;
+struct YLayoutBoxPrivate;
 
 /**
  * A vertical or horizontal stacking of widgets, implementing HBox and VBox.

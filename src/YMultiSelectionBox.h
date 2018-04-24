@@ -27,7 +27,7 @@
 
 #include "YSelectionWidget.h"
 
-class YMultiSelectionBoxPrivate;
+struct YMultiSelectionBoxPrivate;
 
 
 /**

@@ -32,7 +32,7 @@
 
 class YTimezoneSelectorPrivate
 {
-   bool dummy;
+//   bool dummy;
 };
 
 

@@ -29,7 +29,7 @@
 #include "ImplPtr.h"
 
 
-class YSquashPrivate;
+struct YSquashPrivate;
 
 /**
  * HSquash, VSquash HVSquash: reduce child to its preferred size.

@@ -29,7 +29,7 @@
 #include "ImplPtr.h"
 
 
-class YEmptyPrivate;
+struct YEmptyPrivate;
 
 /**
  * A widget with zero size, useful as a placeholder.

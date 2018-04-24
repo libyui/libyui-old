@@ -64,7 +64,7 @@
 
 
 
-class YUILogPrivate;
+struct YUILogPrivate;
 
 enum YUILogLevel_t
 {

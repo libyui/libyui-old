@@ -29,7 +29,7 @@
 #include "YColor.h"
 
 
-class YBarGraphPrivate;
+struct YBarGraphPrivate;
 class YBarGraphSegment;
 
 /**

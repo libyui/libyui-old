@@ -32,7 +32,7 @@
 
 class YShortcutManager;
 class YPushButton;
-class YDialogPrivate;
+struct YDialogPrivate;
 class YEvent;
 class YEventFilter;
 

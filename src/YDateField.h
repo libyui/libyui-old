@@ -27,7 +27,7 @@
 
 #include "YSimpleInputField.h"
 
-class YDateFieldPrivate;
+struct YDateFieldPrivate;
 
 /**
  * Input field for entering a date.

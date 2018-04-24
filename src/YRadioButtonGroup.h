@@ -28,7 +28,7 @@
 #include "YSingleChildContainerWidget.h"
 
 class YRadioButton;
-class YRadioButtonGroupPrivate;
+struct YRadioButtonGroupPrivate;
 
 typedef std::list<YRadioButton *> 		YRadioButtonList;
 typedef YRadioButtonList::iterator		YRadioButtonListIterator;

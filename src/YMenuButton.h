@@ -29,7 +29,7 @@
 #include "YMenuItem.h"
 
 class YMenuItem;
-class YMenuButtonPrivate;
+struct YMenuButtonPrivate;
 
 
 /**

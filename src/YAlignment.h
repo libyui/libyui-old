@@ -28,7 +28,7 @@
 #include "YSingleChildContainerWidget.h"
 
 
-class YAlignmentPrivate;
+struct YAlignmentPrivate;
 
 /**
  * Implementation of all the alignment widgets:

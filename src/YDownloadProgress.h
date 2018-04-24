@@ -28,7 +28,7 @@
 #include "YWidget.h"
 
 
-class YDownloadProgressPrivate;
+struct YDownloadProgressPrivate;
 
 /**
  * DownloadProgress: A progress bar that monitors downloading a file by

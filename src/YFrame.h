@@ -29,7 +29,7 @@
 #include "YSingleChildContainerWidget.h"
 #include "ImplPtr.h"
 
-class YFramePrivate;
+struct YFramePrivate;
 
 
 /**

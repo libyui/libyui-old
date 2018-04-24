@@ -30,7 +30,7 @@
 #include "ImplPtr.h"
 
 
-class YLabelPrivate;
+struct YLabelPrivate;
 
 /**
  * Implementation of the Label, Heading and OutputField widgets

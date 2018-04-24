@@ -30,7 +30,7 @@
 #include "YWidget.h"
 #include "YPushButton.h"
 
-class YButtonBoxPrivate;
+struct YButtonBoxPrivate;
 class YPushButton;
 
 
@@ -147,7 +147,7 @@ struct YButtonBoxMargins
  **/
 class YButtonBox : public YWidget
 {
-    friend class YButtonBoxPrivate;
+    friend struct YButtonBoxPrivate;
 
 protected:
     /**

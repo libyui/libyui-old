@@ -29,7 +29,7 @@
 #include <string>
 
 
-class YImagePrivate;
+struct YImagePrivate;
 
 /**
  * A picture, possibly animated, loaded from a file.

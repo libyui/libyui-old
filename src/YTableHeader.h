@@ -31,7 +31,7 @@
 
 
 
-class YTableHeaderPrivate;
+struct YTableHeaderPrivate;
 
 /**
  * Helper class for YTable for table column properties:
