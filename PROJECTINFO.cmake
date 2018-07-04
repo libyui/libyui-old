@@ -4,7 +4,7 @@ SET( BASELIB		"yui" )		# don't change this
 
 ##### MAKE ALL NEEDED CHANGES HERE #####
 
-SET( SUBDIRS		src examples )
+SET( SUBDIRS		src examples tests )
 SET( LIB_DEPS		Boost )
 SET( LIB_LINKER		dl pthread )
 SET( EXTRA_INCLUDES     )         # set include-dir which are not picked by CMake automagically here.

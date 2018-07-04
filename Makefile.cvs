@@ -2,6 +2,11 @@
 # Makefile.cvs
 #
 
+# enable coverage if $COVERAGE is set to 1
+ifeq ($(COVERAGE), 1)
+EXTRA_PARAMS := -DENABLE_CODE_COVERAGE=ON
+endif
+
 all: configure
 
 configure: clean
@@ -9,7 +14,7 @@ configure: clean
 	mkdir build ; \
 	cd build ; \
 	cmake .. \
-	-DCMAKE_BUILD_TYPE=RELEASE
+	-DCMAKE_BUILD_TYPE=RELEASE $(EXTRA_PARAMS)
 
 install: configure
 	cd build ; \
