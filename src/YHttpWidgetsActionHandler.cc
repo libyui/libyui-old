@@ -100,7 +100,6 @@ int YHttpWidgetsActionHandler::do_action(WidgetArray widgets, const std::string 
     }
     // enter input field text
     else if (action == "enter") {
-        // [&] == capture "value" variable by reference
         return action_handler<YInputField>(widgets, [&] (YInputField *input) {
             yuiMilestone() << "Setting value fot InputField \"" << input->label() << '"' << std::endl;
             input->setValue(value);

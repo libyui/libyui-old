@@ -1,10 +1,19 @@
 
 #include <json/json.h>
 
+#include "YButtonBox.h"
+#include "YComboBox.h"
 #include "YDialog.h"
 #include "YCheckBox.h"
+#include "YCheckBoxFrame.h"
+#include "YImage.h"
 #include "YInputField.h"
 #include "YIntField.h"
+#include "YLabel.h"
+#include "YLogView.h"
+#include "YMultiLineEdit.h"
+#include "YPackageSelector.h"
+#include "YProgressBar.h"
 #include "YRadioButton.h"
 #include "YSpacing.h"
 #include "YTable.h"
@@ -149,12 +158,17 @@ namespace
         if (auto tabitem = dynamic_cast<const YTableItem*>(yitem))
         {
             Json::Value icons, labels;
+            // add icons only if not empty
+            bool no_icon = true;
             std::for_each(tabitem->cellsBegin(), tabitem->cellsEnd(), [&](const YTableCell *ycell)
             {
+                no_icon &= ycell->iconName().empty();
                 icons.append(ycell->iconName());
                 labels.append(ycell->label());
             });
-            jitem["icons"] = icons;
+            if (!no_icon)
+                jitem["icons"] = icons;
+
             jitem["labels"] = labels;
         }
         // else if (auto treeitem = dynamic_cast<const YTreeItem*>(yitem))
@@ -190,12 +204,44 @@ namespace
 static void serialize_widget_specific_data(YWidget *widget, Json::Value &json) {
 
     // check all classes, some widgets might be derived from others
+    // TODO: group the base classes and the final classes
+    if (dynamic_cast<YButtonBox*>(widget))
+    {
+        YButtonBoxLayoutPolicy policy = YButtonBox::layoutPolicy();
+
+        std::string order;
+        switch ( policy.buttonOrder ) {
+        case YKDEButtonOrder    : order = "KDE"; break;
+        case YGnomeButtonOrder  : order = "Gnome"; break;
+        }
+
+        json["button_order"] = order;
+    }
+
+    if (auto cb = dynamic_cast<YComboBox*>(widget))
+    {
+        if (cb->editable())
+            json["editable"] = true;
+    }
+
     if (auto ch = dynamic_cast<YCheckBox*>(widget))
     {
         if (ch->value() == YCheckBoxState::YCheckBox_dont_care)
             json["value"] = nullptr;
         else
             json["value"] = ch->isChecked();
+    }
+
+    if (auto cbframe = dynamic_cast<YCheckBoxFrame*>(widget))
+    {
+        json["auto_enable"] = cbframe->autoEnable();
+    }
+
+    if (auto img = dynamic_cast<YImage*>(widget))
+    {
+        json["image_file_name"] = img->imageFileName();
+        json["animated"] = img->animated();
+        json["auto_scale"] = img->autoScale();
     }
 
     if (auto inp = dynamic_cast<YInputField*>(widget))
@@ -240,6 +286,39 @@ static void serialize_widget_specific_data(YWidget *widget, Json::Value &json) {
         }
     }
 
+    if (auto label = dynamic_cast<YLabel*>(widget))
+    {
+        json["is_heading"] = label->isHeading();
+        json["is_output_field"] = label->isOutputField();
+        json["use_bold_font"] = label->useBoldFont();
+    }
+
+    if (auto lv = dynamic_cast<YLogView*>(widget))
+    {
+        json["lines"] = lv->lines();
+        json["log_text"] = lv->logText();
+        json["max_lines"] = lv->maxLines();
+        json["visible_lines"] = lv->visibleLines();
+    }
+
+    if (auto mle = dynamic_cast<YMultiLineEdit*>(widget))
+    {
+        json["input_max_length"] = mle->inputMaxLength();
+        json["default_visible_lines"] = mle->defaultVisibleLines();
+    }
+
+    if (auto pkg = dynamic_cast<YPackageSelector*>(widget))
+    {
+        json["test_mode"] = pkg->testMode();
+        json["online_update_mode"] = pkg->onlineUpdateMode();
+        json["update_mode"] = pkg->updateMode();
+        json["search_mode"] = pkg->searchMode();
+        json["summary_mode"] = pkg->summaryMode();
+        json["repo_mode"] = pkg->repoMode();
+        json["repo_mgr_enabled"] = pkg->repoMgrEnabled();
+        json["confirm_unsupported"] = pkg->confirmUnsupported();
+    }
+
     if (auto selection = dynamic_cast<YSelectionWidget*>(widget))
     {
         json["items_count"] = selection->itemsCount();
@@ -254,6 +333,11 @@ static void serialize_widget_specific_data(YWidget *widget, Json::Value &json) {
         });
 
         json["items"] = items;
+    }
+
+    if (auto progress = dynamic_cast<YProgressBar*>(widget))
+    {
+        json["max_value"] = progress->maxValue();
     }
 
     if (auto tb = dynamic_cast<YTable*>(widget))
