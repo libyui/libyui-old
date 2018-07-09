@@ -39,8 +39,7 @@ void YHttpWidgetsHandler::body(struct MHD_Connection* connection,
         }
 
         if (widgets.empty()) {
-            // FIXME: use JSON here as well...
-            body << "Widget not found";
+            body << "{ \"error\" : \"Widget not found\" }" << std::endl;
             _error_code = MHD_HTTP_NOT_FOUND;
         }
         else {
