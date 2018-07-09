@@ -23,12 +23,12 @@ void YHttpDialogHandler::body(struct MHD_Connection* connection,
     const char* url, const char* method, const char* upload_data,
     size_t* upload_data_size, std::ostream& body)
 {
-    if (auto dialog = YDialog::topmostDialog())  {
+    if (auto dialog = YDialog::topmostDialog(false))  {
         YJsonSerializer::serialize(dialog, body);
         _error_code = MHD_HTTP_OK;
     }
     else {
-        body << "No dialog is open";
+        body << "{ \"error\" : \"No dialog is open\" }" << std::endl;
         _error_code = MHD_HTTP_NOT_FOUND;
     }
 }

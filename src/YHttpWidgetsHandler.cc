@@ -25,7 +25,7 @@ void YHttpWidgetsHandler::body(struct MHD_Connection* connection,
     const char* url, const char* method, const char* upload_data,
     size_t* upload_data_size, std::ostream& body)
 {
-    if (YDialog::topmostDialog())  {
+    if (YDialog::topmostDialog(false))  {
         WidgetArray widgets;
 
         if (const char* label = MHD_lookup_connection_value(connection, MHD_GET_ARGUMENT_KIND, "label"))
@@ -50,8 +50,7 @@ void YHttpWidgetsHandler::body(struct MHD_Connection* connection,
         }
     }
     else {
-        // FIXME: use JSON here as well...
-        body << "No dialog is open";
+        body << "{ \"error\" : \"No dialog is open\" }" << std::endl;
         _error_code = MHD_HTTP_NOT_FOUND;
     }
 }

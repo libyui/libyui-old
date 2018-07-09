@@ -24,7 +24,7 @@ void YHttpWidgetsActionHandler::body(struct MHD_Connection* connection,
     const char* url, const char* method, const char* upload_data,
     size_t* upload_data_size, std::ostream& body)
 {
-    if (YDialog::topmostDialog())  {
+    if (YDialog::topmostDialog(false))  {
         WidgetArray widgets;
 
         if (const char* label = MHD_lookup_connection_value(connection, MHD_GET_ARGUMENT_KIND, "label"))
@@ -38,8 +38,7 @@ void YHttpWidgetsActionHandler::body(struct MHD_Connection* connection,
         }
 
         if (widgets.empty()) {
-            // FIXME: use JSON here as well...
-            body << "Widget not found";
+            body << "{ \"error\" : \"Widget not found\" }" << std::endl;
             _error_code = MHD_HTTP_NOT_FOUND;
         }
         else if (const char* action = MHD_lookup_connection_value(connection, MHD_GET_ARGUMENT_KIND, "action"))
@@ -51,13 +50,12 @@ void YHttpWidgetsActionHandler::body(struct MHD_Connection* connection,
             _error_code = do_action(widgets, action, value, body);
         }
         else {
-            body << "Missing action parameter";
+            body << "{ \"error\" : \"Missing action parameter\" }" << std::endl;
             _error_code = MHD_HTTP_NOT_FOUND;
         }
     }
     else {
-        // FIXME: use JSON here as well...
-        body << "No dialog is open";
+        body << "{ \"error\" : \"No dialog is open\" }" << std::endl;
         _error_code = MHD_HTTP_NOT_FOUND;
     }
 }
