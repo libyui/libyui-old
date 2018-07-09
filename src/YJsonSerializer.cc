@@ -8,6 +8,8 @@
 #include "YRadioButton.h"
 #include "YSpacing.h"
 #include "YTable.h"
+#include "YTree.h"
+#include "YTreeItem.h"
 #include "YWidget.h"
 #include "YWidgetID.h"
 #include "YWizard.h"
@@ -71,6 +73,15 @@ void YJsonSerializer::serialize(const std::vector<YWidget*> &widgets, std::ostre
     save(array, output);
 }
 
+namespace {
+    void add_opt_string_property(YWidget *w, const std::string &name, Json::Value &json, const std::string &key)
+    {
+        // only when not empty
+        if (w->propertySet().contains(name) && !w->getProperty(name).stringVal().empty())
+            json[key] = w->getProperty(name).stringVal();
+    }
+}
+
 void serialize_widget_properties(YWidget *widget, Json::Value &json) {
     auto propSet = widget->propertySet();
 
@@ -83,28 +94,19 @@ void serialize_widget_properties(YWidget *widget, Json::Value &json) {
     if (propSet.contains("Label"))
         json["label"] = widget->getProperty("Label").stringVal();
 
-    if (propSet.contains("DebugLabel") && !widget->getProperty("DebugLabel").stringVal().empty())
-        json["debug_label"] = widget->getProperty("DebugLabel").stringVal();
-
     // only when false
     if (propSet.contains("Enabled") && !widget->getProperty("Enabled").boolVal())
         json["enabled"] = widget->getProperty("Enabled").boolVal();
-
-    // only if set
-    if (propSet.contains("ValidChars") && !widget->getProperty("ValidChars").stringVal().empty())
-        json["valid_chars"] = widget->getProperty("ValidChars").stringVal();
-
-    // only if set
-    if (propSet.contains("Text") && !widget->getProperty("Text").stringVal().empty())
-        json["text"] = widget->getProperty("Text").stringVal();
 
     // only when true
     if (propSet.contains("Notify") && widget->getProperty("Notify").boolVal())
         json["notify"] = widget->getProperty("Notify").boolVal();
 
-    // only when not empty
-    if (propSet.contains("IconPath") && !widget->getProperty("IconPath").stringVal().empty())
-        json["icon_path"] = widget->getProperty("IconPath").stringVal();
+    add_opt_string_property(widget, "DebugLabel", json, "debug_label");
+    add_opt_string_property(widget, "Text", json, "text");
+    add_opt_string_property(widget, "ValidChars", json, "valid_chars");
+    add_opt_string_property(widget, "IconPath", json, "icon_path");
+    add_opt_string_property(widget, "HelpText", json, "help_text");
 
     // only when set
     if (propSet.contains("InputMaxLength") && widget->getProperty("InputMaxLength").integerVal() >= 0)
@@ -136,9 +138,58 @@ void serialize_widget_data(YWidget *widget, Json::Value &json) {
         json["vweight"] = widget->weight(YD_VERT);
 }
 
+namespace
+{
+    void add_items_rec(Json::Value &jitem, const YItem *yitem)
+    {
+        if (yitem->selected())
+            jitem["selected"] = true;
+
+        // handle YTableItem specifically
+        if (auto tabitem = dynamic_cast<const YTableItem*>(yitem))
+        {
+            Json::Value icons, labels;
+            std::for_each(tabitem->cellsBegin(), tabitem->cellsEnd(), [&](const YTableCell *ycell)
+            {
+                icons.append(ycell->iconName());
+                labels.append(ycell->label());
+            });
+            jitem["icons"] = icons;
+            jitem["labels"] = labels;
+        }
+        // else if (auto treeitem = dynamic_cast<const YTreeItem*>(yitem))
+        // {
+        //     // TODO handle YTreeItem
+        // }
+        else
+        {
+            jitem["label"] = yitem->label();
+
+            if (yitem->hasIconName())
+                jitem["icon_name"] = yitem->iconName();
+        }
+
+        // this is mainly for the generic widgets like YSelectionBox, YComboBox,...
+        if (yitem->hasChildren())
+        {
+            Json::Value children;
+
+            // recursively add the children
+            std::for_each(yitem->childrenBegin(), yitem->childrenEnd(), [&](const YItem *ychild)
+            {
+                Json::Value child;
+                add_items_rec(child, ychild);
+                children.append(child);
+            });
+
+            jitem["children"] = children;
+        }
+    }
+}
 // widget specific data
 static void serialize_widget_specific_data(YWidget *widget, Json::Value &json) {
 
+    // check all classes, some widgets might be derived from others
     if (auto ch = dynamic_cast<YCheckBox*>(widget))
     {
         if (ch->value() == YCheckBoxState::YCheckBox_dont_care)
@@ -146,28 +197,34 @@ static void serialize_widget_specific_data(YWidget *widget, Json::Value &json) {
         else
             json["value"] = ch->isChecked();
     }
-    else if (auto inp = dynamic_cast<YInputField*>(widget))
+
+    if (auto inp = dynamic_cast<YInputField*>(widget))
     {
         json["value"] = inp->value();
+        json["password_mode"] = inp->passwordMode();
     }
-    else if (auto intf = dynamic_cast<YIntField*>(widget))
+
+    if (auto intf = dynamic_cast<YIntField*>(widget))
     {
         json["value"] = intf->value();
         json["min_value"] = intf->minValue();
         json["max_value"] = intf->maxValue();
     }
-    else if (auto rb = dynamic_cast<YRadioButton*>(widget))
+
+    if (auto rb = dynamic_cast<YRadioButton*>(widget))
     {
         json["value"] = rb->value();
     }
-    else if (auto sp = dynamic_cast<YSpacing*>(widget))
+
+    if (auto sp = dynamic_cast<YSpacing*>(widget))
     {
         if (sp->dimension() == YD_HORIZ)
             json["value"] = sp->preferredWidth();
         else
             json["value"] = sp->preferredHeight();
     }
-    else if (auto dg = dynamic_cast<YDialog*>(widget))
+
+    if (auto dg = dynamic_cast<YDialog*>(widget))
     {
         switch (dg->dialogType())
         {
@@ -182,7 +239,24 @@ static void serialize_widget_specific_data(YWidget *widget, Json::Value &json) {
                 break;
         }
     }
-    else if (auto tb = dynamic_cast<YTable*>(widget))
+
+    if (auto selection = dynamic_cast<YSelectionWidget*>(widget))
+    {
+        json["items_count"] = selection->itemsCount();
+        json["icon_base_path"] = selection->iconBasePath();
+
+        Json::Value items;
+        std::for_each(selection->itemsBegin(), selection->itemsEnd(), [&](const YItem *yitem)
+        {
+            Json::Value item;
+            add_items_rec(item, yitem);
+            items.append(item);
+        });
+
+        json["items"] = items;
+    }
+
+    if (auto tb = dynamic_cast<YTable*>(widget))
     {
         Json::Value header;
         for ( auto idx = 0; idx < tb->columns(); ++idx )
@@ -213,5 +287,10 @@ static void serialize_widget_specific_data(YWidget *widget, Json::Value &json) {
             alignment.append(alignment_str);
         }
         json["alignment"] = alignment;
+
+        json["columns"] = tb->columns();
+        json["immediate_mode"] = tb->immediateMode();
+        json["keep_sorting"] = tb->keepSorting();
+        json["hasMultiSelection"] = tb->hasMultiSelection();
     }
 }
