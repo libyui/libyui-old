@@ -288,9 +288,14 @@ static void serialize_widget_specific_data(YWidget *widget, Json::Value &json) {
 
     if (auto label = dynamic_cast<YLabel*>(widget))
     {
-        json["is_heading"] = label->isHeading();
-        json["is_output_field"] = label->isOutputField();
-        json["use_bold_font"] = label->useBoldFont();
+        if (label->isHeading())
+            json["is_heading"] = true;
+
+        if (label->isOutputField())
+            json["is_output_field"] = true;
+
+        if (label->useBoldFont())
+            json["use_bold_font"] = true;
     }
 
     if (auto lv = dynamic_cast<YLogView*>(widget))
