@@ -18,6 +18,7 @@
 #include "YPushButton.h"
 #include "YCheckBox.h"
 #include "YInputField.h"
+#include "YRadioButton.h"
 #include "YHttpWidgetsActionHandler.h"
 
 void YHttpWidgetsActionHandler::body(struct MHD_Connection* connection,
@@ -68,10 +69,13 @@ std::string YHttpWidgetsActionHandler::contentEncoding()
 int YHttpWidgetsActionHandler::do_action(WidgetArray widgets, const std::string &action, const std::string &value, std::ostream& body) {
     yuiMilestone() << "Starting action: " << action << std::endl;
 
+    // TODO improve this, maybe use better names for the actions...
+
     // press a button
     if (action == "press") {
         return action_handler<YPushButton>(widgets, [] (YPushButton *button) {
             yuiMilestone() << "Pressing button \"" << button->label() << '"' << std::endl;
+            button->setKeyboardFocus();
             button->activate();
         } );
     }
@@ -80,6 +84,7 @@ int YHttpWidgetsActionHandler::do_action(WidgetArray widgets, const std::string 
         return action_handler<YCheckBox>(widgets, [] (YCheckBox *checkbox) {
             if (checkbox->isChecked()) return;
             yuiMilestone() << "Checking \"" << checkbox->label() << '"' << std::endl;
+            checkbox->setKeyboardFocus();
             checkbox->setChecked(true);
         } );
     }
@@ -88,6 +93,7 @@ int YHttpWidgetsActionHandler::do_action(WidgetArray widgets, const std::string 
         return action_handler<YCheckBox>(widgets, [] (YCheckBox *checkbox) {
             if (!checkbox->isChecked()) return;
             yuiMilestone() << "Unchecking \"" << checkbox->label() << '"' << std::endl;
+            checkbox->setKeyboardFocus();
             checkbox->setChecked(false);
         } );
     }
@@ -95,14 +101,23 @@ int YHttpWidgetsActionHandler::do_action(WidgetArray widgets, const std::string 
     else if (action == "toggle") {
         return action_handler<YCheckBox>(widgets, [] (YCheckBox *checkbox) {
             yuiMilestone() << "Toggling \"" << checkbox->label() << '"' << std::endl;
+            checkbox->setKeyboardFocus();
             checkbox->setChecked(!checkbox->isChecked());
         } );
     }
     // enter input field text
     else if (action == "enter") {
         return action_handler<YInputField>(widgets, [&] (YInputField *input) {
-            yuiMilestone() << "Setting value fot InputField \"" << input->label() << '"' << std::endl;
+            yuiMilestone() << "Setting value for InputField \"" << input->label() << '"' << std::endl;
+            input->setKeyboardFocus();
             input->setValue(value);
+        } );
+    }
+    else if (action == "switch") {
+        return action_handler<YRadioButton>(widgets, [&] (YRadioButton *rb) {
+            yuiMilestone() << "Activating RadioButton \"" << rb->label() << '"' << std::endl;
+            rb->setKeyboardFocus();
+            rb->setValue(true);
         } );
     }
     // TODO: more actions
