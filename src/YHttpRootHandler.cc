@@ -15,13 +15,20 @@
 */
 
 #include "YHttpRootHandler.h"
+#include "YHttpServer.h"
+
 #include <microhttpd.h>
+#include <string>
+#include <boost/algorithm/string/replace.hpp>
 
 void YHttpRootHandler::body(struct MHD_Connection* connection,
     const char* url, const char* method, const char* upload_data,
     size_t* upload_data_size, std::ostream& body)
 {
-    body <<
+    // TODO: save this to a standalone HTML file, editing HTML in a C string
+    // literal is cumbersome, use bin2c or something like that for converting
+    // to a C source file...
+    std::string help =
 "<html>"
 "  <head><title>LibYUI Embedded Webserver</title></head>"
 "  <body>"
@@ -39,10 +46,10 @@ void YHttpRootHandler::body(struct MHD_Connection* connection,
 "      <p>JSON format</p>"
 "      <h4>Examples</h4>"
 "      <p>"
-"        <pre>  curl http://localhost/application</pre>"
+"        <pre>  curl http://localhost:@port@/application</pre>"
 "      </p>"
 "      <hr>"
-"      <h3>Dialog</h3>"
+"      <h3>Dump Whole Dialog</h3>"
 "      <p>Request: GET <a href='/dialog'>/dialog</a></p>"
 "      <h4>Description</h4>"
 "      <p>Get the complete dialog structure in the JSON format."
@@ -51,10 +58,11 @@ void YHttpRootHandler::body(struct MHD_Connection* connection,
 "      <p>JSON format</p>"
 "      <h4>Examples</h4>"
 "      <p>"
-"        <pre>  curl http://localhost/dialog</pre>"
+"        <pre>  curl http://localhost:@port@/dialog</pre>"
 "      </p>"
+
 "      <hr>"
-"      <h3>Specific Widgets</h3>"
+"      <h3>Read Specific Widgets</h3>"
 "      <p>Request: GET <a href='/widgets'>/widgets</a></p>"
 "      <h4>Description</h4>"
 "      <p>Return only the selected widgets (in JSON format). The result is"
@@ -69,12 +77,39 @@ void YHttpRootHandler::body(struct MHD_Connection* connection,
 "      <p>JSON format</p>"
 "      <h4>Examples</h4>"
 "      <p>"
-"        <pre>  curl 'http://localhost/widgets?id=`next'</pre>"
-"        <pre>  curl 'http://localhost/widgets?Label=Next'</pre>"
-"        <pre>  curl 'http://localhost/widgets?type=YCheckBox'</pre>"
+"        <pre>  curl 'http://localhost:@port@/widgets?id=`next'</pre>"
+"        <pre>  curl 'http://localhost:@port@/widgets?label=Next'</pre>"
+"        <pre>  curl 'http://localhost:@port@/widgets?type=YCheckBox'</pre>"
+"      </p>"
+
+"      <hr>"
+"      <h3>Change Widgets, Do an Action</h3>"
+"      <p>Request: POST /widgets</p>"
+"      <h4>Description</h4>"
+"      <p>Do an action with specified widgets.</p>"
+"      <h4>Parameters</h4>"
+"      <ul>"
+"        <li><b>id</b> - widget ID serialized as string, might include special characters like backtick (`)</li>"
+"        <li><b>label</b> - widget label as currently displayed (i.e. translated!) </li>"
+"        <li><b>type</b> - widget type</li>"
+"        <li><b>action</b> - action to do</li>"
+"        <li><b>value</b> - new value or a parameter of the action</li>"
+"      </ul>"
+"      <h4>Response</h4>"
+"      <p>JSON format</p>"
+"      <h4>Examples</h4>"
+"      <p>"
+"        <pre>  # press the `next button\n"
+"  curl -X POST 'http://localhost:@port@/widgets?id=`next&action=press'</pre>"
+"        <pre>  # set value \"test\" for the InputField with label \"Description\"\n"
+"  curl -X POST 'http://localhost:@port@/widgets?label=Description&action=enter&value=test'</pre>"
 "      </p>"
 "    </body>"
 "</html>";
+
+    boost::replace_all(help, "@port@", std::to_string(YHttpServer::port_num()));
+
+    body << help;
 }
 
 std::string YHttpRootHandler::contentEncoding()
