@@ -59,7 +59,17 @@ private:
     int action_handler(WidgetArray widgets, std::function<void (T*)> handler_func) {
         for(YWidget *widget: widgets) {
             if (auto w = dynamic_cast<T*>(widget)) {
-                if (handler_func) handler_func(w);
+                try
+                {
+                    // allow changing only the enabled widgets, disabled ones
+                    // cannot be changed by user from the UI, do not be more powerfull
+                    if (handler_func && widget->isEnabled()) handler_func(w);
+                }
+                // some widgets may throw an exception when setting invalid values
+                catch (YUIException)
+                {
+                    return MHD_HTTP_UNPROCESSABLE_ENTITY;
+                }
             }
             else {
                 // TODO: demangle the C++ names here ?

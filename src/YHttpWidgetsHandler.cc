@@ -28,6 +28,7 @@ void YHttpWidgetsHandler::body(struct MHD_Connection* connection,
     if (YDialog::topmostDialog(false))  {
         WidgetArray widgets;
 
+        // TODO: allow filtering by both label and type
         if (const char* label = MHD_lookup_connection_value(connection, MHD_GET_ARGUMENT_KIND, "label"))
             widgets = YWidgetFinder::by_label(label);
         else if (const char* id = MHD_lookup_connection_value(connection, MHD_GET_ARGUMENT_KIND, "id"))
