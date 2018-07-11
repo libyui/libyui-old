@@ -14,11 +14,13 @@
   Floor, Boston, MA 02110-1301 USA
 */
 
+#include "YComboBox.h"
 #include "YDialog.h"
-#include "YPushButton.h"
 #include "YCheckBox.h"
 #include "YInputField.h"
+#include "YPushButton.h"
 #include "YRadioButton.h"
+
 #include "YHttpWidgetsActionHandler.h"
 
 void YHttpWidgetsActionHandler::body(struct MHD_Connection* connection,
@@ -72,7 +74,7 @@ int YHttpWidgetsActionHandler::do_action(WidgetArray widgets, const std::string 
     // TODO improve this, maybe use better names for the actions...
 
     // press a button
-    if (action == "press") {
+    if (action == "press_button") {
         return action_handler<YPushButton>(widgets, [] (YPushButton *button) {
             yuiMilestone() << "Pressing button \"" << button->label() << '"' << std::endl;
             button->setKeyboardFocus();
@@ -106,18 +108,25 @@ int YHttpWidgetsActionHandler::do_action(WidgetArray widgets, const std::string 
         } );
     }
     // enter input field text
-    else if (action == "enter") {
+    else if (action == "enter_text") {
         return action_handler<YInputField>(widgets, [&] (YInputField *input) {
             yuiMilestone() << "Setting value for InputField \"" << input->label() << '"' << std::endl;
             input->setKeyboardFocus();
             input->setValue(value);
         } );
     }
-    else if (action == "switch") {
+    else if (action == "switch_radio") {
         return action_handler<YRadioButton>(widgets, [&] (YRadioButton *rb) {
             yuiMilestone() << "Activating RadioButton \"" << rb->label() << '"' << std::endl;
             rb->setKeyboardFocus();
             rb->setValue(true);
+        } );
+    }
+    else if (action == "select_combo") {
+        return action_handler<YComboBox>(widgets, [&] (YComboBox *cb) {
+            yuiMilestone() << "Activating ComboBox \"" << cb->label() << '"' << std::endl;
+            cb->setKeyboardFocus();
+            cb->setValue(value);
         } );
     }
     // TODO: more actions
