@@ -220,6 +220,8 @@ static void serialize_widget_specific_data(YWidget *widget, Json::Value &json) {
 
     if (auto cb = dynamic_cast<YComboBox*>(widget))
     {
+        json["value"] = cb->value();
+
         if (cb->editable())
             json["editable"] = true;
     }
