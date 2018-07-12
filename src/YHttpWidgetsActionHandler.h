@@ -66,7 +66,7 @@ private:
                     if (handler_func && widget->isEnabled()) handler_func(w);
                 }
                 // some widgets may throw an exception when setting invalid values
-                catch (YUIException)
+                catch (const YUIException &e)
                 {
                     return MHD_HTTP_UNPROCESSABLE_ENTITY;
                 }
