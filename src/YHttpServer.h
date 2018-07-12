@@ -45,7 +45,11 @@ public:
 
     void start();
 
-    void process_data();
+    /**
+     * Process the data by the HTTP server
+     * @return true if the UI content has been changed and it should be refreshed
+     */
+    bool process_data();
 
     YHttpServerSockets sockets();
 
@@ -59,6 +63,7 @@ private:
 
     struct MHD_Daemon *server;
     std::vector<YHttpMount> _mounts;
+    bool redraw;
 };
 
 #endif

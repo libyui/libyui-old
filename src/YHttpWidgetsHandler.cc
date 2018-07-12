@@ -23,7 +23,7 @@
 
 void YHttpWidgetsHandler::body(struct MHD_Connection* connection,
     const char* url, const char* method, const char* upload_data,
-    size_t* upload_data_size, std::ostream& body)
+    size_t* upload_data_size, std::ostream& body, bool *redraw)
 {
     if (YDialog::topmostDialog(false))  {
         WidgetArray widgets;

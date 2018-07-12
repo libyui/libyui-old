@@ -21,10 +21,10 @@
 
 int YHttpHandler::handle(struct MHD_Connection* connection,
         const char* url, const char* method, const char* upload_data,
-        size_t* upload_data_size)
+        size_t* upload_data_size, bool *redraw)
 {
     std::ostringstream body_s;
-    body(connection, url, method, upload_data, upload_data_size, body_s);
+    body(connection, url, method, upload_data, upload_data_size, body_s, redraw);
     std::string body_str = body_s.str();
 
     struct MHD_Response *response = MHD_create_response_from_buffer (body_str.length(),

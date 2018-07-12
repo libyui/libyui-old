@@ -23,7 +23,7 @@
 
 void YHttpRootHandler::body(struct MHD_Connection* connection,
     const char* url, const char* method, const char* upload_data,
-    size_t* upload_data_size, std::ostream& body)
+    size_t* upload_data_size, std::ostream& body, bool *redraw)
 {
     // TODO: save this to a standalone HTML file, editing HTML in a C string
     // literal is cumbersome, use bin2c or something like that for converting

@@ -32,14 +32,14 @@ public:
 
     virtual int handle(struct MHD_Connection* connection,
         const char* url, const char* method, const char* upload_data,
-        size_t* upload_data_size);
+        size_t* upload_data_size, bool *redraw = nullptr);
 
 
 protected:
 
     virtual void body(struct MHD_Connection* connection,
         const char* url, const char* method, const char* upload_data,
-        size_t* upload_data_size, std::ostream& body) = 0;
+        size_t* upload_data_size, std::ostream& body,  bool *redraw) = 0;
 
     virtual int errorCode() = 0;
 
