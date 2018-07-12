@@ -62,7 +62,7 @@ in_addr_t listen_address()
     return htonl(INADDR_LOOPBACK);
 }
 
-YHttpServer::YHttpServer() : server(nullptr)
+YHttpServer::YHttpServer() : server(nullptr), redraw(false)
 {
     mount("/", "GET", new YHttpRootHandler());
     mount("/dialog", "GET", new YHttpDialogHandler());
@@ -126,7 +126,7 @@ int YHttpServer::handle(struct MHD_Connection* connection,
     for(YHttpMount m: _mounts)
     {
         if (m.handles(url, method))
-            return m.handler()->handle(connection, url, method, upload_data, upload_data_size);
+            return m.handler()->handle(connection, url, method, upload_data, upload_data_size, &redraw);
     }
 
     // if not found create an empty 404 error response
@@ -207,10 +207,12 @@ void YHttpServer::start()
     }
 }
 
-void YHttpServer::process_data()
+bool YHttpServer::process_data()
 {
+    redraw = false;
     yuiMilestone() << "Processing HTTP server data..." << std::endl;
     MHD_run(server);
+    return redraw;
 }
 
 void YHttpServer::mount(const std::string& path, const std::string &method, YHttpHandler *handler)

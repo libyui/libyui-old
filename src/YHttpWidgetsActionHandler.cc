@@ -25,7 +25,7 @@
 
 void YHttpWidgetsActionHandler::body(struct MHD_Connection* connection,
     const char* url, const char* method, const char* upload_data,
-    size_t* upload_data_size, std::ostream& body)
+    size_t* upload_data_size, std::ostream& body, bool *redraw)
 {
     if (YDialog::topmostDialog(false))  {
         WidgetArray widgets;
@@ -51,6 +51,10 @@ void YHttpWidgetsActionHandler::body(struct MHD_Connection* connection,
                 value = val;
 
             _error_code = do_action(widgets, action, value, body);
+
+            // the action possibly changed something in the UI, signalize redraw needed
+            if (redraw && _error_code == MHD_HTTP_OK)
+                *redraw = true;
         }
         else {
             body << "{ \"error\" : \"Missing action parameter\" }" << std::endl;
