@@ -29,6 +29,7 @@ Source:         %{name}-%{version}.tar.bz2
 
 %if 0%{?suse_version} > 1325
 BuildRequires:  libboost_headers-devel
+BuildRequires:  libboost_test-devel
 %else
 BuildRequires:  boost-devel
 %endif
@@ -79,6 +80,7 @@ dependencies.
 
 %if 0%{?suse_version} > 1325
 Requires:       libboost_headers-devel
+Requires:       libboost_test-devel
 %else
 Requires:       boost-devel
 %endif
