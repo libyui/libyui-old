@@ -167,12 +167,7 @@ MACRO( SET_BUILD_FLAGS )	# setup compiler-flags depending on CMAKE_BUILD_TYPE
         COMMAND $(MAKE) coverage
       )
     ELSE(LCOV_PATH AND GENHTML_PATH)
-      MESSAGE(WARNING "lcov is not installed, code coverage report will not be generated.")
-      ADD_CUSTOM_TARGET(coverage
-        echo "Install the lcov package."
-        COMMAND ;
-        COMMENT "WARNING: lcov is not installed, cannot generate the code coverage report."
-      )
+      MESSAGE(FATAL_ERROR "lcov is not installed, code coverage report cannot be generated.")
     ENDIF(LCOV_PATH AND GENHTML_PATH)
   ENDIF ( ENABLE_CODE_COVERAGE )
 
