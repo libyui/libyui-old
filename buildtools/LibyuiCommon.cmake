@@ -122,8 +122,8 @@ MACRO( SET_BUILD_FLAGS )	# setup compiler-flags depending on CMAKE_BUILD_TYPE
     ENABLE_TESTING()
     # add a wrapper "tests" target, the builtin "test" cannot be extended :-(
     ADD_CUSTOM_TARGET(tests
-      make
-      COMMAND make test
+      $(MAKE)
+      COMMAND $(MAKE) test
     )
   ENDIF ( ENABLE_TESTS OR ENABLE_CODE_COVERAGE)
 
@@ -164,7 +164,7 @@ MACRO( SET_BUILD_FLAGS )	# setup compiler-flags depending on CMAKE_BUILD_TYPE
       )
       # automatically collect code coverage after "tests" target is finished
       ADD_CUSTOM_COMMAND(TARGET tests POST_BUILD
-        COMMAND make coverage
+        COMMAND $(MAKE) coverage
       )
     ELSE(LCOV_PATH AND GENHTML_PATH)
       MESSAGE(WARNING "lcov is not installed, code coverage report will not be generated.")
