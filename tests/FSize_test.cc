@@ -299,11 +299,11 @@ BOOST_AUTO_TEST_CASE( bestUnit )
     BOOST_CHECK_EQUAL(FSize(1023).bestUnit(), FSize::Unit::B);
     BOOST_CHECK_EQUAL(FSize(1024).bestUnit(), FSize::Unit::K);
 
-    BOOST_CHECK_EQUAL(FSize(1L << 20).bestUnit(), FSize::Unit::M);
-    BOOST_CHECK_EQUAL(FSize(1L << 30).bestUnit(), FSize::Unit::G);
-    BOOST_CHECK_EQUAL(FSize(1L << 40).bestUnit(), FSize::Unit::T);
-    BOOST_CHECK_EQUAL(FSize(1L << 50).bestUnit(), FSize::Unit::P);
-    BOOST_CHECK_EQUAL(FSize(1L << 60).bestUnit(), FSize::Unit::E);
+    BOOST_CHECK_EQUAL(FSize(1LL << 20).bestUnit(), FSize::Unit::M);
+    BOOST_CHECK_EQUAL(FSize(1LL << 30).bestUnit(), FSize::Unit::G);
+    BOOST_CHECK_EQUAL(FSize(1LL << 40).bestUnit(), FSize::Unit::T);
+    BOOST_CHECK_EQUAL(FSize(1LL << 50).bestUnit(), FSize::Unit::P);
+    BOOST_CHECK_EQUAL(FSize(1LL << 60).bestUnit(), FSize::Unit::E);
     BOOST_CHECK_EQUAL(FSize(cpp_int(1) << 70).bestUnit(), FSize::Unit::Z);
     BOOST_CHECK_EQUAL(FSize(cpp_int(1) << 80).bestUnit(), FSize::Unit::Y);
 }
