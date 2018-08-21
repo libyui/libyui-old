@@ -27,7 +27,7 @@
 
 
 YTableItem::YTableItem()
-    : YItem( "" )
+    : YItem( "" ), _useBoldFont(false)
 {
     // NOP
 }
@@ -43,7 +43,7 @@ YTableItem::YTableItem( const std::string & label_0,
 			const std::string & label_7,
 			const std::string & label_8,
 			const std::string & label_9 )
-    : YItem( "" )
+    : YItem( "" ), _useBoldFont(false)
 {
     std::vector<std::string> labels;
     labels.reserve(10); // slight optimization
@@ -85,6 +85,13 @@ YTableItem::~YTableItem()
 }
 
 
+void
+YTableItem::setUseBoldFont(bool bold)
+{
+    _useBoldFont = bold;
+}
+
+    
 void
 YTableItem::deleteCells()
 {

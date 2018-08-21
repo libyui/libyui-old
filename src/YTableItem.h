@@ -98,6 +98,10 @@ public:
      **/
     virtual ~YTableItem();
 
+    bool useBoldFont() const { return _useBoldFont; }
+
+    void setUseBoldFont(bool bold = false);
+
     /**
      * Add a cell. This item will assume ownership over the cell and delete it
      * when appropriate (when the table is destroyed or when table items are
@@ -190,6 +194,7 @@ private:
     //
 
     YTableCellCollection _cells;
+    bool _useBoldFont;
 };
 
 
