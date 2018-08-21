@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Aug 21 10:38:54 CEST 2018 - schubi@suse.de
+
+- Changed dir of COPYING file.
+
+-------------------------------------------------------------------
 Thu Jul 26 07:45:20 UTC 2018 - lslezak@suse.cz
 
 - Improved the FSize class to handle arbitrary sizes, use the boost
