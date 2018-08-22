@@ -165,7 +165,7 @@ rm -rf "$RPM_BUILD_ROOT"
 %dir %{_datadir}/libyui
 %{_libdir}/lib*.so.*
 %doc %dir %{_docdir}/%{bin_name}
-%doc %{_docdir}/%{bin_name}/COPYING*
+%license %{_docdir}/%{bin_name}/COPYING*
 
 %files devel
 %defattr(-,root,root)
