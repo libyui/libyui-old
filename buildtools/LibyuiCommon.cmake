@@ -122,8 +122,8 @@ MACRO( SET_BUILD_FLAGS )	# setup compiler-flags depending on CMAKE_BUILD_TYPE
     ENABLE_TESTING()
     # add a wrapper "tests" target, the builtin "test" cannot be extended :-(
     ADD_CUSTOM_TARGET(tests
-      $(MAKE)
-      COMMAND $(MAKE) test
+      ${MAKE}
+      COMMAND ${MAKE} test
     )
   ENDIF ( ENABLE_TESTS OR ENABLE_CODE_COVERAGE)
 
