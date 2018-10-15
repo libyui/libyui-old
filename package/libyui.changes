@@ -1,4 +1,17 @@
 -------------------------------------------------------------------
+Tue Aug 21 10:38:54 CEST 2018 - schubi@suse.de
+
+- Changed dir of COPYING file.
+
+-------------------------------------------------------------------
+Thu Jul 26 07:45:20 UTC 2018 - lslezak@suse.cz
+
+- Improved the FSize class to handle arbitrary sizes, use the boost
+  multiprecision library instead of `long long` which overflows for
+  values > 8EiB (bsc#991090)
+- 3.4.2
+
+-------------------------------------------------------------------
 Wed May  9 07:34:16 UTC 2018 - mliska@suse.cz
 
 - Fix GCC 8 warning: -Werror=catch-value (boo#1084636).

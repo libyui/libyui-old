@@ -23,8 +23,13 @@ Source:         %{name}-%{version}.tar.bz2
 %define so_version 9
 %define bin_name %{name}%{so_version}
 
+# optionally build with code coverage reporting,
+# this uses debug build, do not use in production!
+%bcond_with coverage
+
 %if 0%{?suse_version} > 1325
 BuildRequires:  libboost_headers-devel
+BuildRequires:  libboost_test-devel
 %else
 BuildRequires:  boost-devel
 %endif
@@ -33,6 +38,12 @@ BuildRequires:  gcc-c++
 BuildRequires:  pkg-config
 BuildRequires:  libmicrohttpd-devel
 BuildRequires:  jsoncpp-devel
+
+%if %{with coverage}
+# normally the coverage feature should not be used out of CI
+# but to be on the safe side...
+BuildRequires: lcov
+%endif
 
 Url:            http://github.com/libyui/
 Summary:        GUI-abstraction library
@@ -71,6 +82,7 @@ dependencies.
 
 %if 0%{?suse_version} > 1325
 Requires:       libboost_headers-devel
+Requires:       libboost_test-devel
 %else
 Requires:       boost-devel
 %endif
@@ -100,28 +112,40 @@ This package has very few dependencies.
 %build
 
 ./bootstrap.sh
-
-export CFLAGS="$RPM_OPT_FLAGS -DNDEBUG $(getconf LFS_CFLAGS)"
-export CXXFLAGS="$RPM_OPT_FLAGS -DNDEBUG $(getconf LFS_CFLAGS)"
-
 mkdir build
 cd build
 
-%if %{?_with_debug:1}%{!?_with_debug:0}
-cmake .. \
-        -DYPREFIX=%{_prefix} \
-        -DDOC_DIR=%{_docdir} \
-        -DLIB_DIR=%{_lib} \
-        -DCMAKE_BUILD_TYPE=RELWITHDEBINFO
+%if %{with coverage}
+CMAKE_OPTS="-DCMAKE_BUILD_TYPE=DEBUG -DENABLE_CODE_COVERAGE=ON"
+# the debug build type is incompatible with the default $RPM_OPT_FLAGS,
+# do not use them
+export CFLAGS="-DNDEBUG $(getconf LFS_CFLAGS)"
+export CXXFLAGS="-DNDEBUG $(getconf LFS_CFLAGS)"
 %else
-cmake .. \
-        -DYPREFIX=%{_prefix} \
-        -DDOC_DIR=%{_docdir} \
-        -DLIB_DIR=%{_lib} \
-        -DCMAKE_BUILD_TYPE=RELEASE
+export CFLAGS="$RPM_OPT_FLAGS -DNDEBUG $(getconf LFS_CFLAGS)"
+export CXXFLAGS="$RPM_OPT_FLAGS -DNDEBUG $(getconf LFS_CFLAGS)"
+%if %{?_with_debug:1}%{!?_with_debug:0}
+CMAKE_OPTS="-DCMAKE_BUILD_TYPE=RELWITHDEBINFO"
+%else
+CMAKE_OPTS="-DCMAKE_BUILD_TYPE=RELEASE"
+%endif
 %endif
 
+cmake .. \
+        -DYPREFIX=%{_prefix} \
+        -DDOC_DIR=%{_docdir} \
+        -DLIB_DIR=%{_lib} \
+        $CMAKE_OPTS
+
 make %{?jobs:-j%jobs}
+
+%check
+cd build
+make test
+%if %{with coverage}
+# generate code coverage data
+make coverage
+%endif
 
 %install
 cd build
@@ -143,7 +167,7 @@ rm -rf "$RPM_BUILD_ROOT"
 %dir %{_datadir}/libyui
 %{_libdir}/lib*.so.*
 %doc %dir %{_docdir}/%{bin_name}
-%doc %{_docdir}/%{bin_name}/COPYING*
+%license %{_docdir}/%{bin_name}/COPYING*
 
 %files devel
 %defattr(-,root,root)

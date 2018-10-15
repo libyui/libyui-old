@@ -39,7 +39,7 @@ Makefile.in
 # CMake
 CMakeCache.txt
 CMakeFiles
-CMakeLists.txt
+/CMakeLists.txt
 Makefile
 cmake_install.cmake
 install_manifest.txt
@@ -115,5 +115,7 @@ tmp
 # Examples
 /examples/*
 # but keep sources and cmake
-!/examples/CMakeList.txt
 !/examples/*.cc
+
+# Code coverage
+/coverage

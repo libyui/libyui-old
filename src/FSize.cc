@@ -1,5 +1,7 @@
 /*
   Copyright (C) 2000-2012 Novell, Inc
+  Copyright (C) 2018 SUSE LLC
+
   This library is free software; you can redistribute it and/or modify
   it under the terms of the GNU Lesser General Public License as
   published by the Free Software Foundation; either version 2.1 of the
@@ -25,14 +27,28 @@
 
 /-*/
 
-#include <stdio.h>
-#include <stdlib.h>
 #include <iostream>
+#include <sstream>
 
 #include "FSize.h"
 
+// arbitrary precision float for floating point division
+#include <boost/multiprecision/cpp_bin_float.hpp>
+
+using boost::multiprecision::cpp_int;
+
+const cpp_int FSize::KB = 1024;
+const cpp_int FSize::MB = FSize::KB * 1024;
+const cpp_int FSize::GB = FSize::MB * 1024;
+const cpp_int FSize::TB = FSize::GB * 1024;
+const cpp_int FSize::PB = FSize::TB * 1024;
+const cpp_int FSize::EB = FSize::PB * 1024;
+const cpp_int FSize::ZB = FSize::EB * 1024;
+const cpp_int FSize::YB = FSize::ZB * 1024;
+
+
 FSize::FSize( const std::string &sizeStr, const Unit unit_r )
-  : _size( atoll( sizeStr.c_str() ) * factor( unit_r ) )
+  : _size( cpp_int(sizeStr) * factor( unit_r ) )
 {
 }
 
@@ -45,11 +61,11 @@ FSize::FSize( const std::string &sizeStr, const Unit unit_r )
 //
 FSize & FSize::fillBlock( FSize blocksize_r )
 {
-  if ( _size && blocksize_r ) {
-    long long diff = _size % blocksize_r;
+  if ( _size > 0 && cpp_int(blocksize_r) > 0) {
+    cpp_int diff = _size % cpp_int(blocksize_r);
     if ( diff ) {
       if ( _size > 0 )
-	_size += blocksize_r;
+	_size += cpp_int(blocksize_r);
       _size -= diff;
     }
   }
@@ -65,16 +81,24 @@ FSize & FSize::fillBlock( FSize blocksize_r )
 //
 FSize::Unit FSize::bestUnit() const
 {
-  long long usize( _size < 0 ? -_size : _size );
+  cpp_int usize = abs(_size);
   if ( usize < KB )
-    return B;
+    return Unit::B;
   if ( usize < MB )
-    return K;
+    return Unit::K;
   if ( usize < GB )
-    return M;
+    return Unit::M;
   if ( usize < TB )
-    return G;
-  return T;
+    return Unit::G;
+  if ( usize < PB )
+    return Unit::T;
+  if ( usize < EB )
+    return Unit::P;
+  if ( usize < ZB )
+    return Unit::E;
+  if ( usize < YB )
+    return Unit::Z;
+  return Unit::Y;
 }
 
 //
@@ -89,26 +113,36 @@ std::string FSize::form( const Unit unit_r, unsigned fw, unsigned prec, const bo
   if ( prec == bestPrec ) {
     switch ( unit_r )
     {
-      case T:  prec = 3; break;
-      case G:  prec = 2; break;
-      case M:  prec = 1; break;
-      case K:  prec = 1; break;
-      case B:  prec = 0; break;
+    case Unit::Y:  prec = 3; break;
+    case Unit::Z:  prec = 3; break;
+    case Unit::E:  prec = 3; break;
+    case Unit::P:  prec = 3; break;
+    case Unit::T:  prec = 3; break;
+    case Unit::G:  prec = 2; break;
+    case Unit::M:  prec = 1; break;
+    case Unit::K:  prec = 1; break;
+    case Unit::B:  prec = 0; break;
     }
-  } else if ( unit_r == B )
+} else if ( unit_r == Unit::B )
     prec = 0; // doesn't make sense for Byte
 
-  char buffer[80]; // should be long enough for any numeric sprintf()
-  snprintf( buffer, sizeof( buffer ),
-	    "%*.*f",
-	    fw, prec, ( double( _size ) / factor( unit_r ) ) );
+  std::ostringstream str;
+  // set the precision and field width, use fixed notation (not the scientific Xe+Y)
+  str << std::setprecision(prec) << std::setfill(' ') << std::setw(fw) << std::fixed;
 
-  std::string ret( buffer );
+  if (prec == 0)
+    // no decimal part required, we can use integer division,
+    // add one unit half for correct rounding
+    str << (_size + (factor( unit_r ) / 2))/ factor( unit_r );
+  else
+    // otherwise convert to boost floats
+    str << (boost::multiprecision::cpp_bin_float_50)( _size ) /
+        (boost::multiprecision::cpp_bin_float_50)(factor( unit_r ) );
 
   if ( showunit )
-    ret += std::string(" ") + unit( unit_r );
+    str << " " << unit( unit_r );
 
-  return ret;
+  return str.str();
 }
 
 
@@ -122,4 +156,16 @@ std::string FSize::form( const Unit unit_r, unsigned fw, unsigned prec, const bo
 std::string FSize::asString() const
 {
   return form();
+}
+
+std::ostream& operator<<(std::ostream &ostr, const FSize &fsize)
+{
+    ostr << fsize.asString();
+    return ostr;
+}
+
+std::ostream& operator<<(std::ostream &ostr, const FSize::Unit unit)
+{
+    ostr << FSize::unit(unit);
+    return ostr;
 }

@@ -58,6 +58,8 @@ MACRO( SET_OPTIONS )		# setup configurable options
   OPTION( ENABLE_WERROR "Enable the -Werror compiler-flag?" ON )
   OPTION( RESPECT_FLAGS "Shall I respect the system c/ldflags?" OFF )
   OPTION( INSTALL_DOCS "Shall \"make install\" install the docs?" OFF )
+  OPTION( ENABLE_TESTS "Enable tests?" ON)
+  OPTION( ENABLE_CODE_COVERAGE "Enable code coverage report?" OFF)
 
 ENDMACRO( SET_OPTIONS )
 
@@ -115,6 +117,59 @@ MACRO( SET_BUILD_FLAGS )	# setup compiler-flags depending on CMAKE_BUILD_TYPE
          FORCE
     )
   ENDIF( NOT BUILD_TYPE_PASSED )
+
+  IF ( ENABLE_TESTS OR ENABLE_CODE_COVERAGE)
+    ENABLE_TESTING()
+    # add a wrapper "tests" target, the builtin "test" cannot be extended :-(
+    ADD_CUSTOM_TARGET(tests
+      ${MAKE}
+      COMMAND ${MAKE} test
+    )
+  ENDIF ( ENABLE_TESTS OR ENABLE_CODE_COVERAGE)
+
+  IF ( ENABLE_CODE_COVERAGE )
+    # pass the coverage options to GCC
+    ADD_DEFINITIONS(--coverage)
+    LINK_LIBRARIES(--coverage)
+    # force debug build to not optimize the code, the optimized out code
+    # might be reported as not covered
+    SET( CMAKE_BUILD_TYPE DEBUG CACHE
+         STRING "set to DEBUG"
+         FORCE
+    )
+
+    FIND_PROGRAM( LCOV_PATH lcov )
+    FIND_PROGRAM( GENHTML_PATH genhtml )
+
+    IF(LCOV_PATH AND GENHTML_PATH)
+      # save the coverage data to coverage/ subdir
+      SET(COVERAGE_DATA "coverage/coverage.info")
+      ADD_CUSTOM_TARGET(coverage
+        # remove the previous coverage data
+        rm -rf coverage/*
+        COMMAND mkdir -p coverage
+        # collect the coverage data, ignore external files (/usr/include/...), ignore tests
+        COMMAND ${LCOV_PATH} --no-external --exclude '*/tests/*' -o ${COVERAGE_DATA} -c -d . -q
+        # generate the HTML coverage report
+        COMMAND ${GENHTML_PATH} -o coverage --legend --title "libyui code coverage" -q ${COVERAGE_DATA}
+        # print the coverage summary on the terminal
+        COMMAND ${LCOV_PATH} --list ${COVERAGE_DATA}
+        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+        COMMENT "Generating the code coverage report..."
+      )
+      # display a comment when finished
+      ADD_CUSTOM_COMMAND(TARGET coverage POST_BUILD
+        COMMAND ;
+        COMMENT "Code coverage gerated to ./coverage/index.html file."
+      )
+      # automatically collect code coverage after "tests" target is finished
+      ADD_CUSTOM_COMMAND(TARGET tests POST_BUILD
+        COMMAND $(MAKE) coverage
+      )
+    ELSE(LCOV_PATH AND GENHTML_PATH)
+      MESSAGE(FATAL_ERROR "lcov is not installed, code coverage report cannot be generated.")
+    ENDIF(LCOV_PATH AND GENHTML_PATH)
+  ENDIF ( ENABLE_CODE_COVERAGE )
 
   SET( CMAKE_CXX_FLAGS_DEBUG	"-O0 -g3" )
   SET( CMAKE_C_FLAGS_DEBUG 	"-O0 -g3" )
@@ -566,6 +621,8 @@ MACRO( SUMMARY )		# prints a brief summary to stdout
   ENDIF( ENABLE_DEBUG OR ${CMAKE_BUILD_TYPE} STREQUAL "RELWITHDEBINFO" OR ${CMAKE_BUILD_TYPE} STREQUAL "DEBUG" )
   MESSAGE( STATUS "     Build a static library, too:           ${ENABLE_STATIC}" )
   MESSAGE( STATUS "     Build the examples, too:               ${ENABLE_EXAMPLES}" )
+  MESSAGE( STATUS "     Build the tests, too:                  ${ENABLE_TESTS}" )
+  MESSAGE( STATUS "     Generate test code coverage:           ${ENABLE_CODE_COVERAGE}" )
   MESSAGE( STATUS "" )
   IF( INSTALL_DOCS AND DOXYGEN_FOUND )
     MESSAGE( STATUS "RUN `make docs` BEFORE `make install` !!!" )
@@ -723,3 +780,25 @@ MACRO( PROCESS_EXAMPLES )
   )
 
 ENDMACRO( PROCESS_EXAMPLES )
+
+
+
+MACRO( PROCESS_TESTS )
+
+  FIND_PACKAGE(Boost COMPONENTS unit_test_framework REQUIRED)
+  INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS} ../src ${CMAKE_INCLUDE_PATH} )
+  ADD_DEFINITIONS(-DBOOST_TEST_DYN_LINK -DTESTS_SRC_DIR="${CMAKE_CURRENT_SOURCE_DIR}" )
+
+  # expect the tests in *_test.cc files
+  FILE(GLOB unit_tests "*_test.cc")
+  FOREACH(unit_test ${unit_tests})
+    # strip the .cc suffix
+    GET_FILENAME_COMPONENT(unit_test_bin ${unit_test} NAME_WE)
+    # build the test executable
+    ADD_EXECUTABLE(${unit_test_bin} ${unit_test})
+    TARGET_LINK_LIBRARIES (${unit_test_bin} ${BASELIB} ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY} )
+    # add it to the test suite
+    ADD_TEST(NAME ${unit_test_bin} COMMAND ${unit_test_bin})
+  ENDFOREACH(unit_test)
+
+ENDMACRO( PROCESS_TESTS )

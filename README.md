@@ -1,6 +1,9 @@
 # LibYUI - The Base Library
 
 [![Build Status](https://travis-ci.org/libyui/libyui.svg?branch=master)](https://travis-ci.org/libyui/libyui)
+[![Coverage Status](
+https://coveralls.io/repos/github/libyui/libyui/badge.svg?branch=master)](
+https://coveralls.io/github/libyui/libyui?branch=master)
 
 Libyui is a widget abstraction library providing Qt, GTK and ncurses
 frontends. Originally it was developed for [YaST](https://yast.github.io/)
