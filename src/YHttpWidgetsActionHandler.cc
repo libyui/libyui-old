@@ -20,6 +20,7 @@
 #include "YInputField.h"
 #include "YPushButton.h"
 #include "YRadioButton.h"
+#include "YTable.h"
 
 #include "YHttpWidgetsActionHandler.h"
 
@@ -131,6 +132,19 @@ int YHttpWidgetsActionHandler::do_action(WidgetArray widgets, const std::string 
             yuiMilestone() << "Activating ComboBox \"" << cb->label() << '"' << std::endl;
             cb->setKeyboardFocus();
             cb->setValue(value);
+        } );
+    }
+    else if (action == "select_table") {
+        return action_handler<YTable>(widgets, [&] (YTable *tb) {
+	    YItem * item = tb->findItem(value, 0);
+	    if (item) {
+                yuiMilestone() << "Activating Table \"" << tb->label() << '"' << std::endl;
+                tb->setKeyboardFocus();
+                tb->selectItem(item);
+	    }
+	    else {
+		yuiWarning() << '"' << value << "\" is not a valid item" << std::endl;
+	    }
         } );
     }
     // TODO: more actions
