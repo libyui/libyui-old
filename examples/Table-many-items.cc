@@ -201,6 +201,8 @@ int main( int argc, char **argv )
             yuiMilestone() << "Lasagne button pressed" << std::endl;
             auto item = table->findItem("6");
             yuiMilestone() << "Found item: " << item << std::endl;
+            if (item)
+              table->selectItem(item);
         }
 	    else if ( event->widget() == deselectButton )
 	    {
