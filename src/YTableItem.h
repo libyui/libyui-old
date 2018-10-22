@@ -171,7 +171,7 @@ public:
     /**
      * Just for debugging.
      **/
-    std::string label() const { return label(0); }
+    virtual std::string label() const { return label(0); }
 
 private:
 

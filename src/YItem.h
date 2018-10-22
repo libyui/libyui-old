@@ -79,7 +79,7 @@ public:
      * Return this item's label. This is what the user sees in a dialog, so
      * this will usually be a translated text.
      **/
-    std::string label() const { return _label; }
+    virtual std::string label() const { return _label; }
 
     /**
      * Set this item's label.

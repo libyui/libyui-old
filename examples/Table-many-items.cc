@@ -122,6 +122,7 @@ int main( int argc, char **argv )
     YPushButton * pizzaButton    = YUI::widgetFactory()->createPushButton( buttonBox, "Pi&zza" );
     YPushButton * clearButton    = YUI::widgetFactory()->createPushButton( buttonBox, "C&lear" );
     YPushButton * deselectButton = YUI::widgetFactory()->createPushButton( buttonBox, "&Deselect" );
+    YPushButton * lasagneButton = YUI::widgetFactory()->createPushButton( buttonBox, "Select &Lasagne" );
 
     YUI::widgetFactory()->createVSpacing( vbox, 0.5 );
 
@@ -195,6 +196,12 @@ int main( int argc, char **argv )
 	    {
 		table->deleteAllItems();
 	    }
+        else if ( event->widget() == lasagneButton )
+        {
+            yuiMilestone() << "Lasagne button pressed" << std::endl;
+            auto item = table->findItem("6");
+            yuiMilestone() << "Found item: " << item << std::endl;
+        }
 	    else if ( event->widget() == deselectButton )
 	    {
 		table->deselectAllItems();
