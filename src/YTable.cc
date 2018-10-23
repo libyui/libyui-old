@@ -146,6 +146,33 @@ YTable::hasMultiSelection() const
     return ! YSelectionWidget::enforceSingleSelection();
 }
 
+YItem *
+YTable::findItem( const std::string & wantedItemLabel, int column ) const
+{
+    return YTable::findItem( wantedItemLabel, column, itemsBegin(), itemsEnd() );
+}
+
+
+YItem *
+YTable::findItem( const std::string & wantedItemLabel,
+		  int                 column,        
+                  YItemConstIterator  begin,
+                  YItemConstIterator  end ) const
+{
+    if ( ! hasColumn( column ) )
+  	return 0;
+
+    for ( YItemConstIterator it = begin; it != end; ++it )
+    {
+	auto * item = dynamic_cast<YTableItem *>(*it);
+        //YTableItem * item = *it;
+
+        if ( item->label( column ) == wantedItemLabel )
+            return item;
+    }
+
+    return 0;
+}
 
 const YPropertySet &
 YTable::propertySet()
