@@ -171,7 +171,7 @@ YTable::findItem( const std::string & wantedItemLabel,
             return item;
     }
 
-    return 0;
+    return nullptr;
 }
 
 const YPropertySet &
