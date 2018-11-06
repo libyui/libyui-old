@@ -160,7 +160,7 @@ YTable::findItem( const std::string & wantedItemLabel,
                   YItemConstIterator  end ) const
 {
     if ( ! hasColumn( column ) )
-  	return 0;
+  	return nullptr;
 
     for ( YItemConstIterator it = begin; it != end; ++it )
     {
