@@ -166,7 +166,7 @@ YTable::findItem( const std::string & wantedItemLabel,
     {
 	auto * item = dynamic_cast<YTableItem *>(*it);
 
-        if ( item->label( column ) == wantedItemLabel )
+        if ( item && item->label( column ) == wantedItemLabel )
             return item;
     }
 
