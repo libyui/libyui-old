@@ -37,7 +37,7 @@
 #define YUIPlugin_Qt		"qt"
 #define YUIPlugin_NCurses	"ncurses"
 #define YUIPlugin_Gtk		"gtk"
-
+#define YUIPlugin_RestAPI       "rest-api"
 
 /**
  * Class to load one of the concrete UI plug-ins: Qt, NCurses, Gtk.
@@ -96,6 +96,12 @@ public:
      * the terminal settings are properly restored.
      **/
     static void deleteUI();
+
+    /**
+     * Method handles loading integration test framework and load underlying GUI
+     * using hints from loadUI.
+     **/
+    static void loadRestAPIPlugin( const std::string & wantedGUI, bool withThreads = false );
 
     /**
      * Load a UI plug-in. 'name' is one of the YUIPlugin_ -defines above.
@@ -160,5 +166,14 @@ typedef YUI * (*createUIFunction_t)( bool );
  * singleton for all subsequent calls.
  **/
 typedef YExternalWidgets * (*createEWFunction_t)( const char * );
+
+/**
+ * For the integration testing YUI has separate framework which allows to have
+ * control over UI using REST API. Server has to be started after testing framework
+ * plugin is loaded, which is done by the method which creates server instance.
+ * Not to have additional definition imports, we define it as void here.
+ * In the framework calls it can be used to
+**/
+typedef void (*getServerFunction_t)();
 
 #endif // YUILoader_h

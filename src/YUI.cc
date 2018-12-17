@@ -48,6 +48,7 @@
 #include "YEnvVar.h"
 #include "YBuiltinCaller.h"
 #include "YWidgetID.h"
+#include "YUIPlugin.h"
 
 using std::endl;
 
@@ -76,6 +77,7 @@ YUI::YUI( bool withThreads )
 {
     yuiMilestone() << "This is libyui " << VERSION << std::endl;
     yuiMilestone() << "Creating UI " << ( withThreads ? "with" : "without" ) << " threads" << endl;
+
     _ui = this;
 }
 
