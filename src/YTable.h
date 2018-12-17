@@ -144,6 +144,19 @@ public:
     bool hasMultiSelection() const;
 
     /**
+     * Try to find an item with label 'wantedItemLabel' in column 'column'
+     *  between iterators 'begin' and 'end'. Return that item or 0 if there is
+     *  none.
+     **/
+
+    YItem * findItem( const std::string & wantedItemLabel, int column ) const;
+
+    YItem * findItem( const std::string & wantedItemLabel,
+                      int                 column,
+                      YItemConstIterator  begin,
+                      YItemConstIterator  end ) const;
+
+    /**
      * Notification that a cell (its text and/or its icon) was changed from the
      * outside. Applications are required to call this whenever a table cell is
      * changed after adding the corresponding table item (the row) to the table
