@@ -42,9 +42,11 @@
 void YUILoader::loadUI( bool withThreads )
 {
     bool isGtk = false;
-    const char * envDesktop = getenv( "XDG_CURRENT_DESKTOP" )  ?: "";
-    const char * envDisplay = getenv( "DISPLAY" )              ?: "";
-    const char * envPreset  = getenv( "YUI_PREFERED_BACKEND" ) ?: "";
+    const char * envDesktop    = getenv( "XDG_CURRENT_DESKTOP" )  ?: "";
+    const char * envDisplay    = getenv( "DISPLAY" )              ?: "";
+    const char * envPreset     = getenv( "YUI_PREFERED_BACKEND" ) ?: "";
+    const char * envTestEnable = getenv( "Y2TEST" ) ? : "";
+
     std::string wantedGUI;
 
     yuiMilestone () << "DISPLAY: \""              << envDisplay << "\"" << std::endl;
@@ -120,7 +122,18 @@ void YUILoader::loadUI( bool withThreads )
 
 	try
 	{
-	    loadPlugin( wantedGUI, withThreads );
+            // Load integration testing framework plugin, which load required UI
+            // There is no support for GTK planned, so not loading rest api
+            // plugin in case gtk was requested
+            if ( strcmp( envTestEnable, "1" ) == 0 && wantedGUI != YUIPlugin_Gtk )
+            {
+                loadRestAPIPlugin( wantedGUI, withThreads );
+            }
+            else
+            {
+                loadPlugin( wantedGUI, withThreads );
+            }
+
 	    return;
 	}
 
@@ -154,6 +167,49 @@ void YUILoader::loadUI( bool withThreads )
     {
 	YUI_THROW( YUICantLoadAnyUIException() );
     }
+}
+
+void YUILoader::loadRestAPIPlugin( const std::string & wantedGUI, bool withThreads )
+{
+    // Do not try to load if variable is not set
+    yuiMilestone () << "Requested to start http server to control UI." << std::endl;
+    if( pluginExists( YUIPlugin_RestAPI ) )
+    {
+        // TODO: Do not load unused libraries
+        // Load underlying UI plugin, as test method inherits from it
+        // YUIPlugin_Test uses both libraries to be single point of entry
+        YUIPlugin uiPluginNC( YUIPlugin_NCurses );
+        YUIPlugin uiPluginQT( YUIPlugin_Qt );
+        YUIPlugin uiTestPlugin( YUIPlugin_RestAPI );
+
+        yuiMilestone () << "User-selected underlying UI-plugin: \"" << wantedGUI << "\"" << std::endl;
+        if ( uiPluginNC.success() && uiPluginQT.success() && uiTestPlugin.success() )
+        {
+            yuiMilestone () << "Loading http server to control UI." << std::endl;
+
+            createUIFunction_t createUI = 0;
+            // Only QT an Ncurses are supported
+            if( wantedGUI == YUIPlugin_Qt )
+            {
+                createUI = (createUIFunction_t) uiTestPlugin.locateSymbol( "createYQHttpUI" );
+            }
+            else if( wantedGUI == YUIPlugin_NCurses ) {
+                createUI = (createUIFunction_t) uiTestPlugin.locateSymbol( "createYNCHttpUI" );
+            }
+
+            if ( createUI )
+            {
+                YUI * ui = createUI( withThreads ); // no threads
+                // Same as in loadPlugin
+                atexit(deleteUI);
+
+                if ( ui )
+                    return;
+            }
+        }
+    }
+    // Throw an exception if loading of the plugin failed
+    YUI_THROW ( YUIPluginException ( YUIPlugin_RestAPI ) );
 }
 
 void YUILoader::deleteUI()
