@@ -38,6 +38,8 @@
 #define YUIPlugin_NCurses	"ncurses"
 #define YUIPlugin_Gtk		"gtk"
 #define YUIPlugin_RestAPI       "rest-api"
+#define YUIPlugin_Ncurses_RestAPI       "ncurses-rest-api"
+#define YUIPlugin_Qt_RestAPI       "qt-rest-api"
 
 /**
  * Class to load one of the concrete UI plug-ins: Qt, NCurses, Gtk.

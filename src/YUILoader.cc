@@ -39,13 +39,18 @@
 #include "Libyui_config.h"
 
 
+bool rest_enabled()
+{
+    const char *env = getenv("YUI_HTTP_PORT");
+    return env && atoi(env) > 0;
+}
+
 void YUILoader::loadUI( bool withThreads )
 {
     bool isGtk = false;
     const char * envDesktop    = getenv( "XDG_CURRENT_DESKTOP" )  ?: "";
     const char * envDisplay    = getenv( "DISPLAY" )              ?: "";
     const char * envPreset     = getenv( "YUI_PREFERED_BACKEND" ) ?: "";
-    const char * envTestEnable = getenv( "Y2TEST" ) ? : "";
 
     std::string wantedGUI;
 
@@ -125,7 +130,7 @@ void YUILoader::loadUI( bool withThreads )
             // Load integration testing framework plugin, which load required UI
             // There is no support for GTK planned, so not loading rest api
             // plugin in case gtk was requested
-            if ( strcmp( envTestEnable, "1" ) == 0 && wantedGUI != YUIPlugin_Gtk )
+            if ( rest_enabled() && wantedGUI != YUIPlugin_Gtk )
             {
                 loadRestAPIPlugin( wantedGUI, withThreads );
             }
@@ -175,37 +180,43 @@ void YUILoader::loadRestAPIPlugin( const std::string & wantedGUI, bool withThrea
     yuiMilestone () << "Requested to start http server to control UI." << std::endl;
     if( pluginExists( YUIPlugin_RestAPI ) )
     {
-        // TODO: Do not load unused libraries
-        // Load underlying UI plugin, as test method inherits from it
-        // YUIPlugin_Test uses both libraries to be single point of entry
-        YUIPlugin uiPluginNC( YUIPlugin_NCurses );
-        YUIPlugin uiPluginQT( YUIPlugin_Qt );
-        YUIPlugin uiTestPlugin( YUIPlugin_RestAPI );
-
+        YUIPlugin uiRestPlugin( YUIPlugin_RestAPI );
+        createUIFunction_t createUI = nullptr;
         yuiMilestone () << "User-selected underlying UI-plugin: \"" << wantedGUI << "\"" << std::endl;
-        if ( uiPluginNC.success() && uiPluginQT.success() && uiTestPlugin.success() )
+
+        if (wantedGUI == YUIPlugin_Qt)
         {
-            yuiMilestone () << "Loading http server to control UI." << std::endl;
+            YUIPlugin uiPluginQT( YUIPlugin_Qt );
+            YUIPlugin uiPluginQTRest( YUIPlugin_Qt_RestAPI );
 
-            createUIFunction_t createUI = 0;
-            // Only QT an Ncurses are supported
-            if( wantedGUI == YUIPlugin_Qt )
+            if ( uiPluginQT.success() && uiRestPlugin.success() && uiPluginQTRest.success() )
             {
-                createUI = (createUIFunction_t) uiTestPlugin.locateSymbol( "createYQHttpUI" );
+                yuiMilestone () << "Loading the http server to control the Qt UI" << std::endl;
+                createUI = (createUIFunction_t) uiPluginQTRest.locateSymbol( "createYQHttpUI" );
             }
-            else if( wantedGUI == YUIPlugin_NCurses ) {
-                createUI = (createUIFunction_t) uiTestPlugin.locateSymbol( "createYNCHttpUI" );
-            }
+            else
+                yuiError() << "Cannot load Qt REST API UI" << std::endl;
+        }
 
-            if ( createUI )
+        // fallback to ncurses + REST API if Qt does not work
+        if (wantedGUI == YUIPlugin_NCurses || createUI == nullptr)
+        {
+            YUIPlugin uiPluginNC( YUIPlugin_NCurses );
+            YUIPlugin uiPluginNCRest( YUIPlugin_Ncurses_RestAPI );
+            if ( uiPluginNC.success() && uiRestPlugin.success() && uiPluginNCRest.success())
             {
-                YUI * ui = createUI( withThreads ); // no threads
-                // Same as in loadPlugin
-                atexit(deleteUI);
-
-                if ( ui )
-                    return;
+                yuiMilestone () << "Loading the http server to control the ncurses UI" << std::endl;
+                createUI = (createUIFunction_t) uiPluginNCRest.locateSymbol( "createYNCHttpUI" );
             }
+        }
+
+        if ( createUI )
+        {
+            YUI * ui = createUI( withThreads );
+            // Same as in loadPlugin
+            atexit(deleteUI);
+
+            if ( ui ) return;
         }
     }
     // Throw an exception if loading of the plugin failed
@@ -225,6 +236,12 @@ void YUILoader::deleteUI()
 
 void YUILoader::loadPlugin( const std::string & name, bool withThreads )
 {
+    if (rest_enabled() && (name == YUIPlugin_NCurses || name == YUIPlugin_Qt))
+    {
+        loadRestAPIPlugin(name, withThreads);
+        return;
+    }
+
     YUIPlugin uiPlugin( name.c_str() );
 
     if ( uiPlugin.success() )
