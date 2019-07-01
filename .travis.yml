@@ -7,5 +7,5 @@ before_install:
   - docker build -t libyui-image .
 script:
   # the "libyui-travis" script is included in the base libyui/devel image
-  # see https://github.com/libyui/docker-devel/blob/master/libyui-travis
-  - docker run -it -e COVERALLS_TOKEN="$COVERALLS_TOKEN" -e TRAVIS_JOB_ID="$TRAVIS_JOB_ID" libyui-image libyui-travis
+  # see https://github.com/libyui/ci-libyui-container/blob/master/package/libyui-travis
+  - docker run -it --rm -e COVERALLS_TOKEN="$COVERALLS_TOKEN" -e TRAVIS_JOB_ID="$TRAVIS_JOB_ID" libyui-image libyui-travis
