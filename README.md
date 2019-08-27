@@ -80,3 +80,11 @@ files in the other repositories. Yes, such a design is suboptimal.
 
 This is because the program-libyui API is not distinct
 from the libyui-plugin API.
+
+
+### More info
+
+Please, visit the documentation at [doc folder](https://github.com/libyui/libyui/tree/master/doc) for
+more information about [how to branch](https://github.com/libyui/libyui/tree/master/doc/branching.md)
+libyui related repositories and about [auto-tagging](https://github.com/libyui/libyui/tree/master/doc/auto-tagging.md)
+new versions.
