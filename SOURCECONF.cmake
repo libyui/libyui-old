@@ -192,4 +192,5 @@ SET( EXAMPLES_LIST
   SelectionBox3-many-items.cc
   Table-many-items.cc
   ManyWidgets.cc
+  PollEvent.cc
 )
