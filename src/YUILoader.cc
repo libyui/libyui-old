@@ -119,6 +119,15 @@ void YUILoader::loadUI( bool withThreads )
 	wantedGUI = YUIPlugin_NCurses;
     }
 
+    if (cmdline.find("--threads") != -1) {
+        yuiMilestone () << "Explicitly enabling UI threads" << std::endl;
+        withThreads = true;
+    }
+    if (cmdline.find("--nothreads") != -1) {
+        yuiMilestone () << "Explicitly disabling UI threads" << std::endl;
+        withThreads = false;
+    }
+
     // Load the wanted UI-plugin.
     if( wantedGUI != "" )
     {
