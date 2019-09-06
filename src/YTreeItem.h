@@ -27,8 +27,6 @@
 
 #include "YItem.h"
 
-
-
 /**
  * Item class for tree items.
  *
