@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Fri Nov 29 14:38:54 UTC 2019 - Rodion Iafarov <riafarov@suse.com>
+
+- Add support to operate on many widgets with rest-api
+- Increase SO version to 11
+- 3.9.0
+
+-------------------------------------------------------------------
 Wed Nov 13 14:06:51 UTC 2019 - Stefan Hundhammer <shundhammer@suse.com>
 
 - Don't use tab in string literal
@@ -31,7 +38,7 @@ Mon Sep 23 12:44:47 UTC 2019 - Stefan Hundhammer <shundhammer@suse.com>
 
 - Added CurrentItem property to new ItemSelector widget for consistency
   (bsc#1084674)
-- 3.8.1 
+- 3.8.1
 
 -------------------------------------------------------------------
 Thu Sep 19 09:34:27 UTC 2019 - Stefan Hundhammer <shundhammer@suse.com>
@@ -1007,7 +1014,6 @@ Tue Jun 26 12:00:00 CEST 2007 - sh@suse.de
 
   perl -p -i -e 's/getNotify/notify/g' *.cc pkg/*.c
 
-
 * Added function key methods for NCurses F-key support:
 
   - YWidget::functionKey()
@@ -1101,22 +1107,18 @@ Wed Jun 21 00:00:00 CEST 2007 - sh@suse.de
 
   This had cluttered the API for a long time.
 
-
 * Got rid of all YCP data types in all widget classes:
 
     * YCPString		-> std::string
     * YCPInteger	-> int
     * YCPBoolean	-> bool
 
-
 * In function parameters, std::string is generally passed as const std::string & .
-
 
 * All widgets: No longer implementing changeWidget() / queryWidget() directly,
   now using setProperty() / getProperty().
   Reason: No more YCP depencency in YWidget derived classes.
   See YRadioButton or YTextEntry for examples.
-
 
 * All widgets: widgetClass() now returns const char *, no longer char *
   (gcc had already complained in abuild about this)
@@ -1151,7 +1153,6 @@ Wed Jun 21 00:00:00 CEST 2007 - sh@suse.de
 
   This doesn't do the work completely, but it's a good starting point.
 
-
 * All widgets: The parameters of YWidget::setSize() are now int, no longer long.
   The reasoning is the same as with long nicesize() vs. int preferredWidth().
 
@@ -1175,7 +1176,6 @@ Wed Jun 21 00:00:00 CEST 2007 - sh@suse.de
   gcc should complain about missing places. Also remember to check for '%ld' in
   y2debug() etc. calls and replace most of them with '%d'.
 
-
 * Factories:
     * Derived UIs now are required to implement:
         * YWidgetFactory * createWidgetFactory()
@@ -1193,7 +1193,6 @@ Wed Jun 21 00:00:00 CEST 2007 - sh@suse.de
   The idea of this class is to bundle all the "misc UI functionality" methods.
   See YApplication.h for details.
 
-
 * YDialog:
 
     * YUI::currentDialog() is now moved to YDialog::currentDialog()
@@ -1201,11 +1200,9 @@ Wed Jun 21 00:00:00 CEST 2007 - sh@suse.de
       i.e. there is no more need to check for a 0 pointer after currentDialog()
       (but exceptions need to be caught somewhere)
 
-
 * YSplit:
 
    * renamed to YLayoutBox
-
 
 * YRadioButton:
 
@@ -1222,7 +1219,6 @@ Wed Jun 21 00:00:00 CEST 2007 - sh@suse.de
 
     * new method: useBoldFont()  (instead of YWidgetOpt::boldFont() )
     * new method: boldFont()
-
 
 * YTextEntry:
 
@@ -1244,7 +1240,6 @@ Wed Jun 21 00:00:00 CEST 2007 - sh@suse.de
     * overloaded virtual setInputMaxLength( int ) is now required to call
       YTextEntry::setInputMaxLength() at its end
 
-
 * YPushButton:
 
     * Made all memeber variables private.
@@ -1263,7 +1258,6 @@ Wed Jun 21 00:00:00 CEST 2007 - sh@suse.de
 
   * no more std::vector<YRadioButton *> buttons,
     use iterators with buttonsBegin() and buttonsEnd() instead
-
 
 * YWidgetFactory:
   * createHeading()	is no longer virtual - remove from derived factory
