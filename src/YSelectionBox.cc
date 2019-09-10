@@ -54,7 +54,6 @@ YSelectionBox::YSelectionBox( YWidget * parent, const std::string & label )
 
     setDefaultStretchable( YD_HORIZ, true );
     setDefaultStretchable( YD_VERT,  true );
-
 }
 
 
