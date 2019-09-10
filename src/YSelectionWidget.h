@@ -54,7 +54,7 @@ protected:
     YSelectionWidget( YWidget *			parent,
 		      const std::string &	label,
 		      bool			enforceSingleSelection,
-		      bool			recurisveSelection = false );
+		      bool			recursiveSelection = false );
 
 public:
     /**
