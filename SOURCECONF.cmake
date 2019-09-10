@@ -49,6 +49,7 @@ SET( ${TARGETLIB}_SOURCES
   YImage.cc
   YInputField.cc
   YIntField.cc
+  YItemSelector.cc
   YLabel.cc
   YLayoutBox.cc
   YLogView.cc
@@ -97,6 +98,7 @@ SET( ${TARGETLIB}_HEADERS
   YChildrenManager.h
   YColor.h
   YCommandLine.h
+  YDescribedItem.h
   YDialogSpy.h
   YEvent.h
   YEventFilter.h
@@ -146,6 +148,7 @@ SET( ${TARGETLIB}_HEADERS
   YImage.h
   YInputField.h
   YIntField.h
+  YItemSelector.h
   YLabel.h
   YLayoutBox.h
   YLogView.h
