@@ -190,6 +190,7 @@ SET( EXAMPLES_LIST
   ComboBox1.cc
   ComboBox1-editable.cc
   HelloWorld.cc
+  ItemSelector1.cc
   SelectionBox1.cc
   SelectionBox2.cc
   SelectionBox3-many-items.cc

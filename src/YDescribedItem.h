@@ -41,8 +41,8 @@ public:
      * state.
      **/
     YDescribedItem( const std::string & label,
-                    const std::string & description,
-                    bool                selected = false )
+                    const std::string & description = "",
+                    bool                selected    = false )
         : YItem( label, selected )
         , _description( description )
         {}
