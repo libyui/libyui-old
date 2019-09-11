@@ -40,15 +40,72 @@ YItemSelector::YItemSelector( YWidget *    parent,
                         enforceSingleSelection )
     , priv( new YItemSelectorPrivate )
 {
-    
+    YUI_CHECK_NEW( priv );
+
+    setDefaultStretchable( YD_HORIZ, true );
+    setDefaultStretchable( YD_VERT,  true );
 }
 
 
 YItemSelector::~YItemSelector()
 {
-    YUI_CHECK_NEW( priv );
-    
-    setDefaultStretchable( YD_HORIZ, true );
-    setDefaultStretchable( YD_VERT,  true );
+    // NOP
 }
 
+
+const YPropertySet &
+YItemSelector::propertySet()
+{
+    static YPropertySet propSet;
+
+    if ( propSet.isEmpty() )
+    {
+	/*
+	 * @property itemID		Value		The (first) currently selected item
+	 * @property itemList		SelectedItems	All currently selected items
+	 * @property itemList		Items		All items
+	 * @property std::string	IconPath	Base path for icons
+	 */
+	propSet.add( YProperty( YUIProperty_Value,		YOtherProperty	 ) );
+	propSet.add( YProperty( YUIProperty_SelectedItems,	YOtherProperty	 ) );
+	propSet.add( YProperty( YUIProperty_Items,		YOtherProperty	 ) );
+	propSet.add( YProperty( YUIProperty_IconPath,		YStringProperty	 ) );
+	propSet.add( YWidget::propertySet() );
+    }
+
+    return propSet;
+}
+
+
+bool
+YItemSelector::setProperty( const std::string & propertyName, const YPropertyValue & val )
+{
+    propertySet().check( propertyName, val.type() ); // throws exceptions if not found or type mismatch
+
+    if	    ( propertyName == YUIProperty_Value		)	return false; // Needs special handling
+    else if ( propertyName == YUIProperty_SelectedItems	)	return false; // Needs special handling
+    else if ( propertyName == YUIProperty_Items 	)	return false; // Needs special handling
+    else if ( propertyName == YUIProperty_IconPath 	)	setIconBasePath( val.stringVal() );
+    else
+    {
+	return YWidget::setProperty( propertyName, val );
+    }
+
+    return true; // success -- no special processing necessary
+}
+
+
+YPropertyValue
+YItemSelector::getProperty( const std::string & propertyName )
+{
+    propertySet().check( propertyName ); // throws exceptions if not found
+
+    if	    ( propertyName == YUIProperty_Value		)	return YPropertyValue( YOtherProperty );
+    else if ( propertyName == YUIProperty_SelectedItems	)	return YPropertyValue( YOtherProperty );
+    else if ( propertyName == YUIProperty_Items 	)	return YPropertyValue( YOtherProperty );
+    else if ( propertyName == YUIProperty_IconPath	)	return YPropertyValue( iconBasePath() );
+    else
+    {
+	return YWidget::getProperty( propertyName );
+    }
+}

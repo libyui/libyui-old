@@ -54,6 +54,47 @@ public:
      **/
     virtual ~YItemSelector();
 
+    /**
+     * Returns a descriptive name of this widget class for logging,
+     * debugging etc.
+     **/
+    virtual const char * widgetClass() const { return "YItemSelector"; }
+
+    /**
+     * Set a property.
+     * Reimplemented from YWidget.
+     *
+     * This function may throw YUIPropertyExceptions.
+     *
+     * This function returns 'true' if the value was successfully set and
+     * 'false' if that value requires special handling (not in error cases:
+     * those are covered by exceptions).
+     **/
+    virtual bool setProperty( const std::string & propertyName,
+			      const YPropertyValue & val );
+
+    /**
+     * Get a property.
+     * Reimplemented from YWidget.
+     *
+     * This method may throw YUIPropertyExceptions.
+     **/
+    virtual YPropertyValue getProperty( const std::string & propertyName );
+
+    /**
+     * Return this class's property set.
+     * This also initializes the property upon the first call.
+     *
+     * Reimplemented from YWidget.
+     **/
+    virtual const YPropertySet & propertySet();
+
+    /**
+     * The name of the widget property that will return user input.
+     * Inherited from YWidget.
+     **/
+    const char * userInputProperty() { return YUIProperty_Value; }
+
 
 private:
 
