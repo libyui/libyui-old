@@ -27,6 +27,9 @@
 
 #include "YItemSelector.h"
 
+using std::string;
+
+
 struct YItemSelectorPrivate
 {
     bool dummy;
@@ -61,10 +64,10 @@ YItemSelector::propertySet()
     if ( propSet.isEmpty() )
     {
 	/*
-	 * @property itemID		Value		The (first) currently selected item
-	 * @property itemList		SelectedItems	All currently selected items
-	 * @property itemList		Items		All items
-	 * @property std::string	IconPath	Base path for icons
+	 * @property itemID	Value		The (first) currently selected item
+	 * @property itemList	SelectedItems	All currently selected items
+	 * @property itemList	Items		All items
+	 * @property string	IconPath	Base path for icons
 	 */
 	propSet.add( YProperty( YUIProperty_Value,		YOtherProperty	 ) );
 	propSet.add( YProperty( YUIProperty_SelectedItems,	YOtherProperty	 ) );
@@ -78,7 +81,7 @@ YItemSelector::propertySet()
 
 
 bool
-YItemSelector::setProperty( const std::string & propertyName, const YPropertyValue & val )
+YItemSelector::setProperty( const string & propertyName, const YPropertyValue & val )
 {
     propertySet().check( propertyName, val.type() ); // throws exceptions if not found or type mismatch
 
@@ -96,7 +99,7 @@ YItemSelector::setProperty( const std::string & propertyName, const YPropertyVal
 
 
 YPropertyValue
-YItemSelector::getProperty( const std::string & propertyName )
+YItemSelector::getProperty( const string & propertyName )
 {
     propertySet().check( propertyName ); // throws exceptions if not found
 

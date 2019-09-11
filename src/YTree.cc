@@ -31,6 +31,9 @@
 #include "YTree.h"
 #include "YTreeItem.h"
 
+using std::string;
+
+
 struct YTreePrivate
 {
     YTreePrivate()
@@ -41,7 +44,7 @@ struct YTreePrivate
 };
 
 
-YTree::YTree( YWidget * parent, const std::string & label, bool multiSelection, bool recursiveSelection )
+YTree::YTree( YWidget * parent, const string & label, bool multiSelection, bool recursiveSelection )
     : YSelectionWidget( parent, label,
 			! multiSelection,
 			recursiveSelection )
@@ -98,8 +101,8 @@ YTree::propertySet()
 	 * @property list<itemID>  	CurrentBranch	List of IDs of current branch from root to current item
 	 * @property itemList		Items		All items
 	 * @property map<ItemID>	OpenItems 	Map of IDs of all open items - can only be queried, not set
-	 * @property std::string  	Label		Caption above the tree
-	 * @property std::string  	IconPath	Base path for icons
+	 * @property string             Label		Caption above the tree
+	 * @property string             IconPath	Base path for icons
          * @property bool               MultiSelection  Flag: User can select multiple items (read-only)
 	 */
 	propSet.add( YProperty( YUIProperty_Value,		YOtherProperty	 ) );
@@ -120,7 +123,7 @@ YTree::propertySet()
 
 
 bool
-YTree::setProperty( const std::string & propertyName, const YPropertyValue & val )
+YTree::setProperty( const string & propertyName, const YPropertyValue & val )
 {
     propertySet().check( propertyName, val.type() ); // throws exceptions if not found or type mismatch
 
@@ -143,7 +146,7 @@ YTree::setProperty( const std::string & propertyName, const YPropertyValue & val
 
 
 YPropertyValue
-YTree::getProperty( const std::string & propertyName )
+YTree::getProperty( const string & propertyName )
 {
     propertySet().check( propertyName ); // throws exceptions if not found
 

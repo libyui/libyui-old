@@ -36,9 +36,10 @@
 #include "YItem.h"
 #include "YCommandLine.h"
 
-using std::endl;
+using std::string;
+using std::map;
 
-typedef std::map<std::string, int> YFunctionKeyMap;
+typedef map<string, int> YFunctionKeyMap;
 
 
 struct YApplicationPrivate
@@ -49,13 +50,13 @@ struct YApplicationPrivate
 	, showProductLogo( false )
 	{}
 
-    std::string		productName;
+    string		productName;
     bool		reverseLayout;
-    std::string applicationTitle;
-    std::string applicationIcon;
+    string              applicationTitle;
+    string              applicationIcon;
     YFunctionKeyMap	defaultFunctionKey;
     YIconLoader*	iconLoader;
-    std::map<std::string,std::string>	releaseNotes;
+    map<string,string>	releaseNotes;
     bool		showProductLogo;
 };
 
@@ -89,7 +90,7 @@ YApplication::findWidget( YWidgetID * id, bool doThrow ) const
 }
 
 
-std::string
+string
 YApplication::iconBasePath() const
 {
     return priv->iconLoader->iconBasePath();
@@ -97,7 +98,7 @@ YApplication::iconBasePath() const
 
 
 void
-YApplication::setIconBasePath( const std::string & newIconBasePath )
+YApplication::setIconBasePath( const string & newIconBasePath )
 {
     priv->iconLoader->setIconBasePath ( newIconBasePath );
 }
@@ -109,25 +110,25 @@ YApplication::iconLoader()
 }
 
 void
-YApplication::setProductName( const std::string & productName )
+YApplication::setProductName( const string & productName )
 {
     priv->productName = productName;
 }
 
 
-std::string
+string
 YApplication::productName() const
 {
     return priv->productName;
 }
 
 void
-YApplication::setReleaseNotes( const std::map<std::string,std::string> & relNotes )
+YApplication::setReleaseNotes( const map<string,string> & relNotes )
 {
     priv->releaseNotes = relNotes;
 }
 
-std::map<std::string,std::string>
+map<string,string>
 YApplication::releaseNotes() const
 {
     return priv->releaseNotes;
@@ -159,7 +160,7 @@ bool YApplication::reverseLayout() const
 
 
 int
-YApplication::defaultFunctionKey( const std::string & label ) const
+YApplication::defaultFunctionKey( const string & label ) const
 {
     YFunctionKeyMap::const_iterator result =
 	priv->defaultFunctionKey.find( YShortcut::cleanShortcutString( label  ) );
@@ -172,7 +173,7 @@ YApplication::defaultFunctionKey( const std::string & label ) const
 
 
 void
-YApplication::setDefaultFunctionKey( const std::string & label, int fkey )
+YApplication::setDefaultFunctionKey( const string & label, int fkey )
 {
     if ( fkey > 0 )
 	priv->defaultFunctionKey[ YShortcut::cleanShortcutString( label ) ] = fkey;
@@ -189,9 +190,9 @@ YApplication::clearDefaultFunctionKeys()
 
 
 void
-YApplication::setLanguage( const std::string & language, const std::string & encoding )
+YApplication::setLanguage( const string & language, const string & encoding )
 {
-    std::string lang = language;
+    string lang = language;
 
     if ( ! encoding.empty() )
     {
@@ -206,7 +207,7 @@ YApplication::setLanguage( const std::string & language, const std::string & enc
 }
 
 
-std::string
+string
 YApplication::language( bool stripEncoding ) const
 {
     const char *lang_env = getenv( "LANG" );
@@ -214,13 +215,13 @@ YApplication::language( bool stripEncoding ) const
     if ( ! lang_env )
 	return "";
 
-    std::string lang( lang_env );
+    string lang( lang_env );
 
     if ( stripEncoding )
     {
-	std::string::size_type pos = lang.find_first_of( ".@" );
+	string::size_type pos = lang.find_first_of( ".@" );
 
-	if ( pos != std::string::npos )		// if encoding etc. specified
+	if ( pos != string::npos )		// if encoding etc. specified
 	{
 	    lang = lang.substr( 0, pos );	// remove it
 	}
@@ -230,8 +231,8 @@ YApplication::language( bool stripEncoding ) const
 }
 
 
-std::string
-YApplication::glyph( const std::string & sym )
+string
+YApplication::glyph( const string & sym )
 {
     if	    ( sym == YUIGlyph_ArrowLeft		)	return ( reverseLayout() ? "->" : "<-"  );
     else if ( sym == YUIGlyph_ArrowRight	)	return ( reverseLayout() ? "<-" : "->"  );
@@ -272,28 +273,28 @@ YApplication::layoutUnits( YUIDimension dim, int deviceUnits )
 
 
 int
-YApplication::runInTerminal ( const std::string & module )
+YApplication::runInTerminal ( const string & module )
 {
     yuiError() << "Not in text mode: Cannot run external program in terminal." << endl;
 
     return -1;
 }
 
-void YApplication::setApplicationTitle(const std::string &title)
+void YApplication::setApplicationTitle(const string &title)
 {
     priv->applicationTitle = title;
 }
 
-const std::string &YApplication::applicationTitle() const
+const string &YApplication::applicationTitle() const
 {
     return priv->applicationTitle;
 }
 
-void YApplication::setApplicationIcon(const std::string &icon)
+void YApplication::setApplicationIcon(const string &icon)
 {
     priv->applicationIcon = icon;
 }
-const std::string &YApplication::applicationIcon() const
+const string &YApplication::applicationIcon() const
 {
     return priv->applicationIcon;
 }

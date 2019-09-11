@@ -32,12 +32,12 @@
 #include "YUISymbols.h"
 #include "YPushButton.h"
 
-using std::endl;
+using std::string;
 
 
 struct YPushButtonPrivate
 {
-    YPushButtonPrivate( const std::string & label )
+    YPushButtonPrivate( const string & label )
 	: label( label )
 	, isDefaultButton( false )
 	, setDefaultButtonRecursive( false )
@@ -46,7 +46,7 @@ struct YPushButtonPrivate
 	, role( YCustomButton )
 	{}
 
-    std::string	label;
+    string	label;
     bool	isDefaultButton;
     bool	setDefaultButtonRecursive;
     bool	isHelpButton;
@@ -55,7 +55,7 @@ struct YPushButtonPrivate
 };
 
 
-YPushButton::YPushButton( YWidget * parent, const std::string & label )
+YPushButton::YPushButton( YWidget * parent, const string & label )
     : YWidget( parent )
     , priv( new YPushButtonPrivate( label ) )
 {
@@ -77,13 +77,13 @@ YPushButton::~YPushButton()
 }
 
 
-void YPushButton::setLabel( const std::string & label )
+void YPushButton::setLabel( const string & label )
 {
     priv->label = label;
 }
 
 
-std::string YPushButton::label() const
+string YPushButton::label() const
 {
     return priv->label;
 }
@@ -216,7 +216,7 @@ YPushButton::propertySet()
     if ( propSet.isEmpty() )
     {
 	/*
-	 * @property std::string Label	text on the button
+	 * @property string     Label	text on the button
 	 */
 	propSet.add( YProperty( YUIProperty_Label, YStringProperty ) );
 	propSet.add( YWidget::propertySet() );
@@ -227,7 +227,7 @@ YPushButton::propertySet()
 
 
 bool
-YPushButton::setProperty( const std::string & propertyName, const YPropertyValue & val )
+YPushButton::setProperty( const string & propertyName, const YPropertyValue & val )
 {
     propertySet().check( propertyName, val.type() ); // throws exceptions if not found or type mismatch
 
@@ -242,7 +242,7 @@ YPushButton::setProperty( const std::string & propertyName, const YPropertyValue
 
 
 YPropertyValue
-YPushButton::getProperty( const std::string & propertyName )
+YPushButton::getProperty( const string & propertyName )
 {
     propertySet().check( propertyName ); // throws exceptions if not found
 

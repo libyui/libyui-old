@@ -28,18 +28,20 @@
 
 #include "YIntField.h"
 
+using std::string;
+
 
 struct YIntFieldPrivate
 {
-    YIntFieldPrivate( const std::string &	label,
-		      int			minValue,
-		      int			maxValue )
+    YIntFieldPrivate( const string &	label,
+		      int		minValue,
+		      int		maxValue )
 	: label( label )
 	, minValue( minValue )
 	, maxValue( maxValue )
 	{}
 
-    std::string	label;
+    string	label;
     int		minValue;
     int		maxValue;
 };
@@ -47,10 +49,10 @@ struct YIntFieldPrivate
 
 
 
-YIntField::YIntField( YWidget *			parent,
-		      const std::string &	label,
-		      int			minValue,
-		      int			maxValue )
+YIntField::YIntField( YWidget *		parent,
+		      const string &	label,
+		      int		minValue,
+		      int		maxValue )
     : YWidget( parent )
     , priv( new YIntFieldPrivate( label, minValue, maxValue ) )
 {
@@ -120,7 +122,7 @@ YIntField::setMaxValue( int val )
 }
 
 
-std::string
+string
 YIntField::label() const
 {
     return priv->label;
@@ -128,7 +130,7 @@ YIntField::label() const
 
 
 void
-YIntField::setLabel( const std::string & label )
+YIntField::setLabel( const string & label )
 {
     priv->label = label;
 }
@@ -143,10 +145,10 @@ YIntField::propertySet()
     if ( propSet.isEmpty() )
     {
 	/*
-	 * @property integer		Value		the field's contents (the user input)
-	 * @property integer		MinValue	the minimum value
-	 * @property integer		MaxValue	the maximum value
-	 * @property std::string	Label		caption above the field
+	 * @property integer	Value		the field's contents (the user input)
+	 * @property integer	MinValue	the minimum value
+	 * @property integer	MaxValue	the maximum value
+	 * @property string	Label		caption above the field
 	 */
 	propSet.add( YProperty( YUIProperty_Value,		YIntegerProperty ) );
 	propSet.add( YProperty( YUIProperty_MinValue,		YIntegerProperty ) );
@@ -160,7 +162,7 @@ YIntField::propertySet()
 
 
 bool
-YIntField::setProperty( const std::string & propertyName, const YPropertyValue & val )
+YIntField::setProperty( const string & propertyName, const YPropertyValue & val )
 {
     propertySet().check( propertyName, val.type() ); // throws exceptions if not found or type mismatch
 
@@ -178,7 +180,7 @@ YIntField::setProperty( const std::string & propertyName, const YPropertyValue &
 
 
 YPropertyValue
-YIntField::getProperty( const std::string & propertyName )
+YIntField::getProperty( const string & propertyName )
 {
     propertySet().check( propertyName ); // throws exceptions if not found
 

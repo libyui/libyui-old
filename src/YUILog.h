@@ -33,6 +33,8 @@
 
 #include "ImplPtr.h"
 
+using std::endl;
+
 
 //
 // UI Logging: Macros for Application use.
@@ -45,8 +47,8 @@
 //    #include <YUILog.h>
 //
 //    ...
-//    yuiDebug() << "Creating widget" << widget << std::endl;
-//    yuiError() << "No widget with ID " << id << std::endl;
+//    yuiDebug() << "Creating widget" << widget << endl;
+//    yuiError() << "No widget with ID " << id << endl;
 //
 // Unless the underlying logger function handles this differently,
 // Milestone, Warning and Error are always logged, Debug only when enabled.

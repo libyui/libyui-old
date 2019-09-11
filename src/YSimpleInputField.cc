@@ -29,20 +29,22 @@
 #include "YUISymbols.h"
 #include "YSimpleInputField.h"
 
+using std::string;
+
 
 struct YSimpleInputFieldPrivate
 {
-    YSimpleInputFieldPrivate( const std::string & label )
+    YSimpleInputFieldPrivate( const string & label )
 	: label( label )
 	{}
 
-    std::string label;
+    string label;
 };
 
 
 
 
-YSimpleInputField::YSimpleInputField( YWidget * parent, const std::string & label )
+YSimpleInputField::YSimpleInputField( YWidget * parent, const string & label )
     : YWidget( parent )
     , priv( new YSimpleInputFieldPrivate( label ) )
 {
@@ -59,13 +61,13 @@ YSimpleInputField::~YSimpleInputField()
 }
 
 
-std::string YSimpleInputField::label() const
+string YSimpleInputField::label() const
 {
     return priv->label;
 }
 
 
-void YSimpleInputField::setLabel( const std::string & label )
+void YSimpleInputField::setLabel( const string & label )
 {
     priv->label = label;
 }
@@ -80,8 +82,8 @@ YSimpleInputField::propertySet()
     if ( propSet.isEmpty() )
     {
 	/*
-	 * @property std::string  Value		the text the user entered
-	 * @property std::string  Label		caption above the input field
+	 * @property string  Value      the text the user entered
+	 * @property string  Label	caption above the input field
 	 */
 	propSet.add( YProperty( YUIProperty_Value,		YStringProperty	 ) );
 	propSet.add( YProperty( YUIProperty_Label,		YStringProperty	 ) );
@@ -93,7 +95,7 @@ YSimpleInputField::propertySet()
 
 
 bool
-YSimpleInputField::setProperty( const std::string & propertyName, const YPropertyValue & val )
+YSimpleInputField::setProperty( const string & propertyName, const YPropertyValue & val )
 {
     propertySet().check( propertyName, val.type() ); // throws exceptions if not found or type mismatch
 
@@ -109,7 +111,7 @@ YSimpleInputField::setProperty( const std::string & propertyName, const YPropert
 
 
 YPropertyValue
-YSimpleInputField::getProperty( const std::string & propertyName )
+YSimpleInputField::getProperty( const string & propertyName )
 {
     propertySet().check( propertyName ); // throws exceptions if not found
 

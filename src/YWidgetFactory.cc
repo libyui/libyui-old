@@ -31,10 +31,14 @@
 #define YUILogComponent "wf"
 #include "YUILog.h"
 
+using std::string;
+
+
 YWidgetFactory::YWidgetFactory()
 {
     // NOP
 }
+
 
 YWidgetFactory::~YWidgetFactory()
 {
@@ -232,8 +236,8 @@ YWidgetFactory::createHVSquash( YWidget * parent )
 
 YPushButton *
 YWidgetFactory::createIconButton( YWidget *	 parent,
-				  const std::string & iconName,
-				  const std::string & fallbackTextLabel )
+				  const string & iconName,
+				  const string & fallbackTextLabel )
 {
     YPushButton * button = createPushButton( parent, fallbackTextLabel );
     button->setIcon( iconName );
@@ -243,7 +247,7 @@ YWidgetFactory::createIconButton( YWidget *	 parent,
 
 
 YLabel *
-YWidgetFactory::createHeading( YWidget * parent, const std::string & text )
+YWidgetFactory::createHeading( YWidget * parent, const string & text )
 {
     return createLabel( parent,
 			text,
@@ -253,7 +257,7 @@ YWidgetFactory::createHeading( YWidget * parent, const std::string & text )
 
 
 YLabel *
-YWidgetFactory::createOutputField( YWidget * parent, const std::string & text )
+YWidgetFactory::createOutputField( YWidget * parent, const string & text )
 {
     return createLabel( parent,
 			text,
@@ -263,7 +267,7 @@ YWidgetFactory::createOutputField( YWidget * parent, const std::string & text )
 
 
 YInputField *
-YWidgetFactory::createPasswordField( YWidget * parent, const std::string & label )
+YWidgetFactory::createPasswordField( YWidget * parent, const string & label )
 {
     return createInputField( parent,
 			     label,
@@ -276,12 +280,12 @@ YWidgetFactory::createItemSelector( YWidget * parent, bool enforceSingleSelectio
 {
     (void) parent;
     (void) enforceSingleSelection;
-    
+
     // Default implementation returning 0 to give community-maintained UIs
     // (libyui-gtk) a chance to catch up with development. Remove this and make
     // it pure virtual when this is implemented there as well.
 
-    yuiError() << "YItemSelector not implemented in this UI" << std::endl;
+    yuiError() << "YItemSelector not implemented in this UI" << endl;
 
     return 0;
 }

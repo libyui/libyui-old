@@ -61,7 +61,7 @@ int main( int argc, char **argv )
 
 
     YLayoutBox * hbox = YUI::widgetFactory()->createHBox( vbox );
-    YLabel * valueField  = YUI::widgetFactory()->createOutputField( hbox, "<SelectionBox value unknown>" );
+    YLabel * valueField  = YUI::widgetFactory()->createOutputField( hbox, "<ItemSelector value unknown>" );
     valueField->setStretchable( YD_HORIZ, true ); // allow stretching over entire dialog width
 
     YPushButton * valueButton = YUI::widgetFactory()->createPushButton( hbox, "&Value" );

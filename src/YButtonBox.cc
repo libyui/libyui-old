@@ -35,7 +35,8 @@
 #include "YUI.h"
 #include "YApplication.h"
 
-using std::max;
+using std::string;
+using std::vector;
 
 
 YButtonBoxLayoutPolicy	YButtonBox::_layoutPolicy = kdeLayoutPolicy();
@@ -160,7 +161,7 @@ YButtonBox::setSize( int newWidth, int newHeight )
 void
 YButtonBox::doLayout( int width, int height )
 {
-    std::vector<YPushButton *> buttons = buttonsByButtonOrder();
+    vector<YPushButton *> buttons = buttonsByButtonOrder();
 
     if ( buttons.empty() )
 	return;
@@ -369,7 +370,7 @@ YButtonBox::doLayout( int width, int height )
 
     bool reverseLayout = YUI::app()->reverseLayout();
 
-    for ( std::vector<YPushButton *>::iterator it = buttons.begin();
+    for ( vector<YPushButton *>::iterator it = buttons.begin();
 	  it != buttons.end();
 	  ++it )
     {
@@ -406,11 +407,11 @@ YButtonBox::doLayout( int width, int height )
 }
 
 
-std::vector<YPushButton *>
+vector<YPushButton *>
 YButtonBox::buttonsByButtonOrder()
 {
-    std::vector<YPushButton *> specialButtons( YMaxButtonRole, (YPushButton *) 0 );
-    std::vector<YPushButton *> customButtons;
+    vector<YPushButton *> specialButtons( YMaxButtonRole, (YPushButton *) 0 );
+    vector<YPushButton *> customButtons;
 
     for ( YWidgetListConstIterator it = childrenBegin();
 	  it != childrenEnd();
@@ -431,7 +432,7 @@ YButtonBox::buttonsByButtonOrder()
 
 		if ( specialButtons[ button->role() ] ) // Only one of each of those is allowed
 		{
-		    std::string msg = "Multiple buttons with that role [";
+		    string msg = "Multiple buttons with that role [";
 		    msg += button->debugLabel();
 		    msg += "]";
 		    YUI_THROW( YUIButtonRoleMismatchException( msg ) );
@@ -452,7 +453,7 @@ YButtonBox::buttonsByButtonOrder()
 	}
     }
 
-    std::vector<YPushButton *> buttons;
+    vector<YPushButton *> buttons;
 
     if ( _layoutPolicy.buttonOrder == YKDEButtonOrder )
     {
@@ -533,7 +534,7 @@ YButtonBox::maxChildSize( YUIDimension dim ) const
 	  it != childrenEnd();
 	  ++it )
     {
-	maxSize = max( maxSize, (*it)->preferredSize( dim ) );
+	maxSize = std::max( maxSize, (*it)->preferredSize( dim ) );
     }
 
     return maxSize;

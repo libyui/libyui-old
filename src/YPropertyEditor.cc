@@ -34,16 +34,19 @@
 #define YUILogComponent "ui-property-editor"
 #include "YUILog.h"
 
+using std::string;
+
+
 class YPropertyEditorPriv
 {
 public:
 
     YPropertyEditorPriv(YWidget * widget) : _widget(widget),
-        popup(nullptr), combo(nullptr), intfield(nullptr),
-        input(nullptr), okButton(nullptr), cancelButton(nullptr)
-    {}
+                                            popup(nullptr), combo(nullptr), intfield(nullptr),
+                                            input(nullptr), okButton(nullptr), cancelButton(nullptr)
+        {}
 
-    bool edit(const std::string &property);
+    bool edit( const string &property );
 
 private:
 
@@ -51,14 +54,14 @@ private:
      * show the dialog on the screen
      * @param property Name of the property to edit
      */
-    void show(const std::string &property);
+    void show( const string &property );
 
     /**
      * Run the main event loop
      * @param  property Name of the property to edit
      * @return true if the value has been changed, false otherwise
      */
-    bool run(const std::string &property);
+    bool run( const string &property );
 
     /**
      * Close the dialog window
@@ -77,7 +80,7 @@ private:
      * @param  property Name of the property
      * @return true if it is read-only, false if it can be changed
      */
-    bool isReadOnly(const std::string &property);
+    bool isReadOnly( const string &property );
 
     // UI widgets
     // the main popup
@@ -98,8 +101,9 @@ private:
      * @param  property Name of the property
      * @return true if the property can be changed
      */
-    bool editable(const std::string &property);
+    bool editable(const string &property);
 };
+
 
 /**
  * Helper method - refresh the dialog containing the widget
@@ -111,7 +115,8 @@ void YPropertyEditorPriv::refreshDialog()
     if (dialog) dialog->recalcLayout();
 }
 
-bool YPropertyEditorPriv::edit(const std::string &property)
+
+bool YPropertyEditorPriv::edit(const string &property)
 {
     if (!_widget || !editable(property)) return false;
 
@@ -125,7 +130,8 @@ bool YPropertyEditorPriv::edit(const std::string &property)
     return changed;
 }
 
-bool YPropertyEditorPriv::isReadOnly(const std::string &property)
+
+bool YPropertyEditorPriv::isReadOnly(const string &property)
 {
     // is the property read-only?
     YPropertySet propSet = _widget->propertySet();
@@ -148,7 +154,8 @@ bool YPropertyEditorPriv::isReadOnly(const std::string &property)
     return false;
 }
 
-void YPropertyEditorPriv::show(const std::string &property)
+
+void YPropertyEditorPriv::show(const string &property)
 {
     YPropertyValue prop_value = _widget->getProperty(property);
     YPropertyType type = prop_value.type();
@@ -172,10 +179,11 @@ void YPropertyEditorPriv::show(const std::string &property)
     else if (type == YIntegerProperty)
     {
         intfield = f->createIntField(vbox, property,
-            // we do not know anything about that property so use the
-            // max int and min int values here
-            std::numeric_limits<int>::min(), std::numeric_limits<int>::max(),
-            prop_value.integerVal());
+                                     // we do not know anything about that property so use the
+                                     // max int and min int values here
+                                     std::numeric_limits<int>::min(),
+                                     std::numeric_limits<int>::max(),
+                                     prop_value.integerVal());
         intfield->setNotify(true);
     }
     else if (type == YStringProperty)
@@ -193,6 +201,7 @@ void YPropertyEditorPriv::show(const std::string &property)
     cancelButton->setRole(YCancelButton);
 }
 
+
 void YPropertyEditorPriv::close()
 {
     popup->destroy();
@@ -206,7 +215,8 @@ void YPropertyEditorPriv::close()
     input = NULL;
 }
 
-bool YPropertyEditorPriv::run(const std::string &property)
+
+bool YPropertyEditorPriv::run(const string &property)
 {
     // backup the original property value so it can be restored after
     // clicking the [Cancel] button later
@@ -235,14 +245,14 @@ bool YPropertyEditorPriv::run(const std::string &property)
             }
             else if (event->widget() == combo)
             {
-                std::string value = combo->value();
+                string value = combo->value();
                 yuiMilestone() << "Value changed to " << value;
                 _widget->setProperty(property, YPropertyValue(value == "true"));
                 refreshDialog();
             }
             else if (event->widget() == input)
             {
-                std::string value = input->value();
+                string value = input->value();
                 yuiMilestone() << "Value changed to " << value;
 
                 _widget->setProperty(property, YPropertyValue(value));
@@ -260,7 +270,7 @@ bool YPropertyEditorPriv::run(const std::string &property)
     }
 }
 
-bool YPropertyEditorPriv::editable(const std::string &property)
+bool YPropertyEditorPriv::editable(const string &property)
 {
     YPropertyValue prop_value = _widget->getProperty(property);
 
@@ -281,15 +291,18 @@ bool YPropertyEditorPriv::editable(const std::string &property)
     return true;
 }
 
-bool YPropertyEditor::edit(const std::string &property)
+
+bool YPropertyEditor::edit(const string &property)
 {
     return priv->edit(property);
 }
 
+
 YPropertyEditor::YPropertyEditor(YWidget * widget)
-: priv(new YPropertyEditorPriv(widget))
+    : priv(new YPropertyEditorPriv(widget))
 {
 }
+
 
 YPropertyEditor::~YPropertyEditor()
 {

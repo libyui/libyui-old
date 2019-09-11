@@ -28,20 +28,22 @@
 
 #include "YGraph.h"
 
+using std::string;
+
 
 struct YGraphPrivate
 {
-    YGraphPrivate( std::string filename, std::string layoutAlgorithm )
+    YGraphPrivate( string filename, string layoutAlgorithm )
 	: filename( filename ),
 	  layoutAlgorithm( layoutAlgorithm )
 	{}
 
-    std::string filename;
-    std::string layoutAlgorithm;
+    string filename;
+    string layoutAlgorithm;
 };
 
 
-YGraph::YGraph( YWidget * parent, const std::string & filename, const std::string & layoutAlgorithm )
+YGraph::YGraph( YWidget * parent, const string & filename, const string & layoutAlgorithm )
     : YWidget( parent )
     , priv( new YGraphPrivate( filename, layoutAlgorithm ) )
 {
@@ -65,7 +67,7 @@ YGraph::~YGraph()
 }
 
 
-std::string
+string
 YGraph::filename() const
 {
     return priv->filename;
@@ -73,14 +75,14 @@ YGraph::filename() const
 
 
 void
-YGraph::setFilename( const std::string & filename )
+YGraph::setFilename( const string & filename )
 {
     priv->filename = filename;
     renderGraph( filename, layoutAlgorithm() );
 }
 
 
-std::string
+string
 YGraph::layoutAlgorithm() const
 {
     return priv->layoutAlgorithm;
@@ -96,13 +98,13 @@ YGraph::setGraph( /* graph_t */ void * graph )
 
 
 void
-YGraph::setLayoutAlgorithm( const std::string & layoutAlgorithm )
+YGraph::setLayoutAlgorithm( const string & layoutAlgorithm )
 {
     priv->layoutAlgorithm = layoutAlgorithm;
 }
 
 
-std::string
+string
 YGraph::activatedNode() const
 {
     return "";
@@ -117,9 +119,9 @@ YGraph::propertySet()
     if ( propSet.isEmpty() )
     {
 	/*
-	 * @property std::string	Filename	name of the file describing the graph
-	 * @property std::string	Layout		layout-algorithm used from the graph
-	 * @property std::string	Item		activated node (read-only)
+	 * @property string	Filename	name of the file describing the graph
+	 * @property string	Layout		layout-algorithm used from the graph
+	 * @property string	Item		activated node (read-only)
 	 */
 	propSet.add( YProperty( YUIProperty_Filename,		YStringProperty	 ) );
 	propSet.add( YProperty( YUIProperty_Layout,		YStringProperty	 ) );
@@ -132,7 +134,7 @@ YGraph::propertySet()
 
 
 bool
-YGraph::setProperty( const std::string & propertyName, const YPropertyValue & val )
+YGraph::setProperty( const string & propertyName, const YPropertyValue & val )
 {
     propertySet().check( propertyName, val.type() ); // throws exceptions if not found or type mismatch
 
@@ -148,7 +150,7 @@ YGraph::setProperty( const std::string & propertyName, const YPropertyValue & va
 
 
 YPropertyValue
-YGraph::getProperty( const std::string & propertyName )
+YGraph::getProperty( const string & propertyName )
 {
     propertySet().check( propertyName ); // throws exceptions if not found
 

@@ -33,7 +33,7 @@ YPackageSelector::YPackageSelector( YWidget * parent, long modeFlags )
     : YWidget( parent )
     , _modeFlags( modeFlags )
 {
-    yuiMilestone() << "YPackageSelector flags: " << std::hex << modeFlags << std::dec << std::endl;
+    yuiMilestone() << "YPackageSelector flags: " << std::hex << modeFlags << std::dec << endl;
 
     setDefaultStretchable( YD_HORIZ, true );
     setDefaultStretchable( YD_VERT,  true );

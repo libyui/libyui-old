@@ -49,6 +49,8 @@
 #define CHECK_FOR_DUPLICATE_CHILDREN	1
 #define LOG_WIDGET_REP			0
 
+using std::string;
+
 
 
 struct YWidgetPrivate
@@ -92,7 +94,7 @@ struct YWidgetPrivate
     YBothDim<bool>		stretch;
     YBothDim<int>		weight;
     int				functionKey;
-    std::string			helpText;
+    string			helpText;
 };
 
 
@@ -113,8 +115,8 @@ YWidget::YWidget( YWidget * parent )
 	yuiError() << "FATAL: Widget at "
 		   << std::hex << (void *) this << std::dec
 		   << " not created with operator new !"
-		   << std::endl;
-	yuiError() << "Check core dump for a backtrace." << std::endl;
+		   << endl;
+	yuiError() << "Check core dump for a backtrace." << endl;
 	abort();
     }
 
@@ -136,7 +138,7 @@ YWidget::~YWidget()
 {
     YUI_CHECK_WIDGET( this );
     setBeingDestroyed();
-    // yuiDebug() << "Destructor of YWidget " << this << std::endl;
+    // yuiDebug() << "Destructor of YWidget " << this << endl;
 
     deleteChildren();
     YUI::ui()->deleteNotify( this );
@@ -176,7 +178,7 @@ YWidget::addChild( YWidget * child )
 #if CHECK_FOR_DUPLICATE_CHILDREN
     if ( child && childrenManager()->contains( child ) )
     {
-	yuiError() << this << " already contains " << child << std::endl;
+	yuiError() << this << " already contains " << child << endl;
 	YUI_THROW( YUIInvalidChildException<YWidget>( this, child ) );
     }
 #endif
@@ -190,7 +192,7 @@ YWidget::removeChild( YWidget * child )
 {
     if ( ! beingDestroyed() )
     {
-	// yuiDebug() << "Removing " << child << " from " << this << std::endl;
+	// yuiDebug() << "Removing " << child << " from " << this << endl;
 	childrenManager()->remove( child );
     }
 }
@@ -208,7 +210,7 @@ YWidget::deleteChildren()
 
 	if ( child->isValid() )
 	{
-	    // yuiDebug() << "Deleting " << child << std::endl;
+	    // yuiDebug() << "Deleting " << child << endl;
 	    delete child;
 	}
     }
@@ -217,10 +219,10 @@ YWidget::deleteChildren()
 }
 
 
-std::string
+string
 YWidget::debugLabel() const
 {
-    std::string label = YShortcut::cleanShortcutString( YShortcut::getShortcutString( this ) );
+    string label = YShortcut::cleanShortcutString( YShortcut::getShortcutString( this ) );
 
     if ( label.size() > MAX_DEBUG_LABEL_LEN )
     {
@@ -287,8 +289,8 @@ YWidget::setParent( YWidget * newParent )
 	YDialog::currentDialog()->dumpWidgetTree();
 	yuiWarning() << "Reparenting " << this
 		     << " from " << priv->parent
-		     << " to " << newParent << std::endl;
-	YUI_THROW( YUIException( std::string( widgetClass() ) + " already has a parent!" ) );
+		     << " to " << newParent << endl;
+	YUI_THROW( YUIException( string( widgetClass() ) + " already has a parent!" ) );
     }
 
     priv->parent = newParent;
@@ -337,13 +339,13 @@ void YWidget::setFunctionKey( int fkey_no )
 }
 
 
-std::string YWidget::helpText() const
+string YWidget::helpText() const
 {
     return priv->helpText;
 }
 
 
-void YWidget::setHelpText( const std::string & helpText )
+void YWidget::setHelpText( const string & helpText )
 {
     priv->helpText = helpText;
 }
@@ -397,17 +399,17 @@ YWidget::propertySet()
     if ( propSet.isEmpty() )
     {
 	/**
-	 * @property boolean		Enabled		enabled/disabled state of this widget
-	 * @property boolean		Notify		the current notify state (see also `opt( `notify ))
-	 * @property boolean		ContextMenu	the current contextmenu state (see also `opt( `notifyContextMenu ))
-	 * @property std::string	WidgetClass	the widget class of this widget (YLabel, YPushButton, ...)
-	 * @property std::string	DebugLabel	(possibly translated) text describing this widget for debugging
-         * @property std::string	ID       	widget id as a read-only property
-	 * @property std::string	HelpText	help text
-	 * @property integer		HWeight		horizontal layout weight (same as `HWeight(widget())
-	 * @property integer		VWeight		vertical   layout weight (same as `VWeight(widget())
-	 * @property boolean		HStretch	horizontally stretchable? (same as `opt(`hstretch))
-	 * @property boolean		VStretch	vertically   stretchable? (same as `opt(`vstretch))
+	 * @property boolean	Enabled		enabled/disabled state of this widget
+	 * @property boolean	Notify		the current notify state (see also `opt( `notify ))
+	 * @property boolean	ContextMenu	the current contextmenu state (see also `opt( `notifyContextMenu ))
+	 * @property string	WidgetClass	the widget class of this widget (YLabel, YPushButton, ...)
+	 * @property string	DebugLabel	(possibly translated) text describing this widget for debugging
+         * @property string	ID       	widget id as a read-only property
+	 * @property string	HelpText	help text
+	 * @property integer	HWeight		horizontal layout weight (same as `HWeight(widget())
+	 * @property integer	VWeight		vertical   layout weight (same as `VWeight(widget())
+	 * @property boolean	HStretch	horizontally stretchable? (same as `opt(`hstretch))
+	 * @property boolean	VStretch	vertically   stretchable? (same as `opt(`vstretch))
 	 **/
 
 	propSet.add( YProperty( YUIProperty_Enabled,		YBoolProperty	 ) );
@@ -427,7 +429,7 @@ YWidget::propertySet()
 
 
 bool
-YWidget::setProperty( const std::string & propertyName, const YPropertyValue & val )
+YWidget::setProperty( const string & propertyName, const YPropertyValue & val )
 {
     try
     {
@@ -452,7 +454,7 @@ YWidget::setProperty( const std::string & propertyName, const YPropertyValue & v
 
 
 YPropertyValue
-YWidget::getProperty( const std::string & propertyName )
+YWidget::getProperty( const string & propertyName )
 {
     try
     {
@@ -508,12 +510,12 @@ YWidget::isEnabled() const
 }
 
 
-void YWidget::setShortcutString( const std::string & str )
+void YWidget::setShortcutString( const string & str )
 {
     yuiError() << "Default setShortcutString() method called - "
 	       << "this should be reimplemented in "
 	       << widgetClass()
-	       << std::endl;
+	       << endl;
 }
 
 
@@ -596,7 +598,7 @@ bool YWidget::hasWeight( YUIDimension dim )
 
 bool YWidget::setKeyboardFocus()
 {
-    yuiWarning() << this << " cannot accept the keyboard focus." << std::endl;
+    yuiWarning() << this << " cannot accept the keyboard focus." << endl;
     return false;
 }
 
@@ -648,11 +650,11 @@ void YWidget::setChildrenEnabled( bool enabled )
 
 	if ( child->hasChildren() )
 	{
-	    // yuiDebug() << "Recursing into " << child << std::endl;
+	    // yuiDebug() << "Recursing into " << child << endl;
 	    child->setChildrenEnabled( enabled );
 	}
 
-	// yuiDebug() << ( enabled ? "Enabling " : "Disabling " ) << child << std::endl;
+	// yuiDebug() << ( enabled ? "Enabling " : "Disabling " ) << child << endl;
 	child->setEnabled( enabled );
     }
 }
@@ -691,7 +693,7 @@ void YWidget::dumpWidget( YWidget *w, int indentationLevel )
 {
     std::ostringstream str;
 
-    std::string indentation ( indentationLevel * 4, ' ' );
+    string indentation ( indentationLevel * 4, ' ' );
     str << "Widget tree: " << indentation << w;
 
     if ( w->widgetRep() )
@@ -701,7 +703,7 @@ void YWidget::dumpWidget( YWidget *w, int indentationLevel )
 	    << ")";
     }
 
-    std::string stretch;
+    string stretch;
 
     if ( w->stretchable( YD_HORIZ ) )	stretch += "hstretch ";
     if ( w->stretchable( YD_VERT  ) )	stretch += "vstretch";
@@ -709,7 +711,7 @@ void YWidget::dumpWidget( YWidget *w, int indentationLevel )
     if ( ! stretch.empty() )
 	str << " ( " << stretch << " ) ";
 
-    yuiMilestone() << str.str() << std::endl;
+    yuiMilestone() << str.str() << endl;
 }
 
 
@@ -757,7 +759,7 @@ std::ostream & operator<<( std::ostream & stream, const YWidget * w )
     {
 	stream << w->widgetClass();
 
-	std::string debugLabel = w->debugLabel();
+	string debugLabel = w->debugLabel();
 
 	if ( debugLabel.empty() )
 	{
@@ -775,7 +777,7 @@ std::ostream & operator<<( std::ostream & stream, const YWidget * w )
 	if ( w->widgetRep() )
 	{
 	    stream << " (widgetRep: "
-		   << std::hex << w->widgetRep() << std::dec
+		   << hex << w->widgetRep() << dec
 		   << ")";
 	}
 #endif

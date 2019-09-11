@@ -35,6 +35,10 @@
 
 #include "YUIException.h"
 
+using std::string;
+using std::ostream;
+using std::cerr;
+
 
 static void stdLogger( YUILogLevel_t	logLevel,
 		       const char *	logComponent,
@@ -43,7 +47,7 @@ static void stdLogger( YUILogLevel_t	logLevel,
 		       const char * 	sourceFunctionName,
 		       const char *	message );
 
-static std::ostream * stdLogStream = &std::cerr;
+static ostream * stdLogStream = &cerr;
 
 
 /**
@@ -77,7 +81,7 @@ public:
      * Write (no more than maxLength characters of) a sequence of characters
      * and return the number of characters written.
      *
-     * Reimplemented from std::streambuf.
+     * Reimplemented from streambuf.
      * This is called for all output operations on the associated ostream.
      **/
     virtual std::streamsize xsputn( const char * sequence, std::streamsize maxLength );
@@ -85,7 +89,7 @@ public:
     /**
      * Write one character in case of buffer overflow.
      *
-     * Reimplemented from std::streambuf.
+     * Reimplemented from streambuf.
      **/
     virtual int overflow( int ch = EOF );
 
@@ -112,7 +116,7 @@ private:
     int			lineNo;
     const char *	functionName;
 
-    std::string		buffer;
+    string		buffer;
 };
 
 
@@ -123,21 +127,21 @@ YUILogBuffer::writeBuffer( const char * sequence, std::streamsize seqLen )
     // Add new character sequence
 
     if ( seqLen > 0 )
-	buffer += std::string( sequence, seqLen );
+	buffer += string( sequence, seqLen );
 
     //
     // Output buffer contents line by line
     //
 
-    std::size_t start       = 0;
-    std::size_t newline_pos = 0;
+    size_t start       = 0;
+    size_t newline_pos = 0;
 
     while ( start < buffer.length() &&
-	    ( newline_pos = buffer.find_first_of( '\n', start ) ) != std::string::npos )
+	    ( newline_pos = buffer.find_first_of( '\n', start ) ) != string::npos )
     {
 	YUILoggerFunction loggerFunction = YUILog::loggerFunction( true ); // never return 0
 
-	std::string line = buffer.substr( start, newline_pos - start );
+	string line = buffer.substr( start, newline_pos - start );
 
 	loggerFunction( logLevel, logComponent,
 			YUILog::basename( sourceFileName ).c_str(), lineNo, functionName,
@@ -147,7 +151,7 @@ YUILogBuffer::writeBuffer( const char * sequence, std::streamsize seqLen )
     }
 
     if ( start < buffer.length() )
-	buffer = buffer.substr( start, std::string::npos );
+	buffer = buffer.substr( start, string::npos );
     else
 	buffer.clear();
 
@@ -190,7 +194,7 @@ void YUILogBuffer::flush()
  * Multiple threads can easily clobber each others' half-done logging.
  * A naive approach to prevent this would be to lock a mutex when a thread
  * starts logging and unlock it when it's done logging. But that "when it's
- * done" condition might never come true. std::endl or a newline in the output
+ * done" condition might never come true. endl or a newline in the output
  * stream would be one indication, but there is no way to make sure there
  * always is such a delimiter. If it is forgotten and that thread (that still
  * has the mutex locked) runs into a waiting condition itself (e.g., UI thread
@@ -214,25 +218,25 @@ struct YPerThreadLogInfo
 	: threadHandle( pthread_self() )
 	, logBuffer()
 	, logStream( &logBuffer )
-    {
-	// std::cerr << "New thread with ID " << hex << threadHandle << dec << std::endl;
-    }
+        {
+            // cerr << "New thread with ID " << hex << threadHandle << dec << endl;
+        }
 
     /**
      * Destructor
      **/
     ~YPerThreadLogInfo()
-    {
-	logBuffer.flush();
-    }
+        {
+            logBuffer.flush();
+        }
 
     /**
      * Check if this per-thread logging information belongs to the specified thread.
      **/
     bool isThread( pthread_t otherThreadHandle )
-    {
-	return pthread_equal( otherThreadHandle, this->threadHandle );
-    }
+        {
+            return pthread_equal( otherThreadHandle, this->threadHandle );
+        }
 
 
     //
@@ -241,7 +245,7 @@ struct YPerThreadLogInfo
 
     pthread_t		threadHandle;
     YUILogBuffer	logBuffer;
-    std::ostream	logStream;
+    ostream             logStream;
 };
 
 
@@ -263,49 +267,49 @@ struct YUILogPrivate
      * Destructor
      **/
     ~YUILogPrivate()
-    {
-	for ( unsigned i=0; i < threadLogInfo.size(); i++ )
-	    delete threadLogInfo[i];
-    }
+        {
+            for ( unsigned i=0; i < threadLogInfo.size(); i++ )
+                delete threadLogInfo[i];
+        }
 
     /**
      * Find the per-thread logging information for the current thread.
      * Create a new one if it doesn't exist yet.
      **/
     YPerThreadLogInfo * findCurrentThread()
-    {
-	pthread_t thisThread = pthread_self();
+        {
+            pthread_t thisThread = pthread_self();
 
-	// Search backwards: Slight optimization for the UI.
-	// The UI thread does the most logging, but it is created after the
-	// main thread.
+            // Search backwards: Slight optimization for the UI.
+            // The UI thread does the most logging, but it is created after the
+            // main thread.
 
-	for ( std::vector<YPerThreadLogInfo *>::reverse_iterator it = threadLogInfo.rbegin();
-	      it != threadLogInfo.rend();
-	      ++it )
-	{
-	    if ( (*it)->isThread( thisThread ) )
-		return (*it);
-	}
+            for ( std::vector<YPerThreadLogInfo *>::reverse_iterator it = threadLogInfo.rbegin();
+                  it != threadLogInfo.rend();
+                  ++it )
+            {
+                if ( (*it)->isThread( thisThread ) )
+                    return (*it);
+            }
 
-	YPerThreadLogInfo * newThreadLogInfo = new YPerThreadLogInfo();
-	threadLogInfo.push_back( newThreadLogInfo );
+            YPerThreadLogInfo * newThreadLogInfo = new YPerThreadLogInfo();
+            threadLogInfo.push_back( newThreadLogInfo );
 
-	return newThreadLogInfo;
-    }
+            return newThreadLogInfo;
+        }
 
     //
     // Data members
     //
 
-    std::string				logFileName;
+    string				logFileName;
     std::ofstream			stdLogStream;
     YUILoggerFunction			loggerFunction;
     YUIEnableDebugLoggingFunction	enableDebugLoggingHook;
     YUIDebugLoggingEnabledFunction	debugLoggingEnabledHook;
     bool				enableDebugLogging;
 
-    std::vector<YPerThreadLogInfo *>	threadLogInfo;
+    std::vector<YPerThreadLogInfo *>    threadLogInfo;
 };
 
 
@@ -341,7 +345,7 @@ YUILog::instance()
 
 
 bool
-YUILog::setLogFileName( const std::string & logFileName )
+YUILog::setLogFileName( const string & logFileName )
 {
     instance()->priv->logFileName = logFileName;
 
@@ -354,7 +358,7 @@ YUILog::setLogFileName( const std::string & logFileName )
 
     if ( logFileName.empty() ) // log to stderr again
     {
-	stdLogStream = &std::cerr;
+	stdLogStream = &cerr;
     }
     else
     {
@@ -367,8 +371,8 @@ YUILog::setLogFileName( const std::string & logFileName )
 	}
 	else
 	{
-	    std::cerr << "ERROR: Can't open log file " << logFileName << std::endl;
-	    stdLogStream = &std::cerr;
+	    cerr << "ERROR: Can't open log file " << logFileName << endl;
+	    stdLogStream = &cerr;
 	}
     }
 
@@ -376,7 +380,7 @@ YUILog::setLogFileName( const std::string & logFileName )
 }
 
 
-std::string
+string
 YUILog::logFileName()
 {
     return instance()->priv->logFileName;
@@ -448,7 +452,7 @@ YUILog::debugLoggingEnabledHook()
 }
 
 
-std::ostream &
+ostream &
 YUILog::log( YUILogLevel_t	logLevel,
 	     const char *	logComponent,
 	     const char *	sourceFileName,
@@ -479,28 +483,28 @@ YUILog::log( YUILogLevel_t	logLevel,
 }
 
 
-std::ostream &
+ostream &
 YUILog::debug( const char * logComponent, const char * sourceFileName, int lineNo, const char * functionName )
 {
     return instance()->log( YUI_LOG_DEBUG, logComponent, sourceFileName, lineNo, functionName );
 }
 
 
-std::ostream &
+ostream &
 YUILog::milestone( const char * logComponent, const char * sourceFileName, int lineNo, const char * functionName )
 {
     return instance()->log( YUI_LOG_MILESTONE, logComponent, sourceFileName, lineNo, functionName );
 }
 
 
-std::ostream &
+ostream &
 YUILog::warning( const char * logComponent, const char * sourceFileName, int lineNo, const char * functionName )
 {
     return instance()->log( YUI_LOG_WARNING, logComponent, sourceFileName, lineNo, functionName );
 }
 
 
-std::ostream &
+ostream &
 YUILog::error( const char * logComponent, const char * sourceFileName, int lineNo, const char * functionName )
 {
     return instance()->log( YUI_LOG_ERROR, logComponent, sourceFileName, lineNo, functionName );
@@ -508,13 +512,13 @@ YUILog::error( const char * logComponent, const char * sourceFileName, int lineN
 
 
 
-std::string
-YUILog::basename( const std::string & fileNameWithPath )
+string
+YUILog::basename( const string & fileNameWithPath )
 {
-    std::size_t lastSlashPos = fileNameWithPath.find_last_of( '/' );
+    size_t lastSlashPos = fileNameWithPath.find_last_of( '/' );
 
-    std::string fileName =
-	( lastSlashPos == std::string::npos ) ?
+    string fileName =
+	( lastSlashPos == string::npos ) ?
 	fileNameWithPath :
 	fileNameWithPath.substr( lastSlashPos+1 );
 
@@ -561,8 +565,8 @@ stdLogger( YUILogLevel_t	logLevel,
 
     (*stdLogStream) << "<" << logLevelStr  << "> "
 		    << "[" << logComponent << "] "
-		    << sourceFileName	<< ":" << sourceLineNo << " "
-		    << sourceFunctionName	<< "(): "
+		    << sourceFileName	   << ":" << sourceLineNo << " "
+		    << sourceFunctionName  << "(): "
 		    << message
-		    << std::endl;
+		    << endl;
 }

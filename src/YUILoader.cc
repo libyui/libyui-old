@@ -38,12 +38,15 @@
 
 #include "Libyui_config.h"
 
+using std::string;
+
 
 bool rest_enabled()
 {
     const char *env = getenv("YUI_HTTP_PORT");
     return env && atoi(env) > 0;
 }
+
 
 void YUILoader::loadUI( bool withThreads )
 {
@@ -52,11 +55,11 @@ void YUILoader::loadUI( bool withThreads )
     const char * envDisplay    = getenv( "DISPLAY" )              ?: "";
     const char * envPreset     = getenv( "YUI_PREFERED_BACKEND" ) ?: "";
 
-    std::string wantedGUI;
+    string wantedGUI;
 
-    yuiMilestone () << "DISPLAY: \""              << envDisplay << "\"" << std::endl;
-    yuiMilestone () << "XDG_CURRENT_DESKTOP: \""  << envDesktop << "\"" << std::endl;
-    yuiMilestone () << "YUI_PREFERED_BACKEND: \"" << envPreset  << "\"" << std::endl;
+    yuiMilestone () << "DISPLAY: \""              << envDisplay << "\"" << endl;
+    yuiMilestone () << "XDG_CURRENT_DESKTOP: \""  << envDesktop << "\"" << endl;
+    yuiMilestone () << "YUI_PREFERED_BACKEND: \"" << envPreset  << "\"" << endl;
 
     // Taken from: https://specifications.freedesktop.org/menu-spec/menu-spec-1.1.html#onlyshowin-registry
     isGtk = ( ( strstr( envDesktop, "Cinnamon" ) != NULL ) || isGtk );
@@ -68,9 +71,9 @@ void YUILoader::loadUI( bool withThreads )
     isGtk = ( ( strstr( envDesktop, "Unity"    ) != NULL ) || isGtk );
     isGtk = ( ( strstr( envDesktop, "XFCE"     ) != NULL ) || isGtk );
 
-    if( isGtk ) yuiMilestone () << "Detected a Gtk-based desktop environment." << std::endl
-                                << "Prefering Gtk-UI if available and no" << std::endl
-                                << "user-selected override is present." << std::endl;
+    if ( isGtk ) yuiMilestone () << "Detected a Gtk-based desktop environment." << endl
+                                 << "Prefering Gtk-UI if available and no" << endl
+                                 << "user-selected override is present." << endl;
 
     YCommandLine cmdline;
 
@@ -79,18 +82,18 @@ void YUILoader::loadUI( bool withThreads )
     bool wantQt       = ( cmdline.find( "--qt" )      != -1 );
     bool haveUIPreset = ( wantGtk || wantNcurses || wantQt );
 
-    if( !haveUIPreset )
+    if ( !haveUIPreset )
     {
 	wantGtk     = ( strcmp( envPreset, YUIPlugin_Gtk )     == 0 );
 	wantNcurses = ( strcmp( envPreset, YUIPlugin_NCurses ) == 0 );
 	wantQt      = ( strcmp( envPreset, YUIPlugin_Qt )      == 0 );
     }
 
-    if( wantGtk )     wantedGUI = YUIPlugin_Gtk;
-    if( wantNcurses ) wantedGUI = YUIPlugin_NCurses;
-    if( wantQt )      wantedGUI = YUIPlugin_Qt;
+    if ( wantGtk )     wantedGUI = YUIPlugin_Gtk;
+    if ( wantNcurses ) wantedGUI = YUIPlugin_NCurses;
+    if ( wantQt )      wantedGUI = YUIPlugin_Qt;
 
-    yuiMilestone () << "User-selected UI-plugin: \"" << wantedGUI << "\"" << std::endl;
+    yuiMilestone () << "User-selected UI-plugin: \"" << wantedGUI << "\"" << endl;
 
     bool haveGtk     = pluginExists( YUIPlugin_Gtk );
     bool haveNcurses = pluginExists( YUIPlugin_NCurses );
@@ -120,9 +123,9 @@ void YUILoader::loadUI( bool withThreads )
     }
 
     // Load the wanted UI-plugin.
-    if( wantedGUI != "" )
+    if ( wantedGUI != "" )
     {
-	yuiMilestone () << "Using UI-plugin: \"" << wantedGUI << "\""<< std::endl;
+	yuiMilestone () << "Using UI-plugin: \"" << wantedGUI << "\""<< endl;
 	YSettings::loadedUI( wantedGUI, true );
 
 	try
@@ -147,9 +150,9 @@ void YUILoader::loadUI( bool withThreads )
 	    YUI_CAUGHT( ex );
 
 	    // Default to NCurses, if possible.
-	    if( wantedGUI != YUIPlugin_NCurses && haveNcurses && isatty( STDOUT_FILENO ) )
+	    if ( wantedGUI != YUIPlugin_NCurses && haveNcurses && isatty( STDOUT_FILENO ) )
 	    {
-		yuiWarning () << "Defaulting to: \"" << YUIPlugin_NCurses << "\""<< std::endl;
+		yuiWarning () << "Defaulting to: \"" << YUIPlugin_NCurses << "\""<< endl;
 		YSettings::loadedUI( YUIPlugin_NCurses, true );
 
 		try
@@ -174,15 +177,16 @@ void YUILoader::loadUI( bool withThreads )
     }
 }
 
-void YUILoader::loadRestAPIPlugin( const std::string & wantedGUI, bool withThreads )
+void YUILoader::loadRestAPIPlugin( const string & wantedGUI, bool withThreads )
 {
     // Do not try to load if variable is not set
-    yuiMilestone () << "Requested to start http server to control UI." << std::endl;
-    if( pluginExists( YUIPlugin_RestAPI ) )
+    yuiMilestone () << "Requested to start http server to control UI." << endl;
+    
+    if ( pluginExists( YUIPlugin_RestAPI ) )
     {
         YUIPlugin uiRestPlugin( YUIPlugin_RestAPI );
         createUIFunction_t createUI = nullptr;
-        yuiMilestone () << "User-selected underlying UI-plugin: \"" << wantedGUI << "\"" << std::endl;
+        yuiMilestone () << "User-selected underlying UI-plugin: \"" << wantedGUI << "\"" << endl;
 
         if (wantedGUI == YUIPlugin_Qt)
         {
@@ -191,11 +195,11 @@ void YUILoader::loadRestAPIPlugin( const std::string & wantedGUI, bool withThrea
 
             if ( uiPluginQT.success() && uiRestPlugin.success() && uiPluginQTRest.success() )
             {
-                yuiMilestone () << "Loading the http server to control the Qt UI" << std::endl;
+                yuiMilestone () << "Loading the http server to control the Qt UI" << endl;
                 createUI = (createUIFunction_t) uiPluginQTRest.locateSymbol( "createYQHttpUI" );
             }
             else
-                yuiError() << "Cannot load Qt REST API UI" << std::endl;
+                yuiError() << "Cannot load Qt REST API UI" << endl;
         }
 
         // fallback to ncurses + REST API if Qt does not work
@@ -205,7 +209,7 @@ void YUILoader::loadRestAPIPlugin( const std::string & wantedGUI, bool withThrea
             YUIPlugin uiPluginNCRest( YUIPlugin_Ncurses_RestAPI );
             if ( uiPluginNC.success() && uiRestPlugin.success() && uiPluginNCRest.success())
             {
-                yuiMilestone () << "Loading the http server to control the ncurses UI" << std::endl;
+                yuiMilestone () << "Loading the http server to control the ncurses UI" << endl;
                 createUI = (createUIFunction_t) uiPluginNCRest.locateSymbol( "createYNCHttpUI" );
             }
         }
@@ -227,14 +231,14 @@ void YUILoader::deleteUI()
 {
     if ( YUI::_ui )
     {
-        yuiMilestone() << "Shutting down UI" << std::endl;
+        yuiMilestone() << "Shutting down UI" << endl;
         delete YUI::_ui;
 
         YUI::_ui = 0;
     }
 }
 
-void YUILoader::loadPlugin( const std::string & name, bool withThreads )
+void YUILoader::loadPlugin( const string & name, bool withThreads )
 {
     if (rest_enabled() && (name == YUIPlugin_NCurses || name == YUIPlugin_Qt))
     {
@@ -268,7 +272,7 @@ void YUILoader::loadPlugin( const std::string & name, bool withThreads )
     YUI_THROW( YUIPluginException( name ) );
 }
 
-void YUILoader::loadExternalWidgetsPlugin ( const std::string& name, const std::string& plugin_name, const std::string& symbol )
+void YUILoader::loadExternalWidgetsPlugin ( const string& name, const string& plugin_name, const string& symbol )
 {
   YUIPlugin uiPlugin ( plugin_name.c_str() );
 
@@ -288,15 +292,15 @@ void YUILoader::loadExternalWidgetsPlugin ( const std::string& name, const std::
   YUI_THROW ( YUIPluginException ( plugin_name ) );
 }
 
-void YUILoader::loadExternalWidgets ( const std::string& name, const std::string& symbol )
+void YUILoader::loadExternalWidgets ( const string& name, const string& symbol )
 {
-    std::string wantedGUI = name;
+    string wantedGUI = name;
     wantedGUI.append( "-" );
     wantedGUI.append( YSettings::loadedUI() );
 
     bool haveExternal = pluginExists( wantedGUI );
 
-    if( haveExternal )
+    if ( haveExternal )
     {
 	try
 	{
@@ -316,10 +320,10 @@ void YUILoader::loadExternalWidgets ( const std::string& name, const std::string
     }
 }
 
-bool YUILoader::pluginExists( const std::string & pluginBaseName )
+bool YUILoader::pluginExists( const string & pluginBaseName )
 {
     struct stat fileinfo;
-    std::string pluginName = PLUGIN_PREFIX;
+    string pluginName = PLUGIN_PREFIX;
 
     pluginName.append( pluginBaseName );
     pluginName.append( PLUGIN_SUFFIX );

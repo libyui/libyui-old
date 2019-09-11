@@ -29,10 +29,9 @@
 #include "YAlignment.h"
 #include "YBothDim.h"
 #include "YPath.h"
-
 #include "Libyui_config.h"
 
-
+using std::string;
 
 
 struct YAlignmentPrivate
@@ -65,7 +64,7 @@ struct YAlignmentPrivate
     int minWidth;
     int minHeight;
 
-    std::string backgroundPixmap;
+    string backgroundPixmap;
 
     YBothDim<YAlignmentType> alignment;
 };
@@ -168,7 +167,7 @@ void YAlignment::setMinHeight( int height )
 }
 
 
-std::string YAlignment::backgroundPixmap() const
+string YAlignment::backgroundPixmap() const
 {
     return priv->backgroundPixmap;
 }
@@ -220,7 +219,7 @@ void YAlignment::setSize( int newWidth, int newHeight )
 {
     if ( ! hasChildren() )
     {
-	yuiError() << "No child in " << this << std::endl;
+	yuiError() << "No child in " << this << endl;
 	return;
     }
 
@@ -315,9 +314,9 @@ void YAlignment::setSize( int newWidth, int newHeight )
     moveChild( firstChild(), newChildPos.hor, newChildPos.vert );
 
 #if 0
-    yuiDebug() << "setSize( alignment, " << newWidth         << ", " << newHeight         << ")" << std::endl;
-    yuiDebug() << "setSize( child, "     << newChildSize.hor << ", " << newChildSize.vert << ")" << std::endl;
-    yuiDebug() << "moveChild( "          << newChildPos.hor  << ", " << newChildPos.vert  << ")" << std::endl;
+    yuiDebug() << "setSize( alignment, " << newWidth         << ", " << newHeight         << ")" << endl;
+    yuiDebug() << "setSize( child, "     << newChildSize.hor << ", " << newChildSize.vert << ")" << endl;
+    yuiDebug() << "moveChild( "          << newChildPos.hor  << ", " << newChildPos.vert  << ")" << endl;
 #endif
 }
 
@@ -331,9 +330,9 @@ int YAlignment::totalMargins( YUIDimension dim ) const
 
 
 
-void YAlignment::setBackgroundPixmap( const std::string & pixmapFileName )
+void YAlignment::setBackgroundPixmap( const string & pixmapFileName )
 {
-    std::string pixmap = pixmapFileName;
+    string pixmap = pixmapFileName;
 
     if ( pixmap.length() > 0 &&
 	 pixmap[0] != '/'  &&	// Absolute path?

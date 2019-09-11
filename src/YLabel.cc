@@ -31,13 +31,15 @@
 #include "YUISymbols.h"
 #include "YLabel.h"
 
+using std::string;
+
 
 struct YLabelPrivate
 {
     /**
      * Constructor
      **/
-    YLabelPrivate( const std::string &	text,
+    YLabelPrivate( const string &	text,
 		   bool 		isHeading,
 		   bool 		isOutputField )
 	: text( text )
@@ -46,7 +48,7 @@ struct YLabelPrivate
 	, useBoldFont( false )
 	{}
 
-    std::string	text;
+    string	text;
     bool	isHeading;
     bool	isOutputField;
     bool	useBoldFont;
@@ -54,7 +56,7 @@ struct YLabelPrivate
 
 
 YLabel::YLabel( YWidget *		parent,
-		const std::string &	text,
+		const string &	text,
 		bool			isHeading,
 		bool			isOutputField )
     : YWidget( parent )
@@ -70,13 +72,13 @@ YLabel::~YLabel()
 }
 
 
-std::string YLabel::text() const
+string YLabel::text() const
 {
     return priv->text;
 }
 
 
-void YLabel::setText( const std::string & newText )
+void YLabel::setText( const string & newText )
 {
     priv->text = newText;
 }
@@ -114,9 +116,9 @@ YLabel::propertySet()
     if ( propSet.isEmpty() )
     {
 	/*
-	 * @property std::string	Label	the label text
-	 * @property std::string	Value 	the label text (alias for Label)
-	 * @property std::string	Text	the label text (alias for Label)
+	 * @property string	Label	the label text
+	 * @property string	Value 	the label text (alias for Label)
+	 * @property string	Text	the label text (alias for Label)
 	 */
 
 	propSet.add( YProperty( YUIProperty_Label,	YStringProperty	) );
@@ -130,7 +132,7 @@ YLabel::propertySet()
 
 
 bool
-YLabel::setProperty( const std::string & propertyName, const YPropertyValue & val )
+YLabel::setProperty( const string & propertyName, const YPropertyValue & val )
 {
     propertySet().check( propertyName, val.type() ); // throws exceptions if not found or type mismatch
 
@@ -147,7 +149,7 @@ YLabel::setProperty( const std::string & propertyName, const YPropertyValue & va
 
 
 YPropertyValue
-YLabel::getProperty( const std::string & propertyName )
+YLabel::getProperty( const string & propertyName )
 {
     propertySet().check( propertyName ); // throws exceptions if not found
 
@@ -161,9 +163,9 @@ YLabel::getProperty( const std::string & propertyName )
 }
 
 
-std::string YLabel::debugLabel() const
+string YLabel::debugLabel() const
 {
-    std::string label = text();
+    string label = text();
 
     if ( label.size() > MAX_DEBUG_LABEL_LEN )
     {
@@ -171,7 +173,7 @@ std::string YLabel::debugLabel() const
 	label.append( "..." );
     }
 
-    for ( std::string::size_type i=0; i < label.size(); i++ )
+    for ( string::size_type i=0; i < label.size(); i++ )
     {
 	if ( label[i] == '\n' )		label[i] = ' ';
 	if ( label[i] == '\"' )		label[i] = ' ';

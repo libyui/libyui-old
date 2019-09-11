@@ -30,6 +30,8 @@
 #include "YRadioButton.h"
 #include "YRadioButtonGroup.h"
 
+using std::string;
+
 
 struct YRadioButtonGroupPrivate
 {
@@ -127,7 +129,7 @@ YRadioButtonGroup::propertySet()
     if ( propSet.isEmpty() )
     {
 	/*
-	 * @property any CurrentButton	widget ID of the currently selected RadioButton of this group
+	 * @property any CurrentButton  widget ID of the currently selected RadioButton of this group
 	 * @property any Value		Alias for CurrentButton
 	 */
 	propSet.add( YProperty( YUIProperty_Value,		YOtherProperty ) );
@@ -140,7 +142,7 @@ YRadioButtonGroup::propertySet()
 
 
 bool
-YRadioButtonGroup::setProperty( const std::string & propertyName, const YPropertyValue & val )
+YRadioButtonGroup::setProperty( const string & propertyName, const YPropertyValue & val )
 {
     propertySet().check( propertyName, val.type() ); // throws exceptions if not found or type mismatch
 
@@ -156,7 +158,7 @@ YRadioButtonGroup::setProperty( const std::string & propertyName, const YPropert
 
 
 YPropertyValue
-YRadioButtonGroup::getProperty( const std::string & propertyName )
+YRadioButtonGroup::getProperty( const string & propertyName )
 {
     propertySet().check( propertyName ); // throws exceptions if not found
 

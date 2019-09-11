@@ -23,6 +23,11 @@
 /-*/
 
 
+// needed in order to read release notes
+#include <sys/types.h>
+#include <dirent.h>
+#include <fstream>
+
 #include <list>
 #include <algorithm>
 
@@ -47,17 +52,15 @@
 #include "YWidgetID.h"
 #include "YDumbTab.h"
 
-// needed in order to read release notes
-#include <sys/types.h>
-#include <dirent.h>
-#include <fstream>
-
 #define VERBOSE_DIALOGS			0
 #define VERBOSE_DISCARDED_EVENTS	0
 #define VERBOSE_EVENTS			0
 
-
 typedef std::list<YEventFilter *> YEventFilterList;
+
+using std::string;
+using std::map;
+using std::vector;
 
 
 struct YDialogPrivate
@@ -156,7 +159,7 @@ YDialog::YDialog( YDialogType dialogType, YDialogColorMode colorMode )
     _dialogStack.push( this );
 
 #if VERBOSE_DIALOGS
-    yuiDebug() << "New " << this << std::endl;
+    yuiDebug() << "New " << this << endl;
 #endif
 
     new YHelpButtonHandler( this );
@@ -167,7 +170,7 @@ YDialog::YDialog( YDialogType dialogType, YDialogColorMode colorMode )
 YDialog::~YDialog()
 {
 #if VERBOSE_DIALOGS
-    yuiDebug() << "Destroying " << this << std::endl;
+    yuiDebug() << "Destroying " << this << endl;
 #endif
 
     // Inform attached classes that this dialog is in the process of being
@@ -195,7 +198,7 @@ YDialog::~YDialog()
 	    _dialogStack.top()->activate();
     }
     else
-	yuiError() << "Not top of dialog stack: " << this << std::endl;
+	yuiError() << "Not top of dialog stack: " << this << endl;
 }
 
 
@@ -225,7 +228,7 @@ YDialog::isTopmostDialog() const
 {
     if ( _dialogStack.empty() )
     {
-	yuiError() << "Dialog stack empty, but dialog existing: " << this << std::endl;
+	yuiError() << "Dialog stack empty, but dialog existing: " << this << endl;
 	return false;
     }
 
@@ -241,7 +244,7 @@ YDialog::deleteEventFilters()
 	YEventFilter * filter = priv->eventFilterList.back();
 
 #if VERBOSE_DIALOGS
-	yuiDebug() << "Deleting event filter " << std::std::hex << filter << std::dec << std::endl;
+	yuiDebug() << "Deleting event filter " << hex << filter << dec << endl;
 #endif
 	delete filter;
     }
@@ -320,7 +323,7 @@ YDialog::checkShortcuts( bool force )
 {
     if ( priv->shortcutCheckPostponed && ! force )
     {
-	yuiDebug() << "Shortcut check postponed" << std::endl;
+	yuiDebug() << "Shortcut check postponed" << endl;
     }
     else
     {
@@ -347,7 +350,7 @@ YDialog::setDefaultButton( YPushButton * newDefaultButton )
     {
 	yuiError() << "Too many `opt(`default) PushButtons: ["
 		   << newDefaultButton->label()
-		   << "]" << std::endl;
+		   << "]" << endl;
     }
 
     priv->defaultButton = newDefaultButton;
@@ -358,7 +361,7 @@ void
 YDialog::setInitialSize()
 {
 #if VERBOSE_DIALOGS
-    yuiDebug() << "Setting initial size for " << this << std::endl;
+    yuiDebug() << "Setting initial size for " << this << endl;
 #endif
 
     // Trigger geometry management
@@ -369,7 +372,7 @@ YDialog::setInitialSize()
 void
 YDialog::recalcLayout()
 {
-    yuiDebug() << "Recalculating layout for " << this << std::endl;
+    yuiDebug() << "Recalculating layout for " << this << endl;
 
     setSize( preferredWidth(), preferredHeight() );
 }
@@ -390,7 +393,7 @@ YDialog::waitForEvent( int timeout_millisec )
     if ( shortcutCheckPostponed() )
     {
 	yuiError() << "Performing missing keyboard shortcut check now in "
-		   << this << std::endl;
+		   << this << endl;
 
 	checkShortcuts( true );
     }
@@ -460,7 +463,7 @@ YDialog::filterInvalidEvents( YEvent * event )
 	     * and the widget has been destroyed meanwhile.
 	     **/
 
-	    // yuiDebug() << "Discarding event for widget that has become invalid" << std::endl;
+	    // yuiDebug() << "Discarding event for widget that has become invalid" << endl;
 
 	    deleteEvent( widgetEvent );
 	    return 0;
@@ -478,17 +481,17 @@ YDialog::filterInvalidEvents( YEvent * event )
 	     **/
 
 	    // Yes, really yuiDebug() - this may legitimately happen.
-	    yuiDebug() << "Discarding event from widget from foreign dialog" << std::endl;
+	    yuiDebug() << "Discarding event from widget from foreign dialog" << endl;
 
 #if VERBOSE_DISCARDED_EVENTS
 	    yuiDebug() << "Expected: "   << this
 		       << ", received: " << widgetEvent->widget()->findDialog()
-		       << std::endl;
+		       << endl;
 
-	    yuiDebug() << "Event widget: "  << widgetEvent->widget() << std::endl;
-	    yuiDebug() << "From:" << std::endl;
+	    yuiDebug() << "Event widget: "  << widgetEvent->widget() << endl;
+	    yuiDebug() << "From:" << endl;
 	    widgetEvent->widget()->findDialog()->dumpWidgetTree();
-	    yuiDebug() << "Current dialog:" << std::endl;
+	    yuiDebug() << "Current dialog:" << endl;
 	    dumpWidgetTree();
 #endif
 
@@ -515,13 +518,13 @@ YDialog::deleteEvent( YEvent * event )
 	if ( event->isValid() )
 	{
 #if VERBOSE_EVENTS
-	    yuiDebug() << "Deleting " << event << std::endl;
+	    yuiDebug() << "Deleting " << event << endl;
 #endif
 	    delete event;
 	}
 	else
 	{
-	    yuiError() << "Attempt to delete invalid event " << event << std::endl;
+	    yuiError() << "Attempt to delete invalid event " << event << endl;
 	}
     }
 }
@@ -606,12 +609,12 @@ YDialog::addEventFilter( YEventFilter * eventFilter )
     {
 	yuiError() << "event filter " << std::hex << eventFilter << std::dec
 		   << " already added to " << this
-		   << std::endl;
+		   << endl;
     }
     else
     {
 #if VERBOSE_DIALOGS
-	yuiDebug() << "Adding event filter " << std::hex << eventFilter << std::dec << std::endl;
+	yuiDebug() << "Adding event filter " << hex << eventFilter << dec << endl;
 #endif
 	priv->eventFilterList.push_back( eventFilter );
     }
@@ -624,7 +627,7 @@ YDialog::removeEventFilter( YEventFilter * eventFilter )
     YUI_CHECK_PTR( eventFilter );
 
 #if VERBOSE_DIALOGS
-    yuiDebug() << "Removing event filter " << std::hex << eventFilter << std::dec << std::endl;
+    yuiDebug() << "Removing event filter " << hex << eventFilter << dec << endl;
 #endif
     priv->eventFilterList.remove( eventFilter );
 }
@@ -650,8 +653,11 @@ YDialog::callEventFilters( YEvent * event )
 }
 
 
+// FIXME: This does not belong here.
+// Move this out to a separate source file.
+// This does not even belong into this class.
 void
-YDialog::showText( const std::string & text, bool useRichText )
+YDialog::showText( const string & text, bool useRichText )
 {
 
     // set help text dialog size to 80% of topmost dialog, respectively 45x15 (default)
@@ -696,16 +702,19 @@ YDialog::showText( const std::string & text, bool useRichText )
 }
 
 
+// FIXME: This does not belong here.
+// Move this out to a separate source file.
+// This does not even belong into this class.
 bool
 YDialog::showHelpText( YWidget * widget )
 {
-    std::string helpText;
+    string helpText;
 
     while ( widget )
     {
 	if ( ! widget->helpText().empty() )
 	{
-	    yuiDebug() << "Found help text for " << widget << std::endl;
+	    yuiDebug() << "Found help text for " << widget << endl;
 	    helpText = widget->helpText();
 	}
 
@@ -714,23 +723,27 @@ YDialog::showHelpText( YWidget * widget )
 
     if ( ! helpText.empty() )
     {
-	yuiMilestone() << "Showing help text" << std::endl;
+	yuiMilestone() << "Showing help text" << endl;
 	showText( helpText, true );
 
-	yuiMilestone() << "Help dialog closed" << std::endl;
+	yuiMilestone() << "Help dialog closed" << endl;
     }
     else // No help text
     {
-	yuiWarning() << "No help text" << std::endl;
+	yuiWarning() << "No help text" << endl;
     }
 
     return ! helpText.empty();
 }
 
+
+// FIXME: This does not belong here.
+// Move this out to a separate source file.
+// This does not even belong into this class.
 bool
 YDialog::showRelNotesText()
 {
-    yuiMilestone() <<"Showing Release Notes" << std::endl;
+    yuiMilestone() <<"Showing Release Notes" << endl;
 
     // set help text dialog size to 80% of topmost dialog, respectively 45x15 (default)
 
@@ -753,13 +766,16 @@ YDialog::showRelNotesText()
 
     try
     {
-	std::map<std::string,std::string> relnotes = YUI::application()->releaseNotes();
+	map<string,string> relnotes = YUI::application()->releaseNotes();
+
 	if ( relnotes.size() == 0)
 	{
 	    return false;
 	}
-	std::vector<std::string> keys;
-	for(std::map<std::string,std::string>::iterator it = relnotes.begin(); it != relnotes.end(); ++it) {
+        
+	vector<string> keys;
+	for ( map<string,string>::iterator it = relnotes.begin(); it != relnotes.end(); ++it )
+        {
 	    keys.push_back(it->first);
 	}
         YDialog     * dialog    = YUI::widgetFactory()->createPopupDialog();
@@ -769,11 +785,11 @@ YDialog::showRelNotesText()
         YRichText   * richtext  = 0;
 
 	// both QT and NCurses do support DumbTab
-        if (relnotes.size() > 1 && YUI::optionalWidgetFactory()->hasDumbTab())
+        if ( relnotes.size() > 1 && YUI::optionalWidgetFactory()->hasDumbTab() )
 	{
 	    rnTab = YUI::optionalWidgetFactory()->createDumbTab( vbox );
 	    int index = 0;
-	    for(std::map<std::string,std::string>::const_iterator it = relnotes.begin(); it != relnotes.end(); it++)
+	    for(map<string,string>::const_iterator it = relnotes.begin(); it != relnotes.end(); it++)
 	    {
 		YItem * item = new YItem((*it).first );
 		item->setIndex( index++ );
@@ -785,6 +801,7 @@ YDialog::showRelNotesText()
 	{
 	    richtext = YUI::widgetFactory()->createRichText( vbox, (*(relnotes.begin())).second, YUI::app()->isTextMode() );
 	}
+
         YButtonBox  * buttonBox = YUI::widgetFactory()->createButtonBox( vbox );
         YPushButton * okButton  = YUI::widgetFactory()->createPushButton( buttonBox, "&OK" );
         okButton->setRole( YOKButton );

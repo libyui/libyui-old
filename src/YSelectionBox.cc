@@ -30,6 +30,8 @@
 #include "YUISymbols.h"
 #include "YUIException.h"
 
+using std::string;
+
 
 struct YSelectionBoxPrivate
 {
@@ -45,7 +47,7 @@ struct YSelectionBoxPrivate
 
 
 
-YSelectionBox::YSelectionBox( YWidget * parent, const std::string & label )
+YSelectionBox::YSelectionBox( YWidget * parent, const string & label )
     : YSelectionWidget( parent, label,
 			true ) // enforceSingleSelection
     , priv( new YSelectionBoxPrivate() )
@@ -98,11 +100,11 @@ YSelectionBox::propertySet()
     if ( propSet.isEmpty() )
     {
 	/*
-	 * @property itemID		Value		The currently selected item
-	 * @property itemID		CurrentItem	The currently selected item
-	 * @property itemList		Items		All items
-	 * @property std::string	Label		Caption above the selection box
-	 * @property std::string	IconPath	Base path for icons
+	 * @property itemID	Value		The currently selected item
+	 * @property itemID	CurrentItem	The currently selected item
+	 * @property itemList	Items		All items
+	 * @property string	Label		Caption above the selection box
+	 * @property string	IconPath	Base path for icons
 	 */
 	propSet.add( YProperty( YUIProperty_Value,		YOtherProperty	 ) );
 	propSet.add( YProperty( YUIProperty_CurrentItem,	YOtherProperty	 ) );
@@ -117,7 +119,7 @@ YSelectionBox::propertySet()
 
 
 bool
-YSelectionBox::setProperty( const std::string & propertyName, const YPropertyValue & val )
+YSelectionBox::setProperty( const string & propertyName, const YPropertyValue & val )
 {
     propertySet().check( propertyName, val.type() ); // throws exceptions if not found or type mismatch
 
@@ -136,7 +138,7 @@ YSelectionBox::setProperty( const std::string & propertyName, const YPropertyVal
 
 
 YPropertyValue
-YSelectionBox::getProperty( const std::string & propertyName )
+YSelectionBox::getProperty( const string & propertyName )
 {
     propertySet().check( propertyName ); // throws exceptions if not found
 

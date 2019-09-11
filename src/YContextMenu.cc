@@ -30,6 +30,8 @@
 #include "YContextMenu.h"
 #include "YMenuItem.h"
 
+using std::string;
+
 
 struct YContextMenuPrivate
 {
@@ -157,9 +159,9 @@ YContextMenu::propertySet()
     if ( propSet.isEmpty() )
     {
 	/*
-	 * @property std::string	Label		Label on the menu button
-	 * @property itemList		Items		All menu items and submenus
-	 * @property std::string	IconPath	Base path for icons (on menu items)
+	 * @property string	Label		Label on the menu button
+	 * @property itemList	Items		All menu items and submenus
+	 * @property string	IconPath	Base path for icons (on menu items)
 	 */
 	propSet.add( YProperty( YUIProperty_Label,		YStringProperty	 ) );
 	propSet.add( YProperty( YUIProperty_Items,		YOtherProperty	 ) );
@@ -172,7 +174,7 @@ YContextMenu::propertySet()
 
 
 bool
-YContextMenu::setProperty( const std::string & propertyName, const YPropertyValue & val )
+YContextMenu::setProperty( const string & propertyName, const YPropertyValue & val )
 {
     propertySet().check( propertyName, val.type() ); // throws exceptions if not found or type mismatch
 
@@ -189,7 +191,7 @@ YContextMenu::setProperty( const std::string & propertyName, const YPropertyValu
 
 
 YPropertyValue
-YContextMenu::getProperty( const std::string & propertyName )
+YContextMenu::getProperty( const string & propertyName )
 {
     propertySet().check( propertyName ); // throws exceptions if not found
 

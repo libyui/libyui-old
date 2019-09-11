@@ -31,6 +31,8 @@
 #include "YMenuItem.h"
 #include "YShortcut.h"
 
+using std::string;
+
 
 struct YMenuButtonPrivate
 {
@@ -44,7 +46,7 @@ struct YMenuButtonPrivate
 
 
 
-YMenuButton::YMenuButton( YWidget * parent, const std::string & label )
+YMenuButton::YMenuButton( YWidget * parent, const string & label )
     : YSelectionWidget( parent, label,
 			false )	// enforceSingleSelection
     , priv( new YMenuButtonPrivate() )
@@ -157,12 +159,12 @@ static void resolveShortcutsConflictFlat(YItemConstIterator begin, YItemConstIte
             if (shortcut == 0)
             {
                 conflicts.push_back(item);
-                yuiMilestone() << "No or invalid shortcut found " << item->label() << std::endl;
+                yuiMilestone() << "No or invalid shortcut found " << item->label() << endl;
             }
             else if (used[(unsigned)shortcut])
             {
                 conflicts.push_back(item);
-                yuiWarning() << "Conflicting shortcut found " << item->label() << std::endl;
+                yuiWarning() << "Conflicting shortcut found " << item->label() << endl;
             }
             else
             {
@@ -171,14 +173,14 @@ static void resolveShortcutsConflictFlat(YItemConstIterator begin, YItemConstIte
 	}
         else
         {
-          yuiWarning() << "non menu item used in call " << (*it)->label() << std::endl;
+          yuiWarning() << "non menu item used in call " << (*it)->label() << endl;
         }
     }
 
     // cannot use YShortcut directly as YItem is not YWidget
     for(YMenuItem *i: conflicts)
     {
-        std::string clean = YShortcut::cleanShortcutString(i->label());
+        string clean = YShortcut::cleanShortcutString(i->label());
         char new_c = 0;
 
         size_t index = 0;
@@ -197,7 +199,7 @@ static void resolveShortcutsConflictFlat(YItemConstIterator begin, YItemConstIte
         if (new_c != 0)
         {
             clean.insert(index, 1, YShortcut::shortcutMarker());
-            yuiMilestone() << "New label used: " << clean << std::endl;
+            yuiMilestone() << "New label used: " << clean << endl;
         }
         i->setLabel(clean);
     }
@@ -218,9 +220,9 @@ YMenuButton::propertySet()
     if ( propSet.isEmpty() )
     {
 	/*
-	 * @property std::string	Label		Label on the menu button
-	 * @property itemList		Items		All menu items and submenus
-	 * @property std::string	IconPath	Base path for icons (on menu items)
+	 * @property string	Label		Label on the menu button
+	 * @property itemList	Items		All menu items and submenus
+	 * @property string	IconPath	Base path for icons (on menu items)
 	 */
 	propSet.add( YProperty( YUIProperty_Label,		YStringProperty	 ) );
 	propSet.add( YProperty( YUIProperty_Items,		YOtherProperty	 ) );
@@ -233,7 +235,7 @@ YMenuButton::propertySet()
 
 
 bool
-YMenuButton::setProperty( const std::string & propertyName, const YPropertyValue & val )
+YMenuButton::setProperty( const string & propertyName, const YPropertyValue & val )
 {
     propertySet().check( propertyName, val.type() ); // throws exceptions if not found or type mismatch
 
@@ -250,7 +252,7 @@ YMenuButton::setProperty( const std::string & propertyName, const YPropertyValue
 
 
 YPropertyValue
-YMenuButton::getProperty( const std::string & propertyName )
+YMenuButton::getProperty( const string & propertyName )
 {
     propertySet().check( propertyName ); // throws exceptions if not found
 

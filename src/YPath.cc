@@ -44,136 +44,153 @@
 #define YUILogComponent "ui"
 #include "YUILog.h"
 
-YPath::YPath ( const std::string & directory, const std::string & filename )
+using std::string;
+using std::vector;
+
+
+YPath::YPath ( const string & directory, const string & filename )
 {
-  yuiMilestone () << "Given filename: " << filename << std::endl;
+    yuiDebug() << "Given filename: " << filename << endl;
 
-  bool				isThemeDir = ! directory.compare ( THEMEDIR );
-  std::string			progSubDir = YSettings::progDir ();
-  std::string			fullname = "";
-  std::string			themeSubDir = "/current";
-  size_t			splitPos = fullPath.rfind( "/" );
-  bool				hasProgSubDir = progSubDir.compare ( "" );
-  bool				hasSubDirPrepend = ( splitPos != std::string::npos );
-  std::string			filenameNoPrepend = filename.substr ( splitPos + 1, std::string::npos );
-  std::string			subDirPrepend = "";
-  std::vector<std::string>	dirList;
+    bool	   isThemeDir	     = ! directory.compare ( THEMEDIR );
+    string	   progSubDir	     = YSettings::progDir ();
+    string	   fullname	     = "";
+    string	   themeSubDir	     = "/current";
+    size_t	   splitPos	     = fullPath.rfind( "/" );
+    bool	   hasProgSubDir     = progSubDir.compare ( "" );
+    bool	   hasSubDirPrepend  = ( splitPos != string::npos );
+    string	   filenameNoPrepend = filename.substr ( splitPos + 1, string::npos );
+    string	   subDirPrepend     = "";
+    vector<string> dirList;
 
-  if ( hasSubDirPrepend )
-    subDirPrepend = filename.substr ( 0, splitPos );
+    if ( hasSubDirPrepend )
+	subDirPrepend = filename.substr ( 0, splitPos );
 
-  yuiMilestone () << "Preferring subdir: " << progSubDir << std::endl;
-  yuiMilestone () << "Subdir given with filename: " << subDirPrepend << std::endl;
-  yuiMilestone () << "Looking for: " << filenameNoPrepend << std::endl;
+    yuiDebug() << "Preferring subdir: "	      << progSubDir << endl;
+    yuiDebug() << "Subdir given with filename: " << subDirPrepend << endl;
+    yuiDebug() << "Looking for: "		      << filenameNoPrepend << endl;
 
-  if ( hasSubDirPrepend )	// prefer subdir prepended to filename
-  {
+    if ( hasSubDirPrepend )	// prefer subdir prepended to filename
+    {
+	if ( isThemeDir )      // prefer /current inside THEMEDIR
+	{
+	    if ( hasProgSubDir )
+		dirList.push_back( directory + "/" + progSubDir + themeSubDir + "/" + subDirPrepend );
+
+	    dirList.push_back( directory + themeSubDir + "/" + subDirPrepend );
+	}
+	if ( hasProgSubDir )
+	    dirList.push_back( directory + "/" + progSubDir + "/" + subDirPrepend );
+
+	dirList.push_back( directory + "/" + subDirPrepend );
+    }
+
     if ( isThemeDir )		// prefer /current inside THEMEDIR
     {
-      if ( hasProgSubDir )
-        dirList.push_back ( directory + "/" + progSubDir + themeSubDir + "/" + subDirPrepend );
+	if ( hasProgSubDir )
+	    dirList.push_back( directory + "/" + progSubDir + themeSubDir );
 
-      dirList.push_back ( directory + themeSubDir + "/" + subDirPrepend );
+	dirList.push_back( directory + themeSubDir );
     }
+
+    // the "usual" lookup
     if ( hasProgSubDir )
-      dirList.push_back ( directory + "/" + progSubDir + "/" + subDirPrepend );
+	dirList.push_back( directory + "/" + progSubDir );
 
-    dirList.push_back ( directory + "/" + subDirPrepend );
-  }
+    dirList.push_back ( directory );
 
-  if ( isThemeDir )		// prefer /current inside THEMEDIR
-  {
-    if ( hasProgSubDir )
-      dirList.push_back ( directory + "/" + progSubDir + themeSubDir );
-
-    dirList.push_back ( directory + themeSubDir );
-  }
-
-				// the "usual" lookup
-  if ( hasProgSubDir )
-    dirList.push_back ( directory + "/" + progSubDir );
-
-  dirList.push_back ( directory );
-
-  for ( std::vector<std::string>::const_iterator x = dirList.begin () ; x != dirList.end () && fullPath.compare ( "" ) == 0 ; ++x )
-  {
-    std::vector<std::string> fileList = lsDir( *x );
-
-    for ( std::vector<std::string>::const_iterator i = fileList.begin () ; i != fileList.end () && fullPath.compare ( "" ) == 0 ; ++i )
+    for ( vector<string>::const_iterator x = dirList.begin ();
+	  x != dirList.end () && fullPath.compare ( "" ) == 0 ;
+	  ++x )
     {
-      if ( *i != "." && *i != ".." )		// filter out parent and curdir
-      {
-	fullname =  directory + "/" + *i;
-	if ( *i == filenameNoPrepend )
-	  fullPath = fullname;
-	else
-	{
-	  fullPath = lookRecursive ( fullname, filenameNoPrepend );
-	}
-      }
-    }
-  }
+	vector<string> fileList = lsDir( *x );
 
-  if( fullPath.compare ( "" ) != 0 )
-    yuiMilestone() << "Found " << filenameNoPrepend << " in " << dir() << std::endl;
-  else
-  {
-    yuiMilestone() << "Could NOT find " << filename << " by looking recursive inside " << directory << std::endl;
-    fullPath = filename;
-  }
+	for ( vector<string>::const_iterator i = fileList.begin ();
+	      i != fileList.end () && fullPath.compare ( "" ) == 0 ;
+	      ++i )
+	{
+	    if ( *i != "." && *i != ".." )		// filter out parent and curdir
+	    {
+		fullname =  directory + "/" + *i;
+		if ( *i == filenameNoPrepend )
+		    fullPath = fullname;
+		else
+		{
+		    fullPath = lookRecursive ( fullname, filenameNoPrepend );
+		}
+	    }
+	}
+    }
+
+    if( fullPath.compare( "" ) != 0 )
+	yuiDebug() << "Found " << filenameNoPrepend << " in " << dir() << endl;
+    else
+    {
+	yuiDebug() << "Could NOT find " << filename << " by looking recursive inside " << directory << endl;
+	fullPath = filename;
+    }
 }
+
 
 YPath::~YPath()
 {
 }
 
-std::vector<std::string> YPath::lsDir( const std::string & directory )
+
+vector<string> YPath::lsDir( const string & directory )
 {
-  std::vector<std::string>	fileList;
-  DIR *				dir;
-  struct dirent *		ent;
+    vector<string>  fileList;
+    DIR *	    dir;
+    struct dirent * ent;
 
-  if ( ( dir = opendir( directory.c_str () ) ) != NULL )
-  {
-    yuiMilestone() << "Looking in " << directory << std::endl;
-
-    while ( ( ent = readdir ( dir ) ) != NULL )
-      fileList.push_back ( ent -> d_name );
-
-    closedir ( dir );
-  }
-
-  return fileList;
-}
-
-std::string YPath::lookRecursive( const std::string & directory, const std::string & filename )
-{
-  std::vector<std::string>	fileList = lsDir( directory );
-  std::string			file = "";
-  std::string			fullname;
-
-  for ( std::vector<std::string>::const_iterator i = fileList.begin() ; i != fileList.end() && file.compare ( "" ) == 0 ; ++i )
-  {
-    if ( *i != "." && *i != ".." )            // filter out parent and curdir
+    if ( ( dir = opendir( directory.c_str () ) ) != NULL )
     {
-      fullname =  directory + "/" + ( *i );
-      if ( *i == filename )
-	file = fullname;
-      else
-      {
-	file = lookRecursive ( fullname, filename );
-      }
+	yuiDebug() << "Looking in " << directory << endl;
+
+	while ( ( ent = readdir( dir ) ) != NULL )
+	    fileList.push_back( ent -> d_name );
+
+	closedir ( dir );
     }
-  }
-  return file;
+
+    return fileList;
 }
 
-std::string YPath::path()
+
+string YPath::lookRecursive( const string & directory, const string & filename )
 {
-  return fullPath;
+    vector<string> fileList = lsDir( directory );
+    string	   file = "";
+    string	   fullname;
+
+    for ( vector<string>::const_iterator i = fileList.begin();
+	  i != fileList.end() && file.compare ( "" ) == 0;
+	  ++i )
+    {
+	if ( *i != "." && *i != ".." )		  // filter out parent and curdir
+	{
+	    fullname =	directory + "/" + ( *i );
+
+	    if ( *i == filename )
+		file = fullname;
+	    else
+	    {
+		file = lookRecursive ( fullname, filename );
+	    }
+	}
+    }
+
+    return file;
 }
 
-std::string YPath::dir()
+
+string YPath::path()
 {
-  return fullPath.substr ( 0, fullPath.rfind( "/" ) );
+    return fullPath;
+}
+
+
+string YPath::dir()
+{
+    return fullPath.substr ( 0, fullPath.rfind( "/" ) );
 }

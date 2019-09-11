@@ -30,6 +30,8 @@
 #include "YDumbTab.h"
 #include "YShortcut.h"
 
+using std::string;
+
 
 struct YDumbTabPrivate
 {
@@ -79,10 +81,10 @@ YDumbTab::stretchable( YUIDimension dim ) const
 }
 
 
-std::string
+string
 YDumbTab::debugLabel() const
 {
-    std::string str = widgetClass();
+    string str = widgetClass();
 
     for ( YItemConstIterator it = itemsBegin();
 	  it != itemsEnd();
@@ -119,7 +121,7 @@ YDumbTab::propertySet()
 
 
 bool
-YDumbTab::setProperty( const std::string & propertyName, const YPropertyValue & val )
+YDumbTab::setProperty( const string & propertyName, const YPropertyValue & val )
 {
     propertySet().check( propertyName, val.type() ); // throws exceptions if not found or type mismatch
 
@@ -136,7 +138,7 @@ YDumbTab::setProperty( const std::string & propertyName, const YPropertyValue & 
 
 
 YPropertyValue
-YDumbTab::getProperty( const std::string & propertyName )
+YDumbTab::getProperty( const string & propertyName )
 {
     propertySet().check( propertyName ); // throws exceptions if not found
 

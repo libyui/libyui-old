@@ -30,19 +30,22 @@
 #include "YFrame.h"
 #include "YShortcut.h"
 
+using std::string;
+
+
 struct YFramePrivate
 {
-    YFramePrivate( const std::string & frameLabel )
+    YFramePrivate( const string & frameLabel )
 	: label( frameLabel )
 	{}
 
-    std::string label;
+    string label;
 };
 
 
 
 
-YFrame::YFrame( YWidget * parent, const std::string & label )
+YFrame::YFrame( YWidget * parent, const string & label )
     : YSingleChildContainerWidget( parent )
     , priv( new YFramePrivate( YShortcut::cleanShortcutString( label ) ) )
 {
@@ -56,13 +59,13 @@ YFrame::~YFrame()
 }
 
 
-void YFrame::setLabel( const std::string & newLabel )
+void YFrame::setLabel( const string & newLabel )
 {
     priv->label = YShortcut::cleanShortcutString( newLabel );
 }
 
 
-std::string YFrame::label() const
+string YFrame::label() const
 {
     return priv->label;
 }
@@ -76,7 +79,7 @@ YFrame::propertySet()
     if ( propSet.isEmpty() )
     {
 	/*
-	 * @property std::string	Label	the text on the frame
+	 * @property string	Label	the text on the frame
 	 */
 
 	propSet.add( YProperty( YUIProperty_Label,	YStringProperty	) );
@@ -88,7 +91,7 @@ YFrame::propertySet()
 
 
 bool
-YFrame::setProperty( const std::string & propertyName, const YPropertyValue & val )
+YFrame::setProperty( const string & propertyName, const YPropertyValue & val )
 {
     propertySet().check( propertyName, val.type() ); // throws exceptions if not found or type mismatch
 
@@ -103,7 +106,7 @@ YFrame::setProperty( const std::string & propertyName, const YPropertyValue & va
 
 
 YPropertyValue
-YFrame::getProperty( const std::string & propertyName )
+YFrame::getProperty( const string & propertyName )
 {
     propertySet().check( propertyName ); // throws exceptions if not found
 

@@ -28,6 +28,8 @@
 
 #include "YSlider.h"
 
+using std::string;
+
 
 struct YSliderPrivate
 {
@@ -41,7 +43,7 @@ struct YSliderPrivate
 
 
 YSlider::YSlider( YWidget *		parent,
-		  const std::string & 	label,
+		  const string & 	label,
 		  int			minValue,
 		  int			maxValue )
     : YIntField( parent, label, minValue, maxValue )
@@ -65,8 +67,8 @@ YSlider::~YSlider()
 //
 
 /*
- * @property integer		Value		the slider value
- * @property integer		MinValue	the minimum value
- * @property integer		MaxValue	the maximum value
- * @property std::string	Label		caption above the slider
+ * @property integer	Value		the slider value
+ * @property integer	MinValue        the minimum value
+ * @property integer	MaxValue	the maximum value
+ * @property string	Label		caption above the slider
  */

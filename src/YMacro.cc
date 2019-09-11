@@ -27,9 +27,12 @@
 #include "YMacroRecorder.h"
 #include "YMacroPlayer.h"
 
+using std::string;
+
 
 YMacroRecorder * YMacro::_recorder = 0;
 YMacroPlayer   * YMacro::_player   = 0;
+
 
 void YMacro::setRecorder( YMacroRecorder * recorder )
 {
@@ -49,7 +52,7 @@ void YMacro::setPlayer( YMacroPlayer * player )
 }
 
 
-void YMacro::record( const std::string & macroFile )
+void YMacro::record( const string & macroFile )
 {
     if ( _recorder )
 	_recorder->record( macroFile );
@@ -72,7 +75,7 @@ bool YMacro::recording()
 }
 
 
-void YMacro::play( const std::string & macroFile )
+void YMacro::play( const string & macroFile )
 {
     if ( _player )
 	_player->play( macroFile );

@@ -30,27 +30,28 @@
 #include "YMacroRecorder.h"
 #include "YInputField.h"
 
+using std::string;
 
 
 struct YInputFieldPrivate
 {
-    YInputFieldPrivate( std::string label, bool passwordMode )
+    YInputFieldPrivate( string label, bool passwordMode )
 	: label( label )
 	, passwordMode( passwordMode )
 	, shrinkable( false )
 	, inputMaxLength( -1 )
 	{}
 
-    std::string	label;
+    string	label;
     bool	passwordMode;
     bool	shrinkable;
-    std::string	validChars;
+    string	validChars;
     int		inputMaxLength;
 };
 
 
 
-YInputField::YInputField( YWidget * parent, const std::string & label, bool passwordMode )
+YInputField::YInputField( YWidget * parent, const string & label, bool passwordMode )
     : YWidget( parent )
     , priv( new YInputFieldPrivate( label, passwordMode ) )
 {
@@ -67,13 +68,13 @@ YInputField::~YInputField()
 }
 
 
-std::string YInputField::label() const
+string YInputField::label() const
 {
     return priv->label;
 }
 
 
-void YInputField::setLabel( const std::string & label )
+void YInputField::setLabel( const string & label )
 {
     priv->label = label;
 }
@@ -98,13 +99,13 @@ void YInputField::setShrinkable( bool shrinkable )
 }
 
 
-std::string YInputField::validChars()
+string YInputField::validChars()
 {
     return priv->validChars;
 }
 
 
-void YInputField::setValidChars( const std::string & newValidChars )
+void YInputField::setValidChars( const string & newValidChars )
 {
     priv->validChars= newValidChars;
 }
@@ -130,10 +131,10 @@ YInputField::propertySet()
     if ( propSet.isEmpty() )
     {
 	/*
-	 * @property std::string	Value		the input field's contents (the user input)
-	 * @property std::string	Label		caption above the input field
-	 * @property std::string	ValidChars	set of valid input characters
-	 * @property integer		InputMaxLength	maximum number of input characters
+	 * @property string	Value		the input field's contents (the user input)
+	 * @property string	Label		caption above the input field
+	 * @property string	ValidChars	set of valid input characters
+	 * @property integer	InputMaxLength	maximum number of input characters
 	 */
 	propSet.add( YProperty( YUIProperty_Value,		YStringProperty	 ) );
 	propSet.add( YProperty( YUIProperty_Label,		YStringProperty	 ) );
@@ -147,7 +148,7 @@ YInputField::propertySet()
 
 
 bool
-YInputField::setProperty( const std::string & propertyName, const YPropertyValue & val )
+YInputField::setProperty( const string & propertyName, const YPropertyValue & val )
 {
     propertySet().check( propertyName, val.type() ); // throws exceptions if not found or type mismatch
 
@@ -165,7 +166,7 @@ YInputField::setProperty( const std::string & propertyName, const YPropertyValue
 
 
 YPropertyValue
-YInputField::getProperty( const std::string & propertyName )
+YInputField::getProperty( const string & propertyName )
 {
     propertySet().check( propertyName ); // throws exceptions if not found
 
