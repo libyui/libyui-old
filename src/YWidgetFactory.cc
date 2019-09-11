@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2000-2012 Novell, Inc
+  Copyright (C) 2000-2019 Novell, Inc
   This library is free software; you can redistribute it and/or modify
   it under the terms of the GNU Lesser General Public License as
   published by the Free Software Foundation; either version 2.1 of the
@@ -39,7 +39,6 @@ YWidgetFactory::YWidgetFactory()
 YWidgetFactory::~YWidgetFactory()
 {
     // NOP
-    yuiMilestone() << "YWidgetFactory removed" << std::endl;
 }
 
 
@@ -269,4 +268,36 @@ YWidgetFactory::createPasswordField( YWidget * parent, const std::string & label
     return createInputField( parent,
 			     label,
 			     true );	// passwordMode
+}
+
+
+YItemSelector *
+YWidgetFactory::createItemSelector( YWidget * parent, bool enforceSingleSelection )
+{
+    (void) parent;
+    (void) enforceSingleSelection;
+    
+    // Default implementation returning 0 to give community-maintained UIs
+    // (libyui-gtk) a chance to catch up with development. Remove this and make
+    // it pure virtual when this is implemented there as well.
+
+    yuiError() << "YItemSelector not implemented in this UI" << std::endl;
+
+    return 0;
+}
+
+
+YItemSelector *
+YWidgetFactory::createSingleItemSelector( YWidget * parent )
+{
+    return createItemSelector( parent,
+                               true );  // enforceSingleSelection
+}
+
+
+YItemSelector *
+YWidgetFactory::createMultiItemSelector( YWidget * parent )
+{
+    return createItemSelector( parent,
+                               false ); // enforceSingleSelection
 }

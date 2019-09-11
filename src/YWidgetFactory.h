@@ -32,6 +32,7 @@
 
 class YWidget;
 class YAlignment;
+class YBusyIndicator;
 class YButtonBox;
 class YCheckBox;
 class YCheckBoxFrame;
@@ -42,6 +43,7 @@ class YFrame;
 class YImage;
 class YInputField;
 class YIntField;
+class YItemSelector;
 class YLabel;
 class YLayoutBox;
 class YLogView;
@@ -62,7 +64,6 @@ class YTable;
 class YTableHeader;
 class YTimeField;
 class YTree;
-class YBusyIndicator;
 
 
 
@@ -179,10 +180,15 @@ public:
     virtual YRadioButtonGroup *	createRadioButtonGroup	( YWidget * parent )	= 0;
     virtual YReplacePoint *	createReplacePoint	( YWidget * parent )	= 0;
 
+    //
+    // More leaf widgets (moved to the end to maintain ABI compatibility)
+    //
+
+    virtual YItemSelector *     createItemSelector      ( YWidget * parent, bool enforceSingleSelection = true );
+    YItemSelector *             createSingleItemSelector( YWidget * parent );
+    YItemSelector *             createMultiItemSelector ( YWidget * parent );
 
 protected:
-
-    friend class YUI;
 
     /**
      * Constructor.
