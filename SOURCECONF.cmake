@@ -42,6 +42,7 @@ SET( ${TARGETLIB}_SOURCES
   YContextMenu.cc
   YDateField.cc
   YDialog.cc
+  YDialogHelpers.cc
   YDownloadProgress.cc
   YDumbTab.cc
   YEmpty.cc
