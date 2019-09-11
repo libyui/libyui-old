@@ -56,6 +56,13 @@ YItemSelector::~YItemSelector()
 }
 
 
+const char *
+YItemSelector::widgetClass() const
+{
+    return enforceSingleSelection() ? "YSingleItemSelector" : "YMultiItemSelector";
+}
+
+
 const YPropertySet &
 YItemSelector::propertySet()
 {

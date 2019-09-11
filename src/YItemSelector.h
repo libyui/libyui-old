@@ -58,7 +58,7 @@ public:
      * Returns a descriptive name of this widget class for logging,
      * debugging etc.
      **/
-    virtual const char * widgetClass() const { return "YItemSelector"; }
+    virtual const char * widgetClass() const;
 
     /**
      * Set a property.
@@ -70,7 +70,7 @@ public:
      * 'false' if that value requires special handling (not in error cases:
      * those are covered by exceptions).
      **/
-    virtual bool setProperty( const std::string & propertyName,
+    virtual bool setProperty( const std::string &    propertyName,
 			      const YPropertyValue & val );
 
     /**
