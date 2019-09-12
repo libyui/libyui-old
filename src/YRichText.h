@@ -1,5 +1,6 @@
 /*
   Copyright (C) 2000-2012 Novell, Inc
+  Copyright (C) 2019 SUSE LLC
   This library is free software; you can redistribute it and/or modify
   it under the terms of the GNU Lesser General Public License as
   published by the Free Software Foundation; either version 2.1 of the
@@ -158,6 +159,52 @@ public:
      **/
     virtual const YPropertySet & propertySet();
 
+    /**
+     * Get the position value of the vertical scrollbar.
+     *
+     * Might not be available in all frontends.
+     */
+    virtual std::string vScrollValue() const;
+
+    /**
+     * Set the position value of the vertical scrollbar. Only values
+     * previously obtained using vScrollValue() and some special
+     * values are allowed.
+     *
+     * The special values are:
+     *
+     * "minimum" Moves the scrollbar to the start.
+     *
+     * "maximum" Moves the scrollbar to the end.
+     *
+     * Might not be available in all frontends.
+     */
+    virtual void setVScrollValue( const std::string & newValue );
+
+    /**
+     * Get the position value of the horizontal scrollbar.
+     *
+     * Might not be available in all frontends.
+     */
+    virtual std::string hScrollValue() const;
+
+    /**
+     * Set the position value of the horizontal scrollbar. Only values
+     * previously obtained using hScrollValue() and some special
+     * values are allowed.
+     *
+     * The special values are:
+     *
+     * "minimum" Moves the scrollbar to the start.
+     *
+     * "maximum" Moves the scrollbar to the end.
+     *
+     * The meaning of start and end can depend on the text direction
+     * (LTR or RTL).
+     *
+     * Might not be available in all frontends.
+     */
+    virtual void setHScrollValue( const std::string & newValue );
 
 protected:
 

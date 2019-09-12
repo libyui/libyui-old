@@ -1,5 +1,6 @@
 /*
   Copyright (C) 2000-2012 Novell, Inc
+  Copyright (C) 2019 SUSE LLC
   This library is free software; you can redistribute it and/or modify
   it under the terms of the GNU Lesser General Public License as
   published by the Free Software Foundation; either version 2.1 of the
@@ -126,9 +127,13 @@ YRichText::propertySet()
 	/*
 	 * @property std::string	Value	the text content
 	 * @property std::string	Text	the text content
+	 * @property std::string	VScrollValue	vertical scrollbar position
+	 * @property std::string	HScrollValue	horizontal scrollbar position
 	 */
 	propSet.add( YProperty( YUIProperty_Value,		YStringProperty	 ) );
 	propSet.add( YProperty( YUIProperty_Text,		YStringProperty	 ) );
+	propSet.add( YProperty( YUIProperty_VScrollValue,	YStringProperty	 ) );
+	propSet.add( YProperty( YUIProperty_HScrollValue,	YStringProperty	 ) );
 	propSet.add( YWidget::propertySet() );
     }
 
@@ -143,6 +148,8 @@ YRichText::setProperty( const std::string & propertyName, const YPropertyValue &
 
     if	    ( propertyName == YUIProperty_Value		)	setValue( val.stringVal() );
     else if ( propertyName == YUIProperty_Text		)	setValue( val.stringVal() );
+    else if ( propertyName == YUIProperty_VScrollValue	)	setVScrollValue( val.stringVal() );
+    else if ( propertyName == YUIProperty_HScrollValue	)	setHScrollValue( val.stringVal() );
     else
     {
 	return YWidget::setProperty( propertyName, val );
@@ -159,8 +166,32 @@ YRichText::getProperty( const std::string & propertyName )
 
     if	    ( propertyName == YUIProperty_Value		)	return YPropertyValue( value() );
     else if ( propertyName == YUIProperty_Text		)	return YPropertyValue( value() );
+    else if ( propertyName == YUIProperty_VScrollValue	)	return YPropertyValue( vScrollValue() );
+    else if ( propertyName == YUIProperty_HScrollValue	)	return YPropertyValue( hScrollValue() );
     else
     {
 	return YWidget::getProperty( propertyName );
     }
+}
+
+
+std::string YRichText::vScrollValue() const
+{
+    return "";
+}
+
+
+void YRichText::setVScrollValue( const std::string & newValue )
+{
+}
+
+
+std::string YRichText::hScrollValue() const
+{
+    return "";
+}
+
+
+void YRichText::setHScrollValue( const std::string & newValue )
+{
 }
