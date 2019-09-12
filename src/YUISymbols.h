@@ -1,5 +1,6 @@
 /*
   Copyright (C) 2000-2012 Novell, Inc
+  Copyright (C) 2019 SUSE LLC
   This library is free software; you can redistribute it and/or modify
   it under the terms of the GNU Lesser General Public License as
   published by the Free Software Foundation; either version 2.1 of the
@@ -199,6 +200,8 @@
 #define YUIProperty_VWeight			"VWeight"
 #define YUIProperty_VStretch			"VStretch"
 #define YUIProperty_WidgetClass			"WidgetClass"
+#define YUIProperty_VScrollValue		"VScrollValue"
+#define YUIProperty_HScrollValue		"HScrollValue"
 
 
 // Widget and dialog options

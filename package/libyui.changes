@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Thu Sep 12 11:27:12 CEST 2019 - aschnell@suse.com
+
+- Allow to get and set scrollbar position of RichText widget
+  (bsc#1150498)
+- 3.7.0
+
+-------------------------------------------------------------------
 Tue Jun 25 09:32:23 UTC 2019 - Ladislav Slezák <lslezak@suse.cz>
 
 - Split the libyui-rest-api plugin to separate Qt and Ncurses parts
