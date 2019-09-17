@@ -76,8 +76,15 @@ int main( int argc, char **argv )
 
     YUI::widgetFactory()->createVSpacing( vbox, 0.3 );
 
-    YAlignment  * rightAlignment = YUI::widgetFactory()->createRight( vbox );
-    YPushButton * closeButton    = YUI::widgetFactory()->createPushButton( rightAlignment, "&Close" );
+    YAlignment  * alignment1      = YUI::widgetFactory()->createLeft( vbox );
+    YLayoutBox  * buttonBox       = YUI::widgetFactory()->createHBox( alignment1 );
+    YPushButton * focusButton     = YUI::widgetFactory()->createPushButton( buttonBox, "Set &Focus" );
+    YPushButton * enableButton    = YUI::widgetFactory()->createPushButton( buttonBox, "&Enable"    );
+
+    YAlignment  * rightAlignment  = YUI::widgetFactory()->createRight( vbox );
+    YPushButton * closeButton     = YUI::widgetFactory()->createPushButton( rightAlignment, "&Close" );
+
+    bool selectorEnabled = true;
 
 
     //
@@ -93,13 +100,22 @@ int main( int argc, char **argv )
 	    if ( event->eventType() == YEvent::CancelEvent ) // window manager "close window" button
 		break; // leave event loop
 
-	    valueField->setValue( "???" );
-
 	    if ( event->widget() == closeButton )
 		break; // leave event loop
 
-	    if ( event->widget() == valueButton ||
-		 event->widget() == selector )		// the selector will only send events with setNotify()
+	    if ( event->widget() == focusButton )
+            {
+		selector->setKeyboardFocus();
+            }
+	    if ( event->widget() == enableButton )
+            {
+                selectorEnabled = ! selectorEnabled;
+		selector->setEnabled( selectorEnabled );
+                
+                yuiMilestone() << "Enable: " << selectorEnabled << endl;
+            }
+	    else if ( event->widget() == valueButton ||
+                      event->widget() == selector )     // the selector will only send events with setNotify()
 	    {
                 selector->dumpItems();
 		YItem * item = selector->selectedItem();
