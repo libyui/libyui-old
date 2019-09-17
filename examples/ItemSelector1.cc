@@ -34,6 +34,10 @@
 #include "YEvent.h"
 
 
+#define NOTIFY                  0
+#define SINGLE_SELECTION        false
+
+
 
 int main( int argc, char **argv )
 {
@@ -47,17 +51,21 @@ int main( int argc, char **argv )
     YDialog    * dialog  = YUI::widgetFactory()->createPopupDialog();
     YLayoutBox * vbox    = YUI::widgetFactory()->createVBox( dialog );
 
-    YItemSelector * selector = YUI::widgetFactory()->createItemSelector( vbox );
+    YItemSelector * selector = YUI::widgetFactory()->createItemSelector( vbox, SINGLE_SELECTION );
     YUI_CHECK_PTR( selector );
 
     YItemCollection items;
-    items.push_back( new YDescribedItem( "Pizza Margherita" 	  ) );
-    items.push_back( new YDescribedItem( "Pizza Capricciosa"	  ) );
-    items.push_back( new YDescribedItem( "Pizza Funghi"		  ) );
-    items.push_back( new YDescribedItem( "Pizza Prosciutto"	  ) );
-    items.push_back( new YDescribedItem( "Pizza Quattro Stagioni" ) );
-    items.push_back( new YDescribedItem( "Calzone"		  ) );
+    items.push_back( new YDescribedItem( "Pizza Margherita",            "Very basic with just tomatoes and cheese"      ) );
+    items.push_back( new YDescribedItem( "Pizza Capricciosa",           "Ham and vegetables"                            ) );
+    items.push_back( new YDescribedItem( "Pizza Funghi",                "Mushrooms"                                     ) );
+    items.push_back( new YDescribedItem( "Pizza Prosciutto",            "Ham"                                           ) );
+    items.push_back( new YDescribedItem( "Pizza Quattro Stagioni",      "Different toppings in each quarter"            ) );
+    items.push_back( new YDescribedItem( "Calzone",                     "Folded over"                                   ) );
     selector->addItems( items ); // This is more efficient than repeatedly calling selector->addItem()
+
+#if NOTIFY
+    selector->setNotify();
+#endif
 
 
     YLayoutBox * hbox = YUI::widgetFactory()->createHBox( vbox );
@@ -91,8 +99,9 @@ int main( int argc, char **argv )
 		break; // leave event loop
 
 	    if ( event->widget() == valueButton ||
-		 event->widget() == selector )		// selector will only send events with setNotify()
+		 event->widget() == selector )		// the selector will only send events with setNotify()
 	    {
+                selector->dumpItems();
 		YItem * item = selector->selectedItem();
 
 		if ( item )
