@@ -268,6 +268,11 @@ public:
     virtual void setShortcutString( const std::string & str )
 	{ setLabel( str ); }
 
+    /**
+     * Return 'true' if this base class should enforce single selection.
+     **/
+    bool enforceSingleSelection() const;
+
 protected:
 
     /**
@@ -279,11 +284,6 @@ protected:
      * mean that no item is selected.
      **/
     void setEnforceSingleSelection( bool on );
-
-    /**
-     * Return 'true' if this base class should enforce single selection.
-     **/
-    bool enforceSingleSelection() const;
 
     /**
      * Return 'true' if this base class should select children recursively.
