@@ -190,7 +190,8 @@ void YSelectionWidget::addItem( YItem * item )
 
     if ( priv->enforceSingleSelection )
     {
-	YItem* newItemSelected = NULL;
+	YItem * newItemSelected = 0;
+
 	if ( item->selected() )
 	{
 	   newItemSelected = item;
@@ -204,10 +205,11 @@ void YSelectionWidget::addItem( YItem * item )
 	if ( newItemSelected )
 	{
 	    // This looks expensive, but it is not: Even though deselectAllItems()
-	    // searches the complete item list and de select all.
+	    // searches the complete item list and deselects them all.
 	    //
-	    // This prevents the calling application does this systematically wrong
-	    // and sets the "selected" flag for more items or children
+	    // This prevents that the calling application does this systematically wrong
+	    // and sets the "selected" flag for more items or children.
+
 	    deselectAllItems();
 	    newItemSelected->setSelected( true );
 	}
