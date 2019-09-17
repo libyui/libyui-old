@@ -269,6 +269,11 @@ public:
 	{ setLabel( str ); }
 
     /**
+     * Dump all items and their selection state to the log.
+     **/
+    void dumpItems() const;
+
+    /**
      * Return 'true' if this base class should enforce single selection.
      **/
     bool enforceSingleSelection() const;

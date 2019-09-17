@@ -18,7 +18,7 @@
 
   File:		YSelectionWidget.cc
 
-  Author:	Stefan Hundhammer <sh@suse.de>
+  Author:	Stefan Hundhammer <shundhammer@suse.de>
 
 /-*/
 
@@ -507,4 +507,19 @@ YSelectionWidget::findItem( const string &	wantedItemLabel,
     }
 
     return 0;
+}
+
+
+void YSelectionWidget::dumpItems() const
+{
+    yuiMilestone() << "Items:" << endl;
+
+    for ( YItemConstIterator it = itemsBegin(); it != itemsEnd(); ++it )
+    {
+        yuiMilestone() << ( (*it)->selected() ? "  [x] " : "  [ ] " )
+                       << (*it)->label()
+                       << endl;
+    }
+
+    yuiMilestone() << "---" << endl;
 }
