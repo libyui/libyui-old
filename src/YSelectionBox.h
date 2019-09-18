@@ -123,8 +123,8 @@ public:
      * 'false' if that value requires special handling (not in error cases:
      * those are covered by exceptions).
      **/
-    virtual bool setProperty( const std::string & propertyName,
-			      const YPropertyValue & val );
+    virtual bool setProperty( const std::string &       propertyName,
+			      const YPropertyValue &    val );
 
     /**
      * Get a property.

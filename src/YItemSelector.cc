@@ -27,12 +27,18 @@
 
 #include "YItemSelector.h"
 
+#define DEFAULT_VISIBLE_ITEMS   3
+
 using std::string;
 
 
 struct YItemSelectorPrivate
 {
-    bool dummy;
+    YItemSelectorPrivate()
+        : visibleItems( DEFAULT_VISIBLE_ITEMS )
+        {}
+
+    int visibleItems;
 };
 
 
@@ -63,6 +69,22 @@ YItemSelector::widgetClass() const
 }
 
 
+int
+YItemSelector::visibleItems() const
+{
+    return priv->visibleItems;
+}
+
+
+void YItemSelector::setVisibleItems( int newVal )
+{
+    if ( newVal < 1 )
+        newVal = 1;
+
+    priv->visibleItems = newVal;
+}
+
+
 const YPropertySet &
 YItemSelector::propertySet()
 {
@@ -71,14 +93,16 @@ YItemSelector::propertySet()
     if ( propSet.isEmpty() )
     {
 	/*
-	 * @property itemID	Value		The (first) currently selected item
-	 * @property itemList	SelectedItems	All currently selected items
-	 * @property itemList	Items		All items
-	 * @property string	IconPath	Base path for icons
+	 * @property itemID	Value           The (first) currently selected item
+	 * @property itemList	SelectedItems   All currently selected items
+	 * @property itemList	Items           All items
+	 * @property integer    VisibleItems    Number of items that are visible without scrolling
+	 * @property string	IconPath        Base path for icons
 	 */
 	propSet.add( YProperty( YUIProperty_Value,		YOtherProperty	 ) );
 	propSet.add( YProperty( YUIProperty_SelectedItems,	YOtherProperty	 ) );
 	propSet.add( YProperty( YUIProperty_Items,		YOtherProperty	 ) );
+	propSet.add( YProperty( YUIProperty_VisibleItems,       YIntegerProperty ) );
 	propSet.add( YProperty( YUIProperty_IconPath,		YStringProperty	 ) );
 	propSet.add( YWidget::propertySet() );
     }
@@ -95,6 +119,7 @@ YItemSelector::setProperty( const string & propertyName, const YPropertyValue & 
     if	    ( propertyName == YUIProperty_Value		)	return false; // Needs special handling
     else if ( propertyName == YUIProperty_SelectedItems	)	return false; // Needs special handling
     else if ( propertyName == YUIProperty_Items 	)	return false; // Needs special handling
+    else if ( propertyName == YUIProperty_VisibleItems 	)	setVisibleItems( val.integerVal() );
     else if ( propertyName == YUIProperty_IconPath 	)	setIconBasePath( val.stringVal() );
     else
     {
@@ -113,6 +138,7 @@ YItemSelector::getProperty( const string & propertyName )
     if	    ( propertyName == YUIProperty_Value		)	return YPropertyValue( YOtherProperty );
     else if ( propertyName == YUIProperty_SelectedItems	)	return YPropertyValue( YOtherProperty );
     else if ( propertyName == YUIProperty_Items 	)	return YPropertyValue( YOtherProperty );
+    else if ( propertyName == YUIProperty_VisibleItems 	)	return YPropertyValue( visibleItems() );
     else if ( propertyName == YUIProperty_IconPath	)	return YPropertyValue( iconBasePath() );
     else
     {

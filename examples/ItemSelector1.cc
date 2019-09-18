@@ -34,8 +34,10 @@
 #include "YEvent.h"
 
 
-#define NOTIFY                  0
+#define NOTIFY                  1
 #define SINGLE_SELECTION        false
+
+using std::string;
 
 
 
@@ -49,7 +51,11 @@ int main( int argc, char **argv )
     //
 
     YDialog    * dialog  = YUI::widgetFactory()->createPopupDialog();
-    YLayoutBox * vbox    = YUI::widgetFactory()->createVBox( dialog );
+    YAlignment * mbox    = YUI::widgetFactory()->createMarginBox( dialog, 2, 2, 0.4, 0.4 );
+    YLayoutBox * vbox    = YUI::widgetFactory()->createVBox( mbox );
+
+    YUI::widgetFactory()->createHeading( vbox, "Pizza Menu" );
+    YUI::widgetFactory()->createVSpacing( vbox, 0.2 );
 
     YItemSelector * selector = YUI::widgetFactory()->createItemSelector( vbox, SINGLE_SELECTION );
     YUI_CHECK_PTR( selector );
@@ -63,16 +69,26 @@ int main( int argc, char **argv )
     items.push_back( new YDescribedItem( "Calzone",                     "Folded over"                                   ) );
     selector->addItems( items ); // This is more efficient than repeatedly calling selector->addItem()
 
+    selector->setVisibleItems( 4 );
 #if NOTIFY
     selector->setNotify();
 #endif
 
+    YUI::widgetFactory()->createVSpacing( vbox, 0.4 );
 
-    YLayoutBox * hbox = YUI::widgetFactory()->createHBox( vbox );
-    YLabel * valueField  = YUI::widgetFactory()->createOutputField( hbox, "<ItemSelector value unknown>" );
+    YLayoutBox * hbox1  = YUI::widgetFactory()->createHBox( vbox );
+    YLabel * valueField = YUI::widgetFactory()->createOutputField( hbox1, "<unknown>" );
     valueField->setStretchable( YD_HORIZ, true ); // allow stretching over entire dialog width
 
-    YPushButton * valueButton = YUI::widgetFactory()->createPushButton( hbox, "&Value" );
+    YPushButton * valueButton = YUI::widgetFactory()->createPushButton( hbox1, "&Value" );
+
+    YUI::widgetFactory()->createVSpacing( vbox, 0.3 );
+
+    YLayoutBox * hbox2   = YUI::widgetFactory()->createHBox( vbox );
+    YLabel * resultField = YUI::widgetFactory()->createOutputField( hbox2, "<selected items>\n\n\n\n\n" );
+    resultField->setStretchable( YD_HORIZ, true ); // allow stretching over entire dialog width
+
+    YPushButton * resultButton = YUI::widgetFactory()->createPushButton( hbox2, "&Selected\nItems" );
 
     YUI::widgetFactory()->createVSpacing( vbox, 0.3 );
 
@@ -93,7 +109,9 @@ int main( int argc, char **argv )
 
     while ( true )
     {
-	YEvent * event = dialog->waitForEvent();
+	YEvent * event    = dialog->waitForEvent();
+        bool updateValue  = false;
+        bool updateResult = false;
 
 	if ( event )
 	{
@@ -107,16 +125,32 @@ int main( int argc, char **argv )
             {
 		selector->setKeyboardFocus();
             }
+
 	    if ( event->widget() == enableButton )
             {
                 selectorEnabled = ! selectorEnabled;
 		selector->setEnabled( selectorEnabled );
-                
-                yuiMilestone() << "Enable: " << selectorEnabled << endl;
+
+                // yuiMilestone() << "Enable: " << selectorEnabled << endl;
             }
-	    else if ( event->widget() == valueButton ||
-                      event->widget() == selector )     // the selector will only send events with setNotify()
+
+            if ( event->widget() == resultButton )
+                updateResult = true;
+
+            if ( event->widget() == valueButton ||
+                 event->widget() == selector )     // the selector will only send events with setNotify()
 	    {
+                updateValue = true;
+	    }
+
+            if ( event->widget() == selector )     // the selector will only send events with setNotify()
+	    {
+                updateResult = true;
+                updateValue  = true;
+	    }
+
+            if ( updateValue )
+            {
                 selector->dumpItems();
 		YItem * item = selector->selectedItem();
 
@@ -124,7 +158,22 @@ int main( int argc, char **argv )
 		    valueField->setValue( item->label() );
 		else
 		    valueField->setValue( "<none>" );
-	    }
+            }
+
+            if ( updateResult )
+            {
+                string result = "";
+
+                for ( YItem * item: selector->selectedItems() )
+                {
+                    if ( ! result.empty() )
+                        result += "\n";
+
+                    result += item->label();
+                }
+
+                resultField->setText( result );
+            }
 	}
     }
 

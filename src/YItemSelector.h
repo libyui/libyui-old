@@ -55,10 +55,28 @@ public:
     virtual ~YItemSelector();
 
     /**
-     * Returns a descriptive name of this widget class for logging,
+     * Return a descriptive name of this widget class for logging,
      * debugging etc.
      **/
     virtual const char * widgetClass() const;
+
+    /**
+     * Return the number of visible items (i.e. items that are visible without
+     * scrolling). This is used to calculate the preferred height. If the
+     * widget gets more or less screen space than desired due to layout
+     * constraints, this number is not updated; this is purely the desired
+     * value for initializing layout negotiations.
+     **/
+    int visibleItems() const;
+
+    /**
+     * Set the number of visible items. When changing this, make sure to
+     * recalculate the layout (YDialog::recalc()) so the change has any effect.
+     *
+     * Derived classes are free to reimplement this, but they should call this
+     * base class method in the overloaded function.
+     **/
+    virtual void setVisibleItems( int newVal );
 
     /**
      * Set a property.

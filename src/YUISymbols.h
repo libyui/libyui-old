@@ -197,6 +197,7 @@
 #define YUIProperty_Value			"Value"
 #define YUIProperty_Values			"Values"
 #define YUIProperty_VisibleLines		"VisibleLines"
+#define YUIProperty_VisibleItems                "VisibleItems"
 #define YUIProperty_VWeight			"VWeight"
 #define YUIProperty_VStretch			"VStretch"
 #define YUIProperty_WidgetClass			"WidgetClass"
