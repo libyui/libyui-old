@@ -34,11 +34,31 @@
 #include "YEvent.h"
 
 
-#define NOTIFY                  1
-#define SINGLE_SELECTION        false
-
 using std::string;
 
+bool notify             = true;
+bool singleSelection    = false;
+bool selectorEnabled    = true;
+int  visibleItems       = 4;
+
+
+// Widgets
+
+YDialog         * dialog        = 0;
+YItemSelector	* selector      = 0;
+YLabel	        * valueField    = 0;
+YPushButton     * valueButton	= 0;
+YLabel	        * resultField	= 0;
+YPushButton     * resultButton	= 0;
+YPushButton     * focusButton	= 0;
+YPushButton     * enableButton	= 0;
+YPushButton     * closeButton	= 0;
+
+
+void createWidgets();
+void handleEvents();
+void updateValueField();
+void updateResultField();
 
 
 int main( int argc, char **argv )
@@ -46,72 +66,72 @@ int main( int argc, char **argv )
     YUILog::setLogFileName( "/tmp/libyui-examples.log" );
     YUILog::enableDebugLogging();
 
-    //
-    // Create and open dialog
-    //
+    createWidgets();
+    handleEvents();
 
-    YDialog    * dialog  = YUI::widgetFactory()->createPopupDialog();
-    YAlignment * mbox    = YUI::widgetFactory()->createMarginBox( dialog, 2, 2, 0.4, 0.4 );
-    YLayoutBox * vbox    = YUI::widgetFactory()->createVBox( mbox );
+    dialog->destroy();
+}
+
+
+void createWidgets()
+{
+    dialog	 = YUI::widgetFactory()->createPopupDialog();
+    YAlignment * mbox	 = YUI::widgetFactory()->createMarginBox( dialog, 2, 2, 0.4, 0.4 );
+    YLayoutBox * vbox	 = YUI::widgetFactory()->createVBox( mbox );
 
     YUI::widgetFactory()->createHeading( vbox, "Pizza Menu" );
     YUI::widgetFactory()->createVSpacing( vbox, 0.2 );
 
-    YItemSelector * selector = YUI::widgetFactory()->createItemSelector( vbox, SINGLE_SELECTION );
+    selector = YUI::widgetFactory()->createItemSelector( vbox, singleSelection );
     YUI_CHECK_PTR( selector );
 
     YItemCollection items;
-    items.push_back( new YDescribedItem( "Pizza Margherita",            "Very basic with just tomatoes and cheese"      ) );
-    items.push_back( new YDescribedItem( "Pizza Capricciosa",           "Ham and vegetables"                            ) );
-    items.push_back( new YDescribedItem( "Pizza Funghi",                "Mushrooms"                                     ) );
-    items.push_back( new YDescribedItem( "Pizza Prosciutto",            "Ham"                                           ) );
-    items.push_back( new YDescribedItem( "Pizza Quattro Stagioni",      "Different toppings in each quarter"            ) );
-    items.push_back( new YDescribedItem( "Calzone",                     "Folded over"                                   ) );
+    items.push_back( new YDescribedItem( "Pizza Margherita",		"Very basic with just tomatoes and cheese"	) );
+    items.push_back( new YDescribedItem( "Pizza Capricciosa",		"Ham and vegetables"				) );
+    items.push_back( new YDescribedItem( "Pizza Funghi",		"Mushrooms"					) );
+    items.push_back( new YDescribedItem( "Pizza Prosciutto",		"Ham"						) );
+    items.push_back( new YDescribedItem( "Pizza Quattro Stagioni",	"Different toppings in each quarter"		) );
+    items.push_back( new YDescribedItem( "Calzone",			"Folded over"					) );
     selector->addItems( items ); // This is more efficient than repeatedly calling selector->addItem()
 
-    selector->setVisibleItems( 4 );
-#if NOTIFY
-    selector->setNotify();
-#endif
+    selector->setVisibleItems( visibleItems );
+
+    if ( notify )
+        selector->setNotify();
 
     YUI::widgetFactory()->createVSpacing( vbox, 0.4 );
 
-    YLayoutBox * hbox1  = YUI::widgetFactory()->createHBox( vbox );
-    YLabel * valueField = YUI::widgetFactory()->createOutputField( hbox1, "<unknown>" );
+    YLayoutBox * hbox1	= YUI::widgetFactory()->createHBox( vbox );
+    valueField = YUI::widgetFactory()->createOutputField( hbox1, "<unknown>" );
     valueField->setStretchable( YD_HORIZ, true ); // allow stretching over entire dialog width
 
-    YPushButton * valueButton = YUI::widgetFactory()->createPushButton( hbox1, "&Value" );
+    valueButton = YUI::widgetFactory()->createPushButton( hbox1, "&Value" );
 
     YUI::widgetFactory()->createVSpacing( vbox, 0.3 );
 
-    YLayoutBox * hbox2   = YUI::widgetFactory()->createHBox( vbox );
-    YLabel * resultField = YUI::widgetFactory()->createOutputField( hbox2, "<selected items>\n\n\n\n\n" );
+    YLayoutBox * hbox2	 = YUI::widgetFactory()->createHBox( vbox );
+    resultField = YUI::widgetFactory()->createOutputField( hbox2, "<selected items>\n\n\n\n\n" );
     resultField->setStretchable( YD_HORIZ, true ); // allow stretching over entire dialog width
 
-    YPushButton * resultButton = YUI::widgetFactory()->createPushButton( hbox2, "&Selected\nItems" );
+    resultButton = YUI::widgetFactory()->createPushButton( hbox2, "&Selected\nItems" );
 
     YUI::widgetFactory()->createVSpacing( vbox, 0.3 );
 
-    YAlignment  * alignment1      = YUI::widgetFactory()->createLeft( vbox );
-    YLayoutBox  * buttonBox       = YUI::widgetFactory()->createHBox( alignment1 );
-    YPushButton * focusButton     = YUI::widgetFactory()->createPushButton( buttonBox, "Set &Focus" );
-    YPushButton * enableButton    = YUI::widgetFactory()->createPushButton( buttonBox, "&Enable"    );
+    YAlignment	* alignment1	  = YUI::widgetFactory()->createLeft( vbox );
+    YLayoutBox	* buttonBox	  = YUI::widgetFactory()->createHBox( alignment1 );
+    focusButton	  = YUI::widgetFactory()->createPushButton( buttonBox, "Set &Focus" );
+    enableButton	  = YUI::widgetFactory()->createPushButton( buttonBox, "&Enable"    );
 
-    YAlignment  * rightAlignment  = YUI::widgetFactory()->createRight( vbox );
-    YPushButton * closeButton     = YUI::widgetFactory()->createPushButton( rightAlignment, "&Close" );
+    YAlignment	* rightAlignment  = YUI::widgetFactory()->createRight( vbox );
+    closeButton	  = YUI::widgetFactory()->createPushButton( rightAlignment, "&Close" );
+}
 
-    bool selectorEnabled = true;
 
-
-    //
-    // Event loop
-    //
-
+void handleEvents()
+{
     while ( true )
     {
-	YEvent * event    = dialog->waitForEvent();
-        bool updateValue  = false;
-        bool updateResult = false;
+	YEvent * event = dialog->waitForEvent();
 
 	if ( event )
 	{
@@ -122,65 +142,57 @@ int main( int argc, char **argv )
 		break; // leave event loop
 
 	    if ( event->widget() == focusButton )
-            {
+	    {
 		selector->setKeyboardFocus();
-            }
+	    }
 
 	    if ( event->widget() == enableButton )
-            {
-                selectorEnabled = ! selectorEnabled;
+	    {
+		selectorEnabled = ! selectorEnabled;
 		selector->setEnabled( selectorEnabled );
 
-                // yuiMilestone() << "Enable: " << selectorEnabled << endl;
-            }
-
-            if ( event->widget() == resultButton )
-                updateResult = true;
-
-            if ( event->widget() == valueButton ||
-                 event->widget() == selector )     // the selector will only send events with setNotify()
-	    {
-                updateValue = true;
+		// yuiMilestone() << "Enable: " << selectorEnabled << endl;
 	    }
 
-            if ( event->widget() == selector )     // the selector will only send events with setNotify()
+	    if ( event->widget() == resultButton )
+		updateResultField();
+
+	    if ( event->widget() == valueButton )
+		updateValueField();
+
+	    if ( event->widget() == selector )	   // the selector will only send events with setNotify()
 	    {
-                updateResult = true;
-                updateValue  = true;
+		updateResultField();
+		updateValueField();
 	    }
-
-            if ( updateValue )
-            {
-                selector->dumpItems();
-		YItem * item = selector->selectedItem();
-
-		if ( item )
-		    valueField->setValue( item->label() );
-		else
-		    valueField->setValue( "<none>" );
-            }
-
-            if ( updateResult )
-            {
-                string result = "";
-
-                for ( YItem * item: selector->selectedItems() )
-                {
-                    if ( ! result.empty() )
-                        result += "\n";
-
-                    result += item->label();
-                }
-
-                resultField->setText( result );
-            }
 	}
     }
+}
 
 
-    //
-    // Clean up
-    //
+void updateValueField()
+{
+    selector->dumpItems();
+    YItem * item = selector->selectedItem();
 
-    dialog->destroy();
+    if ( item )
+        valueField->setValue( item->label() );
+    else
+        valueField->setValue( "<none>" );
+}
+
+
+void updateResultField()
+{
+    string result = "";
+
+    for ( YItem * item: selector->selectedItems() )
+    {
+        if ( ! result.empty() )
+            result += "\n";
+
+        result += item->label();
+    }
+
+    resultField->setText( result );
 }
