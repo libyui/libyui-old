@@ -111,6 +111,7 @@
 #define YUIWidget_MinHeight			"MinHeight"
 #define YUIWidget_MinSize			"MinSize"
 #define YUIWidget_MinWidth			"MinWidth"
+#define YUIWidget_MultiItemSelector             "MultiItemSelector"
 #define YUIWidget_MultiLineEdit			"MultiLineEdit"
 #define YUIWidget_MultiSelectionBox		"MultiSelectionBox"
 #define YUIWidget_PackageSelector		"PackageSelector"
@@ -124,6 +125,7 @@
 #define YUIWidget_RichText			"RichText"
 #define YUIWidget_Right				"Right"
 #define YUIWidget_SelectionBox			"SelectionBox"
+#define YUIWidget_SingleItemSelector            "SingleItemSelector"
 #define YUIWidget_Table				"Table"
 #define YUIWidget_TextEntry			"TextEntry"	// for backwards compatibility
 #define YUIWidget_Top				"Top"
