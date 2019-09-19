@@ -29,10 +29,13 @@
 #include "YUISymbols.h"
 #include "YProgressBar.h"
 
+using std::string;
+
+
 struct YProgressBarPrivate
 {
-    YProgressBarPrivate( const std::string &	label,
-			 int			maxValue )
+    YProgressBarPrivate( const string &	label,
+			 int		maxValue )
 	: label( label )
 	, maxValue( maxValue )
 	, value( 0 )
@@ -41,7 +44,7 @@ struct YProgressBarPrivate
 		maxValue = 1;
 	}
 
-    std::string	label;
+    string	label;
     int 	maxValue;
     int		value;
 };
@@ -50,7 +53,7 @@ struct YProgressBarPrivate
 
 
 YProgressBar::YProgressBar( YWidget * 		parent,
-			    const std::string &	label,
+			    const string &	label,
 			    int			maxValue )
     : YWidget( parent )
     , priv( new YProgressBarPrivate( label, maxValue ) )
@@ -68,13 +71,13 @@ YProgressBar::~YProgressBar()
 }
 
 
-std::string YProgressBar::label()
+string YProgressBar::label()
 {
     return priv->label;
 }
 
 
-void YProgressBar::setLabel( const std::string & label )
+void YProgressBar::setLabel( const string & label )
 {
     priv->label = label;
 }
@@ -112,8 +115,8 @@ YProgressBar::propertySet()
     if ( propSet.isEmpty() )
     {
 	/*
-	 * @property integer		Value	the current progress
-	 * @property std::string	Label	caption above the progress bar
+	 * @property integer	Value	the current progress
+	 * @property string	Label	caption above the progress bar
 	 */
 	propSet.add( YProperty( YUIProperty_Value,		YIntegerProperty ) );
 	propSet.add( YProperty( YUIProperty_Label,		YStringProperty	 ) );
@@ -125,7 +128,7 @@ YProgressBar::propertySet()
 
 
 bool
-YProgressBar::setProperty( const std::string & propertyName, const YPropertyValue & val )
+YProgressBar::setProperty( const string & propertyName, const YPropertyValue & val )
 {
     propertySet().check( propertyName, val.type() ); // throws exceptions if not found or type mismatch
 
@@ -141,7 +144,7 @@ YProgressBar::setProperty( const std::string & propertyName, const YPropertyValu
 
 
 YPropertyValue
-YProgressBar::getProperty( const std::string & propertyName )
+YProgressBar::getProperty( const string & propertyName )
 {
     propertySet().check( propertyName ); // throws exceptions if not found
 

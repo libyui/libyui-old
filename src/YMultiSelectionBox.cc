@@ -31,6 +31,8 @@
 #include "YMacroRecorder.h"
 #include "YUIException.h"
 
+using std::string;
+
 
 struct YMultiSelectionBoxPrivate
 {
@@ -43,7 +45,7 @@ struct YMultiSelectionBoxPrivate
 
 
 
-YMultiSelectionBox::YMultiSelectionBox( YWidget * parent, const std::string & label )
+YMultiSelectionBox::YMultiSelectionBox( YWidget * parent, const string & label )
     : YSelectionWidget( parent, label,
 			false )		// enforceSingleSelection
     , priv( new YMultiSelectionBoxPrivate )
@@ -82,10 +84,10 @@ YMultiSelectionBox::propertySet()
     if ( propSet.isEmpty() )
     {
 	/*
-	 * @property itemList		SelectedItems	All currently selected items
-	 * @property itemList		Items		All items
-	 * @property itemID		CurrentItem	The current item (no matter if selected or not)
-	 * @property std::string	Label		Caption above the MultiSelectionBox
+	 * @property itemList	SelectedItems	All currently selected items
+	 * @property itemList	Items		All items
+	 * @property itemID	CurrentItem	The current item (no matter if selected or not)
+	 * @property string	Label		Caption above the MultiSelectionBox
 	 */
 	propSet.add( YProperty( YUIProperty_CurrentItem,	YOtherProperty	 ) );
 	propSet.add( YProperty( YUIProperty_SelectedItems,	YOtherProperty	 ) );
@@ -100,7 +102,7 @@ YMultiSelectionBox::propertySet()
 
 
 bool
-YMultiSelectionBox::setProperty( const std::string & propertyName, const YPropertyValue & val )
+YMultiSelectionBox::setProperty( const string & propertyName, const YPropertyValue & val )
 {
     propertySet().check( propertyName, val.type() ); // throws exceptions if not found or type mismatch
 
@@ -119,7 +121,7 @@ YMultiSelectionBox::setProperty( const std::string & propertyName, const YProper
 
 
 YPropertyValue
-YMultiSelectionBox::getProperty( const std::string & propertyName )
+YMultiSelectionBox::getProperty( const string & propertyName )
 {
     propertySet().check( propertyName ); // throws exceptions if not found
 

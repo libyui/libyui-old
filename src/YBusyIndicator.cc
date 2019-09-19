@@ -29,20 +29,22 @@
 #include "YUISymbols.h"
 #include "YBusyIndicator.h"
 
+using std::string;
+
 
 struct YBusyIndicatorPrivate
 {
-    YBusyIndicatorPrivate( const std::string &	label,
-			   int 		timeout ,
-			   bool		alive )
+    YBusyIndicatorPrivate( const string &	label,
+			   int			timeout ,
+			   bool			alive )
 	: label( label )
 	, timeout( timeout )
 	, alive	(true)
 	{
 	}
 
-    std::string	label;
-    int 	timeout;
+    string	label;
+    int		timeout;
     bool	alive;
 };
 
@@ -50,7 +52,7 @@ struct YBusyIndicatorPrivate
 
 
 YBusyIndicator::YBusyIndicator( YWidget *	parent,
-			    const std::string &	label,
+			    const string &	label,
 			    int			timeout,
 			    bool		alive )
     : YWidget( parent )
@@ -69,13 +71,13 @@ YBusyIndicator::~YBusyIndicator()
 }
 
 
-std::string YBusyIndicator::label()
+string YBusyIndicator::label()
 {
     return priv->label;
 }
 
 
-void YBusyIndicator::setLabel( const std::string & label )
+void YBusyIndicator::setLabel( const string & label )
 {
     priv->label = label;
 }
@@ -114,9 +116,9 @@ YBusyIndicator::propertySet()
     if ( propSet.isEmpty() )
     {
 	/*
-	 * @property integer	  Timeout	timeout in ms until busy indicator changes to stalled state
-	 * @property bool	  Alive		busy indicator is in alive or stalled state
-	 * @property std::string  Label		caption above the busy indicator
+	 * @property integer	Timeout  timeout in ms until busy indicator changes to stalled state
+	 * @property bool       Alive	 busy indicator is in alive or stalled state
+	 * @property string     Label	 caption above the busy indicator
 	 */
 	propSet.add( YProperty( YUIProperty_Timeout,		YIntegerProperty ) );
 	propSet.add( YProperty( YUIProperty_Alive,		YBoolProperty ) );
@@ -129,7 +131,7 @@ YBusyIndicator::propertySet()
 
 
 bool
-YBusyIndicator::setProperty( const std::string & propertyName, const YPropertyValue & val )
+YBusyIndicator::setProperty( const string & propertyName, const YPropertyValue & val )
 {
     propertySet().check( propertyName, val.type() ); // throws exceptions if not found or type mismatch
 
@@ -146,7 +148,7 @@ YBusyIndicator::setProperty( const std::string & propertyName, const YPropertyVa
 
 
 YPropertyValue
-YBusyIndicator::getProperty( const std::string & propertyName )
+YBusyIndicator::getProperty( const string & propertyName )
 {
     propertySet().check( propertyName ); // throws exceptions if not found
 

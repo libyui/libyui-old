@@ -25,6 +25,8 @@
 #include "YTableItem.h"
 #include "YUIException.h"
 
+using std::string;
+
 
 YTableItem::YTableItem()
     : YItem( "" )
@@ -33,19 +35,19 @@ YTableItem::YTableItem()
 }
 
 
-YTableItem::YTableItem( const std::string & label_0,
-			const std::string & label_1,
-			const std::string & label_2,
-			const std::string & label_3,
-			const std::string & label_4,
-			const std::string & label_5,
-			const std::string & label_6,
-			const std::string & label_7,
-			const std::string & label_8,
-			const std::string & label_9 )
+YTableItem::YTableItem( const string & label_0,
+			const string & label_1,
+			const string & label_2,
+			const string & label_3,
+			const string & label_4,
+			const string & label_5,
+			const string & label_6,
+			const string & label_7,
+			const string & label_8,
+			const string & label_9 )
     : YItem( "" )
 {
-    std::vector<std::string> labels;
+    std::vector<string> labels;
     labels.reserve(10); // slight optimization
     labels.push_back( label_0 );
     labels.push_back( label_1 );
@@ -112,7 +114,7 @@ YTableItem::addCell( YTableCell * cell )
 
 
 void
-YTableItem::addCell( const std::string & label, const std::string & iconName )
+YTableItem::addCell( const string & label, const string & iconName )
 {
     YTableCell * cell = new YTableCell( label, iconName );
     YUI_CHECK_NEW( cell );
@@ -144,14 +146,14 @@ YTableItem::cell( int index )
 }
 
 
-std::string
+string
 YTableItem::label( int index ) const
 {
     return hasCell( index ) ? _cells[ index ]->label() : "";
 }
 
 
-std::string
+string
 YTableItem::iconName( int index ) const
 {
     return hasCell( index ) ? _cells[ index ]->iconName() : "";
@@ -173,7 +175,7 @@ void YTableCell::reparent( YTableItem * parent, int column )
     YUI_CHECK_PTR( parent );
 
     if ( _parent && _parent != parent && _column != column )
-	YUI_THROW( YUIException( std::string( "Cannot reparent YTableCell \"" )
+	YUI_THROW( YUIException( string( "Cannot reparent YTableCell \"" )
 				 + _label
 				 + "to different parent." ) );
     _parent = parent;

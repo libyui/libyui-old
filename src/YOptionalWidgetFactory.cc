@@ -31,6 +31,9 @@
 #define YUILogComponent "owf"
 #include "YUILog.h"
 
+using std::string;
+using std::vector;
+
 
 #define THROW_UNSUPPORTED( WIDGET_TYPE ) \
     YUI_THROW( YUIUnsupportedWidgetException( WIDGET_TYPE ) );	\
@@ -43,13 +46,11 @@ YOptionalWidgetFactory::YOptionalWidgetFactory()
     // NOP
 }
 
+
 YOptionalWidgetFactory::~YOptionalWidgetFactory()
 {
     // NOP
-  yuiMilestone() << "YOptionalWidgetFactory removed" << std::endl;
-
 }
-
 
 
 bool YOptionalWidgetFactory::hasWizard()
@@ -59,9 +60,9 @@ bool YOptionalWidgetFactory::hasWizard()
 
 YWizard *
 YOptionalWidgetFactory::createWizard( YWidget *			parent,
-				      const std::string &	backButtonLabel,
-				      const std::string &	abortButtonLabel,
-				      const std::string &	nextButtonLabel,
+				      const string &	backButtonLabel,
+				      const string &	abortButtonLabel,
+				      const string &	nextButtonLabel,
 				      YWizardMode		wizardMode )
 {
     THROW_UNSUPPORTED( "YWizard" );
@@ -88,11 +89,11 @@ bool YOptionalWidgetFactory::hasSlider()
 }
 
 YSlider *
-YOptionalWidgetFactory::createSlider( YWidget *			parent,
-				      const std::string &	label,
-				      int			minVal,
-				      int			maxVal,
-				      int			initialVal )
+YOptionalWidgetFactory::createSlider( YWidget *		parent,
+				      const string &	label,
+				      int		minVal,
+				      int		maxVal,
+				      int		initialVal )
 {
     THROW_UNSUPPORTED( "YSlider" );
 }
@@ -105,7 +106,7 @@ bool YOptionalWidgetFactory::hasDateField()
 }
 
 YDateField *
-YOptionalWidgetFactory::createDateField( YWidget * parent, const std::string & label )
+YOptionalWidgetFactory::createDateField( YWidget * parent, const string & label )
 {
     THROW_UNSUPPORTED( "YDateField" );
 }
@@ -118,7 +119,7 @@ bool YOptionalWidgetFactory::hasTimeField()
 }
 
 YTimeField *
-YOptionalWidgetFactory::createTimeField( YWidget * parent, const std::string & label )
+YOptionalWidgetFactory::createTimeField( YWidget * parent, const string & label )
 {
     THROW_UNSUPPORTED( "YTimeField" );
 }
@@ -170,19 +171,23 @@ bool YOptionalWidgetFactory::hasMultiProgressMeter()
 }
 
 YMultiProgressMeter *
-YOptionalWidgetFactory::createMultiProgressMeter( YWidget * parent, YUIDimension dim, const std::vector<float> & maxValues )
+YOptionalWidgetFactory::createMultiProgressMeter( YWidget *             parent,
+                                                  YUIDimension          dim,
+                                                  const vector<float> & maxValues )
 {
     THROW_UNSUPPORTED( "YMultiProgressMeter" );
 }
 
 YMultiProgressMeter *
-YOptionalWidgetFactory::createHMultiProgressMeter( YWidget * parent, const std::vector<float> & maxValues )
+YOptionalWidgetFactory::createHMultiProgressMeter( YWidget *             parent,
+                                                   const vector<float> & maxValues )
 {
     return createMultiProgressMeter( parent, YD_HORIZ, maxValues );
 }
 
 YMultiProgressMeter *
-YOptionalWidgetFactory::createVMultiProgressMeter( YWidget * parent, const std::vector<float> & maxValues )
+YOptionalWidgetFactory::createVMultiProgressMeter( YWidget *             parent,
+                                                   const vector<float> & maxValues )
 {
     return createMultiProgressMeter( parent, YD_VERT, maxValues );
 }
@@ -195,17 +200,17 @@ bool YOptionalWidgetFactory::hasPartitionSplitter()
 }
 
 YPartitionSplitter *
-YOptionalWidgetFactory::createPartitionSplitter( YWidget *		parent,
-						 int			usedSize,
-						 int			totalFreeSize,
-						 int			newPartSize,
-						 int			minNewPartSize,
-						 int			minFreeSize,
-						 const std::string &	usedLabel,
-						 const std::string &	freeLabel,
-						 const std::string &	newPartLabel,
-						 const std::string &	freeFieldLabel,
-						 const std::string &	newPartFieldLabel )
+YOptionalWidgetFactory::createPartitionSplitter( YWidget *	parent,
+						 int		usedSize,
+						 int		totalFreeSize,
+						 int		newPartSize,
+						 int		minNewPartSize,
+						 int		minFreeSize,
+						 const string &	usedLabel,
+						 const string &	freeLabel,
+						 const string &	newPartLabel,
+						 const string &	freeFieldLabel,
+						 const string &	newPartFieldLabel )
 {
     THROW_UNSUPPORTED( "YPartitionSplitter" );
 }
@@ -218,10 +223,10 @@ bool YOptionalWidgetFactory::hasDownloadProgress()
 }
 
 YDownloadProgress *
-YOptionalWidgetFactory::createDownloadProgress( YWidget *		parent,
-						const std::string &	label,
-						const std::string & 	filename,
-						YFileSize_t		expectedFileSize )
+YOptionalWidgetFactory::createDownloadProgress( YWidget *	parent,
+						const string &	label,
+						const string & 	filename,
+						YFileSize_t	expectedFileSize )
 {
     THROW_UNSUPPORTED( "YDownloadProgress" );
 }
@@ -245,9 +250,9 @@ bool YOptionalWidgetFactory::hasTimezoneSelector()
 }
 
 YTimezoneSelector *
-YOptionalWidgetFactory::createTimezoneSelector( YWidget * parent,
-                                                const std::string & _map,
-                                                const std::map<std::string, std::string>& zones)
+YOptionalWidgetFactory::createTimezoneSelector( YWidget *                       parent,
+                                                const string &                  worldMap,
+                                                const std::map<string, string>& zones)
 {
     THROW_UNSUPPORTED( "YTimezoneSelector" );
 }
@@ -261,8 +266,9 @@ YOptionalWidgetFactory::hasGraph()
 
 
 YGraph *
-YOptionalWidgetFactory::createGraph( YWidget * parent, const std::string & filename,
-				     const std::string & layoutAlgorithm )
+YOptionalWidgetFactory::createGraph( YWidget *      parent,
+                                     const string & filename,
+				     const string & layoutAlgorithm )
 {
     THROW_UNSUPPORTED( "YGraph" );
 }

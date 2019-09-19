@@ -26,9 +26,10 @@
 #include <iostream>
 #include "YWidgetID.h"
 
+using std::string;
 
 
-YStringWidgetID::YStringWidgetID( const std::string & val )
+YStringWidgetID::YStringWidgetID( const string & val )
     : _value( val )
 {
     // NOP
@@ -54,21 +55,21 @@ YStringWidgetID::isEqual( YWidgetID * otherID ) const
 }
 
 
-std::string
+string
 YStringWidgetID::toString() const
 {
     return _value;
 }
 
 
-std::string
+string
 YStringWidgetID::value() const
 {
     return _value;
 }
 
 
-const std::string &
+const string &
 YStringWidgetID::valueConstRef() const
 {
     return _value;

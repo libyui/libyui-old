@@ -28,6 +28,8 @@
 
 #include "YDateField.h"
 
+using std::string;
+
 
 struct YDateFieldPrivate
 {
@@ -40,7 +42,7 @@ struct YDateFieldPrivate
 
 
 
-YDateField::YDateField( YWidget * parent, const std::string & label )
+YDateField::YDateField( YWidget * parent, const string & label )
     : YSimpleInputField( parent, label )
     , priv( new YDateFieldPrivate() )
 {
@@ -57,6 +59,6 @@ YDateField::~YDateField()
 /*
  * Properties (all handled in YSimpleInputField):
  *
- * @property std::string	Value	the date (the field's contents) as "YYYY-MM-DD"
- * @property std::string	Label	caption above the input field
+ * @property string	Value	the date (the field's contents) as "YYYY-MM-DD"
+ * @property string	Label	caption above the input field
  */

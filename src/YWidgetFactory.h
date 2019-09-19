@@ -32,6 +32,7 @@
 
 class YWidget;
 class YAlignment;
+class YBusyIndicator;
 class YButtonBox;
 class YCheckBox;
 class YCheckBoxFrame;
@@ -42,6 +43,7 @@ class YFrame;
 class YImage;
 class YInputField;
 class YIntField;
+class YItemSelector;
 class YLabel;
 class YLayoutBox;
 class YLogView;
@@ -62,7 +64,6 @@ class YTable;
 class YTableHeader;
 class YTimeField;
 class YTree;
-class YBusyIndicator;
 
 
 
@@ -91,24 +92,24 @@ public:
 
     YLayoutBox *		createVBox		( YWidget * parent );
     YLayoutBox *		createHBox		( YWidget * parent );
-    virtual YLayoutBox *	createLayoutBox		( YWidget * parent, YUIDimension dimension )				= 0;
-    virtual YButtonBox *	createButtonBox		( YWidget * parent )							= 0;
+    virtual YLayoutBox *	createLayoutBox		( YWidget * parent, YUIDimension dimension )    = 0;
+    virtual YButtonBox *	createButtonBox		( YWidget * parent )			 	= 0;
 
     //
     // Common Leaf Widgets
     //
 
-    virtual YPushButton *	createPushButton	( YWidget * parent, const std::string & label )				= 0;
+    virtual YPushButton *	createPushButton	( YWidget * parent, const std::string & label )				        = 0;
     virtual YLabel *		createLabel		( YWidget * parent, const std::string & text, bool isHeading = false, bool isOutputField = false ) = 0;
     YLabel *			createHeading		( YWidget * parent, const std::string & label );
     virtual YInputField *	createInputField	( YWidget * parent, const std::string & label, bool passwordMode = false )	= 0;
-    virtual YCheckBox *		createCheckBox		( YWidget * parent, const std::string & label, bool isChecked = false )	= 0;
-    virtual YRadioButton *	createRadioButton	( YWidget * parent, const std::string & label, bool isChecked = false )	= 0;
+    virtual YCheckBox *		createCheckBox		( YWidget * parent, const std::string & label, bool isChecked    = false )	= 0;
+    virtual YRadioButton *	createRadioButton	( YWidget * parent, const std::string & label, bool isChecked    = false )	= 0;
     virtual YComboBox *		createComboBox		( YWidget * parent, const std::string & label, bool editable	 = false )	= 0;
-    virtual YSelectionBox * 	createSelectionBox	( YWidget * parent, const std::string & label )				= 0;
+    virtual YSelectionBox * 	createSelectionBox	( YWidget * parent, const std::string & label ) 				= 0;
     virtual YTree *		createTree		( YWidget * parent, const std::string & label, bool multiselection = false, bool recursiveselection = false ) = 0;
-    virtual YTable *		createTable		( YWidget * parent, YTableHeader * header_disown, bool multiSelection = false  ) = 0;
-    virtual YProgressBar *	createProgressBar	( YWidget * parent, const std::string & label, int maxValue = 100 )		= 0;
+    virtual YTable *		createTable		( YWidget * parent, YTableHeader * header,     bool multiSelection = false )    = 0;
+    virtual YProgressBar *	createProgressBar	( YWidget * parent, const std::string & label, int  maxValue       = 100   )	= 0;
     virtual YRichText *		createRichText		( YWidget * parent, const std::string & text = std::string(), bool plainTextMode = false )	= 0;
     virtual YBusyIndicator *	createBusyIndicator	( YWidget * parent, const std::string & label, int timeout = 1000 )		= 0;
 
@@ -179,10 +180,15 @@ public:
     virtual YRadioButtonGroup *	createRadioButtonGroup	( YWidget * parent )	= 0;
     virtual YReplacePoint *	createReplacePoint	( YWidget * parent )	= 0;
 
+    //
+    // More leaf widgets (moved to the end to maintain ABI compatibility)
+    //
+
+    virtual YItemSelector *     createItemSelector      ( YWidget * parent, bool enforceSingleSelection = true );
+    YItemSelector *             createSingleItemSelector( YWidget * parent );
+    YItemSelector *             createMultiItemSelector ( YWidget * parent );
 
 protected:
-
-    friend class YUI;
 
     /**
      * Constructor.

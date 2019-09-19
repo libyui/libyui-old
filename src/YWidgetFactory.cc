@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2000-2012 Novell, Inc
+  Copyright (C) 2000-2019 Novell, Inc
   This library is free software; you can redistribute it and/or modify
   it under the terms of the GNU Lesser General Public License as
   published by the Free Software Foundation; either version 2.1 of the
@@ -31,15 +31,18 @@
 #define YUILogComponent "wf"
 #include "YUILog.h"
 
+using std::string;
+
+
 YWidgetFactory::YWidgetFactory()
 {
     // NOP
 }
 
+
 YWidgetFactory::~YWidgetFactory()
 {
     // NOP
-    yuiMilestone() << "YWidgetFactory removed" << std::endl;
 }
 
 
@@ -233,8 +236,8 @@ YWidgetFactory::createHVSquash( YWidget * parent )
 
 YPushButton *
 YWidgetFactory::createIconButton( YWidget *	 parent,
-				  const std::string & iconName,
-				  const std::string & fallbackTextLabel )
+				  const string & iconName,
+				  const string & fallbackTextLabel )
 {
     YPushButton * button = createPushButton( parent, fallbackTextLabel );
     button->setIcon( iconName );
@@ -244,7 +247,7 @@ YWidgetFactory::createIconButton( YWidget *	 parent,
 
 
 YLabel *
-YWidgetFactory::createHeading( YWidget * parent, const std::string & text )
+YWidgetFactory::createHeading( YWidget * parent, const string & text )
 {
     return createLabel( parent,
 			text,
@@ -254,7 +257,7 @@ YWidgetFactory::createHeading( YWidget * parent, const std::string & text )
 
 
 YLabel *
-YWidgetFactory::createOutputField( YWidget * parent, const std::string & text )
+YWidgetFactory::createOutputField( YWidget * parent, const string & text )
 {
     return createLabel( parent,
 			text,
@@ -264,9 +267,41 @@ YWidgetFactory::createOutputField( YWidget * parent, const std::string & text )
 
 
 YInputField *
-YWidgetFactory::createPasswordField( YWidget * parent, const std::string & label )
+YWidgetFactory::createPasswordField( YWidget * parent, const string & label )
 {
     return createInputField( parent,
 			     label,
 			     true );	// passwordMode
+}
+
+
+YItemSelector *
+YWidgetFactory::createItemSelector( YWidget * parent, bool enforceSingleSelection )
+{
+    (void) parent;
+    (void) enforceSingleSelection;
+
+    // Default implementation returning 0 to give community-maintained UIs
+    // (libyui-gtk) a chance to catch up with development. Remove this and make
+    // it pure virtual when this is implemented there as well.
+
+    yuiError() << "YItemSelector not implemented in this UI" << endl;
+
+    return 0;
+}
+
+
+YItemSelector *
+YWidgetFactory::createSingleItemSelector( YWidget * parent )
+{
+    return createItemSelector( parent,
+                               true );  // enforceSingleSelection
+}
+
+
+YItemSelector *
+YWidgetFactory::createMultiItemSelector( YWidget * parent )
+{
+    return createItemSelector( parent,
+                               false ); // enforceSingleSelection
 }

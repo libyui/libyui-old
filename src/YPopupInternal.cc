@@ -30,7 +30,10 @@
 
 #include <YPopupInternal.h>
 
-void YPopupInternal::message(const std::string &label)
+using std::string;
+
+
+void YPopupInternal::message(const string & label)
 {
     auto f = YUI::widgetFactory();
 
@@ -61,14 +64,14 @@ void YPopupInternal::message(const std::string &label)
  * @param parent Where to add the widget
  * @param val    The initial value
  */
-static void addTextField(YWidget *parent, const std::string &val)
+static void addTextField(YWidget *parent, const string &val)
 {
     auto new_item = YUI::widgetFactory()->createInputField(parent, "");
     new_item->setProperty("Value", YPropertyValue(val));
     new_item->setProperty("HStretch", YPropertyValue(true));
 }
 
-bool YPopupInternal::editStringArray(StringArray &array, const std::string &label)
+bool YPopupInternal::editStringArray(StringArray &array, const string &label)
 {
     auto f = YUI::widgetFactory();
 
@@ -127,7 +130,7 @@ bool YPopupInternal::editStringArray(StringArray &array, const std::string &labe
             popup->recalcLayout();
         }
         else
-            yuiWarning() << "Unknown event " << event << std::endl;
+            yuiWarning() << "Unknown event " << event << endl;
     }
 
     popup->destroy();
@@ -135,7 +138,7 @@ bool YPopupInternal::editStringArray(StringArray &array, const std::string &labe
     return ret;
 }
 
-YPopupInternal::StringArray YPopupInternal::editNewStringArray(const std::string &label)
+YPopupInternal::StringArray YPopupInternal::editNewStringArray(const string &label)
 {
     YPopupInternal::StringArray ret { "", "", "" };
 

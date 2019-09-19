@@ -30,7 +30,6 @@
 #include "YSimpleEventHandler.h"
 
 
-
 #define VERBOSE_EVENTS	0
 #define VERBOSE_BLOCK	0
 
@@ -53,7 +52,7 @@ void YSimpleEventHandler::clear()
     if ( _pendingEvent )
     {
 #if VERBOSE_EVENTS
-	yuiDebug() << "Clearing pending event: " << _pendingEvent << std::endl;
+	yuiDebug() << "Clearing pending event: " << _pendingEvent << endl;
 #endif
 	deleteEvent( _pendingEvent );
     }
@@ -66,7 +65,7 @@ YEvent * YSimpleEventHandler::consumePendingEvent()
     _pendingEvent = 0;
 
 #if VERBOSE_EVENTS
-    yuiDebug() << "Consuming " << event << std::endl;
+    yuiDebug() << "Consuming " << event << endl;
 #endif
 
     return event;
@@ -77,14 +76,14 @@ void YSimpleEventHandler::sendEvent( YEvent * event )
 {
     if ( ! event )
     {
-	yuiError() << "Ignoring NULL event" << std::endl;
+	yuiError() << "Ignoring NULL event" << endl;
 	return;
     }
 
     if ( eventsBlocked() )
     {
 #if VERBOSE_BLOCK
-	yuiDebug() << "Blocking " << event << std::endl;
+	yuiDebug() << "Blocking " << event << endl;
 #endif
 	// Avoid memory leak: The event handler assumes ownership of the newly
 	// created event, so we have to clean it up here.
@@ -109,7 +108,7 @@ void YSimpleEventHandler::sendEvent( YEvent * event )
     }
 
 #if VERBOSE_EVENTS
-    yuiDebug() << "New pending event: " << event << std::endl;
+    yuiDebug() << "New pending event: " << event << endl;
 #endif
 
     _pendingEvent = event;
@@ -137,7 +136,7 @@ void YSimpleEventHandler::deletePendingEventsFor( YWidget * widget )
 
     if ( event && event->widget() == widget && event->isValid() )
     {
-	yuiDebug() << "Deleting " << _pendingEvent << std::endl;
+	yuiDebug() << "Deleting " << _pendingEvent << endl;
 	deleteEvent( _pendingEvent );
     }
 }
@@ -146,8 +145,8 @@ void YSimpleEventHandler::deletePendingEventsFor( YWidget * widget )
 void YSimpleEventHandler::blockEvents( bool block )
 {
 #if VERBOSE_BLOCK
-    if ( block )	yuiDebug() << "Blocking events"   << std::endl;
-    else		yuiDebug() << "Unblocking events" << std::endl;
+    if ( block )	yuiDebug() << "Blocking events"   << endl;
+    else		yuiDebug() << "Unblocking events" << endl;
 #endif
 
     _eventsBlocked = block;
@@ -164,13 +163,13 @@ void YSimpleEventHandler::deleteEvent( YEvent * event )
 	if ( event->isValid() )
 	{
 #if VERBOSE_EVENTS
-	    yuiDebug() << "Deleting " << event << std::endl;
+	    yuiDebug() << "Deleting " << event << endl;
 #endif
 	    delete event;
 	}
 	else
 	{
-	    yuiError() << "Attempt to delete invalid event " << event << std::endl;
+	    yuiError() << "Attempt to delete invalid event " << event << endl;
 	}
     }
 }

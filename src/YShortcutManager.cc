@@ -30,6 +30,8 @@
 #include "YDialog.h"
 #include "YDumbTab.h"
 
+using std::string;
+
 
 // Threshold of widgets with valid shortcut characters below which no shortcut
 // check is performed at all. This might regularly occur for languages that
@@ -59,7 +61,7 @@ YShortcutManager::~YShortcutManager()
 void
 YShortcutManager::checkShortcuts( bool autoResolve )
 {
-    yuiDebug() << "Checking keyboard shortcuts" << std::endl;
+    yuiDebug() << "Checking keyboard shortcuts" << endl;
 
     clearShortcutList();
     findShortcutWidgets( _dialog->childrenBegin(), _dialog->childrenEnd() );
@@ -82,8 +84,8 @@ YShortcutManager::checkShortcuts( bool autoResolve )
         // that primarily use non-ASCII characters (Russian, Greek, Chinese,
         // Japanese, Korean).
 
-	yuiWarning() << "Not enough widgets with valid shortcut characters - no check" << std::endl;
-	yuiDebug() << "Found " << validCount << " widgets with valid shortcut characters" << std::endl;
+	yuiWarning() << "Not enough widgets with valid shortcut characters - no check" << endl;
+	yuiDebug() << "Found " << validCount << " widgets with valid shortcut characters" << endl;
 	return;
     }
 
@@ -118,7 +120,7 @@ YShortcutManager::checkShortcuts( bool autoResolve )
 
 		yuiDebug() << "Shortcut conflict: '" << shortcut->preferred()
 			   << "' used for " << shortcut->widget()
-			   << std::endl;
+			   << endl;
 	    }
 	}
 	else	// No or invalid shortcut
@@ -130,7 +132,7 @@ YShortcutManager::checkShortcuts( bool autoResolve )
 
 		if ( ! shortcut->widget()->autoShortcut() )
 		{
-		    yuiDebug() << "No valid shortcut for " << shortcut->widget() << std::endl;
+		    yuiDebug() << "No valid shortcut for " << shortcut->widget() << endl;
 		}
 	    }
 	}
@@ -152,7 +154,7 @@ YShortcutManager::checkShortcuts( bool autoResolve )
     }
     else
     {
-	yuiDebug() << "No shortcut conflicts" << std::endl;
+	yuiDebug() << "No shortcut conflicts" << endl;
     }
 }
 
@@ -160,11 +162,11 @@ YShortcutManager::checkShortcuts( bool autoResolve )
 void
 YShortcutManager::resolveAllConflicts()
 {
-    yuiDebug() << "Resolving shortcut conflicts" << std::endl;
+    yuiDebug() << "Resolving shortcut conflicts" << endl;
 
     if ( ! _didCheck )
     {
-	yuiError() << "Call checkShortcuts() first!" << std::endl;
+	yuiError() << "Call checkShortcuts() first!" << endl;
 	return;
     }
 
@@ -208,7 +210,7 @@ YShortcutManager::resolveAllConflicts()
 
 	if ( shortcut->conflict() )
 	{
-	    yuiWarning() << "Couldn't resolve shortcut conflict for " << shortcut->widget() << std::endl;
+	    yuiWarning() << "Couldn't resolve shortcut conflict for " << shortcut->widget() << endl;
 	}
 
 
@@ -219,7 +221,7 @@ YShortcutManager::resolveAllConflicts()
 
     if ( _conflictCount > 0 )
     {
-	yuiDebug() << _conflictCount <<  " shortcut conflict(s) left" << std::endl;
+	yuiDebug() << _conflictCount <<  " shortcut conflict(s) left" << endl;
     }
 }
 
@@ -228,7 +230,7 @@ YShortcutManager::resolveAllConflicts()
 void
 YShortcutManager::resolveConflict( YShortcut * shortcut )
 {
-    // yuiDebug() << "Picking shortcut for " << shortcut->widget() << std::endl;
+    // yuiDebug() << "Picking shortcut for " << shortcut->widget() << endl;
 
     char candidate = shortcut->preferred();			// This is always normalized, no need to normalize again.
 
@@ -236,12 +238,12 @@ YShortcutManager::resolveConflict( YShortcut * shortcut )
 	 || _used[ (int) candidate ] )
     {
 	candidate = 0;						// Restart from scratch - forget the preferred character.
-	std::string str = shortcut->cleanShortcutString();
+	string str = shortcut->cleanShortcutString();
 
-	for ( std::string::size_type pos = 0; pos < str.length(); pos++ )	// Search all the shortcut string.
+	for ( string::size_type pos = 0; pos < str.length(); pos++ )	// Search all the shortcut string.
 	{
 	    char c = YShortcut::normalized( str[ pos ] );
-	    // yuiDebug() << "Checking '" << c << "'" << std::endl;
+	    // yuiDebug() << "Checking '" << c << "'" << endl;
 
 	    if ( YShortcut::isValid(c) && ! _used[ (int) c ] ) 	// Could we use this character?
 	    {
@@ -249,7 +251,7 @@ YShortcutManager::resolveConflict( YShortcut * shortcut )
 		     || ! YShortcut::isValid( candidate ) )		// or don't we have anything yet?
 		{
 		    candidate = c;			// Use this one.
-		    // yuiDebug() << "Picking '" << c << "'" << std::endl;
+		    // yuiDebug() << "Picking '" << c << "'" << endl;
 
 		    if ( _wanted[ (int) c ] == 0 )	// It doesn't get any better than this:
 			break;				// Nobody wants this shortcut anyway.
@@ -267,13 +269,13 @@ YShortcutManager::resolveConflict( YShortcut * shortcut )
 		yuiDebug() << "Automatically assigning shortcut '" << candidate
 			   << "' to " << shortcut->widgetClass() << "(`opt(`autoShortcut ), \""
 			   << shortcut->cleanShortcutString() << "\" )"
-			   << std::endl;
+			   << endl;
 	    }
 	    else
 	    {
 		yuiDebug() << "Reassigning shortcut '" << candidate
 			   << "' to " << shortcut->widget()
-			   << std::endl;
+			   << endl;
 	    }
 	    shortcut->setShortcut( candidate );
 	}
@@ -281,7 +283,7 @@ YShortcutManager::resolveConflict( YShortcut * shortcut )
 	{
 	    yuiDebug() << "Keeping preferred shortcut '" << candidate
 		       << "' for " << shortcut->widget()
-		       << std::endl;
+		       << endl;
 	}
 
 	_used[ (int) candidate ] = true;
@@ -292,7 +294,7 @@ YShortcutManager::resolveConflict( YShortcut * shortcut )
 	yuiWarning() << "Couldn't resolve shortcut conflict for "
 		     << shortcut->widget()
 		     << " - assigning no shortcut"
-		     << std::endl;
+		     << endl;
 
 	shortcut->clearShortcut();
 	shortcut->setConflict( false );

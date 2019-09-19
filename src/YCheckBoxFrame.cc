@@ -29,16 +29,18 @@
 #include "YUISymbols.h"
 #include "YCheckBoxFrame.h"
 
+using std::string;
+
 
 struct YCheckBoxFramePrivate
 {
-    YCheckBoxFramePrivate( const std::string & label )
+    YCheckBoxFramePrivate( const string & label )
 	: label( label )
 	, autoEnable( true )
 	, invertAutoEnable( false )
 	{}
 
-    std::string	label;
+    string	label;
     bool	autoEnable;
     bool	invertAutoEnable;
 };
@@ -46,9 +48,9 @@ struct YCheckBoxFramePrivate
 
 
 
-YCheckBoxFrame::YCheckBoxFrame( YWidget *		parent,
-				const std::string &	label,
-				bool			isChecked )
+YCheckBoxFrame::YCheckBoxFrame( YWidget *	parent,
+				const string &	label,
+				bool		isChecked )
     : YSingleChildContainerWidget( parent )
     , priv( new YCheckBoxFramePrivate( label ) )
 {
@@ -62,35 +64,40 @@ YCheckBoxFrame::~YCheckBoxFrame()
 }
 
 
-std::string YCheckBoxFrame::label() const
+string YCheckBoxFrame::label() const
 {
     return priv->label;
 }
 
-void YCheckBoxFrame::setLabel( const std::string & label )
+
+void YCheckBoxFrame::setLabel( const string & label )
 {
     priv->label = label;
 }
+
 
 bool YCheckBoxFrame::autoEnable() const
 {
     return priv->autoEnable;
 }
 
+
 void YCheckBoxFrame::setAutoEnable( bool autoEnable )
 {
-    // yuiDebug() << "Auto enable: " << boolalpha << autoEnable << std::endl;
+    // yuiDebug() << "Auto enable: " << boolalpha << autoEnable << endl;
     priv->autoEnable = autoEnable;
 }
+
 
 bool YCheckBoxFrame::invertAutoEnable() const
 {
     return priv->invertAutoEnable;
 }
 
+
 void YCheckBoxFrame::setInvertAutoEnable( bool invertAutoEnable )
 {
-    // yuiDebug() << "Invert auto enable: ", boolalpha << invertAutoEnable << std::endl;
+    // yuiDebug() << "Invert auto enable: ", boolalpha << invertAutoEnable << endl;
     priv->invertAutoEnable = invertAutoEnable;
 }
 
@@ -102,7 +109,7 @@ void YCheckBoxFrame::handleChildrenEnablement( bool enabled )
 	if ( invertAutoEnable() )
 	    enabled = ! enabled;
 
-	yuiDebug() << ( enabled ? "Enabling" : "Disabling" ) << " child widgets of " << this << std::endl;
+	yuiDebug() << ( enabled ? "Enabling" : "Disabling" ) << " child widgets of " << this << endl;
 	setChildrenEnabled( enabled );
     }
 }
@@ -116,8 +123,8 @@ YCheckBoxFrame::propertySet()
     if ( propSet.isEmpty() )
     {
 	/*
-	 * @property boolean	  Value 	the on/off state of the CheckBoxFrame's check box
-	 * @property std::string  Label		the text on the frame
+	 * @property boolean    Value 	the on/off state of the CheckBoxFrame's check box
+	 * @property string     Label	the text on the frame
 	 */
 
 	propSet.add( YProperty( YUIProperty_Value,	YBoolProperty	) );
@@ -130,7 +137,7 @@ YCheckBoxFrame::propertySet()
 
 
 bool
-YCheckBoxFrame::setProperty( const std::string & propertyName, const YPropertyValue & val )
+YCheckBoxFrame::setProperty( const string & propertyName, const YPropertyValue & val )
 {
     propertySet().check( propertyName, val.type() ); // throws exceptions if not found or type mismatch
 
@@ -146,7 +153,7 @@ YCheckBoxFrame::setProperty( const std::string & propertyName, const YPropertyVa
 
 
 YPropertyValue
-YCheckBoxFrame::getProperty( const std::string & propertyName )
+YCheckBoxFrame::getProperty( const string & propertyName )
 {
     propertySet().check( propertyName ); // throws exceptions if not found
 

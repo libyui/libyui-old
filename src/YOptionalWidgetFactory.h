@@ -122,14 +122,18 @@ public:
     YWidget *				createDummySpecialWidget( YWidget * parent );
 
     virtual bool                        hasTimezoneSelector();
-    virtual YTimezoneSelector *         createTimezoneSelector( YWidget * parent,
-								const std::string & pixmap,
+    virtual YTimezoneSelector *         createTimezoneSelector( YWidget *                                 parent,
+								const std::string &                       timezoneMap,
 								const std::map<std::string,std::string> & timezones );
 
     virtual bool			hasGraph();
-    virtual YGraph *			createGraph( YWidget * parent, const std::string & filename,
-						     const std::string & layoutAlgorithm );
-    virtual YGraph *			createGraph( YWidget * parent, /* graph_t */ void * graph );
+
+    virtual YGraph *			createGraph( YWidget *                  parent,
+                                                     const std::string &        filename,
+						     const std::string &        layoutAlgorithm );
+
+    virtual YGraph *			createGraph( YWidget *                  parent,
+                                                     /* graph_t */ void *       graph );
 
     virtual bool			hasContextMenu();
 

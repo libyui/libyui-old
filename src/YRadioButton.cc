@@ -34,6 +34,7 @@
 #include "YRadioButtonGroup.h"
 #include "YRadioButton.h"
 
+using std::string;
 
 
 struct YRadioButtonPrivate
@@ -41,7 +42,7 @@ struct YRadioButtonPrivate
     /**
      * Constructor
      **/
-    YRadioButtonPrivate( const std::string & label )
+    YRadioButtonPrivate( const string & label )
 	: label( label )
 	, radioButtonGroup( 0 )
 	, useBoldFont( false )
@@ -51,14 +52,14 @@ struct YRadioButtonPrivate
     // Data members
     //
 
-    std::string		label;
+    string		label;
     YRadioButtonGroup * radioButtonGroup;
     bool		useBoldFont;
 };
 
 
 YRadioButton::YRadioButton( YWidget * 		parent,
-			    const std::string &	label )
+			    const string &	label )
     : YWidget( parent )
     , priv( new YRadioButtonPrivate( label ) )
 {
@@ -84,13 +85,13 @@ YRadioButton::~YRadioButton()
 }
 
 
-void YRadioButton::setLabel( const std::string & newLabel )
+void YRadioButton::setLabel( const string & newLabel )
 {
     priv->label = newLabel;
 }
 
 
-std::string YRadioButton::label() const
+string YRadioButton::label() const
 {
     return priv->label;
 }
@@ -116,8 +117,8 @@ YRadioButton::propertySet()
     if ( propSet.isEmpty() )
     {
 	/*
-	 * @property boolean		Value	the on/off state of the RadioButton
-	 * @property std::string	Label	the text on the RadioButton
+	 * @property boolean	Value	the on/off state of the RadioButton
+	 * @property string	Label	the text on the RadioButton
 	 */
 
 	propSet.add( YProperty( YUIProperty_Value,	YBoolProperty	) );
@@ -130,7 +131,7 @@ YRadioButton::propertySet()
 
 
 bool
-YRadioButton::setProperty( const std::string & propertyName, const YPropertyValue & val )
+YRadioButton::setProperty( const string & propertyName, const YPropertyValue & val )
 {
     propertySet().check( propertyName, val.type() ); // throws exceptions if not found or type mismatch
 
@@ -146,7 +147,7 @@ YRadioButton::setProperty( const std::string & propertyName, const YPropertyValu
 
 
 YPropertyValue
-YRadioButton::getProperty( const std::string & propertyName )
+YRadioButton::getProperty( const string & propertyName )
 {
     propertySet().check( propertyName ); // throws exceptions if not found
 

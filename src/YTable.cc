@@ -29,6 +29,8 @@
 #include "YUISymbols.h"
 #include "YTable.h"
 
+using std::string;
+
 
 struct YTablePrivate
 {
@@ -95,7 +97,7 @@ YTable::hasColumn( int column ) const
 }
 
 
-std::string
+string
 YTable::header( int column ) const
 {
     return priv->header->header( column );
@@ -147,14 +149,14 @@ YTable::hasMultiSelection() const
 }
 
 YItem *
-YTable::findItem( const std::string & wantedItemLabel, int column ) const
+YTable::findItem( const string & wantedItemLabel, int column ) const
 {
     return YTable::findItem( wantedItemLabel, column, itemsBegin(), itemsEnd() );
 }
 
 
 YItem *
-YTable::findItem( const std::string & wantedItemLabel,
+YTable::findItem( const string & wantedItemLabel,
                   int                 column,
                   YItemConstIterator  begin,
                   YItemConstIterator  end ) const
@@ -181,17 +183,17 @@ YTable::propertySet()
     if ( propSet.isEmpty() )
     {
 	/*
-	 * @property itemID		Value		The currently selected item
-	 * @property itemID		CurrentItem	The currently selected item
-	 * @property itemList		Items		All items
-	 * @property itemList		SelectedItems	All currently selected items
-	 * @property std::string	Cell		One cell (one column of one item)
-	 * @property integer		Cell		(ChangeWidget only) One cell as integer
-	 * @property `icon(...)		Cell		Icon for one one cell
-	 * @property std::string	Item		Alias for Cell
-	 * @property std::string	Item		QueryWidget only: Return one complete item
-	 * @property std::string	IconPath	Base path for icons
-	 * @property bool		MultiSelection	Flag: User can select multiple items (read-only)
+	 * @property itemID	Value		The currently selected item
+	 * @property itemID	CurrentItem	The currently selected item
+	 * @property itemList	Items		All items
+	 * @property itemList	SelectedItems	All currently selected items
+	 * @property string	Cell		One cell (one column of one item)
+	 * @property integer	Cell		(ChangeWidget only) One cell as integer
+	 * @property `icon(...)	Cell		Icon for one one cell
+	 * @property string	Item		Alias for Cell
+	 * @property string	Item		QueryWidget only: Return one complete item
+	 * @property string	IconPath	Base path for icons
+	 * @property bool	MultiSelection	Flag: User can select multiple items (read-only)
 	 */
 	propSet.add( YProperty( YUIProperty_Value,		YOtherProperty	 ) );
 	propSet.add( YProperty( YUIProperty_CurrentItem,	YOtherProperty	 ) );
@@ -209,7 +211,7 @@ YTable::propertySet()
 
 
 bool
-YTable::setProperty( const std::string & propertyName, const YPropertyValue & val )
+YTable::setProperty( const string & propertyName, const YPropertyValue & val )
 {
     propertySet().check( propertyName, val.type() ); // throws exceptions if not found or type mismatch
 
@@ -230,7 +232,7 @@ YTable::setProperty( const std::string & propertyName, const YPropertyValue & va
 
 
 YPropertyValue
-YTable::getProperty( const std::string & propertyName )
+YTable::getProperty( const string & propertyName )
 {
     propertySet().check( propertyName ); // throws exceptions if not found
 

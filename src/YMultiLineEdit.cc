@@ -32,16 +32,18 @@
 
 #define DEFAULT_VISIBLE_LINES	3
 
+using std::string;
+
 
 struct YMultiLineEditPrivate
 {
-    YMultiLineEditPrivate( const std::string & label )
+    YMultiLineEditPrivate( const string & label )
 	: label( label )
 	, inputMaxLength( -1 )
 	, defaultVisibleLines( DEFAULT_VISIBLE_LINES )
 	{}
 
-    std::string	label;
+    string	label;
     int		inputMaxLength;
     int		defaultVisibleLines;
 };
@@ -49,7 +51,7 @@ struct YMultiLineEditPrivate
 
 
 
-YMultiLineEdit::YMultiLineEdit( YWidget * parent, const std::string & label )
+YMultiLineEdit::YMultiLineEdit( YWidget * parent, const string & label )
     : YWidget( parent )
     , priv( new YMultiLineEditPrivate( label ) )
 {
@@ -66,13 +68,13 @@ YMultiLineEdit::~YMultiLineEdit()
 }
 
 
-std::string YMultiLineEdit::label() const
+string YMultiLineEdit::label() const
 {
     return priv->label;
 }
 
 
-void YMultiLineEdit::setLabel( const std::string & label )
+void YMultiLineEdit::setLabel( const string & label )
 {
     priv->label = label;
 }
@@ -110,9 +112,9 @@ YMultiLineEdit::propertySet()
     if ( propSet.isEmpty() )
     {
 	/*
-	 * @property std::string	Value		the MultiLineEdit text contents (with newlines)
-	 * @property std::string	Label		caption above the MultiLineEdit
-	 * @property integer		InputMaxLength	maximum number of input characters
+	 * @property string	Value		the MultiLineEdit text contents (with newlines)
+	 * @property string	Label		caption above the MultiLineEdit
+	 * @property integer	InputMaxLength	maximum number of input characters
 	 */
 	propSet.add( YProperty( YUIProperty_Value,		YStringProperty	 ) );
 	propSet.add( YProperty( YUIProperty_Label,		YStringProperty	 ) );
@@ -125,7 +127,7 @@ YMultiLineEdit::propertySet()
 
 
 bool
-YMultiLineEdit::setProperty( const std::string & propertyName, const YPropertyValue & val )
+YMultiLineEdit::setProperty( const string & propertyName, const YPropertyValue & val )
 {
     propertySet().check( propertyName, val.type() ); // throws exceptions if not found or type mismatch
 
@@ -142,7 +144,7 @@ YMultiLineEdit::setProperty( const std::string & propertyName, const YPropertyVa
 
 
 YPropertyValue
-YMultiLineEdit::getProperty( const std::string & propertyName )
+YMultiLineEdit::getProperty( const string & propertyName )
 {
     propertySet().check( propertyName ); // throws exceptions if not found
 

@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2000-2012 Novell, Inc
+  Copyright (c) [2019] SUSE LLC
   This library is free software; you can redistribute it and/or modify
   it under the terms of the GNU Lesser General Public License as
   published by the Free Software Foundation; either version 2.1 of the
@@ -16,41 +16,38 @@
 
 /*-/
 
-  File:		YSelectionBox.cc
+  File:		YItemSelector.cc
 
-  Author:	Stefan Hundhammer <sh@suse.de>
+  Author:	Stefan Hundhammer <shundhammer@suse.de>
 
 /-*/
-
 
 #define YUILogComponent "ui"
 #include "YUILog.h"
 
-#include "YSelectionBox.h"
-#include "YUISymbols.h"
-#include "YUIException.h"
+#include "YItemSelector.h"
+
+#define DEFAULT_VISIBLE_ITEMS   3
 
 using std::string;
 
 
-struct YSelectionBoxPrivate
+struct YItemSelectorPrivate
 {
-    YSelectionBoxPrivate()
-	: shrinkable( false )
-	, immediateMode( false )
-	{}
+    YItemSelectorPrivate()
+        : visibleItems( DEFAULT_VISIBLE_ITEMS )
+        {}
 
-    bool shrinkable;
-    bool immediateMode;
+    int visibleItems;
 };
 
 
-
-
-YSelectionBox::YSelectionBox( YWidget * parent, const string & label )
-    : YSelectionWidget( parent, label,
-			true ) // enforceSingleSelection
-    , priv( new YSelectionBoxPrivate() )
+YItemSelector::YItemSelector( YWidget *    parent,
+                              bool         enforceSingleSelection )
+    : YSelectionWidget( parent,
+                        "",     // label
+                        enforceSingleSelection )
+    , priv( new YItemSelectorPrivate )
 {
     YUI_CHECK_NEW( priv );
 
@@ -59,57 +56,53 @@ YSelectionBox::YSelectionBox( YWidget * parent, const string & label )
 }
 
 
-YSelectionBox::~YSelectionBox()
+YItemSelector::~YItemSelector()
 {
     // NOP
 }
 
 
-bool YSelectionBox::shrinkable() const
+const char *
+YItemSelector::widgetClass() const
 {
-    return priv->shrinkable;
+    return enforceSingleSelection() ? "YSingleItemSelector" : "YMultiItemSelector";
 }
 
 
-void YSelectionBox::setShrinkable( bool shrinkable )
+int
+YItemSelector::visibleItems() const
 {
-    priv->shrinkable = shrinkable;
+    return priv->visibleItems;
 }
 
 
-bool YSelectionBox::immediateMode() const
+void YItemSelector::setVisibleItems( int newVal )
 {
-    return priv->immediateMode;
-}
+    if ( newVal < 1 )
+        newVal = 1;
 
-
-void YSelectionBox::setImmediateMode( bool immediateMode )
-{
-    priv->immediateMode = immediateMode;
-
-    if ( immediateMode )
-	setNotify( true );
+    priv->visibleItems = newVal;
 }
 
 
 const YPropertySet &
-YSelectionBox::propertySet()
+YItemSelector::propertySet()
 {
     static YPropertySet propSet;
 
     if ( propSet.isEmpty() )
     {
 	/*
-	 * @property itemID	Value		The currently selected item
-	 * @property itemID	CurrentItem	The currently selected item
-	 * @property itemList	Items		All items
-	 * @property string	Label		Caption above the selection box
-	 * @property string	IconPath	Base path for icons
+	 * @property itemID	Value           The (first) currently selected item
+	 * @property itemList	SelectedItems   All currently selected items
+	 * @property itemList	Items           All items
+	 * @property integer    VisibleItems    Number of items that are visible without scrolling
+	 * @property string	IconPath        Base path for icons
 	 */
 	propSet.add( YProperty( YUIProperty_Value,		YOtherProperty	 ) );
-	propSet.add( YProperty( YUIProperty_CurrentItem,	YOtherProperty	 ) );
+	propSet.add( YProperty( YUIProperty_SelectedItems,	YOtherProperty	 ) );
 	propSet.add( YProperty( YUIProperty_Items,		YOtherProperty	 ) );
-	propSet.add( YProperty( YUIProperty_Label,		YStringProperty	 ) );
+	propSet.add( YProperty( YUIProperty_VisibleItems,       YIntegerProperty ) );
 	propSet.add( YProperty( YUIProperty_IconPath,		YStringProperty	 ) );
 	propSet.add( YWidget::propertySet() );
     }
@@ -119,14 +112,14 @@ YSelectionBox::propertySet()
 
 
 bool
-YSelectionBox::setProperty( const string & propertyName, const YPropertyValue & val )
+YItemSelector::setProperty( const string & propertyName, const YPropertyValue & val )
 {
     propertySet().check( propertyName, val.type() ); // throws exceptions if not found or type mismatch
 
     if	    ( propertyName == YUIProperty_Value		)	return false; // Needs special handling
-    else if ( propertyName == YUIProperty_CurrentItem 	)	return false; // Needs special handling
+    else if ( propertyName == YUIProperty_SelectedItems	)	return false; // Needs special handling
     else if ( propertyName == YUIProperty_Items 	)	return false; // Needs special handling
-    else if ( propertyName == YUIProperty_Label		)	setLabel( val.stringVal() );
+    else if ( propertyName == YUIProperty_VisibleItems 	)	setVisibleItems( val.integerVal() );
     else if ( propertyName == YUIProperty_IconPath 	)	setIconBasePath( val.stringVal() );
     else
     {
@@ -138,14 +131,14 @@ YSelectionBox::setProperty( const string & propertyName, const YPropertyValue & 
 
 
 YPropertyValue
-YSelectionBox::getProperty( const string & propertyName )
+YItemSelector::getProperty( const string & propertyName )
 {
     propertySet().check( propertyName ); // throws exceptions if not found
 
     if	    ( propertyName == YUIProperty_Value		)	return YPropertyValue( YOtherProperty );
-    else if ( propertyName == YUIProperty_CurrentItem 	)	return YPropertyValue( YOtherProperty );
+    else if ( propertyName == YUIProperty_SelectedItems	)	return YPropertyValue( YOtherProperty );
     else if ( propertyName == YUIProperty_Items 	)	return YPropertyValue( YOtherProperty );
-    else if ( propertyName == YUIProperty_Label		)	return YPropertyValue( label() );
+    else if ( propertyName == YUIProperty_VisibleItems 	)	return YPropertyValue( visibleItems() );
     else if ( propertyName == YUIProperty_IconPath	)	return YPropertyValue( iconBasePath() );
     else
     {

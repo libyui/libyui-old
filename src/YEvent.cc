@@ -31,6 +31,8 @@
 #include "YEvent.h"
 #include "YDialog.h"
 
+using std::string;
+
 
 unsigned long YEvent::_nextSerial = 0;
 
@@ -120,8 +122,8 @@ YWidgetEvent::YWidgetEvent( YWidget *	widget,
 
 
 
-YKeyEvent::YKeyEvent( const std::string &	keySymbol,
-		      YWidget *			focusWidget )
+YKeyEvent::YKeyEvent( const string &	keySymbol,
+		      YWidget *		focusWidget )
     : YEvent( KeyEvent )
     , _keySymbol( keySymbol )
     , _focusWidget( focusWidget )

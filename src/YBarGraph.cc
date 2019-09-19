@@ -32,6 +32,7 @@
 #include "YUISymbols.h"
 #include "YBarGraph.h"
 
+using std::string;
 
 
 #define CHECK_INDEX(index)						\
@@ -135,7 +136,7 @@ YBarGraph::setValue( int segmentIndex, int newValue )
 
 
 void
-YBarGraph::setLabel( int segmentIndex, const std::string & newLabel )
+YBarGraph::setLabel( int segmentIndex, const string & newLabel )
 {
     CHECK_INDEX( segmentIndex );
 
@@ -178,8 +179,8 @@ YBarGraph::propertySet()
     if ( propSet.isEmpty() )
     {
 	/*
-	 * @property list<integer> Values	The numerical value for each segment.
-	 * @property list<std::string>  Labels	Text label for each segment ('\n' allowed).
+	 * @property list<integer>      Values	The numerical value for each segment.
+	 * @property list<string>       Labels	Text label for each segment ('\n' allowed).
 	 *					Use %1 as a placeholder for the current value.
 	 */
 	propSet.add( YProperty( YUIProperty_Values,		YOtherProperty	 ) );
@@ -192,7 +193,7 @@ YBarGraph::propertySet()
 
 
 bool
-YBarGraph::setProperty( const std::string & propertyName, const YPropertyValue & val )
+YBarGraph::setProperty( const string & propertyName, const YPropertyValue & val )
 {
     propertySet().check( propertyName, val.type() ); // throws exceptions if not found or type mismatch
 
@@ -208,7 +209,7 @@ YBarGraph::setProperty( const std::string & propertyName, const YPropertyValue &
 
 
 YPropertyValue
-YBarGraph::getProperty( const std::string & propertyName )
+YBarGraph::getProperty( const string & propertyName )
 {
     propertySet().check( propertyName ); // throws exceptions if not found
 

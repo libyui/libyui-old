@@ -23,8 +23,8 @@
 /-*/
 
 
-#include <iomanip>	// std::setw()
-#include <algorithm>	// std::max()
+#include <iomanip>	// setw()
+#include <algorithm>	// max()
 
 #define YUILogComponent "ui-layout"
 #include "YUILog.h"
@@ -35,10 +35,6 @@
 #include "YUI.h"
 #include "YApplication.h"
 
-using std::endl;
-using std::setw;
-using std::max;
-using std::boolalpha;
 
 struct YLayoutBoxPrivate
 {
@@ -103,7 +99,7 @@ YLayoutBox::setDebugLayout( bool deb )
 {
     priv->debugLayout = deb;
 
-    yuiDebug() << "YLayoutBox: Layout debugging: " << boolalpha << deb << endl;
+    yuiDebug() << "YLayoutBox: Layout debugging: " << std::boolalpha << deb << endl;
 }
 
 
@@ -659,7 +655,7 @@ YLayoutBox::calcPrimaryGeometry( int		newSize,
 				 << " - "  		<< child->preferredSize( primary() ) - childSize[i] << " too small"
 				 << " (preferred size: "<< child->preferredSize( primary() )
 				 << ", weight: " 	<< child->weight( primary() )
-				 << ", stretchable: " 	<< boolalpha << child->stretchable( primary() )
+				 << ", stretchable: " 	<< std::boolalpha << child->stretchable( primary() )
 				 << "), pos: " 		<< childPos[i]
 				 << endl;
 		}
@@ -734,7 +730,7 @@ YLayoutBox::calcSecondaryGeometry( int	 	newSize,
 		<< ") will get " 	<< childSize[i]
 		<< " (preferred size: " << preferred
 		<< ", weight: " 	<< child->weight( secondary() )
-		<< ", stretchable: " 	<< boolalpha << child->stretchable( secondary() )
+		<< ", stretchable: " 	<< std::boolalpha << child->stretchable( secondary() )
 		<< "), pos: " 		<< childPos[i]
 		<< endl;
 	}
@@ -760,10 +756,10 @@ YLayoutBox::doResize( sizeVector & width,
 
 	if ( debugLayout() )
 	{
-	    yuiMilestone() << "  x: " << setw( 3 ) << x_pos[i]
-			   << "  y: " << setw( 3 ) << y_pos[i]
-			   << "  w: " << setw( 3 ) << width[i]
-			   << "  h: " << setw( 3 ) << height[i]
+	    yuiMilestone() << "  x: " << std::setw( 3 ) << x_pos[i]
+			   << "  y: " << std::setw( 3 ) << y_pos[i]
+			   << "  w: " << std::setw( 3 ) << width[i]
+			   << "  h: " << std::setw( 3 ) << height[i]
 			   << "  "   << child
 			   << endl;
 	}

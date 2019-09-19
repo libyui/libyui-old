@@ -50,7 +50,10 @@
 #include "YWidgetID.h"
 #include "YUIPlugin.h"
 
-using std::endl;
+
+using std::string;
+using std::stack;
+
 
 // Environment variable to determine button order
 // (set to "KDE" or "GNOME" - case insensitive)
@@ -60,7 +63,7 @@ using std::endl;
 // so that it is destroyed afterwards.
 // YUITerminator deletes _yui which calls YUI::~YUI
 // which accesses the dialog stack to remove all dialogs
-std::stack<YDialog *> YDialog::_dialogStack;
+stack<YDialog *> YDialog::_dialogStack;
 YUI * YUI::_ui = 0;
 
 static bool uiDeleted = false;
@@ -75,7 +78,7 @@ YUI::YUI( bool withThreads )
     , _terminate_ui_thread( false )
     , _eventsBlocked( false )
 {
-    yuiMilestone() << "This is libyui " << VERSION << std::endl;
+    yuiMilestone() << "This is libyui " << VERSION << endl;
     yuiMilestone() << "Creating UI " << ( withThreads ? "with" : "without" ) << " threads" << endl;
 
     _ui = this;
@@ -456,7 +459,7 @@ void YUI::setButtonOrderFromEnvironment()
 
     if ( buttonOrder != oldButtonOrder )
     {
-	std::string buttonOrderStr;
+	string buttonOrderStr;
 
 	switch ( buttonOrder )
 	{
@@ -481,7 +484,7 @@ void YUI::setButtonOrderFromEnvironment()
 
 
 YWidget *
-YUI::sendWidgetID( const std::string & id_str )
+YUI::sendWidgetID( const string & id_str )
 {
     yuiMilestone() << "Sending ID \"" << id_str << "\"" << endl;
     YWidget * widget = 0;

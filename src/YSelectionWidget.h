@@ -54,7 +54,7 @@ protected:
     YSelectionWidget( YWidget *			parent,
 		      const std::string &	label,
 		      bool			enforceSingleSelection,
-		      bool			recurisveSelection = false );
+		      bool			recursiveSelection = false );
 
 public:
     /**
@@ -268,6 +268,16 @@ public:
     virtual void setShortcutString( const std::string & str )
 	{ setLabel( str ); }
 
+    /**
+     * Dump all items and their selection state to the log.
+     **/
+    void dumpItems() const;
+
+    /**
+     * Return 'true' if this base class should enforce single selection.
+     **/
+    bool enforceSingleSelection() const;
+
 protected:
 
     /**
@@ -279,11 +289,6 @@ protected:
      * mean that no item is selected.
      **/
     void setEnforceSingleSelection( bool on );
-
-    /**
-     * Return 'true' if this base class should enforce single selection.
-     **/
-    bool enforceSingleSelection() const;
 
     /**
      * Return 'true' if this base class should select children recursively.

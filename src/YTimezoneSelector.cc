@@ -29,6 +29,8 @@
 #include "YUISymbols.h"
 #include "YTimezoneSelector.h"
 
+using std::string;
+
 
 class YTimezoneSelectorPrivate
 {
@@ -38,9 +40,9 @@ class YTimezoneSelectorPrivate
 
 
 
-YTimezoneSelector::YTimezoneSelector( YWidget *					parent,
-                                      const std::string				&pixmap,
-                                      const std::map<std::string, std::string>	&timezones )
+YTimezoneSelector::YTimezoneSelector( YWidget *				  parent,
+                                      const string			& pixmap,
+                                      const std::map<string, string>	& timezones )
     : YWidget( parent )
 {
 }
@@ -69,7 +71,7 @@ YTimezoneSelector::propertySet()
 
 
 bool
-YTimezoneSelector::setProperty( const std::string & propertyName, const YPropertyValue & val )
+YTimezoneSelector::setProperty( const string & propertyName, const YPropertyValue & val )
 {
     propertySet().check( propertyName, val.type() ); // throws exceptions if not found or type mismatch
 
@@ -88,11 +90,12 @@ YTimezoneSelector::setProperty( const std::string & propertyName, const YPropert
 
 
 YPropertyValue
-YTimezoneSelector::getProperty( const std::string & propertyName )
+YTimezoneSelector::getProperty( const string & propertyName )
 {
     propertySet().check( propertyName ); // throws exceptions if not found
 
-    if ( propertyName == YUIProperty_Value ) 	return YPropertyValue( currentZone() );
-    if ( propertyName == YUIProperty_CurrentItem )    return YPropertyValue( currentZone() );
+    if ( propertyName == YUIProperty_Value ) 	        return YPropertyValue( currentZone() );
+    if ( propertyName == YUIProperty_CurrentItem )      return YPropertyValue( currentZone() );
+    
     return YWidget::getProperty( propertyName );
 }

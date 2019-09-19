@@ -30,20 +30,22 @@
 #include "YUISymbols.h"
 #include "YRichText.h"
 
+using std::string;
+
 
 struct YRichTextPrivate
 {
     /**
      * Constructor.
      **/
-    YRichTextPrivate( const std::string & text, bool plainTextMode )
+    YRichTextPrivate( const string & text, bool plainTextMode )
 	: text( text )
 	, plainTextMode( plainTextMode )
 	, autoScrollDown ( false )
 	, shrinkable( false )
 	{}
 
-    std::string	text;
+    string	text;
     bool	plainTextMode;
     bool	autoScrollDown;
     bool	shrinkable;
@@ -52,7 +54,7 @@ struct YRichTextPrivate
 
 
 
-YRichText::YRichText( YWidget * parent, const std::string & text, bool plainTextMode )
+YRichText::YRichText( YWidget * parent, const string & text, bool plainTextMode )
     : YWidget( parent )
     , priv( new YRichTextPrivate( text, plainTextMode ) )
 {
@@ -69,13 +71,13 @@ YRichText::~YRichText()
 }
 
 
-void YRichText::setValue( const std::string & newValue )
+void YRichText::setValue( const string & newValue )
 {
     priv->text = newValue;
 }
 
 
-std::string YRichText::value() const
+string YRichText::value() const
 {
     return priv->text;
 }
@@ -125,10 +127,10 @@ YRichText::propertySet()
     if ( propSet.isEmpty() )
     {
 	/*
-	 * @property std::string	Value	the text content
-	 * @property std::string	Text	the text content
-	 * @property std::string	VScrollValue	vertical scrollbar position
-	 * @property std::string	HScrollValue	horizontal scrollbar position
+	 * @property string	Value           the text content
+	 * @property string	Text            the text content
+	 * @property string	VScrollValue	vertical scrollbar position
+	 * @property string	HScrollValue	horizontal scrollbar position
 	 */
 	propSet.add( YProperty( YUIProperty_Value,		YStringProperty	 ) );
 	propSet.add( YProperty( YUIProperty_Text,		YStringProperty	 ) );
@@ -142,7 +144,7 @@ YRichText::propertySet()
 
 
 bool
-YRichText::setProperty( const std::string & propertyName, const YPropertyValue & val )
+YRichText::setProperty( const string & propertyName, const YPropertyValue & val )
 {
     propertySet().check( propertyName, val.type() ); // throws exceptions if not found or type mismatch
 
@@ -160,7 +162,7 @@ YRichText::setProperty( const std::string & propertyName, const YPropertyValue &
 
 
 YPropertyValue
-YRichText::getProperty( const std::string & propertyName )
+YRichText::getProperty( const string & propertyName )
 {
     propertySet().check( propertyName ); // throws exceptions if not found
 

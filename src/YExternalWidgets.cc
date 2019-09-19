@@ -25,65 +25,72 @@
 #include "YExternalWidgetFactory.h"
 
 #include <map>
-#include <string>
 
-std::map<std::string, YExternalWidgets *> YExternalWidgets::_externalWidgets;
+using std::string;
+using std::map;
 
-YExternalWidgets::YExternalWidgets(const std::string& name) : _name(name), _factory(0)
+map<string, YExternalWidgets *> YExternalWidgets::_externalWidgets;
+
+
+YExternalWidgets::YExternalWidgets(const string& name) : _name(name), _factory(0)
 {
-  if (!YUI::ui())
-    YUI_THROW( YUIException( "UI must be initialized first" ) );
+    if (!YUI::ui())
+        YUI_THROW( YUIException( "UI must be initialized first" ) );
 
-  yuiMilestone() << "Creating Libyui External Widgets object" <<  std::endl;
+    yuiMilestone() << "Creating Libyui External Widgets object" <<  endl;
 
-  std::pair<std::map<std::string, YExternalWidgets *>::iterator, bool> ret;
-  ret = _externalWidgets.insert ( std::pair<std::string, YExternalWidgets *>(_name, this));
-  if (ret.second==false) {
-    std::string errorString = _name;
-    errorString.append(" already created");
-    YUI_THROW( YUIException( errorString ) );
-  }
+    std::pair<map<string, YExternalWidgets *>::iterator, bool> ret;
+    ret = _externalWidgets.insert ( std::pair<string, YExternalWidgets *>(_name, this));
+    if (ret.second==false) {
+        string errorString = _name;
+        errorString.append(" already created");
+        YUI_THROW( YUIException( errorString ) );
+    }
 }
+
 
 YExternalWidgets::~YExternalWidgets()
 {
-  delete _factory;
+    delete _factory;
 
-  _externalWidgets.erase(_name);
+    _externalWidgets.erase(_name);
 }
 
-YExternalWidgets* YExternalWidgets::externalWidgets(const std::string& name)
+
+YExternalWidgets* YExternalWidgets::externalWidgets(const string& name)
 {
-  std::map<std::string, YExternalWidgets *>::iterator it;
+    map<string, YExternalWidgets *>::iterator it;
 
-  if (!YUI::ui())
-    YUI_THROW( YUIException( "UI must be initialized first" ) );
+    if (!YUI::ui())
+        YUI_THROW( YUIException( "UI must be initialized first" ) );
 
-  it = _externalWidgets.find(name);
-  if (it == _externalWidgets.end())
-  {
-    YUILoader::loadExternalWidgets(name);
-  }
+    it = _externalWidgets.find(name);
+    if (it == _externalWidgets.end())
+    {
+        YUILoader::loadExternalWidgets(name);
+    }
 
-  return _externalWidgets[name];
+    return _externalWidgets[name];
 }
 
-YExternalWidgetFactory* YExternalWidgets::externalWidgetFactory(const std::string& name)
+
+YExternalWidgetFactory* YExternalWidgets::externalWidgetFactory(const string& name)
 {
-  return YExternalWidgets::externalWidgets(name)->externalWidgetFactory();
+    return YExternalWidgets::externalWidgets(name)->externalWidgetFactory();
 }
+
 
 YExternalWidgetFactory* YExternalWidgets::externalWidgetFactory()
 {
-  if (!YUI::ui())
-    YUI_THROW( YUIException( "UI must be initialized first" ) );
+    if (!YUI::ui())
+        YUI_THROW( YUIException( "UI must be initialized first" ) );
 
-  if ( !_factory )
+    if ( !_factory )
         _factory = this->createExternalWidgetFactory();
 
-  YUI_CHECK_PTR( _factory );
+    YUI_CHECK_PTR( _factory );
 
-  return _factory;
+    return _factory;
 }
 
 
@@ -107,15 +114,15 @@ public:
 
 YExternalWidgetsTerminator::~YExternalWidgetsTerminator()
 {
-  // Let's copy map to avoid content deletion when removing ExternalWidgets objects
-  std::map <std::string, YExternalWidgets* > ew = YExternalWidgets::_externalWidgets;
-  std::map<std::string, YExternalWidgets *>::iterator it;
+    // Let's copy map to avoid content deletion when removing ExternalWidgets objects
+    map <string, YExternalWidgets* > ew = YExternalWidgets::_externalWidgets;
+    map<string, YExternalWidgets *>::iterator it;
 
-  for (it= ew.begin(); it != ew.end(); it++)
-  {
-    yuiMilestone() << "Shutting down " << it->first << " External Widgets" << std::endl;
-    delete it->second;
-  }
+    for ( it= ew.begin(); it != ew.end(); it++)
+    {
+        yuiMilestone() << "Shutting down " << it->first << " External Widgets" << endl;
+        delete it->second;
+    }
 }
 
 

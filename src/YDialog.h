@@ -331,6 +331,11 @@ public:
      **/
     virtual void activate() = 0;
 
+
+    //
+    // Dialog helpers - see source file YDialogHelpers.cc
+    //
+
     /**
      * Show the specified text in a pop-up dialog with a local event loop.
      * This is useful for help texts.

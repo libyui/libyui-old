@@ -77,23 +77,27 @@
 #define PROP_HEIGHT	12
 #define PROP_WIDTH	50
 
+using std::string;
+
+
 /**
  * Custom tree item class to map tree items to widgets
  **/
 class YWidgetTreeItem: public YTreeItem
 {
 public:
+
     YWidgetTreeItem( YWidget *	widget,
-		     bool 	isOpen )
+		     bool	isOpen )
 	: YTreeItem( "", isOpen )
 	, _widget( widget )
     {
 	setWidgetLabel();
     }
 
-    YWidgetTreeItem( YWidgetTreeItem * 	parent,
-		     YWidget * 		widget,
-		     bool 		isOpen )
+    YWidgetTreeItem( YWidgetTreeItem *	parent,
+		     YWidget *		widget,
+		     bool		isOpen )
 	: YTreeItem( parent, "", isOpen )
 	, _widget( widget )
     {
@@ -101,6 +105,7 @@ public:
     }
 
     virtual ~YWidgetTreeItem() {}
+
     YWidget * widget() const { return _widget; }
 
 
@@ -108,21 +113,21 @@ protected:
 
     void setWidgetLabel()
     {
-	std::ostringstream str;
+        std::ostringstream str;
 	str << _widget;
 	setLabel( str.str() );
     }
 
 private:
+
     YWidget * _widget;
 };
 
 
-static void fillTree( YWidgetTreeItem * 		parent,
-		      YWidgetListConstIterator 		begin,
-		      YWidgetListConstIterator		end,
-		      int				treeLevel );
-
+static void fillTree( YWidgetTreeItem *		parent,
+		      YWidgetListConstIterator	begin,
+		      YWidgetListConstIterator	end,
+		      int			treeLevel );
 
 
 
@@ -144,53 +149,59 @@ public:
     YDialog *		targetDialog;	// Dialog that is being inspected
     YDialog *		spyDialog;	// Debug dialog that shows widget data
     YTree *		widgetTree;	// Tree widget to show widget hierarchy
-    YPushButton * 	propButton;
-    YMenuButton * 	addButton;
-    YPushButton * 	deleteButton;
-    YPushButton * 	upButton;
-    YPushButton * 	downButton;
+    YPushButton *	propButton;
+    YMenuButton *	addButton;
+    YPushButton *	deleteButton;
+    YPushButton *	upButton;
+    YPushButton *	downButton;
     YReplacePoint *	propReplacePoint;
     YTable *		propTable;
-    YMenuItem *exportMenu;
+    YMenuItem *		exportMenu;
+
 
     YWidget * selectedWidget();
     void selectedWidgetChanged();
     void refreshProperties();
     bool toggleProperties();
-    void highlightWidget(bool enable = true);
+    void highlightWidget( bool enable = true );
 
     void deleteWidget();
-    void addWidget(const std::string &type);
+    void addWidget( const string & type );
     void editProperty();
-    void moveSelectedUp() { moveSelected(MOVE_UP); }
+    void moveSelectedUp()   { moveSelected(MOVE_UP);   }
     void moveSelectedDown() { moveSelected(MOVE_DOWN); }
 
 private:
+
     enum Direction
     {
-        MOVE_UP = 0,
-        MOVE_DOWN
+	MOVE_UP = 0,
+	MOVE_DOWN
     };
 
-    void moveSelected(Direction direction);
+    void moveSelected( Direction direction );
     void showProperties();
     void hideProperties();
     bool propertiesShown() const;
     void targetDialogUpdated();
     void refreshButtonStates();
-    void editWidget(YWidget *widget, const std::string &property="Label");
+    void editWidget( YWidget *widget, const string & property="Label" );
 };
 
-/** Destructor - switch off widget highlighting at the end
-*/
+/**
+ * Destructor - switch off widget highlighting at the end
+ */
 YDialogSpyPrivate::~YDialogSpyPrivate()
 {
     highlightWidget(false);
 }
 
-/** Fill the widget tree content
-* @param target the target dialog which will be examined
-* @param widgetTree where to display the structure
+
+/**
+ * Fill the widget tree content
+ *
+ * @param target the target dialog which will be examined
+ * @param widgetTree where to display the structure
 */
 void fillWidgetTree(YDialog *target, YTree *widgetTree)
 {
@@ -201,8 +212,10 @@ void fillWidgetTree(YDialog *target, YTree *widgetTree)
     widgetTree->rebuildTree();
 }
 
-/** Constructor - create the main spy dialog
-*/
+
+/**
+ * Constructor - create the main spy dialog
+ */
 YDialogSpy::YDialogSpy( YDialog * targetDialog )
     : priv( new YDialogSpyPrivate() )
 {
@@ -212,9 +225,9 @@ YDialogSpy::YDialogSpy( YDialog * targetDialog )
     priv->targetDialog = targetDialog;
     YWidgetFactory * fac = YUI::widgetFactory();
 
-    priv->spyDialog      = fac->createPopupDialog();
+    priv->spyDialog	 = fac->createPopupDialog();
     YAlignment * diaMin	 = fac->createMinHeight( priv->spyDialog, DIA_HEIGHT );
-    YLayoutBox * vbox    = fac->createVBox( diaMin );
+    YLayoutBox * vbox	 = fac->createVBox( diaMin );
 
     auto alignment = fac->createLeft( vbox );
     auto fileMenu  = fac->createMenuButton( alignment, "&File" );
@@ -226,7 +239,7 @@ YDialogSpy::YDialogSpy( YDialog * targetDialog )
 
     auto minSize = fac->createMinSize( vbox, TREE_WIDTH, TREE_HEIGHT );
     minSize->setWeight( YD_VERT, TREE_VWEIGHT );
-    priv->widgetTree     = fac->createTree( minSize, "Widget &Tree", false );
+    priv->widgetTree	 = fac->createTree( minSize, "Widget &Tree", false );
     priv->widgetTree->setNotify( true );
 
     fillWidgetTree(priv->targetDialog, priv->widgetTree);
@@ -398,11 +411,11 @@ bool YDialogSpyPrivate::toggleProperties()
 
     if (ret)
     {
-        showProperties();
-        refreshProperties();
+	showProperties();
+	refreshProperties();
     }
     else
-        hideProperties();
+	hideProperties();
 
     return ret;
 }
@@ -421,42 +434,42 @@ void YDialogSpyPrivate::refreshProperties()
     auto widget = selectedWidget();
 
     if ( !widget )
-        return;
+	return;
 
     YItemCollection items;
     auto propSet = widget->propertySet();
     items.reserve( propSet.size() );
 
     for ( YPropertySet::const_iterator it = propSet.propertiesBegin();
-          it != propSet.propertiesEnd();
-          ++it )
+	  it != propSet.propertiesEnd();
+	  ++it )
     {
-        YProperty	prop    = *it;
-        YPropertyValue	propVal = widget->getProperty( prop.name() );
-        std::string	propValStr;
+	YProperty	prop	= *it;
+	YPropertyValue	propVal = widget->getProperty( prop.name() );
+	string	propValStr;
 
-        switch ( prop.type() )
-        {
-            case YStringProperty:
-                propValStr = propVal.stringVal();
-                break;
+	switch ( prop.type() )
+	{
+	    case YStringProperty:
+		propValStr = propVal.stringVal();
+		break;
 
-            case YBoolProperty:
-                propValStr = propVal.boolVal() ? "true" : "false";
-                break;
+	    case YBoolProperty:
+		propValStr = propVal.boolVal() ? "true" : "false";
+		break;
 
-            case YIntegerProperty:
-                propValStr = std::to_string(propVal.integerVal());
-                break;
+	    case YIntegerProperty:
+		propValStr = std::to_string(propVal.integerVal());
+		break;
 
-            default:
-                propValStr = "???";
-                break;
-        }
+	    default:
+		propValStr = "???";
+		break;
+	}
 
-        auto item = new YTableItem( prop.name(), propValStr, prop.typeAsStr() );
-        YUI_CHECK_NEW( item );
-        items.push_back( item );
+	auto item = new YTableItem( prop.name(), propValStr, prop.typeAsStr() );
+	YUI_CHECK_NEW( item );
+	items.push_back( item );
     }
 
     propTable->addItems( items );
@@ -466,12 +479,12 @@ void YDialogSpyPrivate::refreshProperties()
 /**
  * Fill the widget tree dialog
  * @param parent    widget tree item
- * @param begin     iterator pointing to the first item
- * @param end       iterator pointing to the last item
+ * @param begin	    iterator pointing to the first item
+ * @param end	    iterator pointing to the last item
  * @param treeLevel current tree level (nesting)
  */
-void fillTree( YWidgetTreeItem * 		parent,
-	       YWidgetListConstIterator 	begin,
+void fillTree( YWidgetTreeItem *		parent,
+	       YWidgetListConstIterator		begin,
 	       YWidgetListConstIterator		end,
 	       int				treeLevel )
 {
@@ -494,40 +507,40 @@ void YDialogSpy::exec()
 
     while ( true )
     {
-        auto event = priv->spyDialog->waitForEvent();
-        yuiMilestone() << "event: " << event;
-        if (!event) continue;
+	auto event = priv->spyDialog->waitForEvent();
+	yuiMilestone() << "event: " << event;
+	if (!event) continue;
 
-        // window manager "close window" button
-        if ( event->eventType() == YEvent::CancelEvent ) break;
-        else if ( event->eventType() == YEvent::MenuEvent)
-        {
-            YMenuItem * menu_item = dynamic_cast<YMenuItem *>(event->item());
+	// window manager "close window" button
+	if ( event->eventType() == YEvent::CancelEvent ) break;
+	else if ( event->eventType() == YEvent::MenuEvent)
+	{
+	    YMenuItem * menu_item = dynamic_cast<YMenuItem *>(event->item());
 
-            // TODO: handle the export menu item
-            if (menu_item == priv->exportMenu) continue;
+	    // TODO: handle the export menu item
+	    if (menu_item == priv->exportMenu) continue;
 
-            // handle all unhandled menu items as "Add" menu items, this is much
-            // simpler than comparing it with the huge amount of menu item pointers
-            if (menu_item)
-            {
-                auto menu_label = menu_item->label();
-                yuiMilestone() << "Activated menu item: " << menu_label << std::endl;
-                priv->addWidget(menu_label);
-            }
+	    // handle all unhandled menu items as "Add" menu items, this is much
+	    // simpler than comparing it with the huge amount of menu item pointers
+	    if (menu_item)
+	    {
+		auto menu_label = menu_item->label();
+		yuiMilestone() << "Activated menu item: " << menu_label << endl;
+		priv->addWidget(menu_label);
+	    }
 
-            continue;
-        }
+	    continue;
+	}
 
-        // just make sure we do not use NULL in some unexpected case
-        if (!event->widget()) continue;
+	// just make sure we do not use NULL in some unexpected case
+	if (!event->widget()) continue;
 
-        if ( event->widget() == priv->upButton ) priv->moveSelectedUp();
-        else if ( event->widget() == priv->downButton)  priv->moveSelectedDown();
-        else if ( event->widget() == priv->propButton ) priv->toggleProperties();
-        else if ( event->widget() == priv->deleteButton) priv->deleteWidget();
-        else if ( event->widget() == priv->propTable )  priv->editProperty();
-        else if ( event->widget() == priv->widgetTree ) priv->selectedWidgetChanged();
+	if ( event->widget() == priv->upButton ) priv->moveSelectedUp();
+	else if ( event->widget() == priv->downButton)	priv->moveSelectedDown();
+	else if ( event->widget() == priv->propButton ) priv->toggleProperties();
+	else if ( event->widget() == priv->deleteButton) priv->deleteWidget();
+	else if ( event->widget() == priv->propTable )	priv->editProperty();
+	else if ( event->widget() == priv->widgetTree ) priv->selectedWidgetChanged();
     }
 }
 
@@ -539,14 +552,14 @@ void YDialogSpy::showDialogSpy( YDialog * dialog )
 {
     try
     {
-    	YDialogSpy dialogSpy( dialog );
-    	dialogSpy.exec();
+	YDialogSpy dialogSpy( dialog );
+	dialogSpy.exec();
     }
     catch ( YUIException & exception )
     {
-        // ignore all YUI exceptions which might happen when playing with the layout
-    	YUI_CAUGHT( exception );
-        YPopupInternal::message("Error:\n" + exception.msg());
+	// ignore all YUI exceptions which might happen when playing with the layout
+	YUI_CAUGHT( exception );
+	YPopupInternal::message("Error:\n" + exception.msg());
     }
 }
 
@@ -598,20 +611,20 @@ void YDialogSpyPrivate::deleteWidget()
     auto parent = w->parent();
     if (!parent) return;
 
-    yuiMilestone() << "removing widget: " << w << std::endl;
+    yuiMilestone() << "removing widget: " << w << endl;
     parent->removeChild(w);
 
     if ( w->isValid() )
     {
-        delete w;
+	delete w;
     }
 
     // any other child left after the removal?
     if (!parent->hasChildren())
     {
-        // add an Empty widget to have a valid widget tree
-        // e.g. empty VBoxes are not allowed
-        YUI::widgetFactory()->createEmpty(parent);
+	// add an Empty widget to have a valid widget tree
+	// e.g. empty VBoxes are not allowed
+	YUI::widgetFactory()->createEmpty(parent);
     }
 
     targetDialogUpdated();
@@ -620,7 +633,7 @@ void YDialogSpyPrivate::deleteWidget()
 /**
  * Helper method - Is the widget a VBox or Hbox?
  * @param  widget the widget
- * @return        true if the widget is a VBox or HBox
+ * @return	  true if the widget is a VBox or HBox
  */
 bool isBox(const YWidget *widget)
 {
@@ -630,7 +643,7 @@ bool isBox(const YWidget *widget)
 /**
  * Helper method - Is the widget a VBox?
  * @param  widget the widget
- * @return        true if the widget is a VBox
+ * @return	  true if the widget is a VBox
  */
 bool isVBox(const YWidget *widget)
 {
@@ -654,32 +667,32 @@ void YDialogSpyPrivate::moveSelected(Direction direction)
 
     if (direction == MOVE_UP)
     {
-        // the first child cannot be moved further
-        if (target_widget == parent->firstChild()) return;
+	// the first child cannot be moved further
+	if (target_widget == parent->firstChild()) return;
 
-        auto i = find( parent->childrenBegin(), parent->childrenEnd(), target_widget );
-        if (i != parent->childrenEnd())
-        {
-            // swap with the preceeding widget
-            // Note: use a temporary variable to not rely on the argument evaluation order!
-            auto other = i--;
+	auto i = find( parent->childrenBegin(), parent->childrenEnd(), target_widget );
+	if (i != parent->childrenEnd())
+	{
+	    // swap with the preceeding widget
+	    // Note: use a temporary variable to not rely on the argument evaluation order!
+	    auto other = i--;
             std::swap(*other, *i);
-        }
+	}
     }
     else
     // moving down
     {
-        // the last child cannot be moved further to the end
-        if (target_widget == parent->lastChild()) return;
+	// the last child cannot be moved further to the end
+	if (target_widget == parent->lastChild()) return;
 
-        auto i = find( parent->childrenBegin(), parent->childrenEnd(), target_widget );
-        if (i != parent->childrenEnd())
-        {
-            // swap with the succeeding widget
-            // Note: use a temporary variable to not rely on the argument evaluation order!
-            auto other = i++;
+	auto i = find( parent->childrenBegin(), parent->childrenEnd(), target_widget );
+	if (i != parent->childrenEnd())
+	{
+	    // swap with the succeeding widget
+	    // Note: use a temporary variable to not rely on the argument evaluation order!
+	    auto other = i++;
             std::swap(*other, *i);
-        }
+	}
     }
 
     targetDialogUpdated();
@@ -689,150 +702,150 @@ void YDialogSpyPrivate::moveSelected(Direction direction)
  * Generic handler for adding widgets
  * @param type Type of the widget to add
  */
-void YDialogSpyPrivate::addWidget(const std::string &type)
+void YDialogSpyPrivate::addWidget(const string &type)
 {
     auto widget = selectedWidget();
     if (!widget) return;
 
     try
     {
-        auto f = YUI::widgetFactory();
+	auto f = YUI::widgetFactory();
 
-        if (type == "Bottom")
-            editWidget(f->createBottom(widget));
-        else if (type == "BusyIndicator")
-            editWidget(f->createBusyIndicator(widget, "Busy Indicator", 10000));
-        else if (type == "ButtonBox")
-            editWidget(f->createButtonBox(widget));
-        else if (type == "ComboBox")
-        {
-            auto cb = f->createComboBox(widget, "Combo Box");
-            editWidget(cb);
+	if (type == "Bottom")
+	    editWidget(f->createBottom(widget));
+	else if (type == "BusyIndicator")
+	    editWidget(f->createBusyIndicator(widget, "Busy Indicator", 10000));
+	else if (type == "ButtonBox")
+	    editWidget(f->createButtonBox(widget));
+	else if (type == "ComboBox")
+	{
+	    auto cb = f->createComboBox(widget, "Combo Box");
+	    editWidget(cb);
 
-            YPopupInternal::StringArray items(YPopupInternal::editNewStringArray("Menu Items"));
+	    YPopupInternal::StringArray items(YPopupInternal::editNewStringArray("Menu Items"));
 
-            YItemCollection add_items;
-            // access by reference
-            for(auto&& str: items) add_items.push_back( new YMenuItem( str ) );
-            cb->addItems( add_items );
-        }
-        else if (type == "Empty")
-            editWidget(f->createEmpty(widget));
-        else if (type == "Frame")
-            editWidget(f->createFrame(widget, "Frame"));
-        else if (type == "HBox")
-            editWidget(f->createHBox(widget));
-        else if (type == "Heading")
-            editWidget(f->createHeading(widget, "Heading"));
-        else if (type == "HSpacing")
-            editWidget(f->createHSpacing(widget));
-        else if (type == "HStretch")
-            editWidget(f->createHStretch(widget));
-        else if (type == "CheckBox")
-            editWidget(f->createCheckBox(widget, "Check Box"));
-        else if (type == "CheckBoxFrame")
-            // make it checked by default
-            editWidget(f->createCheckBoxFrame(widget, "Check Box Frame", true));
-        else if (type == "Image")
-            editWidget(f->createImage(widget, ""));
-        else if (type == "InputField")
-            editWidget(f->createInputField(widget, "Input"));
-        else if (type == "IntField")
-            editWidget(f->createIntField(widget, "Integer Field", 0, 100, 50));
-        else if (type == "Label")
-            editWidget(f->createLabel(widget, "Label"));
-        else if (type == "Left")
-            editWidget(f->createLeft(widget));
-        else if (type == "LogView")
-            editWidget(f->createLogView(widget, "Log View", 12));
-        else if (type == "MenuButton")
-        {
-            auto menu = f->createMenuButton( widget, "Menu" );
-            editWidget(menu);
+	    YItemCollection add_items;
+	    // access by reference
+	    for(auto&& str: items) add_items.push_back( new YMenuItem( str ) );
+	    cb->addItems( add_items );
+	}
+	else if (type == "Empty")
+	    editWidget(f->createEmpty(widget));
+	else if (type == "Frame")
+	    editWidget(f->createFrame(widget, "Frame"));
+	else if (type == "HBox")
+	    editWidget(f->createHBox(widget));
+	else if (type == "Heading")
+	    editWidget(f->createHeading(widget, "Heading"));
+	else if (type == "HSpacing")
+	    editWidget(f->createHSpacing(widget));
+	else if (type == "HStretch")
+	    editWidget(f->createHStretch(widget));
+	else if (type == "CheckBox")
+	    editWidget(f->createCheckBox(widget, "Check Box"));
+	else if (type == "CheckBoxFrame")
+	    // make it checked by default
+	    editWidget(f->createCheckBoxFrame(widget, "Check Box Frame", true));
+	else if (type == "Image")
+	    editWidget(f->createImage(widget, ""));
+	else if (type == "InputField")
+	    editWidget(f->createInputField(widget, "Input"));
+	else if (type == "IntField")
+	    editWidget(f->createIntField(widget, "Integer Field", 0, 100, 50));
+	else if (type == "Label")
+	    editWidget(f->createLabel(widget, "Label"));
+	else if (type == "Left")
+	    editWidget(f->createLeft(widget));
+	else if (type == "LogView")
+	    editWidget(f->createLogView(widget, "Log View", 12));
+	else if (type == "MenuButton")
+	{
+	    auto menu = f->createMenuButton( widget, "Menu" );
+	    editWidget(menu);
 
-            YPopupInternal::StringArray items(YPopupInternal::editNewStringArray("Menu Items"));
+	    YPopupInternal::StringArray items(YPopupInternal::editNewStringArray("Menu Items"));
 
-            YItemCollection add_items;
-            // access by reference
-            for(auto&& str: items) add_items.push_back( new YMenuItem( str ) );
-            menu->addItems( add_items );
-        }
-        else if (type == "MinHeight")
-            editWidget(f->createMinHeight(widget, 10));
-        else if (type == "MinWidth")
-            editWidget(f->createMinWidth(widget, 10));
-        else if (type == "MinSize")
-            editWidget(f->createMinSize(widget, 10, 10));
-        else if (type == "MultiLineEdit")
-            editWidget(f->createMultiLineEdit(widget, "MultiLineEdit"));
-        else if (type == "MultiSelectionBox")
-        {
-            auto msb = f->createMultiSelectionBox(widget, "MultiSelection Box");
-            editWidget(msb);
+	    YItemCollection add_items;
+	    // access by reference
+	    for(auto&& str: items) add_items.push_back( new YMenuItem( str ) );
+	    menu->addItems( add_items );
+	}
+	else if (type == "MinHeight")
+	    editWidget(f->createMinHeight(widget, 10));
+	else if (type == "MinWidth")
+	    editWidget(f->createMinWidth(widget, 10));
+	else if (type == "MinSize")
+	    editWidget(f->createMinSize(widget, 10, 10));
+	else if (type == "MultiLineEdit")
+	    editWidget(f->createMultiLineEdit(widget, "MultiLineEdit"));
+	else if (type == "MultiSelectionBox")
+	{
+	    auto msb = f->createMultiSelectionBox(widget, "MultiSelection Box");
+	    editWidget(msb);
 
-            // edit the item list and update the widget after pressing OK
-            YPopupInternal::StringArray items(YPopupInternal::editNewStringArray("Items"));
-            // access by reference
-            for(auto&& str: items) msb->addItem(str);
-        }
-        else if (type == "OutputField")
-            editWidget(f->createOutputField(widget, "Output Field"));
-        else if (type == "Password")
-            editWidget(f->createPasswordField(widget, "Password"));
-        else if (type == "ProgressBar")
-            editWidget(f->createProgressBar(widget, "Progress"));
-        else if (type == "PushButton")
-            editWidget(f->createPushButton(widget, "Button"));
-        else if (type == "RadioButton")
-            editWidget(f->createRadioButton(widget, "Radio Button"));
-        else if (type == "RadioButtonGroup")
-            editWidget(f->createRadioButtonGroup(widget));
-        else if (type == "ReplacePoint")
-            editWidget(f->createReplacePoint(widget));
-        else if (type == "Right")
-            editWidget(f->createRight(widget));
-        else if (type == "RichText")
-            editWidget(f->createRichText(widget, "This is a <b>RichText</b>."));
-        else if (type == "SelectionBox")
-            editWidget(f->createSelectionBox(widget, "Selection Box"));
-        else if (type == "Table")
-        {
-            YPopupInternal::StringArray items(YPopupInternal::editNewStringArray("Table Columns"));
+	    // edit the item list and update the widget after pressing OK
+	    YPopupInternal::StringArray items(YPopupInternal::editNewStringArray("Items"));
+	    // access by reference
+	    for(auto&& str: items) msb->addItem(str);
+	}
+	else if (type == "OutputField")
+	    editWidget(f->createOutputField(widget, "Output Field"));
+	else if (type == "Password")
+	    editWidget(f->createPasswordField(widget, "Password"));
+	else if (type == "ProgressBar")
+	    editWidget(f->createProgressBar(widget, "Progress"));
+	else if (type == "PushButton")
+	    editWidget(f->createPushButton(widget, "Button"));
+	else if (type == "RadioButton")
+	    editWidget(f->createRadioButton(widget, "Radio Button"));
+	else if (type == "RadioButtonGroup")
+	    editWidget(f->createRadioButtonGroup(widget));
+	else if (type == "ReplacePoint")
+	    editWidget(f->createReplacePoint(widget));
+	else if (type == "Right")
+	    editWidget(f->createRight(widget));
+	else if (type == "RichText")
+	    editWidget(f->createRichText(widget, "This is a <b>RichText</b>."));
+	else if (type == "SelectionBox")
+	    editWidget(f->createSelectionBox(widget, "Selection Box"));
+	else if (type == "Table")
+	{
+	    YPopupInternal::StringArray items(YPopupInternal::editNewStringArray("Table Columns"));
 
-            // abort adding if Cancel has been pressed
-            if (!items.empty())
-            {
-                auto header = new YTableHeader();
+	    // abort adding if Cancel has been pressed
+	    if (!items.empty())
+	    {
+		auto header = new YTableHeader();
 
-                // access by reference
-                for(auto&& str: items) header->addColumn(str);
+		// access by reference
+		for(auto&& str: items) header->addColumn(str);
 
-                editWidget(f->createTable(widget, header));
-            }
-        }
-        else if (type == "Top")
-            editWidget(f->createTop(widget));
-        else if (type == "Tree")
-            editWidget(f->createTree(widget, "Tree"));
-        else if (type == "VBox")
-            editWidget(f->createVBox(widget));
-        else if (type == "VSpacing")
-            editWidget(f->createVSpacing(widget));
-        else if (type == "VStretch")
-            editWidget(f->createVStretch(widget));
-        else
-        {
-            YPopupInternal::message(
-                "Adding \"" + type + "\" widget type is not supported.");
-            return;
-        }
+		editWidget(f->createTable(widget, header));
+	    }
+	}
+	else if (type == "Top")
+	    editWidget(f->createTop(widget));
+	else if (type == "Tree")
+	    editWidget(f->createTree(widget, "Tree"));
+	else if (type == "VBox")
+	    editWidget(f->createVBox(widget));
+	else if (type == "VSpacing")
+	    editWidget(f->createVSpacing(widget));
+	else if (type == "VStretch")
+	    editWidget(f->createVStretch(widget));
+	else
+	{
+	    YPopupInternal::message(
+		"Adding \"" + type + "\" widget type is not supported.");
+	    return;
+	}
 
-        targetDialogUpdated();
+	targetDialogUpdated();
     }
     catch( const YUIException & exception )
     {
-        YPopupInternal::message("Could not add a new widget:\n"
-            + exception.msg());
+	YPopupInternal::message("Could not add a new widget:\n"
+	    + exception.msg());
     }
 }
 
@@ -861,15 +874,15 @@ void YDialogSpyPrivate::refreshButtonStates()
     // a VBox/HBox container, set the labels according to stacking direction.
     if (widget && parent && isBox(parent))
     {
-        upButton->setEnabled(widget != parent->firstChild());
-        upButton->setLabel(isVBox(parent) ? "⬆ Up" : "⬅ Left");
-        downButton->setEnabled(widget != parent->lastChild());
-        downButton->setLabel(isVBox(parent) ? "⬇ Down" : "➡ Right");
+	upButton->setEnabled(widget != parent->firstChild());
+	upButton->setLabel(isVBox(parent) ? "⬆ Up" : "⬅ Left");
+	downButton->setEnabled(widget != parent->lastChild());
+	downButton->setLabel(isVBox(parent) ? "⬇ Down" : "➡ Right");
     }
     else
     {
-        upButton->setEnabled(false);
-        downButton->setEnabled(false);
+	upButton->setEnabled(false);
+	downButton->setEnabled(false);
     }
 
     // TODO: Enable the [Add] menu button only when a widget can be added
@@ -887,7 +900,7 @@ void YDialogSpyPrivate::refreshButtonStates()
  * @param widget   selected widget
  * @param property property name
  */
-void YDialogSpyPrivate::editWidget(YWidget *widget, const std::string &property)
+void YDialogSpyPrivate::editWidget(YWidget *widget, const string &property)
 {
     // redraw the target dialog
     targetDialog->recalcLayout();

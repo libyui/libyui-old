@@ -35,12 +35,13 @@
 #include "YUIException.h"
 #include "YWidget.h"
 
+using std::string;
+using std::ostream;
 
 
-
-std::string YCodeLocation::asString() const
+string YCodeLocation::asString() const
 {
-    std::string str( _file );
+    string str( _file );
     str += "(" + _func + "):";
 
     char formatted_number[ 20 ];
@@ -52,8 +53,8 @@ std::string YCodeLocation::asString() const
 }
 
 
-std::ostream &
-operator<<( std::ostream & str, const YCodeLocation & obj )
+ostream &
+operator<<( ostream & str, const YCodeLocation & obj )
 {
     return str << obj.asString();
 }
@@ -64,7 +65,7 @@ YUIException::YUIException()
     // NOP
 }
 
-YUIException::YUIException( const std::string & msg_r )
+YUIException::YUIException( const string & msg_r )
     : _msg( msg_r )
 {
     // NOP
@@ -77,7 +78,7 @@ YUIException::~YUIException() throw()
 }
 
 
-std::string
+string
 YUIException::asString() const
 {
     std::ostringstream str;
@@ -86,38 +87,38 @@ YUIException::asString() const
 }
 
 
-std::ostream &
-YUIException::dumpOn( std::ostream & str ) const
+ostream &
+YUIException::dumpOn( ostream & str ) const
 {
     return str << _msg;
 }
 
 
-std::ostream &
-YUIException::dumpError( std::ostream & str ) const
+ostream &
+YUIException::dumpError( ostream & str ) const
 {
     return dumpOn( str << _where << ": " );
 }
 
 
-std::ostream &
-operator<<( std::ostream & str, const YUIException & obj )
+ostream &
+operator<<( ostream & str, const YUIException & obj )
 {
     return obj.dumpError( str );
 }
 
 
-std::string
+string
 YUIException::strErrno( int errno_r )
 {
     return strerror( errno_r );
 }
 
 
-std::string
-YUIException::strErrno( int errno_r, const std::string & msg )
+string
+YUIException::strErrno( int errno_r, const string & msg )
 {
-    std::string ret( msg );
+    string ret( msg );
     ret += ": ";
     return ret += strErrno( errno_r );
 }
@@ -132,12 +133,12 @@ YUIException::log( const YUIException & 	exception,
 		     location.file().c_str(),
 		     location.line(),
 		     location.func().c_str() )
-			 << "\t" << prefix << " " << exception.asString() << std::endl;
+			 << "\t" << prefix << " " << exception.asString() << endl;
 }
 
 
-std::ostream &
-YUIUnknownPropertyException::dumpOn( std::ostream & str ) const
+ostream &
+YUIUnknownPropertyException::dumpOn( ostream & str ) const
 {
     if ( widget() )
     {
@@ -145,25 +146,25 @@ YUIUnknownPropertyException::dumpOn( std::ostream & str ) const
 		   << " has no property named \""
 		   << property().name()
 		   << "\""
-		   << std::endl;
+		   << endl;
     }
     else
     {
 	return str << "Unknown property name \""
 		   << property().name()
 		   << "\""
-		   << std::endl;
+		   << endl;
     }
 }
 
 
-std::ostream &
-YUIPropertyTypeMismatchException::dumpOn( std::ostream & str ) const
+ostream &
+YUIPropertyTypeMismatchException::dumpOn( ostream & str ) const
 {
-    std::string widgetClass;
+    string widgetClass;
 
     if ( widget() )
-	widgetClass = std::string( widget()->widgetClass() ) + "::";
+	widgetClass = string( widget()->widgetClass() ) + "::";
 
     return str << "Property type mismatch: "
 	       << widgetClass
@@ -172,38 +173,38 @@ YUIPropertyTypeMismatchException::dumpOn( std::ostream & str ) const
 	       << property().typeAsStr()
 	       << ", not "
 	       << YProperty::typeAsStr( type() )
-	       << std::endl;
+	       << endl;
 }
 
 
-std::ostream &
-YUISetReadOnlyPropertyException::dumpOn( std::ostream & str ) const
+ostream &
+YUISetReadOnlyPropertyException::dumpOn( ostream & str ) const
 {
-    std::string widgetClass;
+    string widgetClass;
 
     if ( widget() )
-	widgetClass = std::string( widget()->widgetClass() ) + "::";
+	widgetClass = string( widget()->widgetClass() ) + "::";
 
     return str << "Property "
 	       << widgetClass
 	       << property().name()
 	       << "is read-only!"
-	       << std::endl;
+	       << endl;
 }
 
 
-std::ostream &
-YUIBadPropertyArgException::dumpOn( std::ostream & str ) const
+ostream &
+YUIBadPropertyArgException::dumpOn( ostream & str ) const
 {
-    std::string widgetClass;
+    string widgetClass;
 
     if ( widget() )
-	widgetClass = std::string( widget()->widgetClass() ) + "::";
+	widgetClass = string( widget()->widgetClass() ) + "::";
 
     return str << "Bad argument for property "
 	       << widgetClass
 	       << property().name()
 	       << ": "
 	       << msg()
-	       << std::endl;
+	       << endl;
 }

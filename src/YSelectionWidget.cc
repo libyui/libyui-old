@@ -18,7 +18,7 @@
 
   File:		YSelectionWidget.cc
 
-  Author:	Stefan Hundhammer <sh@suse.de>
+  Author:	Stefan Hundhammer <shundhammer@suse.de>
 
 /-*/
 
@@ -31,31 +31,33 @@
 #include "YUIException.h"
 #include "YApplication.h"
 
+using std::string;
+
 
 struct YSelectionWidgetPrivate
 {
-    YSelectionWidgetPrivate( const std::string &	label,
-			     bool	    	enforceSingleSelection,
-			     bool 		recursiveSelection )
+    YSelectionWidgetPrivate( const string & label,
+			     bool	    enforceSingleSelection,
+			     bool	    recursiveSelection )
 	: label( label )
 	, enforceSingleSelection( enforceSingleSelection )
-        , recursiveSelection ( recursiveSelection )
+	, recursiveSelection ( recursiveSelection )
 	{}
 
-    std::string		label;
+    string		label;
     bool		enforceSingleSelection;
     bool		recursiveSelection;
-    std::string		iconBasePath;
+    string		iconBasePath;
     YItemCollection	itemCollection;
 };
 
 
 
 
-YSelectionWidget::YSelectionWidget( YWidget * 		parent,
-				    const std::string & 	label,
+YSelectionWidget::YSelectionWidget( YWidget *		parent,
+				    const string &	label,
 				    bool		enforceSingleSelection ,
-			     	    bool 		recursiveSelection )
+				    bool		recursiveSelection )
     : YWidget( parent )
     , priv( new YSelectionWidgetPrivate( label, enforceSingleSelection, recursiveSelection ) )
 {
@@ -92,13 +94,13 @@ void YSelectionWidget::deleteAllItems()
 }
 
 
-std::string YSelectionWidget::label() const
+string YSelectionWidget::label() const
 {
     return priv->label;
 }
 
 
-void YSelectionWidget::setLabel( const std::string & newLabel )
+void YSelectionWidget::setLabel( const string & newLabel )
 {
     priv->label = newLabel;
 }
@@ -122,21 +124,21 @@ void YSelectionWidget::setEnforceSingleSelection( bool enforceSingleSelection )
 }
 
 
-void YSelectionWidget::setIconBasePath( const std::string & basePath )
+void YSelectionWidget::setIconBasePath( const string & basePath )
 {
     priv->iconBasePath = basePath;
 }
 
 
-std::string YSelectionWidget::iconBasePath() const
+string YSelectionWidget::iconBasePath() const
 {
     return priv->iconBasePath;
 }
 
 
-std::string YSelectionWidget::iconFullPath( const std::string & iconName ) const
+string YSelectionWidget::iconFullPath( const string & iconName ) const
 {
-    std::string fullPath;
+    string fullPath;
 
     if ( ! iconName.empty() )
     {
@@ -156,7 +158,7 @@ std::string YSelectionWidget::iconFullPath( const std::string & iconName ) const
 }
 
 
-std::string YSelectionWidget::iconFullPath( YItem * item ) const
+string YSelectionWidget::iconFullPath( YItem * item ) const
 {
     if ( item )
 	return iconFullPath( item->iconName() );
@@ -188,26 +190,28 @@ void YSelectionWidget::addItem( YItem * item )
 
     if ( priv->enforceSingleSelection )
     {
-        YItem* newItemSelected = NULL;
-        if ( item->selected() )
-        {
-           newItemSelected = item;
-        }
-        else
-        {
-           newItemSelected = findSelectedItem( item->childrenBegin(),
-                                               item->childrenEnd() );
-        }
+	YItem * newItemSelected = 0;
+
+	if ( item->selected() )
+	{
+	   newItemSelected = item;
+	}
+	else
+	{
+	   newItemSelected = findSelectedItem( item->childrenBegin(),
+					       item->childrenEnd() );
+	}
 
 	if ( newItemSelected )
 	{
-            // This looks expensive, but it is not: Even though deselectAllItems()
-            // searches the complete item list and de select all.
-            //
-            // This prevents the calling application does this systematically wrong
-            // and sets the "selected" flag for more items or children
-            deselectAllItems();
-            newItemSelected->setSelected( true );
+	    // This looks expensive, but it is not: Even though deselectAllItems()
+	    // searches the complete item list and deselects them all.
+	    //
+	    // This prevents that the calling application does this systematically wrong
+	    // and sets the "selected" flag for more items or children.
+
+	    deselectAllItems();
+	    newItemSelected->setSelected( true );
 	}
 
 
@@ -222,9 +226,9 @@ void YSelectionWidget::addItem( YItem * item )
 }
 
 
-void YSelectionWidget::addItem( const std::string & 	itemLabel,
-				const std::string & 	iconName,
-				bool 		selected )
+void YSelectionWidget::addItem( const string &	itemLabel,
+				const string &	iconName,
+				bool		selected )
 {
     YItem * item = new YItem( itemLabel, iconName, selected );
     YUI_CHECK_NEW( item );
@@ -232,7 +236,7 @@ void YSelectionWidget::addItem( const std::string & 	itemLabel,
 }
 
 
-void YSelectionWidget::addItem( const std::string & itemLabel, bool selected )
+void YSelectionWidget::addItem( const string & itemLabel, bool selected )
 {
     addItem( itemLabel, "", selected );
 }
@@ -331,9 +335,9 @@ YSelectionWidget::findSelectedItem( YItemConstIterator begin,
 	const YItem * item = *it;
 
 	if ( item->selected() )
-        {
+	{
 	    return *it;
-        }
+	}
 	if ( item->hasChildren() )
 	{
 	    YItem * selectedItem = findSelectedItem( item->childrenBegin(),
@@ -406,12 +410,12 @@ void YSelectionWidget::selectItem( YItem * item, bool selected )
 
     if ( recursiveSelection() && item->hasChildren() )
     {
-        for ( YItemIterator it = item->childrenBegin(); it != item->childrenEnd(); ++it )
+	for ( YItemIterator it = item->childrenBegin(); it != item->childrenEnd(); ++it )
 	{
 	    YItem * item = *it;
-            selectItem(item, selected );
-            item->setSelected( selected );
-        }
+	    selectItem(item, selected );
+	    item->setSelected( selected );
+	}
     }
 
     item->setSelected( selected );
@@ -474,14 +478,14 @@ void YSelectionWidget::deselectAllItems( YItemIterator	begin,
 
 
 YItem *
-YSelectionWidget::findItem( const std::string & wantedItemLabel ) const
+YSelectionWidget::findItem( const string & wantedItemLabel ) const
 {
     return findItem( wantedItemLabel, itemsBegin(), itemsEnd() );
 }
 
 
 YItem *
-YSelectionWidget::findItem( const std::string &	wantedItemLabel,
+YSelectionWidget::findItem( const string &	wantedItemLabel,
 			    YItemConstIterator	begin,
 			    YItemConstIterator	end ) const
 {
@@ -503,4 +507,19 @@ YSelectionWidget::findItem( const std::string &	wantedItemLabel,
     }
 
     return 0;
+}
+
+
+void YSelectionWidget::dumpItems() const
+{
+    yuiMilestone() << "Items:" << endl;
+
+    for ( YItemConstIterator it = itemsBegin(); it != itemsEnd(); ++it )
+    {
+        yuiMilestone() << ( (*it)->selected() ? "  [x] " : "  [ ] " )
+                       << (*it)->label()
+                       << endl;
+    }
+
+    yuiMilestone() << "---" << endl;
 }

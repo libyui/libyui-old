@@ -29,18 +29,20 @@
 #include "YUISymbols.h"
 #include "YPartitionSplitter.h"
 
+using std::string;
+
 
 struct YPartitionSplitterPrivate
 {
-    YPartitionSplitterPrivate( int			usedSize,
-			       int			totalFreeSize,
-			       int			minNewPartSize,
-			       int			minFreeSize,
-			       const std::string &	usedLabel,
-			       const std::string &	freeLabel,
-			       const std::string &	newPartLabel,
-			       const std::string &	freeFieldLabel,
-			       const std::string &	newPartFieldLabel )
+    YPartitionSplitterPrivate( int		usedSize,
+			       int		totalFreeSize,
+			       int		minNewPartSize,
+			       int		minFreeSize,
+			       const string &	usedLabel,
+			       const string &	freeLabel,
+			       const string &	newPartLabel,
+			       const string &	freeFieldLabel,
+			       const string &	newPartFieldLabel )
 	: usedSize		( usedSize		)
 	, totalFreeSize		( totalFreeSize		)
 	, minNewPartSize	( minNewPartSize	)
@@ -56,27 +58,27 @@ struct YPartitionSplitterPrivate
     int 	totalFreeSize;
     int 	minNewPartSize;
     int 	minFreeSize;
-    std::string	usedLabel;
-    std::string	freeLabel;
-    std::string	newPartLabel;
-    std::string	freeFieldLabel;
-    std::string	newPartFieldLabel;
+    string	usedLabel;
+    string	freeLabel;
+    string	newPartLabel;
+    string	freeFieldLabel;
+    string	newPartFieldLabel;
 };
 
 
 
 
-YPartitionSplitter::YPartitionSplitter( YWidget *		parent,
-					int			usedSize,
-					int			totalFreeSize,
-					int			newPartSize,
-					int			minNewPartSize,
-					int			minFreeSize,
-					const std::string &	usedLabel,
-					const std::string &	freeLabel,
-					const std::string &	newPartLabel,
-					const std::string &	freeFieldLabel,
-					const std::string &	newPartFieldLabel )
+YPartitionSplitter::YPartitionSplitter( YWidget *	parent,
+					int		usedSize,
+					int		totalFreeSize,
+					int		newPartSize,
+					int		minNewPartSize,
+					int		minFreeSize,
+					const string &	usedLabel,
+					const string &	freeLabel,
+					const string &	newPartLabel,
+					const string &	freeFieldLabel,
+					const string &	newPartFieldLabel )
     : YWidget( parent )
     , priv( new YPartitionSplitterPrivate( usedSize,
 					   totalFreeSize,
@@ -126,31 +128,31 @@ int YPartitionSplitter::minFreeSize() const
 }
 
 
-std::string YPartitionSplitter::usedLabel() const
+string YPartitionSplitter::usedLabel() const
 {
     return priv->usedLabel;
 }
 
 
-std::string YPartitionSplitter::freeLabel() const
+string YPartitionSplitter::freeLabel() const
 {
     return priv->freeLabel;
 }
 
 
-std::string YPartitionSplitter::newPartLabel() const
+string YPartitionSplitter::newPartLabel() const
 {
     return priv->newPartLabel;
 }
 
 
-std::string YPartitionSplitter::freeFieldLabel() const
+string YPartitionSplitter::freeFieldLabel() const
 {
     return priv->freeFieldLabel;
 }
 
 
-std::string YPartitionSplitter::newPartFieldLabel() const
+string YPartitionSplitter::newPartFieldLabel() const
 {
     return priv->newPartFieldLabel;
 }
@@ -164,7 +166,7 @@ YPartitionSplitter::propertySet()
     if ( propSet.isEmpty() )
     {
 	/*
-	 * @property std::string	Value	the value (the size of the new partition)
+	 * @property string	Value	the value (the size of the new partition)
 	 */
 	propSet.add( YProperty( YUIProperty_Value,		YStringProperty	 ) );
 	propSet.add( YWidget::propertySet() );
@@ -175,7 +177,7 @@ YPartitionSplitter::propertySet()
 
 
 bool
-YPartitionSplitter::setProperty( const std::string & propertyName, const YPropertyValue & val )
+YPartitionSplitter::setProperty( const string & propertyName, const YPropertyValue & val )
 {
     propertySet().check( propertyName, val.type() ); // throws exceptions if not found or type mismatch
 
@@ -190,7 +192,7 @@ YPartitionSplitter::setProperty( const std::string & propertyName, const YProper
 
 
 YPropertyValue
-YPartitionSplitter::getProperty( const std::string & propertyName )
+YPartitionSplitter::getProperty( const string & propertyName )
 {
     propertySet().check( propertyName ); // throws exceptions if not found
 

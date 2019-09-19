@@ -26,13 +26,15 @@
 #include "YImage.h"
 #include "YBothDim.h"
 
+using std::string;
+
 
 struct YImagePrivate
 {
     /**
      * Constructor.
      **/
-    YImagePrivate( const std::string & imageFileName, bool animated )
+    YImagePrivate( const string & imageFileName, bool animated )
 	: imageFileName( imageFileName )
 	, animated( animated )
 	, autoScale( false )
@@ -42,7 +44,7 @@ struct YImagePrivate
     }
 
 
-    std::string		imageFileName;
+    string		imageFileName;
     bool		animated;
     YBothDim<bool>	zeroSize;
     bool		autoScale;
@@ -52,7 +54,7 @@ struct YImagePrivate
 
 
 YImage::YImage( YWidget *		parent,
-		const std::string &	imageFileName,
+		const string &	imageFileName,
 		bool			animated )
     : YWidget( parent )
     , priv( new YImagePrivate( imageFileName, animated ) )
@@ -67,7 +69,7 @@ YImage::~YImage()
 }
 
 
-std::string YImage::imageFileName() const
+string YImage::imageFileName() const
 {
     return priv->imageFileName;
 }
@@ -79,7 +81,7 @@ bool YImage::animated() const
 }
 
 
-void YImage::setImage( const std::string & imageFileName, bool animated )
+void YImage::setImage( const string & imageFileName, bool animated )
 {
     priv->imageFileName = imageFileName;
     priv->animated	= animated;

@@ -35,10 +35,12 @@
 #define YUILogComponent "ui"
 #include "YUILog.h"
 
+using std::string;
+
 
 struct YCommandLinePrivate
 {
-    std::vector<std::string> args;
+    std::vector<string> args;
 };
 
 
@@ -54,13 +56,13 @@ YCommandLine::YCommandLine()
 
     while ( cmdline.good() )
     {
-	std::string arg;
+	string arg;
 	getline( cmdline, arg, '\0' );
 
 	if ( ! arg.empty() )
 	{
 	    yuiDebug() << "Arg #" << priv->args.size()
-		       << ": \"" << arg << "\"" << std::endl;
+		       << ": \"" << arg << "\"" << endl;
 
 	    priv->args.push_back( arg );
 	}
@@ -99,13 +101,13 @@ YCommandLine::argv() const
 
 
 void
-YCommandLine::add( const std::string & arg )
+YCommandLine::add( const string & arg )
 {
     priv->args.push_back( arg );
 }
 
 
-std::string
+string
 YCommandLine::arg( int index ) const
 {
     YUI_CHECK_INDEX( index, 0, (int) priv->args.size()-1 );
@@ -124,7 +126,7 @@ YCommandLine::remove( int index )
 
 
 void
-YCommandLine::replace( int index, const std::string & newArg )
+YCommandLine::replace( int index, const string & newArg )
 {
     YUI_CHECK_INDEX( index, 0, (int) priv->args.size()-1 );
 
@@ -133,7 +135,7 @@ YCommandLine::replace( int index, const std::string & newArg )
 
 
 int
-YCommandLine::find( const std::string & argName ) const
+YCommandLine::find( const string & argName ) const
 {
     for ( int i=0; i < argc(); i++ )
     {
