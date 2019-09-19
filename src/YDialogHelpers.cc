@@ -164,10 +164,12 @@ YDialog::showRelNotesText()
 	}
 
 	vector<string> keys;
-	for ( map<string,string>::iterator it = relnotes.begin(); it != relnotes.end(); ++it )
+
+	for ( map<string,string>::const_iterator it = relnotes.begin(); it != relnotes.end(); ++it )
         {
 	    keys.push_back(it->first);
 	}
+
         YDialog     * dialog    = YUI::widgetFactory()->createPopupDialog();
         YAlignment  * minSize   = YUI::widgetFactory()->createMinSize( dialog, dialogWidth, dialogHeight );
         YLayoutBox  * vbox      = YUI::widgetFactory()->createVBox( minSize );
