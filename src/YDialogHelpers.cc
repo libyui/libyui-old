@@ -25,10 +25,6 @@
 
 #include <sys/types.h>
 #include <dirent.h>
-#include <fstream>
-
-#include <list>
-#include <algorithm>
 
 #define YUILogComponent "ui"
 #include "YUILog.h"
