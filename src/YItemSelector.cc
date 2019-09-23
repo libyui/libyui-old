@@ -94,12 +94,14 @@ YItemSelector::propertySet()
     {
 	/*
 	 * @property itemID	Value           The (first) currently selected item
+	 * @property itemID	CurrentItem     The (first) currently selected item
 	 * @property itemList	SelectedItems   All currently selected items
 	 * @property itemList	Items           All items
 	 * @property integer    VisibleItems    Number of items that are visible without scrolling
 	 * @property string	IconPath        Base path for icons
 	 */
 	propSet.add( YProperty( YUIProperty_Value,		YOtherProperty	 ) );
+	propSet.add( YProperty( YUIProperty_CurrentItem,	YOtherProperty	 ) );
 	propSet.add( YProperty( YUIProperty_SelectedItems,	YOtherProperty	 ) );
 	propSet.add( YProperty( YUIProperty_Items,		YOtherProperty	 ) );
 	propSet.add( YProperty( YUIProperty_VisibleItems,       YIntegerProperty ) );
@@ -117,6 +119,7 @@ YItemSelector::setProperty( const string & propertyName, const YPropertyValue & 
     propertySet().check( propertyName, val.type() ); // throws exceptions if not found or type mismatch
 
     if	    ( propertyName == YUIProperty_Value		)	return false; // Needs special handling
+    else if ( propertyName == YUIProperty_CurrentItem 	)	return false; // Needs special handling
     else if ( propertyName == YUIProperty_SelectedItems	)	return false; // Needs special handling
     else if ( propertyName == YUIProperty_Items 	)	return false; // Needs special handling
     else if ( propertyName == YUIProperty_VisibleItems 	)	setVisibleItems( val.integerVal() );
@@ -136,6 +139,7 @@ YItemSelector::getProperty( const string & propertyName )
     propertySet().check( propertyName ); // throws exceptions if not found
 
     if	    ( propertyName == YUIProperty_Value		)	return YPropertyValue( YOtherProperty );
+    else if ( propertyName == YUIProperty_CurrentItem 	)	return YPropertyValue( YOtherProperty );
     else if ( propertyName == YUIProperty_SelectedItems	)	return YPropertyValue( YOtherProperty );
     else if ( propertyName == YUIProperty_Items 	)	return YPropertyValue( YOtherProperty );
     else if ( propertyName == YUIProperty_VisibleItems 	)	return YPropertyValue( visibleItems() );

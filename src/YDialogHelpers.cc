@@ -167,7 +167,7 @@ YDialog::showRelNotesText()
 
 	for ( map<string,string>::const_iterator it = relnotes.begin(); it != relnotes.end(); ++it )
         {
-	    keys.push_back(it->first);
+	    keys.push_back( it->first );
 	}
 
         YDialog     * dialog    = YUI::widgetFactory()->createPopupDialog();
@@ -175,23 +175,30 @@ YDialog::showRelNotesText()
         YLayoutBox  * vbox      = YUI::widgetFactory()->createVBox( minSize );
         YDumbTab    * rnTab     = 0;
         YRichText   * richtext  = 0;
+        bool usePlainTextMode   = YUI::app()->isTextMode();
 
-	// both QT and NCurses do support DumbTab
+	// both Qt and NCurses do support DumbTab
         if ( relnotes.size() > 1 && YUI::optionalWidgetFactory()->hasDumbTab() )
 	{
 	    rnTab = YUI::optionalWidgetFactory()->createDumbTab( vbox );
 	    int index = 0;
-	    for(map<string,string>::const_iterator it = relnotes.begin(); it != relnotes.end(); it++)
+
+	    for ( map<string,string>::const_iterator it = relnotes.begin(); it != relnotes.end(); it++ )
 	    {
-		YItem * item = new YItem((*it).first );
+		YItem * item = new YItem( (*it).first );
 		item->setIndex( index++ );
 		rnTab->addItem( item );
 	    }
-	    richtext = YUI::widgetFactory()->createRichText( rnTab, (*(relnotes.begin())).second, YUI::app()->isTextMode() );
+
+	    richtext = YUI::widgetFactory()->createRichText( rnTab,
+                                                             (*(relnotes.begin())).second,
+                                                             usePlainTextMode );
 	}
 	else
 	{
-	    richtext = YUI::widgetFactory()->createRichText( vbox, (*(relnotes.begin())).second, YUI::app()->isTextMode() );
+	    richtext = YUI::widgetFactory()->createRichText( vbox,
+                                                             (*(relnotes.begin())).second,
+                                                             usePlainTextMode );
 	}
 
         YButtonBox  * buttonBox = YUI::widgetFactory()->createButtonBox( vbox );
@@ -199,25 +206,25 @@ YDialog::showRelNotesText()
         okButton->setRole( YOKButton );
         okButton->setDefaultButton();
 
-	while(true) {
-	    YEvent* event = dialog->waitForEvent();
-	    if ( event && event->eventType() == YEvent::MenuEvent && event->item())
-	    {
-		YItem * item = dynamic_cast<YItem *> ( event->item());
-		richtext->setValue( relnotes[keys[item->index()]] );
-	    }
-	    else if ( event && event->widget() )
-	    {
-		YPushButton * button = dynamic_cast<YPushButton *> ( event->widget() );
-		if ( button )
-		{
-		    if ( button->role() == YOKButton)
-		    {
-			break;
-		    }
-		}
+	while ( true )
+        {
+	    YEvent * event = dialog->waitForEvent();
+
+            if ( event )
+            {
+                if ( event->eventType() == YEvent::MenuEvent && event->item())
+                {
+                    YItem * item = dynamic_cast<YItem *>( event->item() );
+                    richtext->setValue( relnotes[ keys[ item->index() ] ] );
+                }
+                else if ( event->eventType() == YEvent::CancelEvent ||  // window manager "close window" button
+                          event->widget() == okButton )
+                {
+                    break;
+                }
             }
 	}
+
         dialog->destroy();
     }
     catch ( const YUIException & exception )
