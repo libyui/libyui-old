@@ -2,7 +2,7 @@
 Mon Sep 23 12:44:47 UTC 2019 - Stefan Hundhammer <shundhammer@suse.com>
 
 - Added CurrentItem property to new ItemSelector widget for consistency
-  ((bsc#1084674)
+  (bsc#1084674)
 - 3.8.1 
 
 -------------------------------------------------------------------
