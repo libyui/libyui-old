@@ -46,10 +46,10 @@ protected:
     /**
      * Constructor.
      *
-     * 'singleSelectionMode' indicates if this base class should enforce single
-     * selection when items are added or when items are selected from the
-     * application. Note that single selection can also mean that no item is
-     * selected.
+     * 'enforceSingleSelection' indicates if this base class should enforce
+     * single selection when items are added or when items are selected from
+     * the application. Note that single selection can also mean that no item
+     * is selected.
      **/
     YSelectionWidget( YWidget *			parent,
 		      const std::string &	label,
@@ -289,6 +289,17 @@ protected:
      * mean that no item is selected.
      **/
     void setEnforceSingleSelection( bool on );
+
+    /**
+     * In single selection mode, enforce selecting an initial item
+     * ('true' by default). This is ignored in multi selection mode.
+     **/
+    void setEnforceInitialSelection( bool on );
+
+    /**
+     * Return 'true' if this class enforces an initial selection.
+     **/
+    bool enforceInitialSelection() const;
 
     /**
      * Return 'true' if this base class should select children recursively.
