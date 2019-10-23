@@ -54,7 +54,7 @@ public:
      **/
     YItem( const std::string & label, bool selected = false )
 	: _label( label )
-	, _selected( selected )
+	, _status( selected ? 1 : 0 )
 	, _index( -1 )
 	, _data( 0 )
 	{}
@@ -65,7 +65,7 @@ public:
     YItem( const std::string & label, const std::string & iconName, bool selected = false )
 	: _label( label )
 	, _iconName( iconName )
-	, _selected( selected )
+	, _status( selected ? 1 : 0 )
 	, _index( -1 )
 	, _data( 0 )
 	{}
@@ -104,14 +104,28 @@ public:
     /**
      * Return 'true' if this item is currently selected.
      **/
-    bool selected() const { return _selected; }
+    bool selected() const { return _status != 0; }
 
     /**
      * Select or unselect this item. This does not have any effect on any other
      * item; if it is desired that only one item is selected at any time, the
      * caller has to take care of that.
      **/
-    void setSelected( bool sel = true ) { _selected = sel; }
+    void setSelected( bool sel = true ) { _status = sel ? 1 : 0; }
+
+    /**
+     * Return the status of this item. This is a bit more generalized than
+     * 'selected'. Values other than 0 or 1 can mean different things to the
+     * application or to the specific widget.
+     **/
+    int status() const { return _status; }
+
+    /**
+     * Set the status of this item. Most widgets only use 0 for "not selected"
+     * or nonzero for "selected". Some widgets may make use of other values as
+     * well.
+     **/
+    void setStatus( int newStatus ) { _status = newStatus; }
 
     /**
      * Set this item's index.
@@ -193,7 +207,7 @@ private:
 
     std::string	_label;
     std::string	_iconName;
-    bool	_selected;
+    int         _status;
     int		_index;
     void *	_data;
 
