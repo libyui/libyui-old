@@ -41,11 +41,13 @@ struct YSelectionWidgetPrivate
 			     bool	    recursiveSelection )
 	: label( label )
 	, enforceSingleSelection( enforceSingleSelection )
+        , enforceInitialSelection( true )
 	, recursiveSelection ( recursiveSelection )
 	{}
 
     string		label;
     bool		enforceSingleSelection;
+    bool                enforceInitialSelection;
     bool		recursiveSelection;
     string		iconBasePath;
     YItemCollection	itemCollection;
@@ -110,6 +112,20 @@ bool YSelectionWidget::enforceSingleSelection() const
 {
     return priv->enforceSingleSelection;
 }
+
+
+void YSelectionWidget::setEnforceInitialSelection( bool newVal )
+{
+    if ( priv->enforceSingleSelection )
+        priv->enforceInitialSelection = newVal;
+}
+
+
+bool YSelectionWidget::enforceInitialSelection() const
+{
+    return priv->enforceInitialSelection && priv->enforceSingleSelection;
+}
+
 
 bool YSelectionWidget::recursiveSelection() const
 {
@@ -215,13 +231,16 @@ void YSelectionWidget::addItem( YItem * item )
 	}
 
 
-	// Make sure there is one item selected initially.
-	//
-	// If any other subsequently added items are to be selected, they will
-	// override this initial selection.
+        if ( priv->enforceInitialSelection )
+        {
+            // Make sure there is one item selected initially.
+            //
+            // If any other subsequently added items are to be selected, they will
+            // override this initial selection.
 
-	if ( priv->itemCollection.size() == 1 )
-	    item->setSelected( true );
+            if ( priv->itemCollection.size() == 1 )
+                item->setSelected( true );
+        }
     }
 }
 

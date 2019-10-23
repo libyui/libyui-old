@@ -50,6 +50,7 @@ YItemSelector::YItemSelector( YWidget *    parent,
     , priv( new YItemSelectorPrivate )
 {
     YUI_CHECK_NEW( priv );
+    setEnforceInitialSelection( false );
 
     setDefaultStretchable( YD_HORIZ, true );
     setDefaultStretchable( YD_VERT,  true );
