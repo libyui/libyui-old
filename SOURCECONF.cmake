@@ -105,6 +105,7 @@ SET( ${TARGETLIB}_HEADERS
   YEventFilter.h
   YEnvVar.h
   YItem.h
+  YItemCustomStatus.h
   YIconLoader.h
   YMenuItem.h
   YMacro.h
@@ -193,6 +194,7 @@ SET( EXAMPLES_LIST
   HelloWorld.cc
   ItemSelector1.cc
   ItemSelector2-minimalistic.cc
+  ItemSelector3-custom-states.cc
   SelectionBox1.cc
   SelectionBox2.cc
   SelectionBox3-many-items.cc

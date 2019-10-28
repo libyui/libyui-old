@@ -28,6 +28,7 @@
 #include <string>
 
 #include "YTypes.h"
+#include "YItemCustomStatus.h"
 
 
 class YWidget;
@@ -92,24 +93,24 @@ public:
 
     YLayoutBox *		createVBox		( YWidget * parent );
     YLayoutBox *		createHBox		( YWidget * parent );
-    virtual YLayoutBox *	createLayoutBox		( YWidget * parent, YUIDimension dimension )    = 0;
-    virtual YButtonBox *	createButtonBox		( YWidget * parent )			 	= 0;
+    virtual YLayoutBox *	createLayoutBox		( YWidget * parent, YUIDimension dimension )	= 0;
+    virtual YButtonBox *	createButtonBox		( YWidget * parent )				= 0;
 
     //
     // Common Leaf Widgets
     //
 
-    virtual YPushButton *	createPushButton	( YWidget * parent, const std::string & label )				        = 0;
+    virtual YPushButton *	createPushButton	( YWidget * parent, const std::string & label )					= 0;
     virtual YLabel *		createLabel		( YWidget * parent, const std::string & text, bool isHeading = false, bool isOutputField = false ) = 0;
     YLabel *			createHeading		( YWidget * parent, const std::string & label );
     virtual YInputField *	createInputField	( YWidget * parent, const std::string & label, bool passwordMode = false )	= 0;
-    virtual YCheckBox *		createCheckBox		( YWidget * parent, const std::string & label, bool isChecked    = false )	= 0;
-    virtual YRadioButton *	createRadioButton	( YWidget * parent, const std::string & label, bool isChecked    = false )	= 0;
+    virtual YCheckBox *		createCheckBox		( YWidget * parent, const std::string & label, bool isChecked	 = false )	= 0;
+    virtual YRadioButton *	createRadioButton	( YWidget * parent, const std::string & label, bool isChecked	 = false )	= 0;
     virtual YComboBox *		createComboBox		( YWidget * parent, const std::string & label, bool editable	 = false )	= 0;
-    virtual YSelectionBox * 	createSelectionBox	( YWidget * parent, const std::string & label ) 				= 0;
+    virtual YSelectionBox *	createSelectionBox	( YWidget * parent, const std::string & label )					= 0;
     virtual YTree *		createTree		( YWidget * parent, const std::string & label, bool multiselection = false, bool recursiveselection = false ) = 0;
-    virtual YTable *		createTable		( YWidget * parent, YTableHeader * header,     bool multiSelection = false )    = 0;
-    virtual YProgressBar *	createProgressBar	( YWidget * parent, const std::string & label, int  maxValue       = 100   )	= 0;
+    virtual YTable *		createTable		( YWidget * parent, YTableHeader * header,     bool multiSelection = false )	= 0;
+    virtual YProgressBar *	createProgressBar	( YWidget * parent, const std::string & label, int  maxValue	   = 100   )	= 0;
     virtual YRichText *		createRichText		( YWidget * parent, const std::string & text = std::string(), bool plainTextMode = false )	= 0;
     virtual YBusyIndicator *	createBusyIndicator	( YWidget * parent, const std::string & label, int timeout = 1000 )		= 0;
 
@@ -123,7 +124,7 @@ public:
     YInputField *		createPasswordField	( YWidget * parent, const std::string & label );
 
     virtual YMenuButton *	createMenuButton	( YWidget * parent, const std::string & label )						= 0;
-    virtual YMultiLineEdit * 	createMultiLineEdit	( YWidget * parent, const std::string & label )						= 0;
+    virtual YMultiLineEdit *	createMultiLineEdit	( YWidget * parent, const std::string & label )						= 0;
     virtual YImage *		createImage		( YWidget * parent, const std::string & imageFileName, bool animated = false )		= 0;
     virtual YLogView *		createLogView		( YWidget * parent, const std::string & label, int visibleLines, int storedLines = 0 )	= 0;
     virtual YMultiSelectionBox *createMultiSelectionBox ( YWidget * parent, const std::string & label )						= 0;
@@ -184,9 +185,10 @@ public:
     // More leaf widgets (moved to the end to maintain ABI compatibility)
     //
 
-    virtual YItemSelector *     createItemSelector      ( YWidget * parent, bool enforceSingleSelection = true );
-    YItemSelector *             createSingleItemSelector( YWidget * parent );
-    YItemSelector *             createMultiItemSelector ( YWidget * parent );
+    virtual YItemSelector *	createItemSelector	       ( YWidget * parent, bool enforceSingleSelection = true );
+    YItemSelector *		createSingleItemSelector       ( YWidget * parent );
+    YItemSelector *		createMultiItemSelector	       ( YWidget * parent );
+    virtual YItemSelector *	createCustomStatusItemSelector ( YWidget * parent, const YItemCustomStatusVector & customStates );
 
 protected:
 
