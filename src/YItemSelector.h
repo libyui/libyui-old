@@ -186,6 +186,12 @@ public:
      **/
     const char * userInputProperty() { return YUIProperty_Value; }
 
+    /**
+     * Activate selected item. Can be used in tests to simulate user input.
+     *
+     * Derived classes are required to implement this.
+     **/
+    virtual void activate() = 0;
 
 protected:
 
