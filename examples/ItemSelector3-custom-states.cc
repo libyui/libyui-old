@@ -47,13 +47,20 @@ using std::string;
 
 enum CustomStatus
 {
-    MOD_INSTALL      = 0,
-    MOD_DONT_INSTALL,
+    MOD_DONT_INSTALL = 0,
+    MOD_INSTALL,
     MOD_AUTOINSTALL
 };
 
 bool notify		= true;
-int  visibleItems	= 4;
+int  visibleItems	= 6;
+
+YDescribedItem * modKde;
+YDescribedItem * modXfce;
+YDescribedItem * modX11;
+YDescribedItem * modLibre;
+YDescribedItem * modServer;
+YDescribedItem * modSdk;
 
 
 // Widgets
@@ -70,6 +77,8 @@ YPushButton	* closeButton	= 0;
 
 void createWidgets();
 void handleEvents();
+void handleDependencies( YItem * item );
+void autoSelect( YItem * item );
 void updateValueField();
 void updateResultField();
 void askConfigValues();
@@ -103,7 +112,6 @@ void createWidgets()
     fac->createHeading( vbox, "Add-on Software" );
     fac->createVSpacing( vbox, 0.2 );
 
-yuiMilestone() << "Before selector" << endl;
     YItemCustomStatusVector states;
     //                                   iconName              textIndicator  nextStatus
     states.push_back( YItemCustomStatus( "checkbox-off",            "[  ]", MOD_INSTALL      ) );
@@ -113,16 +121,21 @@ yuiMilestone() << "Before selector" << endl;
     selector = fac->createCustomStatusItemSelector( vbox, states );
     YUI_CHECK_PTR( selector );
 
+    modKde    = new YDescribedItem( "KDE Plasma",       "Full-fledged desktop"                  );
+    modXfce   = new YDescribedItem( "Xfce",             "Lightweight desktop"                   );
+    modX11    = new YDescribedItem( "X Window System",  "X11, simple window manager, xterm"     );
+    modLibre  = new YDescribedItem( "LibreOffice",      "Office suite"                          );
+    modServer = new YDescribedItem( "Server Tools",	"Web server, database, file server"     );
+    modSdk    = new YDescribedItem( "SDK",              "Development tools"                     );
+
     YItemCollection items;
-    items.push_back( new YDescribedItem( "Server Tools",		"Web server, database, file server"     ) );
-    items.push_back( new YDescribedItem( "KDE Plasma",                  "Full-fledged desktop"                  ) );
-    items.push_back( new YDescribedItem( "Xfce",                        "Lightweight desktop"                   ) );
-    items.push_back( new YDescribedItem( "X Window System",		"X11, simple window manager, xterm"     ) );
-    items.push_back( new YDescribedItem( "LibreOffice",                 "Office suite"                          ) );
-    items.push_back( new YDescribedItem( "SDK",                         "Development tools"                     ) );
-yuiMilestone() << "Adding items" << endl;
+    items.push_back( modKde    );
+    items.push_back( modXfce   );
+    items.push_back( modX11    );
+    items.push_back( modLibre  );
+    items.push_back( modServer );
+    items.push_back( modSdk    );
     selector->addItems( items ); // This is more efficient than repeatedly calling selector->addItem()
-yuiMilestone() << "Items added" << endl;
 
     selector->setVisibleItems( visibleItems );
 
@@ -143,7 +156,7 @@ yuiMilestone() << "Items added" << endl;
     resultField		= fac->createOutputField( hbox2, "<selected items>\n\n\n\n\n" );
     resultField->setStretchable( YD_HORIZ, true ); // allow stretching over entire dialog width
 
-    resultButton		= fac->createPushButton( hbox2, "&Selected\nItems" );
+    resultButton	= fac->createPushButton( hbox2, "&Selected\nItems" );
 
     fac->createVSpacing( vbox, 0.3 );
 
@@ -184,12 +197,84 @@ void handleEvents()
 	    if ( event->widget() == valueButton )
 		updateValueField();
 
-	    if ( event->widget() == selector )	   // the selector will only send events with setNotify()
+	    if ( event->widget() == selector )
 	    {
+                // No YWidgetEvents from the ItemSelector in this mode (see below)
+	    }
+
+            if ( event->eventType() == YEvent::MenuEvent )
+            {
+                // In this mode, the ItemSelector does not send YWidgetEvents,
+                // but YMenuEvents since (unlike YWidgetEvents) they can
+                // return the item that was changed.
+                //
+                // Still, this requires setNotify() (the notify option to be set).
+
+                YMenuEvent * menuEvent = dynamic_cast<YMenuEvent *>( event );
+
+                if ( menuEvent )
+                    handleDependencies( menuEvent->item() );
+
 		updateResultField();
 		updateValueField();
-	    }
+            }
 	}
+    }
+}
+
+
+void handleDependencies( YItem * item )
+{
+    yuiMilestone() << endl;
+
+    if ( ! item )
+    {
+        yuiWarning() << "No item in YMenuEvent??" << endl;
+        return;
+    }
+
+    bool needX11   = false;
+    bool needLibre = false;
+
+    if ( modKde->selected() )
+    {
+        needX11   = true;
+        needLibre = true;
+    }
+
+    if ( modXfce->selected() )
+        needX11 = true;
+
+    if ( modLibre->status() == MOD_INSTALL )
+        needX11 = true;
+
+    if ( needX11 && modX11->status() == MOD_DONT_INSTALL )
+        selector->setItemStatus( modX11, MOD_AUTOINSTALL );
+
+    if ( ! needX11 && modX11->status() == MOD_AUTOINSTALL )
+        selector->setItemStatus( modX11, MOD_DONT_INSTALL );
+
+    if ( needLibre && modLibre->status() == MOD_DONT_INSTALL )
+        selector->setItemStatus( modLibre, MOD_AUTOINSTALL );
+
+    if ( ! needLibre && modLibre->status() == MOD_AUTOINSTALL )
+        selector->setItemStatus( modLibre, MOD_DONT_INSTALL );
+
+    // selector->dumpItems();
+}
+
+
+void autoSelect( YItem * item )
+{
+    switch ( item->status() )
+    {
+        case MOD_DONT_INSTALL:
+            selector->setItemStatus( item, MOD_AUTOINSTALL );
+            break;
+
+        case MOD_INSTALL:       // Manually selected; leave it alone
+        case MOD_AUTOINSTALL:   // Already auto-selected; leave it alone
+            break;
     }
 }
 
