@@ -153,13 +153,28 @@ public:
      **/
     virtual const YPropertySet & propertySet();
 
-protected:
+    /**
+     * Return item in the tree which matches path of labels or nullptr in case no
+     * item with such label was found and is a leaf, as other nodes do not trigger
+     * actions except showing children items.
+     * Accepts vector of strings which denote path to the node.
+     **/
+    YMenuItem * findItem( std::vector<std::string> & path ) const;
+
+    /**
+    * Activate the item selected in the tree. Can be used in tests to simulate user input.
+    *
+    * Derived classes are required to implement this.
+    **/
+    virtual void activateItem( YMenuItem * item ) = 0;
 
     /**
      * Recursively find the first menu item with the specified index.
      * Returns 0 if there is no such item.
      **/
     YMenuItem * findMenuItem( int index );
+
+protected:
 
     /**
      * Recursively find the first menu item with the specified index
@@ -168,6 +183,19 @@ protected:
      * Returns 0 if there is no such item.
      **/
     YMenuItem * findMenuItem( int index, YItemConstIterator begin, YItemConstIterator end );
+
+    /**
+     * Recursively looks for the first item in the tree of the menu items
+     * using depth first search.
+     * Return nullptr if item which matches full path is not found.
+     * Path is a vector of strings, where next element is a child item, so
+     * in case one needs to select File->Export->As PDF, for instance,
+     * Vector will look like [ "File", "Export", "As PDF" ].
+     */
+    YMenuItem * findItem( std::vector<std::string>::iterator path_begin,
+                          std::vector<std::string>::iterator path_end,
+                          YItemConstIterator begin,
+                          YItemConstIterator end ) const;
 
     /**
      * Alias for findMenuItem(). Reimplemented to ensure consistent behaviour
