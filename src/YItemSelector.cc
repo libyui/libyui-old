@@ -109,6 +109,20 @@ void YItemSelector::setVisibleItems( int newVal )
 }
 
 
+void YItemSelector::setItemStatus( YItem * item, int status )
+{
+    if ( ! usingCustomStatus() )
+    {
+        selectItem( item, status != 0 );
+    }
+    else
+    {
+        item->setStatus( status );
+        updateCustomStatusIndicator( item );
+    }
+}
+
+
 bool YItemSelector::usingCustomStatus() const
 {
     return ! priv->customStates.empty();
@@ -158,7 +172,23 @@ void YItemSelector::checkCustomStates()
 	}
 	else if ( status.nextStatus() < -1 )
 	    status.setNextStatus( -1 );
+        else
+        {
+            yuiDebug() << "Status #" << i << ": next status: #" << status.nextStatus() << endl;
+        }
     }
+}
+
+
+int YItemSelector::cycleCustomStatus( int oldStatus )
+{
+    if ( ! validCustomStatusIndex( oldStatus ) )
+    {
+        yuiDebug() << "Invalid old status: " << oldStatus << endl;
+        return oldStatus;
+    }
+    else
+        return priv->customStates.at( oldStatus ).nextStatus();
 }
 
 

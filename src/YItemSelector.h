@@ -103,6 +103,12 @@ public:
     virtual void setVisibleItems( int newVal );
 
     /**
+     * Set the status of an item. Unlike YItem::setStatus(), this informs the
+     * widget of the change so it can set the corresponding status icon.
+     **/
+    virtual void setItemStatus( YItem * item, int status );
+
+    /**
      * Return 'true' if this widget uses custom status values, 'false' if not
      * (i.e. only 0 or 1).
      **/
@@ -127,6 +133,14 @@ public:
      * i.e. 0..customStatusCount()-1, 'false' otherwise.
      **/
     bool validCustomStatusIndex( int index ) const;
+
+    /**
+     * Cycle through the custom status values according to the custom status
+     * table, i.e. return the 'nextStatus' field of table index 'oldStatus'.
+     * This may be -1 if no next status was specified there or if 'oldStatus'
+     * is out of range of that table.
+     **/
+    int cycleCustomStatus( int oldStatus );
 
     /**
      * Set a property.
@@ -162,6 +176,17 @@ public:
      * Inherited from YWidget.
      **/
     const char * userInputProperty() { return YUIProperty_Value; }
+
+
+protected:
+
+    /**
+     * Update the status indicator (status icon or text indicator) if this
+     * widget is using custom status values.
+     *
+     * Derived classes should overwrite this.
+     **/
+    virtual void updateCustomStatusIndicator( YItem * item ) {}
 
 
 private:
