@@ -113,10 +113,15 @@ void YItemSelector::setItemStatus( YItem * item, int status )
 {
     if ( ! usingCustomStatus() )
     {
+        // Let the standard method (normally in the YSelectionWidget base
+        // class) handle this. That method also takes care of enforcing single
+        // selection if configured.
+
         selectItem( item, status != 0 );
     }
     else
     {
+        YUI_CHECK_INDEX( status, -1, customStatusCount() - 1 );
         item->setStatus( status );
         updateCustomStatusIndicator( item );
     }
@@ -156,6 +161,9 @@ bool YItemSelector::validCustomStatusIndex( int index ) const
 
 void YItemSelector::checkCustomStates()
 {
+    if ( priv->customStates.size() < 2 )
+        YUI_THROW( YUIException( "Need at least 2 different custom status value definitions" ) );
+
     int maxStatus = priv->customStates.size() - 1;
 
     for ( int i=0; i <= maxStatus; ++i )

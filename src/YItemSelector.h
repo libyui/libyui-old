@@ -53,22 +53,29 @@ public:
     /**
      * Constructor for custom item status values.
      *
-     * This makes it possible to set more different values than just 0 or 1.
-     * The semantics behind the individual status values is purely application-
-     * defined; the specified customStates description only provides an icon
-     * (for graphical UIs) or a text representation (for text-based UIs) and an
-     * optional "next" status value that can be used to let the user cycle
-     * through different status values. The numeric value of each status is
-     * implicitly its index in the vector.
+     * This makes it possible to set a wider variety of values than just 0 or
+     * 1.  The semantics behind the individual status values is purely
+     * application defined; the specified customStates description only
+     * provides an icon (for graphical UIs) or a text representation (for
+     * text-based UIs) and an optional "next" status value that can be used to
+     * let the user cycle through different status values. The numeric value of
+     * each status is implicitly its index in the vector.
      *
      * Notice that this constructor is the only way to set custom status value
-     * descriptions; they cannot be set anymore after initializing the widget.
-     * This is by design so any derived widgets in concrete UIs do not have to
-     * bother with possibly recreating any subwidgets if this should change;
-     * this guarantees that it does not change, neither the fact that there are
-     * custom status values nor their number or indicator icons / texts.
+     * descriptions; they cannot be changed anymore after initializing the
+     * widget. This is by design so that any derived widgets in concrete UIs do
+     * not have to bother with possibly recreating any subwidgets if this
+     * should change; this guarantees that it does not change, neither the fact
+     * that there are custom status values nor their number or indicator icons
+     * or texts.
      *
      * This constructor implicitly sets 'enforceSingleSelection' to 'false'.
+     *
+     * In this mode, the widget sends YMenuEvents (which include the item that
+     * the user changed) if the notify option is set.  For anything beyond the
+     * simple status transitions that are defined here in 'customStates', it is
+     * highly recommended to set that notify option and to handle those
+     * YMenuEvents on the application level.
      **/
     YItemSelector( YWidget *                            parent,
                    const YItemCustomStatusVector &      customStates );
