@@ -248,7 +248,7 @@ void askConfigValues()
     YAlignment * mbox	= fac->createMarginBox( dialog, 2, 2, 0.4, 0.4 );
     YLayoutBox * vbox	= fac->createVBox( mbox );
 
-    fac->createHeading( vbox, "Program Configuration" );
+    fac->createHeading( vbox, "Example Configuration" );
     fac->createVSpacing( vbox, 0.2 );
 
     YAlignment		* left		   = fac->createLeft( vbox );
@@ -278,6 +278,7 @@ void askConfigValues()
     YPushButton * cancelButton	 = fac->createPushButton( buttonBox, "&Cancel" );
 
     continueButton->setRole( YOKButton );
+    continueButton->setDefaultButton();
     cancelButton->setRole( YCancelButton );
 
     YEvent * event = dialog->waitForEvent();
