@@ -305,3 +305,14 @@ YWidgetFactory::createMultiItemSelector( YWidget * parent )
     return createItemSelector( parent,
                                false ); // enforceSingleSelection
 }
+
+
+YItemSelector *
+YWidgetFactory::createCustomStatusItemSelector( YWidget * parent,
+                                                const YItemCustomStatusVector & customStates )
+{
+    (void) customStates;
+
+    return createItemSelector( parent,
+                               false ); // enforceSingleSelection
+}

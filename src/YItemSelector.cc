@@ -27,7 +27,7 @@
 
 #include "YItemSelector.h"
 
-#define DEFAULT_VISIBLE_ITEMS   3
+#define DEFAULT_VISIBLE_ITEMS	3
 
 using std::string;
 
@@ -35,31 +35,54 @@ using std::string;
 struct YItemSelectorPrivate
 {
     YItemSelectorPrivate()
-        : visibleItems( DEFAULT_VISIBLE_ITEMS )
-        {}
+	: visibleItems( DEFAULT_VISIBLE_ITEMS )
+	{}
 
-    int visibleItems;
+    int				visibleItems;
+    YItemCustomStatusVector	customStates;
 };
 
 
-YItemSelector::YItemSelector( YWidget *    parent,
-                              bool         enforceSingleSelection )
+YItemSelector::YItemSelector( YWidget *	   parent,
+			      bool	   enforceSingleSelection )
     : YSelectionWidget( parent,
-                        "",     // label
-                        enforceSingleSelection )
+			"",	// label
+			enforceSingleSelection )
     , priv( new YItemSelectorPrivate )
 {
     YUI_CHECK_NEW( priv );
-    setEnforceInitialSelection( false );
 
-    setDefaultStretchable( YD_HORIZ, true );
-    setDefaultStretchable( YD_VERT,  true );
+    init();
+}
+
+
+YItemSelector::YItemSelector( YWidget *				   parent,
+			      const YItemCustomStatusVector &	   customStates )
+    : YSelectionWidget( parent,
+			"",	// label
+			false ) // enforceSingleSelection )
+    , priv( new YItemSelectorPrivate )
+{
+    YUI_CHECK_NEW( priv );
+
+    priv->customStates = customStates;
+    init();
+    checkCustomStates();
 }
 
 
 YItemSelector::~YItemSelector()
 {
     // NOP
+}
+
+
+void YItemSelector::init()
+{
+    setEnforceInitialSelection( false );
+
+    setDefaultStretchable( YD_HORIZ, true );
+    setDefaultStretchable( YD_VERT,  true );
 }
 
 
@@ -80,9 +103,100 @@ YItemSelector::visibleItems() const
 void YItemSelector::setVisibleItems( int newVal )
 {
     if ( newVal < 1 )
-        newVal = 1;
+	newVal = 1;
 
     priv->visibleItems = newVal;
+}
+
+
+void YItemSelector::setItemStatus( YItem * item, int status )
+{
+    if ( ! usingCustomStatus() )
+    {
+        // Let the standard method (normally in the YSelectionWidget base
+        // class) handle this. That method also takes care of enforcing single
+        // selection if configured.
+
+        selectItem( item, status != 0 );
+    }
+    else
+    {
+        YUI_CHECK_INDEX( status, -1, customStatusCount() - 1 );
+        item->setStatus( status );
+        updateCustomStatusIndicator( item );
+    }
+}
+
+
+bool YItemSelector::usingCustomStatus() const
+{
+    return ! priv->customStates.empty();
+}
+
+
+int YItemSelector::customStatusCount() const
+{
+    return priv->customStates.size();
+}
+
+
+const YItemCustomStatus &
+YItemSelector::customStatus( int index )
+{
+    // std::vector::at() does bounds checking of 'index', possibly throwing a
+    // std::out_of_range exception.
+    //
+    // std::vector::operator[] does not do any checking and may just cause a
+    // segfault or misbehave in spectacular ways.
+
+    return priv->customStates.at( (YItemCustomStatusVector::size_type) index );
+}
+
+
+bool YItemSelector::validCustomStatusIndex( int index ) const
+{
+    return index >= 0 && index < customStatusCount();
+}
+
+
+void YItemSelector::checkCustomStates()
+{
+    if ( priv->customStates.size() < 2 )
+        YUI_THROW( YUIException( "Need at least 2 different custom status value definitions" ) );
+
+    int maxStatus = priv->customStates.size() - 1;
+
+    for ( int i=0; i <= maxStatus; ++i )
+    {
+	YItemCustomStatus & status = priv->customStates.at( (YItemCustomStatusVector::size_type) i );
+
+	if ( status.nextStatus() > maxStatus )
+	{
+	    yuiError() << "Invalid nextStatus " << status.nextStatus()
+		       << " for status #" << i
+		       << endl;
+
+	    status.setNextStatus( -1 );
+	}
+	else if ( status.nextStatus() < -1 )
+	    status.setNextStatus( -1 );
+        else
+        {
+            yuiDebug() << "Status #" << i << ": next status: #" << status.nextStatus() << endl;
+        }
+    }
+}
+
+
+int YItemSelector::cycleCustomStatus( int oldStatus )
+{
+    if ( ! validCustomStatusIndex( oldStatus ) )
+    {
+        yuiDebug() << "Invalid old status: " << oldStatus << endl;
+        return oldStatus;
+    }
+    else
+        return priv->customStates.at( oldStatus ).nextStatus();
 }
 
 
@@ -94,18 +208,18 @@ YItemSelector::propertySet()
     if ( propSet.isEmpty() )
     {
 	/*
-	 * @property itemID	Value           The (first) currently selected item
-	 * @property itemID	CurrentItem     The (first) currently selected item
-	 * @property itemList	SelectedItems   All currently selected items
-	 * @property itemList	Items           All items
-	 * @property integer    VisibleItems    Number of items that are visible without scrolling
-	 * @property string	IconPath        Base path for icons
+	 * @property itemID	Value		The (first) currently selected item
+	 * @property itemID	CurrentItem	The (first) currently selected item
+	 * @property itemList	SelectedItems	All currently selected items
+	 * @property itemList	Items		All items
+	 * @property integer	VisibleItems	Number of items that are visible without scrolling
+	 * @property string	IconPath	Base path for icons
 	 */
 	propSet.add( YProperty( YUIProperty_Value,		YOtherProperty	 ) );
 	propSet.add( YProperty( YUIProperty_CurrentItem,	YOtherProperty	 ) );
 	propSet.add( YProperty( YUIProperty_SelectedItems,	YOtherProperty	 ) );
 	propSet.add( YProperty( YUIProperty_Items,		YOtherProperty	 ) );
-	propSet.add( YProperty( YUIProperty_VisibleItems,       YIntegerProperty ) );
+	propSet.add( YProperty( YUIProperty_VisibleItems,	YIntegerProperty ) );
 	propSet.add( YProperty( YUIProperty_IconPath,		YStringProperty	 ) );
 	propSet.add( YWidget::propertySet() );
     }
@@ -120,11 +234,11 @@ YItemSelector::setProperty( const string & propertyName, const YPropertyValue & 
     propertySet().check( propertyName, val.type() ); // throws exceptions if not found or type mismatch
 
     if	    ( propertyName == YUIProperty_Value		)	return false; // Needs special handling
-    else if ( propertyName == YUIProperty_CurrentItem 	)	return false; // Needs special handling
+    else if ( propertyName == YUIProperty_CurrentItem	)	return false; // Needs special handling
     else if ( propertyName == YUIProperty_SelectedItems	)	return false; // Needs special handling
-    else if ( propertyName == YUIProperty_Items 	)	return false; // Needs special handling
-    else if ( propertyName == YUIProperty_VisibleItems 	)	setVisibleItems( val.integerVal() );
-    else if ( propertyName == YUIProperty_IconPath 	)	setIconBasePath( val.stringVal() );
+    else if ( propertyName == YUIProperty_Items		)	return false; // Needs special handling
+    else if ( propertyName == YUIProperty_VisibleItems	)	setVisibleItems( val.integerVal() );
+    else if ( propertyName == YUIProperty_IconPath	)	setIconBasePath( val.stringVal() );
     else
     {
 	return YWidget::setProperty( propertyName, val );
@@ -140,10 +254,10 @@ YItemSelector::getProperty( const string & propertyName )
     propertySet().check( propertyName ); // throws exceptions if not found
 
     if	    ( propertyName == YUIProperty_Value		)	return YPropertyValue( YOtherProperty );
-    else if ( propertyName == YUIProperty_CurrentItem 	)	return YPropertyValue( YOtherProperty );
+    else if ( propertyName == YUIProperty_CurrentItem	)	return YPropertyValue( YOtherProperty );
     else if ( propertyName == YUIProperty_SelectedItems	)	return YPropertyValue( YOtherProperty );
-    else if ( propertyName == YUIProperty_Items 	)	return YPropertyValue( YOtherProperty );
-    else if ( propertyName == YUIProperty_VisibleItems 	)	return YPropertyValue( visibleItems() );
+    else if ( propertyName == YUIProperty_Items		)	return YPropertyValue( YOtherProperty );
+    else if ( propertyName == YUIProperty_VisibleItems	)	return YPropertyValue( visibleItems() );
     else if ( propertyName == YUIProperty_IconPath	)	return YPropertyValue( iconBasePath() );
     else
     {

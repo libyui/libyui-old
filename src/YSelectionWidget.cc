@@ -535,7 +535,21 @@ void YSelectionWidget::dumpItems() const
 
     for ( YItemConstIterator it = itemsBegin(); it != itemsEnd(); ++it )
     {
-        yuiMilestone() << ( (*it)->selected() ? "  [x] " : "  [ ] " )
+        string status;
+
+        switch ( (*it)->status() )
+        {
+            case 0: status = "[ ]";     break;
+            case 1: status = "[x]";     break;
+            default:
+                {
+                    char buffer[80];
+                    sprintf( buffer, "[%d]", (*it)->status() );
+                    status = buffer;
+                }
+        }
+
+        yuiMilestone() << "  " << status << " "
                        << (*it)->label()
                        << endl;
     }

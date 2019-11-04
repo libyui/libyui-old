@@ -35,7 +35,7 @@
 class YDescribedItem: public YItem
 {
 public:
-    
+
     /**
      * Constructor with the label, the description and optionally the selected
      * state.
@@ -45,6 +45,7 @@ public:
                     bool                selected    = false )
         : YItem( label, selected )
         , _description( description )
+        , _enabled( true )
         {}
 
     /**
@@ -57,6 +58,7 @@ public:
                     bool                selected = false )
         : YItem( label, iconName, selected )
         , _description( description )
+        , _enabled( true )
         {}
 
     /**
@@ -76,10 +78,25 @@ public:
      **/
     void setDescription( const std::string & desc ) { _description = desc; }
 
+    /**
+     * Return 'true' if this item is enabled (which is the default). Items are
+     * only ever disabled if the application explicitly sets them to disabled.
+     **/
+    bool enabled() const { return _enabled; }
+
+    /**
+     * Set this item to enabled or disabled.
+     *
+     * Notice that this only stores that status internally. To have any effect
+     * on an associated widget, use the widget's method to enable or disable an
+     * item (which will usually call this method internally at some point).
+     **/
+    void setEnabled( bool value ) { _enabled = value; }
 
 private:
 
     std::string _description;
+    bool        _enabled;
 
 };      // class YDescribedItem
 

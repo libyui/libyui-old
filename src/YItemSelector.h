@@ -27,6 +27,7 @@
 
 #include "YSelectionWidget.h"
 #include "YDescribedItem.h"
+#include "YItemCustomStatus.h"
 
 
 class YItemSelectorPrivate;
@@ -44,10 +45,40 @@ class YItemSelector: public YSelectionWidget
 public:
 
     /**
-     * Constructor.
+     * Standard constructor.
      **/
     YItemSelector( YWidget *    parent,
                    bool         enforceSingleSelection = true );
+
+    /**
+     * Constructor for custom item status values.
+     *
+     * This makes it possible to set a wider variety of values than just 0 or
+     * 1.  The semantics behind the individual status values is purely
+     * application defined; the specified customStates description only
+     * provides an icon (for graphical UIs) or a text representation (for
+     * text-based UIs) and an optional "next" status value that can be used to
+     * let the user cycle through different status values. The numeric value of
+     * each status is implicitly its index in the vector.
+     *
+     * Notice that this constructor is the only way to set custom status value
+     * descriptions; they cannot be changed anymore after initializing the
+     * widget. This is by design so that any derived widgets in concrete UIs do
+     * not have to bother with possibly recreating any subwidgets if this
+     * should change; this guarantees that it does not change, neither the fact
+     * that there are custom status values nor their number or indicator icons
+     * or texts.
+     *
+     * This constructor implicitly sets 'enforceSingleSelection' to 'false'.
+     *
+     * In this mode, the widget sends YMenuEvents (which include the item that
+     * the user changed) if the notify option is set.  For anything beyond the
+     * simple status transitions that are defined here in 'customStates', it is
+     * highly recommended to set that notify option and to handle those
+     * YMenuEvents on the application level.
+     **/
+    YItemSelector( YWidget *                            parent,
+                   const YItemCustomStatusVector &      customStates );
 
     /**
      * Destructor.
@@ -77,6 +108,46 @@ public:
      * base class method in the overloaded function.
      **/
     virtual void setVisibleItems( int newVal );
+
+    /**
+     * Set the status of an item. Unlike YItem::setStatus(), this informs the
+     * widget of the change so it can set the corresponding status icon.
+     **/
+    virtual void setItemStatus( YItem * item, int status );
+
+    /**
+     * Return 'true' if this widget uses custom status values, 'false' if not
+     * (i.e. only 0 or 1).
+     **/
+    bool usingCustomStatus() const;
+
+    /**
+     * Return the number of custom status values or 0 if no custom status
+     * values are used.
+     **/
+    int customStatusCount() const;
+
+    /**
+     * Return the custom status with the specified index (counting from 0).
+     *
+     * Notice that this may throw a std::out_of_range exception if the index is
+     * invalid.
+     **/
+    const YItemCustomStatus & customStatus( int index );
+
+    /**
+     * Return 'true' if a custom status index is within the valid range,
+     * i.e. 0..customStatusCount()-1, 'false' otherwise.
+     **/
+    bool validCustomStatusIndex( int index ) const;
+
+    /**
+     * Cycle through the custom status values according to the custom status
+     * table, i.e. return the 'nextStatus' field of table index 'oldStatus'.
+     * This may be -1 if no next status was specified there or if 'oldStatus'
+     * is out of range of that table.
+     **/
+    int cycleCustomStatus( int oldStatus );
 
     /**
      * Set a property.
@@ -114,7 +185,31 @@ public:
     const char * userInputProperty() { return YUIProperty_Value; }
 
 
+protected:
+
+    /**
+     * Update the status indicator (status icon or text indicator) if this
+     * widget is using custom status values.
+     *
+     * Derived classes should overwrite this.
+     **/
+    virtual void updateCustomStatusIndicator( YItem * item ) {}
+
+
 private:
+
+    /**
+     * Common initializations for all constructors.
+     **/
+    void init();
+
+    /**
+     * Perform a sanity check on the custom status value descriptions.
+     **/
+    void checkCustomStates();
+
+
+    // Data members
 
     ImplPtr<YItemSelectorPrivate> priv;
 
