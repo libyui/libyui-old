@@ -183,6 +183,7 @@
 #define YUIProperty_ID   			"ID"
 #define YUIProperty_Item			"Item"
 #define YUIProperty_Items			"Items"
+#define YUIProperty_ItemStatus			"ItemStatus"
 #define YUIProperty_Label			"Label"
 #define YUIProperty_Labels			"Labels"
 #define YUIProperty_LastLine			"LastLine"
