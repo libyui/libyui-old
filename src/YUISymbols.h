@@ -88,6 +88,7 @@
 #define YUIWidget_CheckBox			"CheckBox"
 #define YUIWidget_CheckBoxFrame			"CheckBoxFrame"
 #define YUIWidget_ComboBox			"ComboBox"
+#define YUIWidget_CustomStatusItemSelector      "CustomStatusItemSelector"
 #define YUIWidget_Empty				"Empty"
 #define YUIWidget_Frame				"Frame"
 #define YUIWidget_HBox				"HBox"
