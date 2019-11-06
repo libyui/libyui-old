@@ -89,6 +89,9 @@ void YItemSelector::init()
 const char *
 YItemSelector::widgetClass() const
 {
+    if ( usingCustomStatus() )
+        return "YCustomStatusItemSelector";
+
     return enforceSingleSelection() ? "YSingleItemSelector" : "YMultiItemSelector";
 }
 
@@ -222,6 +225,7 @@ YItemSelector::propertySet()
 	propSet.add( YProperty( YUIProperty_CurrentItem,	YOtherProperty	 ) );
 	propSet.add( YProperty( YUIProperty_SelectedItems,	YOtherProperty	 ) );
 	propSet.add( YProperty( YUIProperty_Items,		YOtherProperty	 ) );
+	propSet.add( YProperty( YUIProperty_ItemStatus,		YOtherProperty	 ) );
 	propSet.add( YProperty( YUIProperty_VisibleItems,	YIntegerProperty ) );
 	propSet.add( YProperty( YUIProperty_IconPath,		YStringProperty	 ) );
 	propSet.add( YWidget::propertySet() );
