@@ -441,6 +441,12 @@ void YSelectionWidget::selectItem( YItem * item, bool selected )
 }
 
 
+void YSelectionWidget::setItemStatus( YItem * item, int status )
+{
+    selectItem( item, status != 0 );
+}
+
+
 bool YSelectionWidget::itemsContain( YItem * wantedItem ) const
 {
     return itemsContain( wantedItem, itemsBegin(), itemsEnd() );

@@ -89,6 +89,9 @@ void YItemSelector::init()
 const char *
 YItemSelector::widgetClass() const
 {
+    if ( usingCustomStatus() )
+        return "YCustomStatusItemSelector";
+
     return enforceSingleSelection() ? "YSingleItemSelector" : "YMultiItemSelector";
 }
 
@@ -111,19 +114,21 @@ void YItemSelector::setVisibleItems( int newVal )
 
 void YItemSelector::setItemStatus( YItem * item, int status )
 {
-    if ( ! usingCustomStatus() )
-    {
-        // Let the standard method (normally in the YSelectionWidget base
-        // class) handle this. That method also takes care of enforcing single
-        // selection if configured.
-
-        selectItem( item, status != 0 );
-    }
-    else
+    if ( usingCustomStatus() )
     {
         YUI_CHECK_INDEX( status, -1, customStatusCount() - 1 );
         item->setStatus( status );
         updateCustomStatusIndicator( item );
+
+        // Intentionally NOT calling the parent class implementation since that
+        // would only store 0 or 1 as the item's status.
+    }
+    else
+    {
+        // Let the parent class handle this and also take care of enforcing
+        // single selection (if configured).
+
+        YSelectionWidget::setItemStatus( item, status );
     }
 }
 
@@ -212,6 +217,7 @@ YItemSelector::propertySet()
 	 * @property itemID	CurrentItem	The (first) currently selected item
 	 * @property itemList	SelectedItems	All currently selected items
 	 * @property itemList	Items		All items
+	 * @property statusMap  ItemStatus	The (numeric) status values of the items
 	 * @property integer	VisibleItems	Number of items that are visible without scrolling
 	 * @property string	IconPath	Base path for icons
 	 */
@@ -219,6 +225,7 @@ YItemSelector::propertySet()
 	propSet.add( YProperty( YUIProperty_CurrentItem,	YOtherProperty	 ) );
 	propSet.add( YProperty( YUIProperty_SelectedItems,	YOtherProperty	 ) );
 	propSet.add( YProperty( YUIProperty_Items,		YOtherProperty	 ) );
+	propSet.add( YProperty( YUIProperty_ItemStatus,		YOtherProperty	 ) );
 	propSet.add( YProperty( YUIProperty_VisibleItems,	YIntegerProperty ) );
 	propSet.add( YProperty( YUIProperty_IconPath,		YStringProperty	 ) );
 	propSet.add( YWidget::propertySet() );
@@ -237,6 +244,7 @@ YItemSelector::setProperty( const string & propertyName, const YPropertyValue & 
     else if ( propertyName == YUIProperty_CurrentItem	)	return false; // Needs special handling
     else if ( propertyName == YUIProperty_SelectedItems	)	return false; // Needs special handling
     else if ( propertyName == YUIProperty_Items		)	return false; // Needs special handling
+    else if ( propertyName == YUIProperty_ItemStatus    )	return false; // Needs special handling
     else if ( propertyName == YUIProperty_VisibleItems	)	setVisibleItems( val.integerVal() );
     else if ( propertyName == YUIProperty_IconPath	)	setIconBasePath( val.stringVal() );
     else
@@ -257,6 +265,7 @@ YItemSelector::getProperty( const string & propertyName )
     else if ( propertyName == YUIProperty_CurrentItem	)	return YPropertyValue( YOtherProperty );
     else if ( propertyName == YUIProperty_SelectedItems	)	return YPropertyValue( YOtherProperty );
     else if ( propertyName == YUIProperty_Items		)	return YPropertyValue( YOtherProperty );
+    else if ( propertyName == YUIProperty_ItemStatus    )	return YPropertyValue( YOtherProperty );
     else if ( propertyName == YUIProperty_VisibleItems	)	return YPropertyValue( visibleItems() );
     else if ( propertyName == YUIProperty_IconPath	)	return YPropertyValue( iconBasePath() );
     else

@@ -112,6 +112,8 @@ public:
     /**
      * Set the status of an item. Unlike YItem::setStatus(), this informs the
      * widget of the change so it can set the corresponding status icon.
+     *
+     * Reimplemented from YSelectionWidget.
      **/
     virtual void setItemStatus( YItem * item, int status );
 

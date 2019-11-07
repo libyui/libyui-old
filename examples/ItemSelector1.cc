@@ -72,6 +72,7 @@ void askConfigValues();
 
 int main( int argc, char **argv )
 {
+    YUILog::setLogFileName( "/tmp/libyui-examples.log" );
     YUILog::enableDebugLogging();
 
     askConfigValues();

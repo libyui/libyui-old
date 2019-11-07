@@ -202,6 +202,17 @@ public:
     virtual void selectItem( YItem * item, bool selected = true );
 
     /**
+     * Set the status of an item.
+     *
+     * This is similar to selectItem(), but with numeric values.
+     *
+     * This default implementation just calls selectItem() with 'status'
+     * converted to boolean. Derived classes can choose to make more detailed
+     * use of the numeric value.
+     **/
+    virtual void setItemStatus( YItem * item, int status );
+
+    /**
      * Deselect all items.
      *
      * Derived classes can overwrite this function, but they should call this

@@ -88,6 +88,7 @@
 #define YUIWidget_CheckBox			"CheckBox"
 #define YUIWidget_CheckBoxFrame			"CheckBoxFrame"
 #define YUIWidget_ComboBox			"ComboBox"
+#define YUIWidget_CustomStatusItemSelector      "CustomStatusItemSelector"
 #define YUIWidget_Empty				"Empty"
 #define YUIWidget_Frame				"Frame"
 #define YUIWidget_HBox				"HBox"
@@ -183,6 +184,7 @@
 #define YUIProperty_ID   			"ID"
 #define YUIProperty_Item			"Item"
 #define YUIProperty_Items			"Items"
+#define YUIProperty_ItemStatus			"ItemStatus"
 #define YUIProperty_Label			"Label"
 #define YUIProperty_Labels			"Labels"
 #define YUIProperty_LastLine			"LastLine"
@@ -342,7 +344,6 @@
 #define YUISymbol_topMargin			"topMargin"
 #define YUISymbol_bottomMargin			"bottomMargin"
 #define YUISymbol_BackgroundPixmap		"BackgroundPixmap"
-#define YUISymbol_states                        "states"
 
 #define YUISymbol_Left				"Left"
 #define YUISymbol_Right				"Right"
