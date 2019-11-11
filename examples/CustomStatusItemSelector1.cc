@@ -127,7 +127,7 @@ void createWidgets()
 
     YItemCustomStatusVector states;
     //					 iconName	       textIndicator  nextStatus
-    states.push_back( YItemCustomStatus( "checkbox-off",	    "[	]", MOD_INSTALL	     ) );
+    states.push_back( YItemCustomStatus( "checkbox-off",	    "[  ]", MOD_INSTALL	     ) );
     states.push_back( YItemCustomStatus( "checkbox-on",		    "[ +]", MOD_DONT_INSTALL ) );
     states.push_back( YItemCustomStatus( "checkbox-auto-selected",  "[a+]", MOD_DONT_INSTALL ) );
 
