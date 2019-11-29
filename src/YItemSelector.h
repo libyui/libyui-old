@@ -191,7 +191,7 @@ public:
      *
      * Derived classes are required to implement this.
      **/
-    virtual void activate() = 0;
+    virtual void activateItem( YItem * item ) = 0;
 
 protected:
 
