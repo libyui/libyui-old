@@ -16,11 +16,11 @@
 #
 
 Name:           libyui
-Version:        3.8.5
+Version:        3.9.0
 Release:        0
 Source:         %{name}-%{version}.tar.bz2
 
-%define so_version 10
+%define so_version 11
 %define bin_name %{name}%{so_version}
 
 # optionally build with code coverage reporting,

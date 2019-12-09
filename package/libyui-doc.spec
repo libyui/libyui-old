@@ -17,10 +17,10 @@
 
 
 %define parent libyui
-%define so_version 10
+%define so_version 11
 
 Name:           %{parent}-doc
-Version:        3.8.5
+Version:        3.9.0
 Release:        0
 Source:         %{parent}-%{version}.tar.bz2
 

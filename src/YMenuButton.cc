@@ -264,3 +264,41 @@ YMenuButton::getProperty( const string & propertyName )
 	return YWidget::getProperty( propertyName );
     }
 }
+
+
+YMenuItem *
+YMenuButton::findItem( std::vector<std::string> & path ) const
+{
+    return findItem( path.begin(), path.end(), itemsBegin(), itemsEnd());
+}
+
+YMenuItem *
+YMenuButton::findItem( std::vector<std::string>::iterator path_begin,
+                       std::vector<std::string>::iterator path_end,
+                       YItemConstIterator begin,
+                       YItemConstIterator end ) const
+{
+    for ( YItemConstIterator it = begin; it != end; ++it )
+    {
+        YMenuItem * item = dynamic_cast<YMenuItem *>(*it);
+        // Test that dynamic_cast didn't fail
+        if ( !item )
+            return nullptr;
+
+        if( item->label() == *path_begin )
+        {
+            if ( std::next(path_begin) == path_end ) {
+                // Only return items which can trigger action, intermediate items only open nested popup, so continue looking
+                if( item->hasChildren() )
+                    continue;
+
+                return item;
+            }
+            // Look in child nodes and return if found one
+            YMenuItem * result = findItem( ++path_begin, path_end, item->childrenBegin(), item->childrenEnd() );
+            if ( result )
+                return result;
+        }
+    }
+    return nullptr;
+}

@@ -206,6 +206,12 @@ public:
      */
     virtual void setHScrollValue( const std::string & newValue );
 
+    /**
+     * Derived classes should implement this, method is used to trigger event
+     * like user has pressed the link in the RichText
+     **/
+    virtual void activateLink( const std::string & url ) = 0;
+
 protected:
 
     ImplPtr<YRichTextPrivate> priv;
