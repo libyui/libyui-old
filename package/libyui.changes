@@ -1,7 +1,7 @@
 -------------------------------------------------------------------
 Fri Nov 29 14:38:54 UTC 2019 - Rodion Iafarov <riafarov@suse.com>
 
-- Add support to operate on many widgets with rest-api
+- Add support to operate on many widgets with rest-api (bsc#1132247)
 - Increase SO version to 11
 - 3.9.0
 
