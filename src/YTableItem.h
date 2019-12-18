@@ -110,10 +110,11 @@ public:
     void addCell( YTableCell * cell_disown );
 
     /**
-     * Create a new cell and add it (even if both 'label' and
-     * 'iconName' are empty).
+     * Create a new cell and add it (even if all 'label',
+     * 'iconName' and 'sortKey' are empty).
      **/
-    void addCell( const std::string & label, const std::string & iconName = std::string() );
+    void addCell( const std::string & label, const std::string & iconName = std::string(),
+		  const std::string & sortKey = std::string() );
 
     /**
      * Delete all cells.
@@ -219,13 +220,15 @@ class YTableCell
 {
 public:
     /**
-     * Constructor with label and optional icon name for cells that don't have
-     * a parent item yet (that will be added to a parent later with
-     * setParent()).
+     * Constructor with label and optional icon name and optional sort
+     * key for cells that don't have a parent item yet (that will be
+     * added to a parent later with setParent()).
      **/
-    YTableCell( const std::string & label, const std::string & iconName = "" )
+    YTableCell( const std::string & label, const std::string & iconName = "",
+		const std::string & sortKey = "" )
         : _label( label )
         , _iconName( iconName )
+	, _sortKey( sortKey )
 	, _parent( 0 )
 	, _column ( -1 )
         {}
@@ -237,9 +240,11 @@ public:
     YTableCell( YTableItem *		parent,
 		int			column,
 		const std::string &	label,
-		const std::string &	iconName = "" )
+		const std::string &	iconName = "",
+		const std::string &     sortKey = "" )
         : _label( label )
         , _iconName( iconName )
+	, _sortKey( sortKey )
 	, _parent( parent )
 	, _column ( column )
         {}
@@ -287,6 +292,25 @@ public:
     void setIconName( const std::string & newIconName ) { _iconName = newIconName; }
 
     /**
+     * Return this cell's sort key.
+     **/
+    std::string sortKey() const { return _sortKey; }
+
+    /**
+     * Return 'true' if this cell has a sort key.
+     **/
+    bool hasSortKey() const { return ! _sortKey.empty(); }
+
+    /**
+     * Set this cell's sort key.
+     *
+     * If this is called after the corresponding table item (table row) is
+     * added to the table widget, call YTable::cellChanged() to notify the
+     * table widget about the fact. Only then will the display be updated.
+     **/
+    void setSortKey( const std::string & newSortKey ) { _sortKey = newSortKey; }
+
+    /**
      * Return this cell's parent item or 0 if it doesn't have one yet.
      **/
     YTableItem * parent() const { return _parent; }
@@ -316,6 +340,7 @@ private:
 
     std::string		_label;
     std::string		_iconName;
+    std::string         _sortKey;
     YTableItem *	_parent;
     int			_column;
 };
