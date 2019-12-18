@@ -114,9 +114,9 @@ YTableItem::addCell( YTableCell * cell )
 
 
 void
-YTableItem::addCell( const string & label, const string & iconName )
+YTableItem::addCell( const string & label, const string & iconName, const string & sortKey )
 {
-    YTableCell * cell = new YTableCell( label, iconName );
+    YTableCell * cell = new YTableCell( label, iconName, sortKey );
     YUI_CHECK_NEW( cell );
 
     addCell( cell );

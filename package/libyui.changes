@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Dec 18 11:12:13 CET 2019 - aschnell@suse.com
+
+- added sort key to table cell (bsc#1140018)
+- 3.9.1
+
+-------------------------------------------------------------------
 Fri Nov 29 14:38:54 UTC 2019 - Rodion Iafarov <riafarov@suse.com>
 
 - Add support to operate on many widgets with rest-api (bsc#1132247)

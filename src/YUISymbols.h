@@ -334,6 +334,7 @@
 #define YUISymbol_id				"id"
 #define YUISymbol_opt				"opt"
 #define YUISymbol_icon				"icon"
+#define YUISymbol_sortKey			"sortKey"
 #define YUISymbol_item				"item"
 #define YUISymbol_cell				"cell"
 #define YUISymbol_menu				"menu"
