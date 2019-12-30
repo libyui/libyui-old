@@ -146,6 +146,7 @@ class FSize :
      *   - 1.66 - returns just the lower bits
      **/
     explicit operator long long() const { return static_cast<long long>(_size); }
+    explicit operator unsigned long long() const { return static_cast<unsigned long long>(_size); }
     explicit operator int() const { return static_cast<int>(_size); }
     explicit operator double() const { return static_cast<double>(_size); }
 
