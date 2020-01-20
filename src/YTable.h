@@ -37,7 +37,8 @@ class YTablePrivate;
 /**
  * Table: Selection list with multiple columns. The user can select exactly one
  * row (with all its columns) from that list. Each cell (each column within
- * each row) has a label text and an optional icon (*).
+ * each row) has a label text, an optional icon (*) and an optional sort-key
+ * (used instead of the label text during sort).
  *
  * This widget is similar to SelectionBox, but it has several columns for each
  * item (each row). If just one column is desired, consider using SelectionBox
@@ -157,10 +158,10 @@ public:
                       YItemConstIterator  end ) const;
 
     /**
-     * Notification that a cell (its text and/or its icon) was changed from the
-     * outside. Applications are required to call this whenever a table cell is
-     * changed after adding the corresponding table item (the row) to the table
-     * widget.
+     * Notification that a cell (its text, its icon and/or sort-key) was
+     * changed from the outside. Applications are required to call this
+     * whenever a table cell is changed after adding the corresponding table
+     * item (the row) to the table widget.
      *
      * Derived classes are required to implement this and update the display
      * accordingly.

@@ -197,7 +197,7 @@ private:
 
 /**
  * One cell (one column in one row) of a YTableItem. Each cell has a label (a
- * user visible text) and optionally an icon (*).
+ * user visible text), optionally an icon (*) and also optionally a sort-key.
  *
  * Note that cells don't have individual IDs; they have just an index.
  * The first cell in an item is cell(0). In an ideal world, each YTableItem
