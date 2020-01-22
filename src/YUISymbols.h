@@ -241,6 +241,7 @@
 #define YUIOpt_noAutoEnable			"noAutoEnable"
 #define YUIOpt_notify				"notify"
 #define YUIOpt_notifyContextMenu		"notifyContextMenu"
+#define YUIOpt_onlineSearch			"onlineSearch"
 #define YUIOpt_okButton				"okButton"
 #define YUIOpt_outputField			"outputField"
 #define YUIOpt_plainText			"plainText"

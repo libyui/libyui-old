@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Fri Jan 17 12:12:08 UTC 2020 - Imobach Gonzalez Sosa <igonzalezsosa@suse.com>
+
+- Add an option to include a "Search Online" option in the
+  package selector (jsc#SLE-9109).
+- 3.9.2
+
+-------------------------------------------------------------------
 Wed Dec 18 11:12:13 CET 2019 - aschnell@suse.com
 
 - added sort key to table cell (bsc#1140018)

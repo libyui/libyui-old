@@ -35,6 +35,7 @@
 #define YPkg_RepoMode		1 << 5	// Start with "Repositories" filter view
 #define YPkg_RepoMgr		1 << 6	// Add "Manage Repositories" to menu
 #define YPkg_ConfirmUnsupported	1 << 7	// Confirm unsupported packages
+#define YPkg_OnlineSearch		1 << 8	// Add "Search Online" to menu
 
 /**
  * A simple wrapper for an insanely complex UI for installing software.
@@ -68,6 +69,7 @@ public:
     bool repoMode()		const { return _modeFlags & YPkg_RepoMode;         	}
     bool repoMgrEnabled()	const { return _modeFlags & YPkg_RepoMgr;		}
     bool confirmUnsupported()	const { return _modeFlags & YPkg_ConfirmUnsupported;	}
+    bool onlineSearchEnabled()	const { return _modeFlags & YPkg_OnlineSearch;		}
 
 protected:
     long _modeFlags;
