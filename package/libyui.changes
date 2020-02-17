@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Feb 17 10:57:55 UTC 2020 - Stefan Hundhammer <shundhammer@suse.com>
+
+- Removed obsolete old RPM group tags (bsc#1163594)
+- 3.9.3
+
+-------------------------------------------------------------------
 Fri Jan 17 12:12:08 UTC 2020 - Imobach Gonzalez Sosa <igonzalezsosa@suse.com>
 
 - Add an option to include a "Search Online" option in the
