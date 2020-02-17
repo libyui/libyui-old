@@ -29,48 +29,30 @@
 #include "YStringTree.h"
 
 
+
 /**
- * Efficient storage for RPM group tags
+ * This was an efficient storage for RPM group tags.
+ *
+ * THIS CLASS IS OBSOLETE. DO NOT USE THIS ANYMORE.
  **/
+#ifndef SUPPRESS_YRPMGROUPSTREE_OBSOLETE_WARNING
+#  warning The YRpmGroupsTree class is obsolete. DO NOT USE ANYMORE.
+#endif
 class YRpmGroupsTree: public YStringTree
 {
 public:
 
-    /**
-     * Constructor.
-     **/
-
     YRpmGroupsTree();
-
-    /**
-     * Destructor.
-     **/
     virtual ~YRpmGroupsTree();
-
-    /**
-     * Insert an RPM group into this tree if not already present.
-     * Splits the RPM group string ("abc/def/ghi") and creates tree items for
-     * each level as required.
-     * Returns the tree entry for this RPM group.
-     **/
     YStringTreeItem * addRpmGroup( const std::string & rpmGroup )
-	{ return addBranch( rpmGroup, '/' ); }
+	{ return 0; }
 
-    /**
-     * Returns the complete (untranslated) RPM group tag string for 'node'.
-     **/
     std::string rpmGroup( const YStringTreeItem * node )
 	{ return origPath( node, '/', false ); }
 
-    /**
-     * Returns the complete translated RPM group tag string for 'node'.
-     **/
     std::string translatedRpmGroup( const YStringTreeItem * node )
 	{ return translatedPath( node, '/', false ); }
 
-    /**
-     * Add a predefined set of RPM groups
-     **/
     void addFallbackRpmGroups();
 };
 
