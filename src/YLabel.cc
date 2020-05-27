@@ -46,12 +46,14 @@ struct YLabelPrivate
 	, isHeading( isHeading )
 	, isOutputField( isOutputField )
 	, useBoldFont( false )
+        , autoWrap( false )
 	{}
 
     string	text;
     bool	isHeading;
     bool	isOutputField;
     bool	useBoldFont;
+    bool        autoWrap;
 };
 
 
@@ -105,6 +107,18 @@ bool YLabel::useBoldFont() const
 void YLabel::setUseBoldFont( bool bold )
 {
     priv->useBoldFont = bold;
+}
+
+
+bool YLabel::autoWrap() const
+{
+    return priv->autoWrap;
+}
+
+
+void YLabel::setAutoWrap( bool autoWrap )
+{
+    priv->autoWrap = autoWrap;
 }
 
 

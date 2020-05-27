@@ -212,6 +212,7 @@
 // Widget and dialog options
 
 #define YUIOpt_animated				"animated"
+#define YUIOpt_autoWrap                         "autoWrap"
 #define YUIOpt_applyButton			"applyButton"
 #define YUIOpt_autoScrollDown			"autoScrollDown"
 #define YUIOpt_autoShortcut			"autoShortcut"

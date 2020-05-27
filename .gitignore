@@ -116,6 +116,7 @@ tmp
 /examples/*
 # but keep sources and cmake
 !/examples/*.cc
+!/examples/*.h
 
 # Code coverage
 /coverage
