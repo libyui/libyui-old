@@ -1,6 +1,6 @@
 /*
   Copyright (c) [2020] SUSE LLC
-  
+
   This library is free software; you can redistribute it and/or modify
   it under the terms of the GNU Lesser General Public License as
   published by the Free Software Foundation; either version 2.1 of the
@@ -35,6 +35,8 @@
 
 #include "LoremIpsum.h"
 
+#define TEXT_LEN  300
+
 using std::string;
 
 
@@ -43,14 +45,23 @@ int main( int argc, char **argv )
     YUILog::setLogFileName( "/tmp/libyui-examples.log" );
     YUILog::enableDebugLogging();
 
-    YWidgetFactory * fac = YUI::widgetFactory();
-    YDialog    * dialog  = fac->createPopupDialog();
-    YLayoutBox * vbox    = fac->createVBox( dialog );
-    YAlignment * mbox    = fac->createMarginBox( vbox, 1, 0.5 );
-    YAlignment * minSize = fac->createMinSize( mbox, 74, 18 );
-    YLabel     * label   = fac->createOutputField( minSize, loremIpsum() );
-    label->setAutoWrap();
-    YUI::widgetFactory()->createPushButton( vbox, "&OK" );
+    YWidgetFactory * fac   = YUI::widgetFactory();
+    YDialog    * dialog    = fac->createPopupDialog();
+    YLayoutBox * vbox1     = fac->createVBox( dialog );
+    YAlignment * mbox      = fac->createMarginBox( vbox1, 1, 0.5 );
+    YAlignment * minSize   = fac->createMinSize( mbox, 50, 12 );
+    YLayoutBox * vbox2     = fac->createVBox( minSize );
+
+    YLabel     * label1    = fac->createOutputField( vbox2, loremIpsum( TEXT_LEN ) );
+    fac->createVSpacing( vbox2, 0.3 );
+    YLabel     * label2    = fac->createOutputField( vbox2, loremIpsum( TEXT_LEN ) );
+    fac->createVSpacing( vbox2, 0.3 );
+    YLabel     * label3    = fac->createOutputField( vbox2, loremIpsum( TEXT_LEN ) );
+    label1->setAutoWrap();
+    label2->setAutoWrap();
+    label3->setAutoWrap();
+
+    YUI::widgetFactory()->createPushButton( vbox1, "&OK" );
 
     dialog->waitForEvent();
     dialog->destroy();

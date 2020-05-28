@@ -143,6 +143,28 @@ public:
     bool isTopmostDialog() const;
 
     /**
+     * Request multiple passes of the layout engine.
+     *
+     * This is intended for widgets that don't know their preferred width and
+     * height immediately because one depends on the other, for example labels
+     * with auto-wrapping: They know (roughly) the area they will need, but
+     * they can calculate their preferred height only when their width is
+     * known.
+     *
+     * Once set, this option cannot be unset; it remains set for the life
+     * time of the dialog.
+     **/
+    void requestMultiPassLayout();
+
+    /**
+     * Return the number of the current layout pass:
+     *   0: No layout going on right now
+     *   1: First pass
+     *   2: Second pass of a multi-pass layout
+     **/
+    int layoutPass() const;
+
+    /**
      * Close and delete this dialog (and all its children) if it is the topmost
      * dialog. If this is not the topmost dialog, this will throw an exception
      * if 'doThrow' is true (default).
@@ -377,6 +399,11 @@ protected:
      * necessary to make this dialog visible on the screen.
      **/
     virtual void openInternal() = 0;
+
+    /**
+     * Calculate the layout and set the size of the dialog and all widgets.
+     **/
+    void doLayout();
 
     /**
      * Wait for a user event.

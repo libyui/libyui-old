@@ -184,6 +184,17 @@ public:
      **/
     virtual std::string debugLabel() const;
 
+protected:
+
+    /**
+     * Convenience method for the parent dialog's layoutPass():
+     * Return the number of the current layout pass.
+     *   0: No layout going on right now
+     *   1: First pass
+     *   2: Second pass of a multi-pass layout
+     **/
+    int layoutPass();
+
 private:
 
     ImplPtr<YLabelPrivate> priv;

@@ -29,6 +29,7 @@
 #include "YUILog.h"
 
 #include "YUISymbols.h"
+#include "YDialog.h"
 #include "YLabel.h"
 
 using std::string;
@@ -119,6 +120,22 @@ bool YLabel::autoWrap() const
 void YLabel::setAutoWrap( bool autoWrap )
 {
     priv->autoWrap = autoWrap;
+
+    if ( autoWrap )
+    {
+        YDialog * dialog = findDialog();
+
+        if ( dialog )
+            dialog->requestMultiPassLayout();
+    }
+}
+
+
+int YLabel::layoutPass()
+{
+    const YDialog * dialog = findDialog();
+
+    return dialog ? dialog->layoutPass() : 0;
 }
 
 
