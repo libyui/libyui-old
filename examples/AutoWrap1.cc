@@ -47,10 +47,11 @@ int main( int argc, char **argv )
     YDialog    * dialog  = fac->createPopupDialog();
     YLayoutBox * vbox    = fac->createVBox( dialog );
     YAlignment * mbox    = fac->createMarginBox( vbox, 1, 0.5 );
-    YAlignment * minSize = fac->createMinSize( mbox, 74, 18 );
+    YAlignment * minSize = fac->createMinWidth( mbox, 74 );
     YLabel     * label   = fac->createOutputField( minSize, loremIpsum() );
     label->setAutoWrap();
-    YUI::widgetFactory()->createPushButton( vbox, "&OK" );
+
+    fac->createPushButton( vbox, "&OK" );
 
     dialog->waitForEvent();
     dialog->destroy();
