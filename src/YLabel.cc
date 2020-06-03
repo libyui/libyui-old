@@ -58,10 +58,10 @@ struct YLabelPrivate
 };
 
 
-YLabel::YLabel( YWidget *		parent,
+YLabel::YLabel( YWidget *	parent,
 		const string &	text,
-		bool			isHeading,
-		bool			isOutputField )
+		bool		isHeading,
+		bool		isOutputField )
     : YWidget( parent )
     , priv( new YLabelPrivate( text, isHeading, isOutputField ) )
 {
@@ -128,6 +128,9 @@ void YLabel::setAutoWrap( bool autoWrap )
         if ( dialog )
             dialog->requestMultiPassLayout();
     }
+
+    setStretchable( YD_HORIZ, autoWrap );
+    setStretchable( YD_VERT,  autoWrap );
 }
 
 
