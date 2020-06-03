@@ -160,6 +160,12 @@ public:
     int itemsCount() const;
 
     /**
+     * Return the item at index 'index' (from 0)
+     * or 0 if there is no such item.
+     **/
+    YItem * itemAt( int index ) const;
+
+    /**
      * Return the first item or 0 if there is none.
      **/
     YItem * firstItem() const;
@@ -352,11 +358,6 @@ protected:
     bool itemsContain	( YItem *		wantedItem,
 			  YItemConstIterator	begin,
 			  YItemConstIterator	end ) const;
-    /**
-     * Return the item at index 'index' (from 0)
-     * or 0 if there is no such item.
-     **/
-    YItem * itemAt( int index ) const;
 
 
 private:
