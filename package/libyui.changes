@@ -1,3 +1,8 @@
+Fri Jun  5 12:46:43 UTC 2020 - riafarov <riafarov@suse.com>
+
+- Make itemAt method public for YSelectionWidget (bsc#1132247)
+- 3.10.1
+
 -------------------------------------------------------------------
 Thu Jun  4 11:11:20 UTC 2020 - Stefan Hundhammer <shundhammer@suse.com>
 
