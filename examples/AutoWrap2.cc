@@ -22,6 +22,9 @@
 //    compile-command: "g++ -I/usr/include/yui -lyui AutoWrap1.cc -o AutoWrap1"
 // End:
 
+
+#include <algorithm>
+
 #define YUILogComponent "example"
 #include "YUILog.h"
 
@@ -35,9 +38,13 @@
 
 #include "LoremIpsum.h"
 
-#define TEXT_LEN  300
+// This should also fit in NCurses 80x24.
+#define TEXT_LEN  250
 
 using std::string;
+
+
+string toPath ( const string & orig );
 
 
 int main( int argc, char **argv )
@@ -54,7 +61,7 @@ int main( int argc, char **argv )
 
     YLabel     * label1    = fac->createOutputField( vbox2, loremIpsum( TEXT_LEN ) );
     fac->createVSpacing( vbox2, 0.3 );
-    YLabel     * label2    = fac->createOutputField( vbox2, loremIpsum( TEXT_LEN ) );
+    YLabel     * label2    = fac->createOutputField( vbox2, toPath( loremIpsum( TEXT_LEN ) ) );
     fac->createVSpacing( vbox2, 0.3 );
     YLabel     * label3    = fac->createOutputField( vbox2, loremIpsum( TEXT_LEN ) );
     label1->setAutoWrap();
@@ -66,3 +73,32 @@ int main( int argc, char **argv )
     dialog->waitForEvent();
     dialog->destroy();
 }
+
+
+string toPath( const string & orig )
+{
+    string path;
+    path.reserve( orig.size() );
+
+    for ( char c: orig )
+    {
+        switch ( c )
+        {
+            case ' ':
+            case '\n':
+                path += "/";
+                break;
+
+            case '.':
+            case ',':
+                break;
+
+            default:
+                path += c;
+                break;
+        }
+    }
+
+    return path;
+}
+

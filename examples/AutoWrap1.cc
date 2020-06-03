@@ -1,6 +1,6 @@
 /*
   Copyright (c) [2020] SUSE LLC
-  
+
   This library is free software; you can redistribute it and/or modify
   it under the terms of the GNU Lesser General Public License as
   published by the Free Software Foundation; either version 2.1 of the
@@ -37,6 +37,9 @@
 
 using std::string;
 
+// This should also fit in NCurses 80x24.
+#define TEXT_LEN        986
+
 
 int main( int argc, char **argv )
 {
@@ -48,7 +51,7 @@ int main( int argc, char **argv )
     YLayoutBox * vbox    = fac->createVBox( dialog );
     YAlignment * mbox    = fac->createMarginBox( vbox, 1, 0.5 );
     YAlignment * minSize = fac->createMinWidth( mbox, 74 );
-    YLabel     * label   = fac->createOutputField( minSize, loremIpsum() );
+    YLabel     * label   = fac->createOutputField( minSize, loremIpsum( TEXT_LEN ) );
     label->setAutoWrap();
 
     fac->createPushButton( vbox, "&OK" );
