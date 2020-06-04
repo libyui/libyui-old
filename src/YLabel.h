@@ -123,6 +123,27 @@ public:
     virtual void setUseBoldFont( bool bold = true );
 
     /**
+     * Return 'true' if automatic word wrapping is enabled.
+     **/
+    bool autoWrap() const;
+
+    /**
+     * Enable or disable automatic word wrapping.
+     *
+     * This has implications for geometry management: An auto-wrapping label
+     * does not have any reasonable preferred size; it needs to be put into a
+     * parent widget (like a MinSize) that enforces a reasonable width. The
+     * height can be then be calculated from that width.
+     *
+     * Changing this setting takes only effect after the next layout geometry
+     * calculation.
+     *
+     * Derived classes should overwrite this, but call this base class function
+     * in the overwritten function.
+     **/
+    virtual void setAutoWrap( bool autoWrap = true );
+
+    /**
      * Set a property.
      * Reimplemented from YWidget.
      *
@@ -162,6 +183,17 @@ public:
      * property.
      **/
     virtual std::string debugLabel() const;
+
+protected:
+
+    /**
+     * Convenience method for the parent dialog's layoutPass():
+     * Return the number of the current layout pass.
+     *   0: No layout going on right now
+     *   1: First pass
+     *   2: Second pass of a multi-pass layout
+     **/
+    int layoutPass();
 
 private:
 

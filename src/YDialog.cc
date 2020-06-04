@@ -50,6 +50,8 @@ struct YDialogPrivate
 	, shortcutCheckPostponed( false )
 	, defaultButton( 0 )
 	, isOpen( false )
+        , multiPassLayout( false )
+        , layoutPass( 0 )
 	, lastEvent( 0 )
 	{}
 
@@ -58,6 +60,8 @@ struct YDialogPrivate
     bool		shortcutCheckPostponed;
     YPushButton *	defaultButton;
     bool		isOpen;
+    bool                multiPassLayout;
+    int                 layoutPass;
     YEvent *		lastEvent;
     YEventFilterList	eventFilterList;
 };
@@ -344,7 +348,7 @@ YDialog::setInitialSize()
 #endif
 
     // Trigger geometry management
-    setSize( preferredWidth(), preferredHeight() );
+    doLayout();
 }
 
 
@@ -352,8 +356,30 @@ void
 YDialog::recalcLayout()
 {
     yuiDebug() << "Recalculating layout for " << this << endl;
+    doLayout();
+}
 
+
+void
+YDialog::doLayout()
+{
+    priv->layoutPass = 1;
     setSize( preferredWidth(), preferredHeight() );
+
+    if ( priv->multiPassLayout )
+    {
+        priv->layoutPass = 2;
+        setSize( preferredWidth(), preferredHeight() );
+    }
+
+    priv->layoutPass = 0;
+}
+
+
+int
+YDialog::layoutPass() const
+{
+    return priv->layoutPass;
 }
 
 
@@ -631,3 +657,12 @@ YDialog::callEventFilters( YEvent * event )
     return event;
 }
 
+
+void
+YDialog::requestMultiPassLayout()
+{
+    if ( ! priv->multiPassLayout )
+        yuiDebug() << "Multiple layout passes requested" << endl;
+
+    priv->multiPassLayout = true;
+}

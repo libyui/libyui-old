@@ -29,6 +29,7 @@
 #include "YUILog.h"
 
 #include "YUISymbols.h"
+#include "YDialog.h"
 #include "YLabel.h"
 
 using std::string;
@@ -46,19 +47,21 @@ struct YLabelPrivate
 	, isHeading( isHeading )
 	, isOutputField( isOutputField )
 	, useBoldFont( false )
+        , autoWrap( false )
 	{}
 
     string	text;
     bool	isHeading;
     bool	isOutputField;
     bool	useBoldFont;
+    bool        autoWrap;
 };
 
 
-YLabel::YLabel( YWidget *		parent,
+YLabel::YLabel( YWidget *	parent,
 		const string &	text,
-		bool			isHeading,
-		bool			isOutputField )
+		bool		isHeading,
+		bool		isOutputField )
     : YWidget( parent )
     , priv( new YLabelPrivate( text, isHeading, isOutputField ) )
 {
@@ -105,6 +108,37 @@ bool YLabel::useBoldFont() const
 void YLabel::setUseBoldFont( bool bold )
 {
     priv->useBoldFont = bold;
+}
+
+
+bool YLabel::autoWrap() const
+{
+    return priv->autoWrap;
+}
+
+
+void YLabel::setAutoWrap( bool autoWrap )
+{
+    priv->autoWrap = autoWrap;
+
+    if ( autoWrap )
+    {
+        YDialog * dialog = findDialog();
+
+        if ( dialog )
+            dialog->requestMultiPassLayout();
+    }
+
+    setStretchable( YD_HORIZ, autoWrap );
+    setStretchable( YD_VERT,  autoWrap );
+}
+
+
+int YLabel::layoutPass()
+{
+    const YDialog * dialog = findDialog();
+
+    return dialog ? dialog->layoutPass() : 0;
 }
 
 

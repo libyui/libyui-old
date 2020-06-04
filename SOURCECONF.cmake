@@ -189,13 +189,16 @@ SET( ${TARGETLIB}_HEADERS
 )
 
 SET( EXAMPLES_LIST
-  ComboBox1-editable.cc
+  AutoWrap1.cc
+  AutoWrap2.cc
   ComboBox1.cc
+  ComboBox1-editable.cc
   CustomStatusItemSelector1.cc
   HelloWorld.cc
   ItemSelector1.cc
   ItemSelector2-minimalistic.cc
   ManyWidgets.cc
+  MenuButtons.cc
   PollEvent.cc
   SelectionBox1.cc
   SelectionBox2.cc
