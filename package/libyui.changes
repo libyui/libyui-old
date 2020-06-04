@@ -1,7 +1,7 @@
 -------------------------------------------------------------------
 Thu Jun  4 11:11:20 UTC 2020 - Stefan Hundhammer <shundhammer@suse.com>
 
-- Added autoWrap to label widget (boo#117251)
+- Added autoWrap to label widget (bsc#1172513)
 - Bumped SO version to 12
 - 3.10.0
 
