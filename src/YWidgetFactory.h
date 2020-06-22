@@ -109,7 +109,7 @@ public:
     virtual YComboBox *		createComboBox		( YWidget * parent, const std::string & label, bool editable	 = false )	= 0;
     virtual YSelectionBox *	createSelectionBox	( YWidget * parent, const std::string & label )					= 0;
     virtual YTree *		createTree		( YWidget * parent, const std::string & label, bool multiselection = false, bool recursiveselection = false ) = 0;
-    virtual YTable *		createTable		( YWidget * parent, YTableHeader * header,     bool multiSelection = false )	= 0;
+    virtual YTable *		createTable		( YWidget * parent, YTableHeader * header_disown,     bool multiSelection = false )	= 0;
     virtual YProgressBar *	createProgressBar	( YWidget * parent, const std::string & label, int  maxValue	   = 100   )	= 0;
     virtual YRichText *		createRichText		( YWidget * parent, const std::string & text = std::string(), bool plainTextMode = false )	= 0;
     virtual YBusyIndicator *	createBusyIndicator	( YWidget * parent, const std::string & label, int timeout = 1000 )		= 0;
