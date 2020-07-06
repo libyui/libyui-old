@@ -16,7 +16,7 @@
 #
 
 Name:           libyui
-Version:        3.10.0
+Version:        3.10.1
 Release:        0
 Source:         %{name}-%{version}.tar.bz2
 
