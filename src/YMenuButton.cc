@@ -136,9 +136,11 @@ YMenuButton::findMenuItem( int wantedIndex, YItemConstIterator begin, YItemConst
     return 0;
 }
 
-static void resolveShortcutsConflictFlat(YItemConstIterator begin, YItemConstIterator end)
+
+static void resolveShortcutsConflictFlat( YItemConstIterator begin, YItemConstIterator end )
 {
     bool used[ sizeof( char ) << 8 ];
+
     for ( unsigned i=0; i < sizeof( char ) << 8; i++ )
 	used[i] = false;
     std::vector<YMenuItem*> conflicts;
@@ -151,34 +153,34 @@ static void resolveShortcutsConflictFlat(YItemConstIterator begin, YItemConstIte
 	{
 	    if ( item->hasChildren() )
 	    {
-		resolveShortcutsConflictFlat(item->childrenBegin(), item->childrenEnd() );
+		resolveShortcutsConflictFlat( item->childrenBegin(), item->childrenEnd() );
 	    }
 
             char shortcut = YShortcut::normalized(YShortcut::findShortcut(item->label()));
 
-            if (shortcut == 0)
+            if ( shortcut == 0 )
             {
                 conflicts.push_back(item);
                 yuiMilestone() << "No or invalid shortcut found " << item->label() << endl;
             }
-            else if (used[(unsigned)shortcut])
+            else if ( used[ (unsigned)shortcut ] )
             {
                 conflicts.push_back(item);
                 yuiWarning() << "Conflicting shortcut found " << item->label() << endl;
             }
             else
             {
-                used[(unsigned)shortcut] = true;
+                used[ (unsigned) shortcut ] = true;
             }
 	}
         else
         {
-          yuiWarning() << "non menu item used in call " << (*it)->label() << endl;
+            yuiWarning() << "non menu item used in call " << (*it)->label() << endl;
         }
     }
 
-    // cannot use YShortcut directly as YItem is not YWidget
-    for(YMenuItem *i: conflicts)
+    // cannot use YShortcut directly as an YItem is not a YWidget
+    for( YMenuItem *i: conflicts )
     {
         string clean = YShortcut::cleanShortcutString(i->label());
         char new_c = 0;
@@ -186,9 +188,9 @@ static void resolveShortcutsConflictFlat(YItemConstIterator begin, YItemConstIte
         size_t index = 0;
         for (; index < clean.size(); ++index)
         {
-            char ch = YShortcut::normalized(clean[index]);
-            // ch is set to 0 by normalized if not valid
-            if (ch != 0 && !used[(unsigned)ch])
+            char ch = YShortcut::normalized( clean[index] );
+            // ch is set to 0 by normalized() if not valid
+            if ( ch != 0 && ! used[ (unsigned)ch ] )
             {
                 new_c = ch;
                 used[(unsigned)ch] = true;
@@ -201,14 +203,16 @@ static void resolveShortcutsConflictFlat(YItemConstIterator begin, YItemConstIte
             clean.insert(index, 1, YShortcut::shortcutMarker());
             yuiMilestone() << "New label used: " << clean << endl;
         }
-        i->setLabel(clean);
+
+        i->setLabel( clean );
     }
 }
+
 
 void
 YMenuButton::resolveShortcutConflicts()
 {
-    resolveShortcutsConflictFlat(itemsBegin(), itemsEnd());
+    resolveShortcutsConflictFlat( itemsBegin(), itemsEnd() );
 }
 
 
