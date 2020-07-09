@@ -44,6 +44,8 @@ struct YMenuBarPrivate
 };
 
 
+
+
 YMenuBar::YMenuBar( YWidget * parent )
     : YSelectionWidget( parent,
                         "",     // label
@@ -51,9 +53,10 @@ YMenuBar::YMenuBar( YWidget * parent )
     , priv( new YMenuBarPrivate() )
 {
     YUI_CHECK_NEW( priv );
+
+    setStretchable( YD_HORIZ, true );
+    setStretchable( YD_VERT,  false );
 }
-
-
 
 
 YMenuBar::~YMenuBar()
@@ -239,7 +242,7 @@ YMenuBar::findItem( std::vector<std::string>::iterator path_begin,
     {
         YMenuItem * item = dynamic_cast<YMenuItem *>(*it);
         // Test that dynamic_cast didn't fail
-        
+
         if ( !item )
             return 0;
 
