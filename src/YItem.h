@@ -36,8 +36,10 @@ class YItem;
 
 //! Collection of pointers to YItem.
 typedef std::vector<YItem *> 			YItemCollection;
+
 //! Mutable iterator over @ref YItemCollection.
 typedef YItemCollection::iterator		YItemIterator;
+
 //! Const   iterator over @ref YItemCollection.
 typedef YItemCollection::const_iterator		YItemConstIterator;
 

@@ -48,6 +48,7 @@ class YItemSelector;
 class YLabel;
 class YLayoutBox;
 class YLogView;
+class YMenuBar;
 class YMenuButton;
 class YMultiLineEdit;
 class YMultiSelectionBox;
@@ -189,6 +190,9 @@ public:
     YItemSelector *		createSingleItemSelector       ( YWidget * parent );
     YItemSelector *		createMultiItemSelector	       ( YWidget * parent );
     virtual YItemSelector *	createCustomStatusItemSelector ( YWidget * parent, const YItemCustomStatusVector & customStates );
+
+    virtual YMenuBar *          createMenuBar                  ( YWidget * parent );
+
 
 protected:
 

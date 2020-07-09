@@ -316,3 +316,19 @@ YWidgetFactory::createCustomStatusItemSelector( YWidget * parent,
     return createItemSelector( parent,
                                false ); // enforceSingleSelection
 }
+
+
+YMenuBar *
+YWidgetFactory::createMenuBar( YWidget * parent )
+{
+    (void) parent;
+
+    // Default implementation returning 0 to give community-maintained UIs
+    // (libyui-gtk) a chance to catch up with development. Remove this and make
+    // it pure virtual when this is implemented there as well.
+
+    yuiError() << "YMenuBar not implemented in this UI" << endl;
+
+    return 0;
+}
+

@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2000-2012 Novell, Inc
+  Copyright (c) [2020] SUSE LLC
   This library is free software; you can redistribute it and/or modify
   it under the terms of the GNU Lesser General Public License as
   published by the Free Software Foundation; either version 2.1 of the
@@ -16,56 +16,56 @@
 
 /*-/
 
-  File:		YMenuButton.h
+  File:		YMenuBar.h
 
-  Author:	Stefan Hundhammer <sh@suse.de>
+  Author:	Stefan Hundhammer <shundhammer@suse.de>
 
 /-*/
 
-#ifndef YMenuButton_h
-#define YMenuButton_h
+#ifndef YMenuBar_h
+#define YMenuBar_h
 
 #include "YSelectionWidget.h"
 #include "YMenuItem.h"
 
-class YMenuButtonPrivate;
+class YMenuBarPrivate;
 
 
 /**
- * MenuButton: Similar to PushButton, but with several actions: Upon clicking
- * on a MenuButton (or activating it with the keyboard), a pop-up menu opens
- * where the user can activate an action. Menu items in that pop-up menu can
- * have submenus (that will pop up in separate pop-up menus).
+ * A classical menu bar for pulldown menus.
  *
- * Internally, this widget is more similar to the Tree widget. The difference
- * is that it does not keep a "selected" status, but triggers an action right
- * away, just like a PushButton. Like PushButton, MenuButton sends an event
- * right away when the user selects an item (clicks on a menu item or activates
- * it with the keyboard). Items that have a submenu never send an event, they
- * simply open their submenu when activated.
+ * Use this only when appropriate: In most places, YaST follows a wizard-driven
+ * UI strategy, asking the user (ideally) one question at a time, with a [Next]
+ * and a [Back] button to move between wizard steps. One of the last steps is
+ * usually presenting the collected information to the user until everything is
+ * applied.
+ *
+ * A menu bar OTOH is meant for the opposite UI strategy: Presenting some kind
+ * of document (which may also be a number of input fields) to the user as the
+ * central point and providing lots of different operations on that document.
+ * The two concepts don't mix very well, so use this widget with caution.
+ *
+ * A menu bar should only contain menus, no direct actions.
  **/
-class YMenuButton : public YSelectionWidget
+class YMenuBar: public YSelectionWidget
 {
 protected:
     /**
      * Constructor.
-     *
-     * 'label' is the user-visible text on the button (not above it like all
-     * other SelectionWidgets).
      **/
-    YMenuButton( YWidget * parent, const std::string & label );
+    YMenuBar( YWidget * parent );
 
 public:
     /**
      * Destructor.
      **/
-    virtual ~YMenuButton();
+    virtual ~YMenuBar();
 
     /**
      * Returns a descriptive name of this widget class for logging,
      * debugging etc.
      **/
-    virtual const char * widgetClass() const { return "YMenuButton"; }
+    virtual const char * widgetClass() const { return "YMenuBar"; }
 
     /**
      * Rebuild the displayed menu tree from the internally stored YMenuItems.
@@ -181,6 +181,12 @@ public:
 
 protected:
     /**
+     * Check if all toplevel items are really menus, i.e. YMenuItems that have
+     * children. This may throw a YUIException.
+     **/
+    void sanityCheck();
+
+    /**
      * Recursively find the first menu item with the specified index
      * from iterator 'begin' to iterator 'end'.
      *
@@ -210,17 +216,15 @@ protected:
     YMenuItem * itemAt( int index )
 	{ return findMenuItem( index ); }
 
-
     /**
      * Assign a unique index to all items from iterator 'begin' to iterator 'end'.
      **/
     void assignUniqueIndex( YItemIterator begin, YItemIterator end );
 
-    
 private:
 
-    ImplPtr<YMenuButtonPrivate> priv;
+    ImplPtr<YMenuBarPrivate> priv;
 };
 
 
-#endif // YMenuButton_h
+#endif  // YMenuBar_h

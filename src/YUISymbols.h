@@ -108,6 +108,7 @@
 #define YUIWidget_Left				"Left"
 #define YUIWidget_LogView			"LogView"
 #define YUIWidget_MarginBox			"MarginBox"
+#define YUIWidget_MenuBar                       "MenuBar"
 #define YUIWidget_MenuButton			"MenuButton"
 #define YUIWidget_MinHeight			"MinHeight"
 #define YUIWidget_MinSize			"MinSize"
