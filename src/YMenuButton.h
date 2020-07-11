@@ -25,7 +25,7 @@
 #ifndef YMenuButton_h
 #define YMenuButton_h
 
-#include "YSelectionWidget.h"
+#include "YMenuWidget.h"
 #include "YMenuItem.h"
 
 class YMenuButtonPrivate;
@@ -44,7 +44,7 @@ class YMenuButtonPrivate;
  * it with the keyboard). Items that have a submenu never send an event, they
  * simply open their submenu when activated.
  **/
-class YMenuButton : public YSelectionWidget
+class YMenuButton : public YMenuWidget
 {
 protected:
     /**
@@ -67,62 +67,6 @@ public:
      * debugging etc.
      **/
     virtual const char * widgetClass() const { return "YMenuButton"; }
-
-    /**
-     * Rebuild the displayed menu tree from the internally stored YMenuItems.
-     *
-     * The application should call this (once) after all items have been added
-     * with addItem(). YMenuButton::addItems() calls this automatically.
-     *
-     * Derived classes are required to implement this.
-     **/
-    virtual void rebuildMenuTree() = 0;
-
-    /**
-     * Add multiple items. For some UIs, this can be more efficient than
-     * calling addItem() multiple times. This function also automatically calls
-     * resolveShortcutConflicts() and rebuildMenuTree() at the end.
-     *
-     * Derived classes can overwrite this function, but they should call this
-     * base class function at the end of the new implementation.
-     *
-     * Reimplemented from YSelectionWidget.
-     **/
-    virtual void addItems( const YItemCollection & itemCollection );
-
-    /**
-     * Add one item. This widget assumes ownership of the item object and will
-     * delete it in its destructor.
-     *
-     * This reimplementation will an index to the item that is unique for all
-     * items in this MenuButton. That index can be used later with
-     * findMenuItem() to find the item by that index.
-     *
-     * @note please do not forget to call after adding all elements
-     * #resolveShortcutConflicts and #rebuildMenuTree in this order. It is
-     * important to call it after all submenus are added otherwise it won't
-     * have proper shortcuts and won't be rendered.
-     * @see examples/MenuButton.cc.
-     *
-     * Reimplemented from YSelectionWidget.
-     **/
-    virtual void addItem( YItem * item_disown );
-
-    /**
-     * Delete all items.
-     *
-     * Reimplemented from YSelectionWidget.
-     **/
-    virtual void deleteAllItems();
-
-    /**
-     * Resolve keyboard shortcut conflicts: Change shortcuts of menu items if
-     * there are duplicates in the respective menu level.
-     *
-     * This has to be called after all items are added, but before rebuildMenuTree()
-     * (see above). YMenuButton::addItems() calls this automatically.
-     **/
-    void resolveShortcutConflicts();
 
     /**
      * Set a property.
@@ -152,78 +96,6 @@ public:
      * Reimplemented from YWidget.
      **/
     virtual const YPropertySet & propertySet();
-
-    /**
-     * Support for the Rest API for UI testing:
-     *
-     * Return the item in the tree which matches a path of labels. This
-     * returns 0 if there is no such item or if it is not a leaf menu item.
-     *
-     * 'path' specifies the user-visible labels (i.e. the translated texts) of
-     * each menu level ( ["File", "Export", "As XML"] ).
-     **/
-    YMenuItem * findItem( std::vector<std::string> & path ) const;
-
-    /**
-     * Support for the Rest API for UI testing:
-     *
-     * Activate the item selected in the tree.
-     * This can be used in tests to simulate user input.
-     *
-     * Derived classes are required to implement this.
-     **/
-    virtual void activateItem( YMenuItem * item ) = 0;
-
-    /**
-     * Recursively find the first menu item with the specified index.
-     * Returns 0 if there is no such item.
-     **/
-    YMenuItem * findMenuItem( int index );
-
-
-protected:
-
-    /**
-     * Resolve keyboard shortcut conflicts between iterators 'begin' and 'end'.
-     **/
-    void resolveShortcutConflicts( YItemConstIterator begin,
-                                   YItemConstIterator end );
-
-    /**
-     * Recursively find the first menu item with the specified index
-     * from iterator 'begin' to iterator 'end'.
-     *
-     * Returns 0 if there is no such item.
-     **/
-    YMenuItem * findMenuItem( int                index,
-                              YItemConstIterator begin,
-                              YItemConstIterator end );
-
-    /**
-     * Recursively looks for the first item in the tree of the menu items
-     * using depth first search.
-     * Return nullptr if item which matches full path is not found.
-     * Path is a vector of strings, where next element is a child item, so
-     * in case one needs to select File->Export->As PDF, for instance,
-     * Vector will look like [ "File", "Export", "As PDF" ].
-     */
-    YMenuItem * findItem( std::vector<std::string>::iterator path_begin,
-                          std::vector<std::string>::iterator path_end,
-                          YItemConstIterator                 begin,
-                          YItemConstIterator                 end ) const;
-
-    /**
-     * Alias for findMenuItem(). Reimplemented to ensure consistent behaviour
-     * with YSelectionWidget::itemAt().
-     **/
-    YMenuItem * itemAt( int index )
-	{ return findMenuItem( index ); }
-
-
-    /**
-     * Assign a unique index to all items from iterator 'begin' to iterator 'end'.
-     **/
-    void assignUniqueIndex( YItemIterator begin, YItemIterator end );
 
 
 private:

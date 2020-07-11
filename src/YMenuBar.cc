@@ -37,19 +37,17 @@ using std::string;
 struct YMenuBarPrivate
 {
     YMenuBarPrivate()
-	: nextSerialNo( 0 )
 	{}
 
-    int nextSerialNo;
+    int dummy;
 };
 
 
 
 
 YMenuBar::YMenuBar( YWidget * parent )
-    : YSelectionWidget( parent,
-                        "",     // label
-			false )	// enforceSingleSelection
+    : YMenuWidget( parent,
+                   "" )         // label
     , priv( new YMenuBarPrivate() )
 {
     YUI_CHECK_NEW( priv );
@@ -65,209 +63,6 @@ YMenuBar::~YMenuBar()
 }
 
 
-void
-YMenuBar::addItems( const YItemCollection & itemCollection )
-{
-    YSelectionWidget::addItems( itemCollection );
-    resolveShortcutConflicts();
-    rebuildMenuTree();
-}
-
-
-void
-YMenuBar::addItem( YItem * item )
-{
-    YSelectionWidget::addItem( item );
-    item->setIndex( ++(priv->nextSerialNo) );
-
-    if ( item->hasChildren() )
-	assignUniqueIndex( item->childrenBegin(), item->childrenEnd() );
-}
-
-
-void
-YMenuBar::assignUniqueIndex( YItemIterator begin, YItemIterator end )
-{
-    for ( YItemIterator it = begin; it != end; ++it )
-    {
-	YItem * item = *it;
-
-	item->setIndex( ++(priv->nextSerialNo) );
-
-	if ( item->hasChildren() )
-	    assignUniqueIndex( item->childrenBegin(), item->childrenEnd() );
-    }
-}
-
-
-void
-YMenuBar::deleteAllItems()
-{
-    YSelectionWidget::deleteAllItems();
-    priv->nextSerialNo = 0;
-}
-
-
-YMenuItem *
-YMenuBar::findMenuItem( int index )
-{
-    return findMenuItem( index, itemsBegin(), itemsEnd() );
-}
-
-
-YMenuItem *
-YMenuBar::findMenuItem( int wantedIndex,
-                        YItemConstIterator begin,
-                        YItemConstIterator end )
-{
-    for ( YItemConstIterator it = begin; it != end; ++it )
-    {
-	YMenuItem * item = dynamic_cast<YMenuItem *> (*it);
-
-	if ( item )
-	{
-	    if ( item->index() == wantedIndex )
-		return item;
-
-	    if ( item->hasChildren() )
-	    {
-		YMenuItem * result = findMenuItem( wantedIndex,
-                                                   item->childrenBegin(),
-                                                   item->childrenEnd() );
-		if ( result )
-		    return result;
-	    }
-	}
-    }
-
-    return 0;
-}
-
-
-void
-YMenuBar::resolveShortcutConflicts( YItemConstIterator begin,
-                                    YItemConstIterator end )
-{
-    bool used[ sizeof( char ) << 8 ];
-
-    for ( unsigned i=0; i < sizeof( char ) << 8; i++ )
-	used[i] = false;
-    std::vector<YMenuItem*> conflicts;
-
-    for ( YItemConstIterator it = begin; it != end; ++it )
-    {
-	YMenuItem * item = dynamic_cast<YMenuItem *> (*it);
-
-	if ( item )
-	{
-	    if ( item->hasChildren() )
-	    {
-		resolveShortcutConflicts( item->childrenBegin(), item->childrenEnd() );
-	    }
-
-            char shortcut = YShortcut::normalized(YShortcut::findShortcut(item->label()));
-
-            if ( shortcut == 0 )
-            {
-                conflicts.push_back(item);
-                yuiMilestone() << "No or invalid shortcut found " << item->label() << endl;
-            }
-            else if ( used[ (unsigned)shortcut ] )
-            {
-                conflicts.push_back(item);
-                yuiWarning() << "Conflicting shortcut found " << item->label() << endl;
-            }
-            else
-            {
-                used[ (unsigned) shortcut ] = true;
-            }
-	}
-        else
-        {
-            yuiWarning() << "non menu item used in call " << (*it)->label() << endl;
-        }
-    }
-
-    // cannot use YShortcut directly as an YItem is not a YWidget
-    for( YMenuItem *i: conflicts )
-    {
-        string clean = YShortcut::cleanShortcutString(i->label());
-        char new_c = 0;
-
-        size_t index = 0;
-        for (; index < clean.size(); ++index)
-        {
-            char ch = YShortcut::normalized( clean[index] );
-            // ch is set to 0 by normalized() if not valid
-            if ( ch != 0 && ! used[ (unsigned)ch ] )
-            {
-                new_c = ch;
-                used[(unsigned)ch] = true;
-                break;
-            }
-        }
-
-        if (new_c != 0)
-        {
-            clean.insert(index, 1, YShortcut::shortcutMarker());
-            yuiMilestone() << "New label used: " << clean << endl;
-        }
-
-        i->setLabel( clean );
-    }
-}
-
-
-void
-YMenuBar::resolveShortcutConflicts()
-{
-    resolveShortcutConflicts( itemsBegin(), itemsEnd() );
-}
-
-
-YMenuItem *
-YMenuBar::findItem( std::vector<std::string> & path ) const
-{
-    return findItem( path.begin(), path.end(),
-                     itemsBegin(), itemsEnd() );
-}
-
-
-YMenuItem *
-YMenuBar::findItem( std::vector<std::string>::iterator path_begin,
-                    std::vector<std::string>::iterator path_end,
-                    YItemConstIterator                 begin,
-                    YItemConstIterator                 end ) const
-{
-    for ( YItemConstIterator it = begin; it != end; ++it )
-    {
-        YMenuItem * item = dynamic_cast<YMenuItem *>(*it);
-        // Test that dynamic_cast didn't fail
-
-        if ( !item )
-            return 0;
-
-        if ( item->label() == *path_begin )
-        {
-            if ( std::next(path_begin) == path_end )
-            {
-                // Only return items which can trigger an action.
-                // Intermediate items only open a submenu, so continue looking.
-                if( item->hasChildren() )
-                    continue;
-
-                return item;
-            }
-
-            // Look in child nodes and return if found one
-            YMenuItem * result = findItem( ++path_begin, path_end,
-                                           item->childrenBegin(), item->childrenEnd() );
-            if ( result )
-                return result;
-        }
-    }
-    return 0;
-}
 
 
 const YPropertySet &
@@ -311,8 +106,7 @@ YMenuBar::getProperty( const string & propertyName )
 {
     propertySet().check( propertyName ); // throws exceptions if not found
 
-    if      ( propertyName == YUIProperty_Label		)	return YPropertyValue( label() );
-    else if ( propertyName == YUIProperty_Items 	)	return YPropertyValue( YOtherProperty );
+    if      ( propertyName == YUIProperty_Items 	)	return YPropertyValue( YOtherProperty );
     else if ( propertyName == YUIProperty_IconPath	)	return YPropertyValue( iconBasePath() );
     else
     {

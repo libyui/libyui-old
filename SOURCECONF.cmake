@@ -56,6 +56,7 @@ SET( ${TARGETLIB}_SOURCES
   YLogView.cc
   YMenuBar.cc
   YMenuButton.cc
+  YMenuWidget.cc
   YMultiLineEdit.cc
   YMultiProgressMeter.cc
   YMultiSelectionBox.cc
@@ -157,6 +158,7 @@ SET( ${TARGETLIB}_HEADERS
   YLogView.h
   YMenuBar.h
   YMenuButton.h
+  YMenuWidget.h
   YMultiLineEdit.h
   YMultiProgressMeter.h
   YMultiSelectionBox.h
