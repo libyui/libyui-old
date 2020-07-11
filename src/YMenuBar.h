@@ -56,6 +56,7 @@ protected:
     YMenuBar( YWidget * parent );
 
 public:
+
     /**
      * Destructor.
      **/
@@ -99,7 +100,7 @@ public:
      *
      * @note please do not forget to call after adding all elements
      * #resolveShortcutConflicts and #rebuildMenuTree in this order. It is
-     * important to call it after all submenus are added otherwise it won't
+     * important to call it after all submenus are added, otherwise it won't
      * have proper shortcuts and won't be rendered.
      * @see examples/MenuButton.cc.
      *
@@ -179,12 +180,20 @@ public:
      **/
     YMenuItem * findMenuItem( int index );
 
+
 protected:
+
     /**
      * Check if all toplevel items are really menus, i.e. YMenuItems that have
      * children. This may throw a YUIException.
      **/
     void sanityCheck();
+
+    /**
+     * Resolve keyboard shortcut conflicts between iterators 'begin' and 'end'.
+     **/
+    void resolveShortcutConflicts( YItemConstIterator begin,
+                                   YItemConstIterator end );
 
     /**
      * Recursively find the first menu item with the specified index
@@ -220,6 +229,7 @@ protected:
      * Assign a unique index to all items from iterator 'begin' to iterator 'end'.
      **/
     void assignUniqueIndex( YItemIterator begin, YItemIterator end );
+
 
 private:
 

@@ -144,8 +144,9 @@ YMenuBar::findMenuItem( int wantedIndex,
 }
 
 
-static void resolveShortcutsConflict( YItemConstIterator begin,
-                                      YItemConstIterator end )
+void
+YMenuBar::resolveShortcutConflicts( YItemConstIterator begin,
+                                    YItemConstIterator end )
 {
     bool used[ sizeof( char ) << 8 ];
 
@@ -161,7 +162,7 @@ static void resolveShortcutsConflict( YItemConstIterator begin,
 	{
 	    if ( item->hasChildren() )
 	    {
-		resolveShortcutsConflict( item->childrenBegin(), item->childrenEnd() );
+		resolveShortcutConflicts( item->childrenBegin(), item->childrenEnd() );
 	    }
 
             char shortcut = YShortcut::normalized(YShortcut::findShortcut(item->label()));
@@ -220,7 +221,7 @@ static void resolveShortcutsConflict( YItemConstIterator begin,
 void
 YMenuBar::resolveShortcutConflicts()
 {
-    resolveShortcutsConflict( itemsBegin(), itemsEnd() );
+    resolveShortcutConflicts( itemsBegin(), itemsEnd() );
 }
 
 

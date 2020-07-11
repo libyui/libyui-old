@@ -56,6 +56,7 @@ protected:
     YMenuButton( YWidget * parent, const std::string & label );
 
 public:
+
     /**
      * Destructor.
      **/
@@ -179,7 +180,15 @@ public:
      **/
     YMenuItem * findMenuItem( int index );
 
+
 protected:
+
+    /**
+     * Resolve keyboard shortcut conflicts between iterators 'begin' and 'end'.
+     **/
+    void resolveShortcutConflicts( YItemConstIterator begin,
+                                   YItemConstIterator end );
+
     /**
      * Recursively find the first menu item with the specified index
      * from iterator 'begin' to iterator 'end'.
@@ -216,7 +225,7 @@ protected:
      **/
     void assignUniqueIndex( YItemIterator begin, YItemIterator end );
 
-    
+
 private:
 
     ImplPtr<YMenuButtonPrivate> priv;

@@ -137,7 +137,8 @@ YMenuButton::findMenuItem( int wantedIndex, YItemConstIterator begin, YItemConst
 }
 
 
-static void resolveShortcutsConflictFlat( YItemConstIterator begin, YItemConstIterator end )
+void
+YMenuButton::resolveShortcutConflicts( YItemConstIterator begin, YItemConstIterator end )
 {
     bool used[ sizeof( char ) << 8 ];
 
@@ -153,7 +154,7 @@ static void resolveShortcutsConflictFlat( YItemConstIterator begin, YItemConstIt
 	{
 	    if ( item->hasChildren() )
 	    {
-		resolveShortcutsConflictFlat( item->childrenBegin(), item->childrenEnd() );
+		resolveShortcutConflicts( item->childrenBegin(), item->childrenEnd() );
 	    }
 
             char shortcut = YShortcut::normalized(YShortcut::findShortcut(item->label()));
@@ -212,7 +213,7 @@ static void resolveShortcutsConflictFlat( YItemConstIterator begin, YItemConstIt
 void
 YMenuButton::resolveShortcutConflicts()
 {
-    resolveShortcutsConflictFlat( itemsBegin(), itemsEnd() );
+    resolveShortcutConflicts( itemsBegin(), itemsEnd() );
 }
 
 
@@ -243,13 +244,13 @@ YMenuButton::findItem( std::vector<std::string>::iterator path_begin,
             {
                 // Only return items which can trigger an action.
                 // Intermediate items only open a submenu, so continue looking.
-                
+
                 if( item->hasChildren() )
                     continue;
 
                 return item;
             }
-            
+
             // Look in child nodes and return if found one
             YMenuItem * result = findItem( ++path_begin, path_end, item->childrenBegin(), item->childrenEnd() );
             if ( result )
