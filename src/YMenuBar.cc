@@ -63,6 +63,15 @@ YMenuBar::~YMenuBar()
 }
 
 
+YMenuItem *
+YMenuBar::addMenu( const std::string & label,
+                   const std::string & iconName )
+{
+    YMenuItem * menu = new YMenuItem( label, iconName );
+    addItem( menu );
+
+    return menu;
+}
 
 
 const YPropertySet &

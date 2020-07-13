@@ -18,7 +18,7 @@
 //
 // Compile with:
 //
-//     g++ -I/usr/include/yui -lyui MenuBar1.cc -o MenuBar1
+//     g++ -I/usr/include/yui -lyui MenuBar2.cc -o MenuBar2
 
 #define YUILogComponent "example"
 #include "YUILog.h"
@@ -139,35 +139,55 @@ void createWidgets()
 
 void addMenus( YMenuBar * menuBar )
 {
+    // This uses the more generic, but also more clumsy API:
+    //
+    // Each object in a menu is just a YMenuItem, no matter if it's a
+    // menu/submenu, a plain item or a separator.
+    //
     // The difference between a menu and a plain menu item is just that the
-    // menu has child items whild the plain item does not.
+    // menu has child items whild the plain item does not. A separator is just
+    // a menu item with an empty label.
+    //
+    // For the more elagant and more self-descriptive API, see the MenuBar1.cc
+    // example.
 
-    fileMenu    = menuBar->addMenu( "&File" );
-    editMenu    = menuBar->addMenu( "&Edit" );
-    viewMenu    = menuBar->addMenu( "&View" );
-    optionsMenu = menuBar->addMenu( "&Options" );
+    fileMenu    = new YMenuItem( "&File" );
+    editMenu    = new YMenuItem( "&Edit" );
+    viewMenu    = new YMenuItem( "&View" );
+    optionsMenu = new YMenuItem( "&Options" );
 
-    actionOpen          = fileMenu->addItem( "&Open..."    );
-    actionSave          = fileMenu->addItem( "&Save"       );
-    actionSaveAs        = fileMenu->addItem( "Save &As..." );
-    fileMenu->addSeparator();
-    actionQuit          = fileMenu->addItem( "&Quit" );
+    actionOpen          = new YMenuItem( fileMenu, "&Open..."    );
+    actionSave          = new YMenuItem( fileMenu, "&Save"       );
+    actionSaveAs        = new YMenuItem( fileMenu, "Save &As..." );
 
-    actionCut           = editMenu->addItem( "C&ut"   );
-    actionCopy          = editMenu->addItem( "&Copy"  );
-    actionPaste         = editMenu->addItem( "&Paste" );
+    new YMenuItem( fileMenu, "" ); // separator
 
-    actionViewNormal    = viewMenu->addItem( "&Normal"   );
-    actionViewCompact   = viewMenu->addItem( "&Compact"  );
-    actionViewDetailed  = viewMenu->addItem( "&Detailed" );
-    viewMenu->addSeparator();
-    zoomMenu            = viewMenu->addMenu( "&Zoom" );
+    actionQuit          = new YMenuItem( fileMenu, "&Quit"       );
 
-    actionZoomIn        = zoomMenu->addItem( "Zoom &In"      );
-    actionZoomOut       = zoomMenu->addItem( "Zoom &Out"     );
-    actionZoomDefault   = zoomMenu->addItem( "Zoom &Default" );
+    actionCut           = new YMenuItem( editMenu, "C&ut"   );
+    actionCopy          = new YMenuItem( editMenu, "&Copy"  );
+    actionPaste         = new YMenuItem( editMenu, "&Paste" );
 
-    actionSettings      = optionsMenu->addItem( "&Settings..." );
+    actionViewNormal    = new YMenuItem( viewMenu, "&Normal"   );
+    actionViewCompact   = new YMenuItem( viewMenu, "&Compact"  );
+    actionViewDetailed  = new YMenuItem( viewMenu, "&Detailed" );
+
+    new YMenuItem( viewMenu, "" ); // separator
+
+    zoomMenu            = new YMenuItem( viewMenu, "&Zoom"         );
+    actionZoomIn        = new YMenuItem( zoomMenu, "Zoom &In"      );
+    actionZoomOut       = new YMenuItem( zoomMenu, "Zoom &Out"     );
+    actionZoomDefault   = new YMenuItem( zoomMenu, "Zoom &Default" );
+
+    actionSettings      = new YMenuItem( optionsMenu, "&Settings..." );
+
+    menuBar->addItem( fileMenu );
+    menuBar->addItem( editMenu );
+    menuBar->addItem( viewMenu );
+    menuBar->addItem( optionsMenu );
+
+    // Do NOT add all the individual items separately to the menu bar:
+    // They are owned by their parent menu.
 
     menuBar->resolveShortcutConflicts();
     menuBar->rebuildMenuTree();

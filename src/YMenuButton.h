@@ -63,6 +63,23 @@ public:
     virtual ~YMenuButton();
 
     /**
+     * Create a new menu item and add it.
+     **/
+    YMenuItem * addItem( const std::string & label,
+                         const std::string & iconName = "" );
+
+    /**
+     * Create a new submenu and add it.
+     **/
+    YMenuItem * addMenu( const std::string & label,
+                         const std::string & iconName = "" );
+
+    /**
+     * Create a new menu separator and add it.
+     **/
+    YMenuItem * addSeparator();
+
+    /**
      * Returns a descriptive name of this widget class for logging,
      * debugging etc.
      **/

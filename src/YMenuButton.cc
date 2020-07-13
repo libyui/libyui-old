@@ -29,7 +29,6 @@
 #include "YUISymbols.h"
 #include "YMenuButton.h"
 #include "YMenuItem.h"
-#include "YShortcut.h"
 
 using std::string;
 
@@ -56,6 +55,38 @@ YMenuButton::YMenuButton( YWidget * parent, const string & label )
 YMenuButton::~YMenuButton()
 {
     // NOP
+}
+
+
+YMenuItem *
+YMenuButton::addItem( const std::string & label,
+                      const std::string & iconName )
+{
+    YMenuItem * item = new YMenuItem( label, iconName );
+    YMenuWidget::addItem( item );
+
+    return item;
+}
+
+
+YMenuItem *
+YMenuButton::addMenu( const std::string & label,
+                      const std::string & iconName )
+{
+    YMenuItem * menu = new YMenuItem( label, iconName );
+    YMenuWidget::addItem( menu );
+
+    return menu;
+}
+
+
+YMenuItem *
+YMenuButton::addSeparator()
+{
+    YMenuItem * separator = new YMenuItem( "" );
+    YMenuWidget::addItem( separator );
+
+    return separator;
 }
 
 

@@ -63,6 +63,12 @@ public:
     virtual ~YMenuBar();
 
     /**
+     * Create a new menu and add it.
+     **/
+    YMenuItem * addMenu( const std::string & label,
+                         const std::string & iconName = "" );
+
+    /**
      * Returns a descriptive name of this widget class for logging,
      * debugging etc.
      **/

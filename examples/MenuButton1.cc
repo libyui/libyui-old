@@ -1,5 +1,5 @@
 /*
-  Copyright (c) 2016 SUSE LCC
+  Copyright (c) [2016-2020] SUSE LCC
 
   Permission is hereby granted, free of charge, to any person obtaining
   a copy of this software and associated documentation files (the
@@ -28,6 +28,9 @@
 //
 //     g++ -I/usr/include/yui -lyui MenuButton1.cc -o MenuButton1
 
+#define YUILogComponent "example"
+#include "YUILog.h"
+
 #include "YUI.h"
 #include "YWidgetFactory.h"
 #include "YDialog.h"
@@ -38,22 +41,32 @@
 
 int main( int argc, char **argv )
 {
-    YDialog    * dialog = YUI::widgetFactory()->createPopupDialog();
-    YLayoutBox * vbox   = YUI::widgetFactory()->createVBox( dialog );
-    YUI::widgetFactory()->createLabel( vbox, "Hello, World!" );
-    YMenuButton* top = YUI::widgetFactory()->createMenuButton( vbox, "Menu!" );
-    YMenuItem *inner_item = new YMenuItem("&menu1");
-    top->addItem(inner_item);
-    top->addItem(new YMenuItem("&menu2"));
-    top->addItem(new YMenuItem("&Menu3")); // test upper letter as shortcut
-    top->addItem(new YMenuItem("menu4")); // even without shortcut marker it should find shortcut if possible
-    new YMenuItem(inner_item, "&submenu1");
-    new YMenuItem(inner_item, "&submenu2");
-    new YMenuItem(inner_item, "&submenu3");
-    new YMenuItem(inner_item, "&submenu4");
+    YUILog::setLogFileName( "/tmp/libyui-examples.log" );
+    YUILog::enableDebugLogging();
 
-    top->resolveShortcutConflicts();
-    top->rebuildMenuTree();
+    YWidgetFactory * fac = YUI::widgetFactory();
+
+    YDialog    * dialog  = fac->createPopupDialog();
+    YLayoutBox * vbox    = fac->createVBox( dialog );
+    fac->createHeading( vbox, " Menu Button Example " );
+    fac->createVSpacing( vbox, 1 );
+
+    YMenuButton * menuButton = fac->createMenuButton( vbox, "Menu" );
+    fac->createVSpacing( vbox, 2 );
+
+    YMenuItem * submenu = menuButton->addMenu( "&menu1" );
+    menuButton->addItem( "&menu2" );
+    menuButton->addItem( "&Menu3" ); // Test uppercase letter as shortcut
+    menuButton->addItem( "menu4"  ); // Even without a shortcut marker it should find a shortcut if possible
+
+    submenu->addItem( "&submenu1" );
+    submenu->addItem( "&submenu2" );
+    submenu->addSeparator();
+    submenu->addItem( "&submenu3" );
+    submenu->addItem( "&submenu4" );
+
+    menuButton->resolveShortcutConflicts();
+    menuButton->rebuildMenuTree();
 
     dialog->waitForEvent();
     dialog->destroy();
