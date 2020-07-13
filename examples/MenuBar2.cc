@@ -130,10 +130,9 @@ void createWidgets()
 
     YAlignment * left = fac->createLeft( vbox2 );
     fac->createLabel   ( left, "Last Event:" );
-    fac->createHSpacing( vbox2, 1 );
-    lastEventLabel = fac->createOutputField( vbox2, "<none>" );
-    lastEventLabel->setStretchable( YD_HORIZ, true );
-    fac->createMinWidth( vbox2, 20 );
+    fac->createVSpacing( vbox2, 0.2 );
+    YAlignment * minWidth = fac->createMinWidth( vbox2, 15 );
+    lastEventLabel = fac->createOutputField( minWidth, "<none>" );
 }
 
 

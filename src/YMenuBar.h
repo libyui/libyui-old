@@ -104,15 +104,6 @@ public:
     virtual const YPropertySet & propertySet();
 
 
-protected:
-
-    /**
-     * Check if all toplevel items are really menus, i.e. YMenuItems that have
-     * children. This may throw a YUIException.
-     **/
-    void sanityCheck();
-
-
 private:
 
     ImplPtr<YMenuBarPrivate> priv;
