@@ -202,7 +202,8 @@ SET( EXAMPLES_LIST
   ItemSelector1.cc
   ItemSelector2-minimalistic.cc
   ManyWidgets.cc
-  MenuButtons.cc
+  MenuBar1.cc
+  MenuButton1.cc
   PollEvent.cc
   SelectionBox1.cc
   SelectionBox2.cc

@@ -26,7 +26,7 @@
 //
 // Compile with:
 //
-//     g++ -I/usr/include/yui -lyui MenuButtons.cc -o MenuButtons
+//     g++ -I/usr/include/yui -lyui MenuButton1.cc -o MenuButton1
 
 #include "YUI.h"
 #include "YWidgetFactory.h"
