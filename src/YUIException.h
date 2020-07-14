@@ -21,7 +21,7 @@
 		Stolen from zypp/libzypp/base/Exception.h
 
   Author:     	Michael Andres    <ma@suse.de>
-  Maintainer:	Stefan Hundhammer <sh@suse.de>
+  Maintainer:	Stefan Hundhammer <shundhammer@suse.de>
 
 /-*/
 
