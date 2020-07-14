@@ -115,33 +115,14 @@ public:
     void resolveShortcutConflicts();
 
     /**
-     * Set a property.
-     * Reimplemented from YWidget.
+     * Enable or disable an item. This default implementation only updates the
+     * item's 'enabled' field.
      *
-     * This function may throw YUIPropertyExceptions.
-     *
-     * This function returns 'true' if the value was successfully set and
-     * 'false' if that value requires special handling (not in error cases:
-     * those are covered by exceptions).
+     * Derived classes should overwrite this method and either update the
+     * item's 'enabled' field in their implementation or call this default
+     * implementation.
      **/
-    virtual bool setProperty( const std::string    & propertyName,
-			      const YPropertyValue & val );
-
-    /**
-     * Get a property.
-     * Reimplemented from YWidget.
-     *
-     * This method may throw YUIPropertyExceptions.
-     **/
-    virtual YPropertyValue getProperty( const std::string & propertyName );
-
-    /**
-     * Return this class's property set.
-     * This also initializes the property upon the first call.
-     *
-     * Reimplemented from YWidget.
-     **/
-    virtual const YPropertySet & propertySet();
+    virtual void setItemEnabled( YMenuItem * item, bool enabled );
 
     /**
      * Support for the Rest API for UI testing:
@@ -170,6 +151,14 @@ public:
      **/
     YMenuItem * findMenuItem( int index );
 
+
+    // No propertySet(), setProperty(), getProperty() on this level:
+    //
+    // This is left to derived widgets (very much like for YSelectionWidget)
+    // so they can be tailored to what they really can provide.
+    //
+    // There is infrastructure for properties like "EnabledItems" here and in
+    // the UI bindings, though, to easily support those properties.
 
 protected:
 

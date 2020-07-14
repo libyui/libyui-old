@@ -49,6 +49,8 @@ public:
     YMenuItem( const std::string & 	label,
 	       const std::string & 	iconName = "" )
 	: YTreeItem( label, iconName )
+        , _enabled( true )
+        , _uiItem( 0 )
 	{}
 
     /**
@@ -64,6 +66,8 @@ public:
 	       const std::string & 	label,
 	       const std::string & 	iconName = "" )
 	: YTreeItem( parent, label, iconName )
+        , _enabled( true )
+        , _uiItem( 0 )
 	{}
 
 
@@ -114,11 +118,30 @@ public:
     bool isSeparator() const { return label().empty(); }
 
     /**
-     * Create a menu separator item and return it. The new separator is owned
-     * by 'parent'.
+     * Return 'true' if this item is enabled (which is the default).
      **/
-    static YMenuItem * createSeparator( YMenuItem * parent)
-        { return new YMenuItem( parent, "" ); }
+    bool isEnabled() const { return _enabled; }
+
+    /**
+     * Enable or disable this item.
+     *
+     * Applications should use YMenuWidget::setItemEnabled() instead because
+     * that will also notify the widget so it can update the item's visual
+     * representation.
+     **/
+    void setEnabled( bool enabled = true ) { _enabled = enabled; }
+
+    /**
+     * Return the UI counterpart of this item (if the UI set any).
+     **/
+    void * uiItem() const { return _uiItem; }
+
+    /**
+     * Set the UI counterpart of this item. This can be used to store a pointer
+     * to the equivalent of this item in the concrete UI: For example, the Qt
+     * UI will store a pointer to the corresponding QMenu or QAction.
+     **/
+    void setUiItem( void * uiItem ) { _uiItem = uiItem; }
 
 
 private:
@@ -127,6 +150,12 @@ private:
 
     bool isOpen() const  { return false; }
     void setOpen( bool ) {}
+
+
+    // Data members
+
+    bool   _enabled;
+    void * _uiItem;
 };
 
 

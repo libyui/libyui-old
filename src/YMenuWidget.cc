@@ -105,6 +105,14 @@ YMenuWidget::deleteAllItems()
 }
 
 
+void
+YMenuWidget::setItemEnabled( YMenuItem * item, bool enabled )
+{
+    if ( item )
+        item->setEnabled( enabled );
+}
+
+
 YMenuItem *
 YMenuWidget::findMenuItem( int index )
 {
@@ -141,19 +149,25 @@ YMenuWidget::findMenuItem( int wantedIndex,
 }
 
 
+// FIXME: This is ugly code; candidate for refactoring.
 void
 YMenuWidget::resolveShortcutConflicts( YItemConstIterator begin,
-                                    YItemConstIterator end )
+                                       YItemConstIterator end )
 {
-    bool used[ sizeof( char ) << 8 ];
+#define USED_SIZE ((int) sizeof( char ) << 8)
+    bool used[ USED_SIZE ];
 
-    for ( unsigned i=0; i < sizeof( char ) << 8; i++ )
+    for ( int i = 0; i < USED_SIZE; i++ )
 	used[i] = false;
+
     std::vector<YMenuItem*> conflicts;
 
     for ( YItemConstIterator it = begin; it != end; ++it )
     {
 	YMenuItem * item = dynamic_cast<YMenuItem *> (*it);
+
+        if ( item->isSeparator() )
+            continue;
 
 	if ( item )
 	{
@@ -162,17 +176,22 @@ YMenuWidget::resolveShortcutConflicts( YItemConstIterator begin,
 		resolveShortcutConflicts( item->childrenBegin(), item->childrenEnd() );
 	    }
 
-            char shortcut = YShortcut::normalized(YShortcut::findShortcut(item->label()));
+            char shortcut = YShortcut::normalized( YShortcut::findShortcut( item->label() ) ) ;
 
             if ( shortcut == 0 )
             {
                 conflicts.push_back(item);
-                yuiMilestone() << "No or invalid shortcut found " << item->label() << endl;
+                yuiMilestone() << "No or invalid shortcut found: \""
+                               << item->label() << "\""
+                               << endl;
             }
-            else if ( used[ (unsigned)shortcut ] )
+            else if ( used[ (unsigned) shortcut ] )
             {
                 conflicts.push_back(item);
-                yuiWarning() << "Conflicting shortcut found " << item->label() << endl;
+
+                yuiWarning() << "Conflicting shortcut found: \""
+                             << item->label() << "\""
+                             << endl;
             }
             else
             {
@@ -181,12 +200,15 @@ YMenuWidget::resolveShortcutConflicts( YItemConstIterator begin,
 	}
         else
         {
-            yuiWarning() << "non menu item used in call " << (*it)->label() << endl;
+            yuiWarning() << "Non-menu item used in call: \""
+                         << (*it)->label() << "\""
+                         << endl;
         }
     }
 
-    // cannot use YShortcut directly as an YItem is not a YWidget
-    for( YMenuItem *i: conflicts )
+    // Cannot use YShortcut directly as an YItem is not a YWidget
+
+    for ( YMenuItem *i: conflicts )
     {
         string clean = YShortcut::cleanShortcutString(i->label());
         char new_c = 0;
@@ -194,25 +216,28 @@ YMenuWidget::resolveShortcutConflicts( YItemConstIterator begin,
         size_t index = 0;
         for (; index < clean.size(); ++index)
         {
-            char ch = YShortcut::normalized( clean[index] );
+            char ch = YShortcut::normalized( clean[ index ] );
+
             // ch is set to 0 by normalized() if not valid
-            if ( ch != 0 && ! used[ (unsigned)ch ] )
+            if ( ch != 0 && ! used[ (unsigned) ch ] )
             {
                 new_c = ch;
-                used[(unsigned)ch] = true;
+                used[ (unsigned) ch ] = true;
                 break;
             }
         }
 
-        if (new_c != 0)
+        if ( new_c != 0 )
         {
-            clean.insert(index, 1, YShortcut::shortcutMarker());
+            clean.insert( index, 1, YShortcut::shortcutMarker() );
             yuiMilestone() << "New label used: " << clean << endl;
         }
 
         i->setLabel( clean );
     }
 }
+
+// FIXME End
 
 
 void
@@ -264,56 +289,5 @@ YMenuWidget::findItem( std::vector<std::string>::iterator path_begin,
         }
     }
     return 0;
-}
-
-
-const YPropertySet &
-YMenuWidget::propertySet()
-{
-    static YPropertySet propSet;
-
-    if ( propSet.isEmpty() )
-    {
-	/*
-	 * @property itemList	Items		All menu items and submenus
-	 * @property string	IconPath	Base path for icons (on menu items)
-	 */
-	propSet.add( YProperty( YUIProperty_Items,		YOtherProperty	 ) );
-	propSet.add( YProperty( YUIProperty_IconPath,		YStringProperty	 ) );
-	propSet.add( YWidget::propertySet() );
-    }
-
-    return propSet;
-}
-
-
-bool
-YMenuWidget::setProperty( const string & propertyName, const YPropertyValue & val )
-{
-    propertySet().check( propertyName, val.type() ); // throws exceptions if not found or type mismatch
-
-    if      ( propertyName == YUIProperty_Items 	)	return false; // Needs special handling
-    else if ( propertyName == YUIProperty_IconPath 	)	setIconBasePath( val.stringVal() );
-    else
-    {
-	return YWidget::setProperty( propertyName, val );
-    }
-
-    return true; // success -- no special processing necessary
-}
-
-
-YPropertyValue
-YMenuWidget::getProperty( const string & propertyName )
-{
-    propertySet().check( propertyName ); // throws exceptions if not found
-
-    if      ( propertyName == YUIProperty_Label		)	return YPropertyValue( label() );
-    else if ( propertyName == YUIProperty_Items 	)	return YPropertyValue( YOtherProperty );
-    else if ( propertyName == YUIProperty_IconPath	)	return YPropertyValue( iconBasePath() );
-    else
-    {
-	return YWidget::getProperty( propertyName );
-    }
 }
 

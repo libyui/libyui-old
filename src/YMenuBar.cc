@@ -83,9 +83,11 @@ YMenuBar::propertySet()
     {
 	/*
 	 * @property itemList	Items		All menu items and submenus
+	 * @property itemList	EnabledItems    Enabled or disabled status for items
 	 * @property string	IconPath	Base path for icons (on menu items)
 	 */
 	propSet.add( YProperty( YUIProperty_Items,		YOtherProperty	 ) );
+	propSet.add( YProperty( YUIProperty_EnabledItems,       YOtherProperty	 ) );
 	propSet.add( YProperty( YUIProperty_IconPath,		YStringProperty	 ) );
 	propSet.add( YWidget::propertySet() );
     }
@@ -100,6 +102,7 @@ YMenuBar::setProperty( const string & propertyName, const YPropertyValue & val )
     propertySet().check( propertyName, val.type() ); // throws exceptions if not found or type mismatch
 
     if      ( propertyName == YUIProperty_Items 	)	return false; // Needs special handling
+    else if ( propertyName == YUIProperty_EnabledItems 	)	return false; // Needs special handling
     else if ( propertyName == YUIProperty_IconPath 	)	setIconBasePath( val.stringVal() );
     else
     {
@@ -116,6 +119,7 @@ YMenuBar::getProperty( const string & propertyName )
     propertySet().check( propertyName ); // throws exceptions if not found
 
     if      ( propertyName == YUIProperty_Items 	)	return YPropertyValue( YOtherProperty );
+    else if ( propertyName == YUIProperty_EnabledItems 	)	return YPropertyValue( YOtherProperty );
     else if ( propertyName == YUIProperty_IconPath	)	return YPropertyValue( iconBasePath() );
     else
     {
