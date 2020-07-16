@@ -86,8 +86,8 @@ public:
      * Add one item. This widget assumes ownership of the item object and will
      * delete it in its destructor.
      *
-     * This reimplementation will an index to the item that is unique for all
-     * items in this MenuButton. That index can be used later with
+     * This reimplementation will assign an index to the item that is unique
+     * for all items in this MenuButton. That index can be used later with
      * findMenuItem() to find the item by that index.
      *
      * @note Do not forget to call #resolveShortcutConflicts and

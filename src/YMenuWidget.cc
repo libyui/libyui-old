@@ -281,7 +281,7 @@ YMenuWidget::findItem( std::vector<std::string>::iterator path_begin,
                 return item;
             }
 
-            // Look in child nodes and return if found one
+            // Look in child nodes
             YMenuItem * result = findItem( ++path_begin, path_end,
                                            item->childrenBegin(), item->childrenEnd() );
             if ( result )
