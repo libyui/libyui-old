@@ -1,6 +1,6 @@
 /*
   Copyright (C) 2000-2012 Novell, Inc
-  Copyright (C) 2019 SUSE LLC
+  Copyright (C) 2019-2020 SUSE LLC
   This library is free software; you can redistribute it and/or modify
   it under the terms of the GNU Lesser General Public License as
   published by the Free Software Foundation; either version 2.1 of the
@@ -19,7 +19,7 @@
 
   File:		YUISymbols.h
 
-  Author:	Stefan Hundhammer <sh@suse.de>
+  Author:	Stefan Hundhammer <shundhammer@suse.de>
 
 /-*/
 
@@ -108,6 +108,7 @@
 #define YUIWidget_Left				"Left"
 #define YUIWidget_LogView			"LogView"
 #define YUIWidget_MarginBox			"MarginBox"
+#define YUIWidget_MenuBar                       "MenuBar"
 #define YUIWidget_MenuButton			"MenuButton"
 #define YUIWidget_MinHeight			"MinHeight"
 #define YUIWidget_MinSize			"MinSize"
@@ -173,6 +174,7 @@
 #define YUIProperty_DebugLabel			"DebugLabel"
 #define YUIProperty_EasterEgg			"EasterEgg"
 #define YUIProperty_Enabled			"Enabled"
+#define YUIProperty_EnabledItems		"EnabledItems"
 #define YUIProperty_ExpectedSize		"ExpectedSize"
 #define YUIProperty_Filename			"Filename"
 #define YUIProperty_Layout			"Layout"

@@ -15,6 +15,7 @@ SET( ${TARGETLIB}_SOURCES
   YItem.cc
   YIconLoader.cc
   YMacro.cc
+  YMenuItem.cc
   YProperty.cc
   YShortcut.cc
   YShortcutManager.cc
@@ -54,7 +55,9 @@ SET( ${TARGETLIB}_SOURCES
   YLabel.cc
   YLayoutBox.cc
   YLogView.cc
+  YMenuBar.cc
   YMenuButton.cc
+  YMenuWidget.cc
   YMultiLineEdit.cc
   YMultiProgressMeter.cc
   YMultiSelectionBox.cc
@@ -107,10 +110,10 @@ SET( ${TARGETLIB}_HEADERS
   YItem.h
   YItemCustomStatus.h
   YIconLoader.h
-  YMenuItem.h
   YMacro.h
   YMacroPlayer.h
   YMacroRecorder.h
+  YMenuItem.h
   YPackageSelectorPlugin.h
   YGraphPlugin.h
   YProperty.h
@@ -154,7 +157,9 @@ SET( ${TARGETLIB}_HEADERS
   YLabel.h
   YLayoutBox.h
   YLogView.h
+  YMenuBar.h
   YMenuButton.h
+  YMenuWidget.h
   YMultiLineEdit.h
   YMultiProgressMeter.h
   YMultiSelectionBox.h
@@ -198,7 +203,9 @@ SET( EXAMPLES_LIST
   ItemSelector1.cc
   ItemSelector2-minimalistic.cc
   ManyWidgets.cc
-  MenuButtons.cc
+  MenuBar1.cc
+  MenuBar2.cc
+  MenuButton1.cc
   PollEvent.cc
   SelectionBox1.cc
   SelectionBox2.cc

@@ -17,7 +17,7 @@
 /**
  @file		YTypes.h
 
-  Author:	Stefan Hundhammer <sh@suse.de>
+  Author:	Stefan Hundhammer <shundhammer@suse.de>
 
   Header file for frequently used simple types to reduce interdependencies
   between important headers (e.g., YWidget.h, YUI.h).

@@ -1,3 +1,11 @@
+-------------------------------------------------------------------
+Tue Aug 11 13:26:18 UTC 2020 - Stefan Hundhammer <shundhammer@suse.com>
+
+- Added MenuBar widget (bsc#1175115)
+- Bumped SO version to 13
+- 3.11.0
+
+-------------------------------------------------------------------
 Fri Jun  5 12:46:43 UTC 2020 - riafarov <riafarov@suse.com>
 
 - Make itemAt method public for YSelectionWidget (bsc#1132247)
