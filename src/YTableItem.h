@@ -25,7 +25,7 @@
 #ifndef YTableItem_h
 #define YTableItem_h
 
-#include "YItem.h"
+#include "YTreeItem.h"
 
 
 class YTableCell;
@@ -35,8 +35,10 @@ class YTableCell;
 
 //! Collection of pointers to YTableCell
 typedef std::vector<YTableCell *>		YTableCellCollection;
+
 //! Mutable iterator over @ref YTableCellCollection
 typedef YTableCellCollection::iterator		YTableCellIterator;
+
 //! Const   iterator over @ref YTableCellCollection
 typedef YTableCellCollection::const_iterator	YTableCellConstIterator;
 
@@ -55,7 +57,7 @@ typedef YTableCellCollection::const_iterator	YTableCellConstIterator;
  * calling certain methods of the YTable widget. See the YTable reference for
  * details.
  **/
-class YTableItem: public YItem
+class YTableItem: public YTreeItem
 {
 public:
 
@@ -65,7 +67,13 @@ public:
     YTableItem();
 
     /**
-     * Convenience constructor for table items without any icons.
+     * Constructor for a nested table item, i.e. one with a parent item.
+     **/
+    YTableItem( YTableItem * parent,
+                bool         isOpen = false );
+
+    /**
+     * Convenience constructor for (toplevel) table items without any icons.
      *
      * This will create up to 10 (0..9) cells. Empty cells for empty labels at
      * the end of the labels are not created, but empty cells in between are.
@@ -113,8 +121,9 @@ public:
      * Create a new cell and add it (even if all 'label',
      * 'iconName' and 'sortKey' are empty).
      **/
-    void addCell( const std::string & label, const std::string & iconName = std::string(),
-		  const std::string & sortKey = std::string() );
+    void addCell( const std::string & label,
+                  const std::string & iconName = std::string(),
+		  const std::string & sortKey  = std::string() );
 
     /**
      * Delete all cells.
@@ -173,6 +182,7 @@ public:
      * Just for debugging.
      **/
     std::string label() const { return label(0); }
+
 
 private:
 

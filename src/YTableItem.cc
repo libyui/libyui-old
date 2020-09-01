@@ -29,7 +29,15 @@ using std::string;
 
 
 YTableItem::YTableItem()
-    : YItem( "" )
+    : YTreeItem( "" )
+{
+    // NOP
+}
+
+
+YTableItem::YTableItem( YTableItem * parent,
+                        bool         isOpen )
+    : YTreeItem( parent, "", isOpen )
 {
     // NOP
 }
@@ -45,7 +53,7 @@ YTableItem::YTableItem( const string & label_0,
 			const string & label_7,
 			const string & label_8,
 			const string & label_9 )
-    : YItem( "" )
+    : YTreeItem( "" )
 {
     std::vector<string> labels;
     labels.reserve(10); // slight optimization
