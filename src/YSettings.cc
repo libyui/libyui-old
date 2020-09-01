@@ -136,7 +136,7 @@ string YSettings::themeDir ()
     }
     else if ( _progDir.size() )
     {
-        //back compatibility if setProgSubDir is set to "/usr/share/YaST2"
+        // backwards compatibility if setProgSubDir is set to "/usr/share/YaST2"
         return _progDir + "/theme/current/wizard/";
     }
 
@@ -169,7 +169,7 @@ string YSettings::localeDir ()
     }
     else if ( _progDir.size() )
     {
-        //back compatibility if ProgDir is set to "/usr/share/YaST2"
+        // backwards compatibility if ProgDir is set to "/usr/share/YaST2"
         return _progDir + "/locale/";
     }
 

@@ -99,7 +99,7 @@ public:
     virtual YMultiProgressMeter *	createMultiProgressMeter ( YWidget * parent, YUIDimension dim, const std::vector<float> & maxValues );
 
     virtual bool			hasPartitionSplitter();
-    virtual YPartitionSplitter *	createPartitionSplitter	( YWidget * 		parent,
+    virtual YPartitionSplitter *	createPartitionSplitter ( YWidget * 		parent,
 								  int 			usedSize,
 								  int 			totalFreeSize,
 								  int 			newPartSize,
@@ -122,9 +122,9 @@ public:
     YWidget *				createDummySpecialWidget( YWidget * parent );
 
     virtual bool                        hasTimezoneSelector();
-    virtual YTimezoneSelector *         createTimezoneSelector( YWidget *                                 parent,
-								const std::string &                       timezoneMap,
-								const std::map<std::string,std::string> & timezones );
+    virtual YTimezoneSelector *         createTimezoneSelector  ( YWidget *                                 parent,
+                                                                  const std::string &                       timezoneMap,
+                                                                  const std::map<std::string,std::string> & timezones );
 
     virtual bool			hasGraph();
 

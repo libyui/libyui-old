@@ -105,7 +105,7 @@ public:
      **/
     void addItem( const std::string & itemLabel,
 		  const std::string & iconName,
-		  bool  selected = false );
+		  bool                selected = false );
 
     /**
      * Add multiple items. For some UIs, this can be more efficient than

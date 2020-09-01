@@ -44,11 +44,11 @@ class YUILoader;
 /**
  * Settings for libyui
  *
- * This singleton-object hold some presets for libyui.
+ * This singleton object hold some presets for libyui.
  **/
 class YSettings
 {
-friend YUILoader;
+    friend YUILoader;
 
 public:
     /**
@@ -58,11 +58,12 @@ public:
      * Once this is set, it can't be altered. If you do so although an
      * exception will be thrown.
      **/
-    static void setProgDir ( std::string directory );
+    static void setProgDir( std::string directory );
+
     /**
      * Returns the value of your program's subdir.
      **/
-    static std::string progDir ();
+    static std::string progDir();
 
     /**
      * This can be used to set a subdir ICONDIR,
@@ -71,11 +72,12 @@ public:
      * Once this is set, it can't be altered. If you do so although an
      * exception will be thrown.
      **/
-    static void setIconDir ( std::string directory );
+    static void setIconDir( std::string directory );
+
     /**
      * Returns the value of your program's icons subdir.
      **/
-    static std::string iconDir ();
+    static std::string iconDir();
 
     /**
      * This can be used to set a subdir THEMEDIR,
@@ -85,6 +87,7 @@ public:
      * exception will be thrown.
      **/
     static void setThemeDir ( std::string directory );
+
     /**
      * Returns the value of your program's theme subdir.
      **/
@@ -97,11 +100,12 @@ public:
      * Once this is set, it can't be altered. If you do so although an
      * exception will be thrown.
      **/
-    static void setLocaleDir ( std::string directory );
+    static void setLocaleDir( std::string directory );
+
     /**
      * Returns the value of your program's locale subdir.
      **/
-    static std::string localeDir ();
+    static std::string localeDir();
 
     /**
      * This can be used to set the loaded UI-backend.
@@ -109,13 +113,16 @@ public:
      * Once this is set, it can't be altered. If you do so although an
      * exception will be thrown.
      **/
-    static void loadedUI ( std::string ui );
+    static void loadedUI( std::string ui );
+
     /**
      * Returns the value of the loaded UI-backend.
      **/
-    static std::string loadedUI ();
+    static std::string loadedUI();
+
 
 protected:
+
     /**
      * This can be used to set the loaded UI-backend.
      *
@@ -125,15 +132,16 @@ protected:
     static void loadedUI ( std::string ui, bool force );
 
 private:
+
     static std::string _progDir;
     static std::string _iconDir;
     static std::string _themeDir;
     static std::string _localeDir;
     static std::string _loadedUI;
 
-    YSettings ();
-    YSettings ( const YSettings& );
-    ~YSettings ();
+    YSettings();
+    YSettings( const YSettings & );
+    ~YSettings();
 };
 
 #endif // YSettings_h

@@ -279,11 +279,11 @@ YMenuWidget::findItem( std::vector<std::string>::iterator path_begin,
 
         if ( item->label() == *path_begin )
         {
-            if ( std::next(path_begin) == path_end )
+            if ( std::next( path_begin ) == path_end )
             {
                 // Only return items which can trigger an action.
                 // Intermediate items only open a submenu, so continue looking.
-                if( item->hasChildren() )
+                if ( item->hasChildren() )
                     continue;
 
                 return item;

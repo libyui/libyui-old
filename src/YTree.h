@@ -68,8 +68,8 @@ protected:
      */
     YTreeItem * findItem( std::vector<std::string>::iterator path_begin,
                           std::vector<std::string>::iterator path_end,
-                          YItemConstIterator begin,
-                          YItemConstIterator end ) const;
+                          YItemConstIterator                 begin,
+                          YItemConstIterator                 end ) const;
 public:
     /**
      * Destructor.
@@ -139,7 +139,7 @@ public:
      * 'false' if that value requires special handling (not in error cases:
      * those are covered by exceptions).
      **/
-    virtual bool setProperty( const std::string & propertyName,
+    virtual bool setProperty( const std::string    & propertyName,
 			      const YPropertyValue & val );
 
     /**

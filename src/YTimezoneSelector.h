@@ -46,9 +46,9 @@ protected:
      *
      * The widget is only displaying timezones/cities in that map
      **/
-    YTimezoneSelector( YWidget *parent,
-                       const std::string &pixmap,
-		       const std::map<std::string, std::string> &timezones );
+    YTimezoneSelector( YWidget * parent,
+                       const std::string & pixmap,
+		       const std::map<std::string, std::string> & timezones );
 
 public:
     /**
@@ -72,7 +72,7 @@ public:
      * 'false' if that value requires special handling (not in error cases:
      * those are covered by exceptions).
      **/
-    virtual bool setProperty( const std::string & propertyName,
+    virtual bool setProperty( const std::string    & propertyName,
 			      const YPropertyValue & val );
 
     /**
@@ -99,7 +99,7 @@ public:
     /**
      * subclasses have to implement this to set value
      */
-    virtual void setCurrentZone( const std::string &zone, bool zoom ) = 0;
+    virtual void setCurrentZone( const std::string & zone, bool zoom ) = 0;
 
 private:
     ImplPtr<YTimezoneSelectorPrivate> priv;

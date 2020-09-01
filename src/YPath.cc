@@ -122,7 +122,7 @@ YPath::YPath ( const string & directory, const string & filename )
 	}
     }
 
-    if( fullPath.compare( "" ) != 0 )
+    if ( fullPath.compare( "" ) != 0 )
 	yuiDebug() << "Found " << filenameNoPrepend << " in " << dir() << endl;
     else
     {

@@ -46,7 +46,7 @@ using std::string;
 			   0,	    /* min */				\
 		           (int) priv->segments.size() - 1  ) ); /* max */ \
 	}								\
-    } while( 0 )
+    } while ( 0 )
 
 
 

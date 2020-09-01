@@ -54,7 +54,8 @@ public:
     /**
      * Constructor with just the label and optionally the selected state.
      **/
-    YItem( const std::string & label, bool selected = false )
+    YItem( const std::string & label,
+           bool                selected = false )
 	: _label( label )
 	, _status( selected ? 1 : 0 )
 	, _index( -1 )
@@ -64,7 +65,9 @@ public:
     /**
      * Constructor with label and icon name and optionally the selected state.
      **/
-    YItem( const std::string & label, const std::string & iconName, bool selected = false )
+    YItem( const std::string & label,
+           const std::string & iconName,
+           bool                selected = false )
 	: _label( label )
 	, _iconName( iconName )
 	, _status( selected ? 1 : 0 )

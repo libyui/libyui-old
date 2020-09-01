@@ -191,7 +191,7 @@ YTree::findItem( std::vector<std::string>::iterator path_begin,
         if (!item)
             return nullptr;
 
-        if( item->label() == *path_begin )
+        if ( item->label() == *path_begin )
         {
             if ( std::next(path_begin) == path_end )
             {

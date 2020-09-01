@@ -62,19 +62,19 @@ string YIconLoader::iconBasePath() const
 
 void YIconLoader::addIconSearchPath( string path )
 {
-    icon_dirs.push_front( path );
+    _iconDirs.push_front( path );
 }
 
 
 string YIconLoader::findIcon( string name )
 {
     // No extension -> add some
-    string::size_type loc = name.find(".png");
+    string::size_type loc = name.find( ".png" );
     if ( loc == string::npos )
 	name += ".png";
 
     // Absolute path -> return it
-    if (name[0] == '/')
+    if ( name[0] == '/' )
 	return name;
 
     string fullPath;
@@ -91,9 +91,9 @@ string YIconLoader::findIcon( string name )
     }
 
     // Now search the fallback dirs
-    std::list<string>::iterator listIt = icon_dirs.begin();
+    std::list<string>::iterator listIt = _iconDirs.begin();
 
-    while( listIt != icon_dirs.end() )
+    while ( listIt != _iconDirs.end() )
     {
 	// Something like relative path
 	if ( name.find('/') != string::npos )
@@ -119,7 +119,7 @@ string YIconLoader::findIcon( string name )
 bool YIconLoader::fileExists( string fname )
 {
     struct stat fileInfo;
-    int ret = stat (fname.c_str(), &fileInfo);
+    int ret = stat( fname.c_str(), &fileInfo );
 
-    return ( ret == 0 );
+    return ret == 0;
 }
