@@ -68,14 +68,6 @@ public:
     virtual void addItem( YItem * item );
 
     /**
-     * Notification that any shortcut of any item was changed by the shortcut
-     * conflict manager.
-     *
-     * Derived classes should reimplement this.
-     **/
-    virtual void shortcutChanged() {}
-
-    /**
      * Set a property.
      * Reimplemented from YWidget.
      *
@@ -107,27 +99,6 @@ public:
      * Reimplemented from YWidget.
      **/
     virtual const YPropertySet & propertySet();
-
-    /**
-     * Get the string of this widget that holds the keyboard shortcut.
-     * Notice that since YDumbTab has one shortcut for each tab page (for each
-     * item), this is not meaningful for this widget class.
-     *
-     * Check YItemShortcut in YShortcut.{cc,h} for more details.
-     *
-     * Reimplemented from YSelectionWidget.
-     **/
-    virtual std::string shortcutString() const { return ""; }
-
-    /**
-     * Set the string of this widget that holds the keyboard shortcut.
-     * Since YDumbTab doesn't have a shortcut for the widget itself (only for
-     * the tab pages, i.e. the items), this will simply trigger a
-     * shortcutChanged() notification.
-     *
-     * Reimplemented from YSelectionWidget.
-     **/
-    virtual void setShortcutString( const std::string & str ) { shortcutChanged(); }
 
     /**
      * Returns 'true' if this widget is stretchable in the specified dimension.
