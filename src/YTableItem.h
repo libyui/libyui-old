@@ -73,7 +73,7 @@ public:
                 bool         isOpen = false );
 
     /**
-     * Convenience constructor for (toplevel) table items without any icons.
+     * Convenience constructor for a (toplevel) table item without any icons.
      *
      * This will create up to 10 (0..9) cells. Empty cells for empty labels at
      * the end of the labels are not created, but empty cells in between are.
@@ -89,6 +89,22 @@ public:
      *     cell[4] ==> "five"
      **/
     YTableItem( const std::string & label_0,
+                const std::string & label_1 = std::string(),
+                const std::string & label_2 = std::string(),
+                const std::string & label_3 = std::string(),
+                const std::string & label_4 = std::string(),
+                const std::string & label_5 = std::string(),
+                const std::string & label_6 = std::string(),
+                const std::string & label_7 = std::string(),
+                const std::string & label_8 = std::string(),
+                const std::string & label_9 = std::string() );
+
+    /**
+     * Convenience constructor for a nested table item without any icons.
+     **/
+    YTableItem( YTableItem *        parent,
+                bool                isOpen,
+                const std::string & label_0,
                 const std::string & label_1 = std::string(),
                 const std::string & label_2 = std::string(),
                 const std::string & label_3 = std::string(),
@@ -118,12 +134,26 @@ public:
     void addCell( YTableCell * cell_disown );
 
     /**
-     * Create a new cell and add it (even if all 'label',
-     * 'iconName' and 'sortKey' are empty).
+     * Create a new cell and add it (even if all 'label', 'iconName' and
+     * 'sortKey' are empty).
      **/
     void addCell( const std::string & label,
                   const std::string & iconName = std::string(),
 		  const std::string & sortKey  = std::string() );
+
+    /**
+     * Add up to 10 cells without any icons.
+     **/
+    void addCells( const std::string & label_0,
+                   const std::string & label_1,
+                   const std::string & label_2 = std::string(),
+                   const std::string & label_3 = std::string(),
+                   const std::string & label_4 = std::string(),
+                   const std::string & label_5 = std::string(),
+                   const std::string & label_6 = std::string(),
+                   const std::string & label_7 = std::string(),
+                   const std::string & label_8 = std::string(),
+                   const std::string & label_9 = std::string() );
 
     /**
      * Delete all cells.

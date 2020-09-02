@@ -38,7 +38,7 @@ class YTablePrivate;
  * Table: Selection list with multiple columns. The user can select exactly one
  * row (with all its columns) from that list. Each cell (each column within
  * each row) has a label text, an optional icon (*) and an optional sort-key
- * (used instead of the label text during sort).
+ * (used instead of the label text during sorting).
  *
  * This widget is similar to SelectionBox, but it has several columns for each
  * item (each row). If just one column is desired, consider using SelectionBox
