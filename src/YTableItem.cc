@@ -180,7 +180,6 @@ YTableItem::addCells( const std::string & label_0,
 
     for ( unsigned i = 0; i <= lastLabel; ++i )
     {
-        yuiMilestone() << "Adding cell #" << i << ": " << labels[i] << endl;
 	addCell( labels[i] );
     }
 }

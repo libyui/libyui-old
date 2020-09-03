@@ -50,7 +50,7 @@ using std::vector;
 
 YPath::YPath ( const string & directory, const string & filename )
 {
-    yuiDebug() << "Given filename: " << filename << endl;
+    // yuiDebug() << "Given filename: " << filename << endl;
 
     bool	   isThemeDir	     = ! directory.compare ( THEMEDIR );
     string	   progSubDir	     = YSettings::progDir ();
@@ -66,9 +66,9 @@ YPath::YPath ( const string & directory, const string & filename )
     if ( hasSubDirPrepend )
 	subDirPrepend = filename.substr ( 0, splitPos );
 
-    yuiDebug() << "Preferring subdir: "	      << progSubDir << endl;
-    yuiDebug() << "Subdir given with filename: " << subDirPrepend << endl;
-    yuiDebug() << "Looking for: "		      << filenameNoPrepend << endl;
+    // yuiDebug() << "Preferring subdir: "	    << progSubDir << endl;
+    // yuiDebug() << "Subdir given with filename: " << subDirPrepend << endl;
+    // yuiDebug() << "Looking for: "		    << filenameNoPrepend << endl;
 
     if ( hasSubDirPrepend )	// prefer subdir prepended to filename
     {
@@ -123,10 +123,12 @@ YPath::YPath ( const string & directory, const string & filename )
     }
 
     if ( fullPath.compare( "" ) != 0 )
-	yuiDebug() << "Found " << filenameNoPrepend << " in " << dir() << endl;
+    {
+	// yuiDebug() << "Found " << filenameNoPrepend << " in " << dir() << endl;
+    }
     else
     {
-	yuiDebug() << "Could NOT find " << filename << " by looking recursive inside " << directory << endl;
+	// yuiDebug() << "Could NOT find " << filename << " by looking recursive inside " << directory << endl;
 	fullPath = filename;
     }
 }
@@ -145,7 +147,7 @@ vector<string> YPath::lsDir( const string & directory )
 
     if ( ( dir = opendir( directory.c_str () ) ) != NULL )
     {
-	yuiDebug() << "Looking in " << directory << endl;
+	// yuiDebug() << "Looking in " << directory << endl;
 
 	while ( ( ent = readdir( dir ) ) != NULL )
 	    fileList.push_back( ent -> d_name );

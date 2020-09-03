@@ -73,7 +73,7 @@ void YSettings::setProgDir( string directory )
 
 string YSettings::progDir ()
 {
-    yuiDebug () << "progDir: \"" << _progDir << "\"" << endl;
+    // yuiDebug () << "progDir: \"" << _progDir << "\"" << endl;
 
     return _progDir;
 }
