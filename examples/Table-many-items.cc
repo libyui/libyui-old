@@ -96,7 +96,8 @@ int main( int argc, char **argv )
     //
 
     YDialog    * dialog  = YUI::widgetFactory()->createPopupDialog();
-    YLayoutBox * vbox    = YUI::widgetFactory()->createVBox( dialog );
+    YAlignment * mbox    = YUI::widgetFactory()->createMarginBox( dialog, 1, 0.4 );
+    YLayoutBox * vbox    = YUI::widgetFactory()->createVBox( mbox );
 
     // Specify larger size for the Table: It can scroll, so its size
     // depends on other widgets in the layout.
