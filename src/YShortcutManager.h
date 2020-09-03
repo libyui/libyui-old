@@ -144,7 +144,7 @@ protected:
     YDialog *_dialog;
 
     /**
-     * List of all the shortcuts in this dialog.
+     * List (owning) of all the shortcuts in this dialog.
      **/
     YShortcutList _shortcutList;
 
@@ -168,7 +168,7 @@ protected:
 
 private:
 
-    bool _didCheck;
+    bool _didCheck;             ///< has checkShortcuts been called?
 };
 
 
