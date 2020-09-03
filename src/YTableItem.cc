@@ -72,7 +72,6 @@ YTableItem::YTableItem( const string & label_0,
 
 
 YTableItem::YTableItem( YTableItem *   parent,
-                        bool           isOpen,
                         const string & label_0,
 			const string & label_1,
 			const string & label_2,
@@ -83,7 +82,7 @@ YTableItem::YTableItem( YTableItem *   parent,
 			const string & label_7,
 			const string & label_8,
 			const string & label_9 )
-    : YTreeItem( parent, "", isOpen )
+    : YTreeItem( parent, "" )
 {
     addCells( label_0,
               label_1,
@@ -131,7 +130,9 @@ YTableItem::addCell( YTableCell * cell )
 
 
 void
-YTableItem::addCell( const string & label, const string & iconName, const string & sortKey )
+YTableItem::addCell( const string & label,
+                     const string & iconName,
+                     const string & sortKey )
 {
     YTableCell * cell = new YTableCell( label, iconName, sortKey );
     YUI_CHECK_NEW( cell );

@@ -70,7 +70,7 @@ void createWidgets()
 
     dialog		 = fac->createPopupDialog();
     YAlignment * minSize = fac->createMinSize( dialog, 74, 15 );
-    YAlignment * mbox	 = fac->createMarginBox( minSize, 2, 2, 0.4, 0.4 );
+    YAlignment * mbox	 = fac->createMarginBox( minSize, 1, 0.4 );
     YLayoutBox * vbox	 = fac->createVBox( mbox );
     YAlignment * left    = fac->createLeft( vbox );
     fac->createHeading( left, "Storage Overview" );
@@ -101,23 +101,25 @@ YTableHeader * tableHeader()
 void populateTable()
 {
     yuiMilestone() << endl;
-    bool isOpen = true;
 
     YTableItem * sda = new YTableItem( "/dev/sda", "931.5G" );
-    new YTableItem( sda, isOpen, "/dev/sda1",  "97.7G", "ntfs", "/win/boot" );
-    new YTableItem( sda, isOpen, "/dev/sda2", "833.9G", "ntfs", "/win/app"  );
+    sda->setOpen();
+    new YTableItem( sda, "/dev/sda1",  "97.7G", "ntfs", "/win/boot" );
+    new YTableItem( sda, "/dev/sda2", "833.9G", "ntfs", "/win/app"  );
 
     YTableItem * sdb = new YTableItem( "/dev/sdb", "931.5G" );
-    new YTableItem( sdb, isOpen, "/dev/sdb1",   "2.0G", "swap" );
-    new YTableItem( sdb, isOpen, "/dev/sdb2",  "29.4G", "ext4", "/hd-root-leap-42"   );
-    new YTableItem( sdb, isOpen, "/dev/sdb3",  "29.4G", "ext4", "/hd-root-leap-15-0" );
-    new YTableItem( sdb, isOpen, "/dev/sdb4", "855.8G", "xfs",  "/work" );
+    sdb->setClosed();
+    new YTableItem( sdb, "/dev/sdb1",   "2.0G", "swap" );
+    new YTableItem( sdb, "/dev/sdb2",  "29.4G", "ext4", "/hd-root-leap-42"   );
+    new YTableItem( sdb, "/dev/sdb3",  "29.4G", "ext4", "/hd-root-leap-15-0" );
+    new YTableItem( sdb, "/dev/sdb4", "855.8G", "xfs",  "/work" );
 
     YTableItem * sdc = new YTableItem( "/dev/sdc", "232.9G" );
-    new YTableItem( sdc, isOpen, "/dev/sdc1",   "2.0G", "swap", "[swap]" );
-    new YTableItem( sdc, isOpen, "/dev/sdc2",  "29.4G", "ext4", "/ssd-root-leap-15-1" );
-    new YTableItem( sdc, isOpen, "/dev/sdc3",  "29.4G", "ext4", "/" );
-    new YTableItem( sdc, isOpen, "/dev/sdc4", "167.2G", "ext4", "/ssd-work" );
+    sdc->setOpen();
+    new YTableItem( sdc, "/dev/sdc1",   "2.0G", "swap", "[swap]" );
+    new YTableItem( sdc, "/dev/sdc2",  "29.4G", "ext4", "/ssd-root-leap-15-1" );
+    new YTableItem( sdc, "/dev/sdc3",  "29.4G", "ext4", "/" );
+    new YTableItem( sdc, "/dev/sdc4", "167.2G", "ext4", "/ssd-work" );
 
 
     // Using a YItemCollection is more efficient than adding each item one by one

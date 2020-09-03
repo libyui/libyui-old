@@ -117,7 +117,8 @@ public:
     /**
      * Change the 'isOpen' flag.
      **/
-    void setOpen( bool open );
+    void setOpen( bool open = true );
+    void setClosed() { setOpen( false ); }
 
     /**
      * Returns this item's parent item or 0 if it is a toplevel item.

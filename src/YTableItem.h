@@ -103,7 +103,6 @@ public:
      * Convenience constructor for a nested table item without any icons.
      **/
     YTableItem( YTableItem *        parent,
-                bool                isOpen,
                 const std::string & label_0,
                 const std::string & label_1 = std::string(),
                 const std::string & label_2 = std::string(),
@@ -177,7 +176,7 @@ public:
      * or 0 if there is none.
      **/
     const YTableCell * cell( int index ) const;
-    YTableCell * cell( int index );
+    YTableCell *       cell( int index );
 
     /**
      * Return the number of cells this item has.
