@@ -177,9 +177,9 @@ BOOST_AUTO_TEST_CASE( comparing_with_limits )
     FSize fsize(cpp_int(1) << 1024);
 
     // even bigger than the max long long
-    BOOST_CHECK(fsize > std::numeric_limits<long long>::max());
+    BOOST_CHECK((long long)fsize > std::numeric_limits<long long>::max());
     // even bigger than the max unsigned long long
-    BOOST_CHECK(fsize > std::numeric_limits<unsigned long long>::max());
+    BOOST_CHECK((unsigned long long)fsize > std::numeric_limits<unsigned long long>::max());
     // even bigger than the max double
     BOOST_CHECK(fsize > std::numeric_limits<double>::max());
 
