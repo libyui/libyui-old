@@ -140,6 +140,13 @@ void YSelectionWidget::setEnforceSingleSelection( bool enforceSingleSelection )
 }
 
 
+void YSelectionWidget::setShortcutString( const std::string & str )
+{
+    setLabel( str );
+    shortcutChanged();
+}
+
+
 void YSelectionWidget::setIconBasePath( const string & basePath )
 {
     priv->iconBasePath = basePath;

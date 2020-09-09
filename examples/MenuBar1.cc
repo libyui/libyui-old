@@ -34,6 +34,7 @@
 #include "YWidgetFactory.h"
 #include "YShortcut.h"
 #include "YEvent.h"
+#include "YPushButton.h"
 
 
 using std::string;
@@ -41,10 +42,11 @@ using std::string;
 
 // Widgets
 
-YDialog	  * dialog		= 0;
-YMenuBar  * menuBar		= 0;
-YLabel	  * lastEventLabel	= 0;
-YCheckBox * readOnlyCheckBox	= 0;
+YDialog	    * dialog		= 0;
+YMenuBar    * menuBar		= 0;
+YLabel	    * lastEventLabel	= 0;
+YCheckBox   * readOnlyCheckBox	= 0;
+YPushButton * closeButton	= 0;
 
 
 // Menus and Menu Items
@@ -53,6 +55,7 @@ YMenuItem * fileMenu		= 0;
 YMenuItem * editMenu		= 0;
 YMenuItem * viewMenu		= 0;
 YMenuItem * optionsMenu		= 0;
+YMenuItem * contentsMenu	= 0;
 
 
 // "File" menu
@@ -84,9 +87,15 @@ YMenuItem * actionZoomIn	= 0;
 YMenuItem * actionZoomOut	= 0;
 YMenuItem * actionZoomDefault	= 0;
 
+
 // "Options" menu
 
 YMenuItem * actionSettings	= 0;
+
+
+// "Contents" menu
+
+YMenuItem * actionClear		= 0;
 
 
 // Function Prototypes
@@ -142,6 +151,8 @@ void createWidgets()
     fac->createVSpacing( vbox2, 2 );
     readOnlyCheckBox = fac->createCheckBox( vbox2, "Read &Only", true );
     readOnlyCheckBox->setNotify( true );
+    fac->createVSpacing( vbox2, 0.2 );
+    closeButton = fac->createPushButton( vbox2, "&Close" );
 }
 
 
@@ -150,10 +161,11 @@ void addMenus( YMenuBar * menuBar )
     // The difference between a menu and a plain menu item is just that the
     // menu has child items whild the plain item does not.
 
-    fileMenu	= menuBar->addMenu( "&File" );
-    editMenu	= menuBar->addMenu( "&Edit" );
-    viewMenu	= menuBar->addMenu( "&View" );
-    optionsMenu = menuBar->addMenu( "&Options" );
+    fileMenu	 = menuBar->addMenu( "&File" );
+    editMenu	 = menuBar->addMenu( "&Edit" );
+    viewMenu	 = menuBar->addMenu( "&View" );
+    optionsMenu  = menuBar->addMenu( "&Options" );
+    contentsMenu = menuBar->addMenu( "&Contents" );
 
     actionOpen		= fileMenu->addItem( "&Open..."	   );
     actionSave		= fileMenu->addItem( "&Save"	   );
@@ -176,6 +188,8 @@ void addMenus( YMenuBar * menuBar )
     actionZoomDefault	= zoomMenu->addItem( "Zoom &Default" );
 
     actionSettings	= optionsMenu->addItem( "&Settings..." );
+
+    actionClear		= contentsMenu->addItem( "&Clear" );
 
     menuBar->resolveShortcutConflicts();
     menuBar->rebuildMenuTree();
@@ -215,6 +229,9 @@ void handleEvents()
 
 	    if ( event->widget() == readOnlyCheckBox )
 		updateActions();
+
+	    if ( event->widget() == closeButton )
+		break;
 	}
     }
 }

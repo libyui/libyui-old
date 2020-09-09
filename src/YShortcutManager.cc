@@ -29,6 +29,8 @@
 #include "YShortcutManager.h"
 #include "YDialog.h"
 #include "YDumbTab.h"
+#include "YItemSelector.h"
+#include "YMenuBar.h"
 
 using std::string;
 
@@ -377,6 +379,24 @@ YShortcutManager::clearShortcutList()
 }
 
 
+/**
+ * Try casting to any YSelectionWidget that has no shortcut associated but it should consider any
+ * shortcut of any item (e.g., YDumbTab, YItemSelector, YMenuBar).
+ **/
+YSelectionWidget * toSelectionWidget( YWidget * widget )
+{
+    YSelectionWidget * selectionWidget = dynamic_cast<YDumbTab *> (widget);
+
+    if ( ! selectionWidget )
+	selectionWidget = dynamic_cast<YItemSelector *> (widget);
+
+    if ( ! selectionWidget )
+	selectionWidget = dynamic_cast<YMenuBar *> (widget);
+
+    return selectionWidget;
+}
+
+
 void
 YShortcutManager::findShortcutWidgets( YWidgetListConstIterator begin,
 				       YWidgetListConstIterator end )
@@ -385,15 +405,15 @@ YShortcutManager::findShortcutWidgets( YWidgetListConstIterator begin,
     {
 	YWidget * widget = *it;
 
-	YDumbTab * dumbTab = dynamic_cast<YDumbTab *> (widget);
+	YSelectionWidget * selectionWidget = toSelectionWidget( widget );
 
-	if ( dumbTab )
+	if ( selectionWidget )
 	{
-	    for ( YItemConstIterator it = dumbTab->itemsBegin();
-		  it != dumbTab->itemsEnd();
+	    for ( YItemConstIterator it = selectionWidget->itemsBegin();
+		  it != selectionWidget->itemsEnd();
 		  ++it )
 	    {
-		YItemShortcut * shortcut = new YItemShortcut( dumbTab, *it );
+		YItemShortcut * shortcut = new YItemShortcut( selectionWidget, *it );
 		_shortcutList.push_back( shortcut );
 	    }
 	}
