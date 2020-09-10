@@ -85,7 +85,7 @@ string YIconLoader::findIcon( string name )
 	fullPath = _iconBasePath + name;
 	if ( fileExists ( fullPath ) )
 	{
-	    yuiMilestone() << "Found " << name << " in global search path" << endl;
+	    // yuiMilestone() << "Found " << name << " in global search path" << endl;
 	    return fullPath;
 	}
     }
@@ -104,11 +104,11 @@ string YIconLoader::findIcon( string name )
 
 	if ( fileExists( fullPath ) )
 	{
-	    yuiMilestone() << "Found " << name << " in " <<  *listIt << " search path" << endl;
+	    // yuiMilestone() << "Found " << name << " in " <<  *listIt << " search path" << endl;
 	    return fullPath;
 	}
 
-	yuiMilestone() <<  name << " not found in " <<	*listIt << " search path, skipping" << endl;
+	yuiDebug() <<  name << " not found in " << *listIt << " search path, skipping" << endl;
 	listIt++;
     }
 

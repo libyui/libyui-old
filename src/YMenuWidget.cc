@@ -30,6 +30,8 @@
 #include "YShortcut.h"
 #include "YMenuWidget.h"
 
+#define VERBOSE_SHORTCUTS       0
+
 
 using std::string;
 
@@ -163,6 +165,7 @@ YMenuWidget::resolveShortcutConflicts( YItemConstIterator begin,
                                        YItemConstIterator end )
 {
 #define USED_SIZE ((int) sizeof( char ) << 8)
+
     bool used[ USED_SIZE ];
 
     for ( int i = 0; i < USED_SIZE; i++ )
@@ -189,17 +192,21 @@ YMenuWidget::resolveShortcutConflicts( YItemConstIterator begin,
             if ( shortcut == 0 )
             {
                 conflicts.push_back(item);
+
+#if VERBOSE_SHORTCUTS
                 yuiMilestone() << "No or invalid shortcut found: \""
                                << item->label() << "\""
                                << endl;
+#endif
             }
             else if ( used[ (unsigned) shortcut ] )
             {
                 conflicts.push_back(item);
-
+#if VERBOSE_SHORTCUTS
                 yuiWarning() << "Conflicting shortcut found: \""
                              << item->label() << "\""
                              << endl;
+#endif
             }
             else
             {
@@ -238,7 +245,10 @@ YMenuWidget::resolveShortcutConflicts( YItemConstIterator begin,
         if ( new_c != 0 )
         {
             clean.insert( index, 1, YShortcut::shortcutMarker() );
-            yuiMilestone() << "New label used: " << clean << endl;
+
+#if VERBOSE_SHORTCUTS
+            yuiDebug() << "New label used: " << clean << endl;
+#endif
         }
 
         i->setLabel( clean );
