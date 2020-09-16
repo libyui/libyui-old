@@ -56,21 +56,17 @@ class YTreePrivate;
 class YTree : public YSelectionWidget
 {
 protected:
+
     /**
      * Constructor.
      **/
-    YTree( YWidget * parent, const std::string & label, bool multiSelection, bool recursiveSelection);
+    YTree( YWidget *           parent,
+           const std::string & label,
+           bool                multiSelection,
+           bool                recursiveSelection);
 
-    /**
-     * Recursively looks for the first item in the tree of the menu items
-     * using depth first search.
-     * Return nullptr if item which matches full path is not found.
-     */
-    YTreeItem * findItem( std::vector<std::string>::iterator path_begin,
-                          std::vector<std::string>::iterator path_end,
-                          YItemConstIterator                 begin,
-                          YItemConstIterator                 end ) const;
 public:
+
     /**
      * Destructor.
      **/
@@ -182,19 +178,35 @@ public:
     virtual YTreeItem * currentItem() = 0;
 
     /**
-     * Return item in the tree which matches path of labels or nullptr in case no
-     * item with such label was found.
-     * Accepts vector of strings which denote path to the node.
-     **/
-    YTreeItem * findItem( std::vector<std::string> & path ) const;
-
-    /**
-    * Activate the item selected in the tree. Can be used in tests to simulate user input.
+    * Activate the item selected in the tree. This can be used in automated
+    * tests to simulate user input.
     *
     * Derived classes are required to implement this.
     **/
     virtual void activate() = 0;
 
+    /**
+     * Return the item in the tree that matches path of labels or 0 if not found.
+     *
+     * 'path' is a vector of strings with the path components, e.g.
+     * ["usr", "share", "doc", "packages"].
+     **/
+    YTreeItem * findItem( std::vector<std::string> & path ) const;
+
+
+protected:
+
+    /**
+     * Recursively search the items between item iterators 'begin' and 'end'
+     * for a path specified in a string vector between 'path_begin' and
+     * 'path_end'. Return that item or 0 if not found.
+     *
+     * This is a helper function for findItem( std::vector<std::string> & ).
+     */
+    YTreeItem * findItem( std::vector<std::string>::iterator path_begin,
+                          std::vector<std::string>::iterator path_end,
+                          YItemConstIterator                 begin,
+                          YItemConstIterator                 end ) const;
 
 private:
 
