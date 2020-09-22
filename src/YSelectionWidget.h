@@ -282,7 +282,7 @@ public:
 
     /**
      * Notification that any shortcut of any item was changed by the shortcut
-     * conflict manager.
+     * conflict manager YShortcutManager.
      *
      * Derived classes should reimplement this.
      **/
