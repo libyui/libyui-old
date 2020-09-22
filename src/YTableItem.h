@@ -43,6 +43,7 @@ typedef YTableCellCollection::iterator		YTableCellIterator;
 typedef YTableCellCollection::const_iterator	YTableCellConstIterator;
 
 
+
 /**
  * Item class for YTable items. Each YTableItem corresponds to one row in a
  * YTable.
@@ -385,5 +386,4 @@ private:
 };
 
 
-
- #endif // YTableItem_h
+#endif // YTableItem_h

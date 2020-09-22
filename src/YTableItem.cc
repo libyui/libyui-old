@@ -230,6 +230,8 @@ YTableItem::hasIconName( int index ) const
 }
 
 
+
+
 void YTableCell::reparent( YTableItem * parent, int column )
 {
     YUI_CHECK_PTR( parent );
