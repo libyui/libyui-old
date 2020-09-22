@@ -191,7 +191,7 @@ public:
      * 'path' is a vector of strings with the path components, e.g.
      * ["usr", "share", "doc", "packages"].
      **/
-    YTreeItem * findItem( std::vector<std::string> & path ) const;
+    YTreeItem * findItem( const std::vector<std::string> & path ) const;
 
 
 protected:
@@ -203,10 +203,10 @@ protected:
      *
      * This is a helper function for findItem( std::vector<std::string> & ).
      */
-    YTreeItem * findItem( std::vector<std::string>::iterator path_begin,
-                          std::vector<std::string>::iterator path_end,
-                          YItemConstIterator                 begin,
-                          YItemConstIterator                 end ) const;
+    YTreeItem * findItem( std::vector<std::string>::const_iterator path_begin,
+                          std::vector<std::string>::const_iterator path_end,
+                          YItemConstIterator                       begin,
+                          YItemConstIterator                       end ) const;
 
 private:
 

@@ -176,7 +176,7 @@ YTree::hasMultiSelection() const
 
 
 YTreeItem *
-YTree::findItem( vector<string> & path ) const
+YTree::findItem( const vector<string> & path ) const
 {
     return findItem( path.begin(), path.end(),
                      itemsBegin(), itemsEnd() );
@@ -184,10 +184,10 @@ YTree::findItem( vector<string> & path ) const
 
 
 YTreeItem *
-YTree::findItem( vector<string>::iterator path_begin,
-                 vector<string>::iterator path_end,
-                 YItemConstIterator       begin,
-                 YItemConstIterator       end ) const
+YTree::findItem( vector<string>::const_iterator path_begin,
+                 vector<string>::const_iterator path_end,
+                 YItemConstIterator             begin,
+                 YItemConstIterator             end ) const
 {
     for ( YItemConstIterator it = begin; it != end; ++it )
     {
