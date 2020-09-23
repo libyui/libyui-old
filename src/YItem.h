@@ -47,6 +47,9 @@ typedef YItemCollection::const_iterator		YItemConstIterator;
 /**
  * Simple item class for SelectionBox, ComboBox, MultiSelectionBox etc. items.
  * This class provides stubs for children management.
+ *
+ * See also
+ * https://github.com/libyui/libyui-ncurses/blob/master/doc/nctable-and-nctree.md
  **/
 class YItem
 {

@@ -38,6 +38,9 @@ class YSelectionWidgetPrivate;
  *   - YTable
  *   - YTree
  *   - YDumbTab
+ *
+ * See also
+ * https://github.com/libyui/libyui-ncurses/blob/master/doc/nctable-and-nctree.md
  **/
 class YSelectionWidget : public YWidget
 {

@@ -52,6 +52,9 @@ class YTablePrivate;
  * (*) Not all UIs (in particular not text-based UIs) support displaying icons,
  * so an icon should never be an exclusive means to display any kind of
  * information.
+ *
+ * See also
+ * https://github.com/libyui/libyui-ncurses/blob/master/doc/nctable-and-nctree.md
  **/
 class YTable : public YSelectionWidget
 {

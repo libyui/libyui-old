@@ -50,9 +50,10 @@ class YTreePrivate;
 
  * 'multiSelection' indicates whether or not the user can select multiple
  * items at the same time. This can only be set in the constructor.
+ *
+ * See also
+ * https://github.com/libyui/libyui-ncurses/blob/master/doc/nctable-and-nctree.md
  **/
-
-
 class YTree : public YSelectionWidget
 {
 protected:
