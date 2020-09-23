@@ -22,7 +22,14 @@
 
 /-*/
 
+#define MAX_DEBUG_LABEL_LEN	32
+
+
+#include <iostream>
 #include "YItem.h"
+
+using std::string;
+
 
 /**
  * Static children collection that is always empty so the children
@@ -31,3 +38,36 @@
  * No item will ever be added to this collection.
  **/
 YItemCollection YItem::_noChildren;
+
+
+string
+YItem::debugLabel() const
+{
+    return limitLength( _label, MAX_DEBUG_LABEL_LEN );
+}
+
+
+string
+YItem::limitLength( const string & origText, int limit ) const
+{
+    string text = origText;
+
+    if ( text.size() > MAX_DEBUG_LABEL_LEN )
+    {
+	text.resize( MAX_DEBUG_LABEL_LEN );
+	text.append( "..." );
+    }
+
+    return text;
+}
+
+
+std::ostream & operator<<( std::ostream & stream, const YItem * item )
+{
+    if ( item )
+        stream << "<" << item->itemClass() << " " << item->debugLabel() << ">";
+    else
+        stream << "<NULL YItem>";
+
+    return stream;
+}

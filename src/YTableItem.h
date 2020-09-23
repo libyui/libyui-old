@@ -123,6 +123,12 @@ public:
     virtual ~YTableItem();
 
     /**
+     * Returns a descriptive name of this widget class for logging,
+     * debugging etc.
+     **/
+    virtual const char * itemClass() const { return "YTableItem"; }
+
+    /**
      * Add a cell. This item will assume ownership over the cell and delete it
      * when appropriate (when the table is destroyed or when table items are
      * replaced), at which time the pointer will become invalid.
@@ -212,6 +218,12 @@ public:
      * Just for debugging.
      **/
     std::string label() const { return label(0); }
+
+    /**
+     * Return a descriptive label of this item instance for debugging.
+     * This might be truncated if the original label is too long.
+     **/
+    virtual std::string debugLabel() const;
 
 
 private:

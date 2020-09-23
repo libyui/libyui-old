@@ -69,6 +69,12 @@ public:
     virtual ~YTreeItem();
 
     /**
+     * Returns a descriptive name of this widget class for logging,
+     * debugging etc.
+     **/
+    virtual const char * itemClass() const { return "YTreeItem"; }
+
+    /**
      * Return 'true' if this item has any child items.
      *
      * Reimplemented from YItem.

@@ -22,6 +22,9 @@
 
 /-*/
 
+#define MAX_DEBUG_LABEL_LEN	32
+
+
 #define YUILogComponent "ui"
 #include "YUILog.h"
 
@@ -230,6 +233,17 @@ YTableItem::hasIconName( int index ) const
 }
 
 
+string
+YTableItem::debugLabel() const
+{
+    if ( _cells.empty() )
+        return "[empty]";
+
+    return limitLength( label( 0 ), MAX_DEBUG_LABEL_LEN );
+}
+
+
+//----------------------------------------------------------------------
 
 
 void YTableCell::reparent( YTableItem * parent, int column )
