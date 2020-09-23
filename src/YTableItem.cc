@@ -22,7 +22,8 @@
 
 /-*/
 
-#define MAX_DEBUG_LABEL_LEN	32
+#define MIN_DEBUG_LABEL_LEN	20
+#define MAX_DEBUG_LABEL_LEN	40
 
 
 #define YUILogComponent "ui"
@@ -239,7 +240,20 @@ YTableItem::debugLabel() const
     if ( _cells.empty() )
         return "[empty]";
 
-    return limitLength( label( 0 ), MAX_DEBUG_LABEL_LEN );
+    string txt;
+
+    for ( unsigned i=0; i < _cells.size(); ++i )
+    {
+        if ( ! txt.empty() )
+            txt += " | ";
+
+        txt += label( i );
+
+        if ( txt.size() > MIN_DEBUG_LABEL_LEN )
+            break;
+    }
+
+    return limitLength( txt, MAX_DEBUG_LABEL_LEN );
 }
 
 
