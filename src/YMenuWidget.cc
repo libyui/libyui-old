@@ -113,6 +113,14 @@ YMenuWidget::setItemEnabled( YMenuItem * item, bool enabled )
 }
 
 
+void
+YMenuWidget::setItemVisible( YMenuItem * item, bool visible )
+{
+    if ( item )
+        item->setVisible( visible );
+}
+
+
 YMenuItem *
 YMenuWidget::findMenuItem( int index )
 {
