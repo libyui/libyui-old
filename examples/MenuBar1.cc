@@ -46,6 +46,7 @@ YDialog	    * dialog		= 0;
 YMenuBar    * menuBar		= 0;
 YLabel	    * lastEventLabel	= 0;
 YCheckBox   * readOnlyCheckBox	= 0;
+YCheckBox   * visibleCheckBox	= 0;
 YPushButton * closeButton	= 0;
 
 
@@ -115,7 +116,6 @@ int main( int argc, char **argv )
     YUILog::enableDebugLogging();
 
     createWidgets();
-    updateActions();
     handleEvents();
 
     dialog->destroy();
@@ -151,7 +151,12 @@ void createWidgets()
     fac->createVSpacing( vbox2, 2 );
     readOnlyCheckBox = fac->createCheckBox( vbox2, "Read &Only", true );
     readOnlyCheckBox->setNotify( true );
+
     fac->createVSpacing( vbox2, 0.2 );
+    visibleCheckBox = fac->createCheckBox( vbox2, "&Visible", true );
+    visibleCheckBox->setNotify( true );
+
+    fac->createVSpacing( vbox2, 1 );
     closeButton = fac->createPushButton( vbox2, "&Close" );
 }
 
@@ -203,6 +208,9 @@ void handleEvents()
 {
     yuiMilestone() << endl;
 
+    dialog->open();
+    updateActions();
+
     while ( true )
     {
 	YEvent * event = dialog->waitForEvent();
@@ -230,6 +238,9 @@ void handleEvents()
 	    if ( event->widget() == readOnlyCheckBox )
 		updateActions();
 
+	    if ( event->widget() == visibleCheckBox )
+		updateActions();
+
 	    if ( event->widget() == closeButton )
 		break;
 	}
@@ -252,8 +263,9 @@ void showEvent( YMenuEvent * event )
 
 
 /**
- * Update the available menu actions: Enable or disable some of them according
- * to the current status of the "Read Only" check box.
+ * Update the available menu actions:
+ *   * Enable or disable some of them according to the current status of the "Read Only" check box.
+ *   * Show or hide some of them according to the current status of the "Visible" check box.
  **/
 void updateActions()
 {
@@ -262,4 +274,9 @@ void updateActions()
     menuBar->setItemEnabled( actionSave,  ! readOnly );
     menuBar->setItemEnabled( actionCut,	  ! readOnly );
     menuBar->setItemEnabled( actionPaste, ! readOnly );
+
+    bool visible = visibleCheckBox->isChecked();
+
+    menuBar->setItemVisible( contentsMenu, visible );
+    menuBar->setItemVisible( actionOpen, visible );
 }

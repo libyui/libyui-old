@@ -125,6 +125,16 @@ public:
     virtual void setItemEnabled( YMenuItem * item, bool enabled );
 
     /**
+     * Show or hide an item. This default implementation only updates the
+     * item's 'visible' field.
+     *
+     * Derived classes should overwrite this method and either update the
+     * item's 'visible' field in their implementation or call this default
+     * implementation.
+     **/
+    virtual void setItemVisible( YMenuItem * item, bool visible );
+
+    /**
      * Support for the Rest API for UI testing:
      *
      * Return the item in the tree which matches a path of labels. This
