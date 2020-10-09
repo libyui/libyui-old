@@ -25,7 +25,7 @@
 #ifndef YTableItem_h
 #define YTableItem_h
 
-#include "YItem.h"
+#include "YTreeItem.h"
 
 
 class YTableCell;
@@ -35,10 +35,13 @@ class YTableCell;
 
 //! Collection of pointers to YTableCell
 typedef std::vector<YTableCell *>		YTableCellCollection;
+
 //! Mutable iterator over @ref YTableCellCollection
 typedef YTableCellCollection::iterator		YTableCellIterator;
+
 //! Const   iterator over @ref YTableCellCollection
 typedef YTableCellCollection::const_iterator	YTableCellConstIterator;
+
 
 
 /**
@@ -55,7 +58,7 @@ typedef YTableCellCollection::const_iterator	YTableCellConstIterator;
  * calling certain methods of the YTable widget. See the YTable reference for
  * details.
  **/
-class YTableItem: public YItem
+class YTableItem: public YTreeItem
 {
 public:
 
@@ -65,7 +68,13 @@ public:
     YTableItem();
 
     /**
-     * Convenience constructor for table items without any icons.
+     * Constructor for a nested table item, i.e. one with a parent item.
+     **/
+    YTableItem( YTableItem * parent,
+                bool         isOpen = false );
+
+    /**
+     * Convenience constructor for a (toplevel) table item without any icons.
      *
      * This will create up to 10 (0..9) cells. Empty cells for empty labels at
      * the end of the labels are not created, but empty cells in between are.
@@ -92,11 +101,32 @@ public:
                 const std::string & label_9 = std::string() );
 
     /**
+     * Convenience constructor for a nested table item without any icons.
+     **/
+    YTableItem( YTableItem *        parent,
+                const std::string & label_0,
+                const std::string & label_1 = std::string(),
+                const std::string & label_2 = std::string(),
+                const std::string & label_3 = std::string(),
+                const std::string & label_4 = std::string(),
+                const std::string & label_5 = std::string(),
+                const std::string & label_6 = std::string(),
+                const std::string & label_7 = std::string(),
+                const std::string & label_8 = std::string(),
+                const std::string & label_9 = std::string() );
+
+    /**
      * Destructor.
      *
      * This will delete all cells.
      **/
     virtual ~YTableItem();
+
+    /**
+     * Returns a descriptive name of this widget class for logging,
+     * debugging etc.
+     **/
+    virtual const char * itemClass() const { return "YTableItem"; }
 
     /**
      * Add a cell. This item will assume ownership over the cell and delete it
@@ -110,11 +140,26 @@ public:
     void addCell( YTableCell * cell_disown );
 
     /**
-     * Create a new cell and add it (even if all 'label',
-     * 'iconName' and 'sortKey' are empty).
+     * Create a new cell and add it (even if all 'label', 'iconName' and
+     * 'sortKey' are empty).
      **/
-    void addCell( const std::string & label, const std::string & iconName = std::string(),
-		  const std::string & sortKey = std::string() );
+    void addCell( const std::string & label,
+                  const std::string & iconName = std::string(),
+		  const std::string & sortKey  = std::string() );
+
+    /**
+     * Add up to 10 cells without any icons.
+     **/
+    void addCells( const std::string & label_0,
+                   const std::string & label_1,
+                   const std::string & label_2 = std::string(),
+                   const std::string & label_3 = std::string(),
+                   const std::string & label_4 = std::string(),
+                   const std::string & label_5 = std::string(),
+                   const std::string & label_6 = std::string(),
+                   const std::string & label_7 = std::string(),
+                   const std::string & label_8 = std::string(),
+                   const std::string & label_9 = std::string() );
 
     /**
      * Delete all cells.
@@ -138,7 +183,7 @@ public:
      * or 0 if there is none.
      **/
     const YTableCell * cell( int index ) const;
-    YTableCell * cell( int index );
+    YTableCell *       cell( int index );
 
     /**
      * Return the number of cells this item has.
@@ -173,6 +218,13 @@ public:
      * Just for debugging.
      **/
     std::string label() const { return label(0); }
+
+    /**
+     * Return a descriptive label of this item instance for debugging.
+     * This might be truncated if the original label is too long.
+     **/
+    virtual std::string debugLabel() const;
+
 
 private:
 
@@ -346,5 +398,4 @@ private:
 };
 
 
-
- #endif // YTableItem_h
+#endif // YTableItem_h

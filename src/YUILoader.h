@@ -34,15 +34,17 @@
 
 
 
-#define YUIPlugin_Qt		"qt"
-#define YUIPlugin_NCurses	"ncurses"
-#define YUIPlugin_Gtk		"gtk"
-#define YUIPlugin_RestAPI       "rest-api"
+#define YUIPlugin_Qt                    "qt"
+#define YUIPlugin_NCurses               "ncurses"
+#define YUIPlugin_Gtk                   "gtk"
+
+#define YUIPlugin_RestAPI               "rest-api"
 #define YUIPlugin_Ncurses_RestAPI       "ncurses-rest-api"
-#define YUIPlugin_Qt_RestAPI       "qt-rest-api"
+#define YUIPlugin_Qt_RestAPI            "qt-rest-api"
 
 /**
- * Class to load one of the concrete UI plug-ins: Qt, NCurses, Gtk.
+ * Class to load one of the concrete UI plug-ins: Qt, NCurses, Gtk;
+ * or one of the corresponding REST APIs used for automated testing.
  **/
 class YUILoader
 {
@@ -112,6 +114,9 @@ public:
      **/
     static void loadPlugin( const std::string & name, bool withThreads = false );
 
+    /**
+     * Check if a plug-in exists.
+     **/
     static bool pluginExists( const std::string & pluginBaseName );
 
     /**
@@ -129,7 +134,8 @@ public:
      *          (e.g. default YExternalWidgets* createExternalWidgets(const char *)
      *          see createEWFunction_t definition)
      **/
-    static void loadExternalWidgets( const std::string & name, const std::string & symbol="_Z21createExternalWidgetsPKc" );
+    static void loadExternalWidgets( const std::string & name,
+                                     const std::string & symbol = "_Z21createExternalWidgetsPKc" );
 
 private:
     YUILoader()  {}
@@ -141,11 +147,14 @@ private:
      * 'name'        is the original plugin name (e.g. the one passed to loadExternalWidgets)
      * 'plugin_name' is the graphical plugin specialization name (e.g. 'name'-[gtk|ncurses|qt])
      * 'symbol'      is the function symbol to be loaded and executed (e.g. the one passed loadExternalWidgets)
+     *
      * This might throw exceptions:
      * YUIPluginException if the plugin has not been loaded
      * specific exception can be thrown by funtion invoked (param symbol)
      **/
-    static void loadExternalWidgetsPlugin( const std::string& name, const std::string& plugin_name, const std::string& symbol );
+    static void loadExternalWidgetsPlugin( const std::string & name,
+                                           const std::string & plugin_name,
+                                           const std::string & symbol );
 };
 
 
@@ -170,12 +179,13 @@ typedef YUI * (*createUIFunction_t)( bool );
 typedef YExternalWidgets * (*createEWFunction_t)( const char * );
 
 /**
- * For the integration testing YUI has separate framework which allows to have
- * control over UI using REST API. Server has to be started after testing framework
- * plugin is loaded, which is done by the method which creates server instance.
- * Not to have additional definition imports, we define it as void here.
- * In the framework calls it can be used to
-**/
+ * For integration testing, YUI has separate framework which allows to have
+ * control over UI using REST API. The server has to be started after testing
+ * if the framework plugin is loaded, which is done by the method which creates
+ * the server instance.  To avoid having to include additional type, we define
+ * it as 'void' here.
+ **/
 typedef void (*getServerFunction_t)();
+
 
 #endif // YUILoader_h

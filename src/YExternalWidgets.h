@@ -55,7 +55,7 @@ public:
      * externalWidgets try loading it (exactly as YUI::ui does) with default function symbol
      * to be executed (see YUILoader::loadExternalWidgets for explanation)
      **/
-    static YExternalWidgets * externalWidgets(const std::string& name);
+    static YExternalWidgets * externalWidgets( const std::string & name );
 
     /**
      * Return the external widget factory that provides all the createXY() methods for
@@ -76,8 +76,8 @@ public:
      * yui-foo-qt plugin implementation.
      *
      **/
-    YExternalWidgetFactory * externalWidgetFactory();
-    static YExternalWidgetFactory * externalWidgetFactory(const std::string& name);
+    YExternalWidgetFactory        * externalWidgetFactory();
+    static YExternalWidgetFactory * externalWidgetFactory( const std::string & name );
 
 protected:
 
@@ -91,10 +91,11 @@ protected:
     virtual YExternalWidgetFactory * createExternalWidgetFactory() = 0;
 
 private:
-    /** Externale widgets plugin name */
+
+    /** External widgets plugin name */
     std::string _name;
 
-    /** Externale widget factory */
+    /** External widget factory */
     YExternalWidgetFactory* _factory;
 
     /** plugin instances */

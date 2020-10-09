@@ -37,9 +37,11 @@
 class YBuiltinCaller
 {
 protected:
+
     YBuiltinCaller() {}
 
 public:
+
     virtual ~YBuiltinCaller() {}
 
     /**

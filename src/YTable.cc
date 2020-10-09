@@ -189,7 +189,7 @@ YTable::propertySet()
 	 * @property itemList	SelectedItems	All currently selected items
 	 * @property string	Cell		One cell (one column of one item)
 	 * @property integer	Cell		(ChangeWidget only) One cell as integer
-	 * @property `icon(...)	Cell		Icon for one one cell
+	 * @property `icon(...)	Cell		Icon for one cell
 	 * @property string	Item		Alias for Cell
 	 * @property string	Item		QueryWidget only: Return one complete item
 	 * @property string	IconPath	Base path for icons

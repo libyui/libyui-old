@@ -142,7 +142,7 @@ public:
      * 'false' if that value requires special handling (not in error cases:
      * those are covered by exceptions).
      **/
-    virtual bool setProperty( const std::string & propertyName,
+    virtual bool setProperty( const std::string    & propertyName,
 			      const YPropertyValue & val );
 
     /**
@@ -183,7 +183,9 @@ public:
      **/
     const char * userInputProperty() { return YUIProperty_Value; }
 
+
 protected:
+
     /**
      * Traverse the widget hierarchy upwards to find the corresponding
      * YRadioButtonGroup, i.e. the class that controls the radio box behaviour
@@ -198,7 +200,7 @@ protected:
      * Reimplemented from YWidget because only radio buttons that are on (no
      * more than one per radio box) are recorded.
      **/
-    virtual void saveUserInput( YMacroRecorder *macroRecorder );
+    virtual void saveUserInput( YMacroRecorder * macroRecorder );
 
 private:
 

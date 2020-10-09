@@ -349,6 +349,8 @@
 #define YUISymbol_topMargin			"topMargin"
 #define YUISymbol_bottomMargin			"bottomMargin"
 #define YUISymbol_BackgroundPixmap		"BackgroundPixmap"
+#define YUISymbol_open                          "open"
+#define YUISymbol_closed                        "closed"
 
 #define YUISymbol_Left				"Left"
 #define YUISymbol_Right				"Right"

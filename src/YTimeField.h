@@ -41,12 +41,14 @@ class YTimeFieldPrivate;
 class YTimeField : public YSimpleInputField
 {
 protected:
+
     /**
      * Constructor.
      **/
     YTimeField( YWidget * parent, const std::string & label );
 
 public:
+
     /**
      * Destructor.
      **/

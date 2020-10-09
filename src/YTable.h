@@ -38,7 +38,7 @@ class YTablePrivate;
  * Table: Selection list with multiple columns. The user can select exactly one
  * row (with all its columns) from that list. Each cell (each column within
  * each row) has a label text, an optional icon (*) and an optional sort-key
- * (used instead of the label text during sort).
+ * (used instead of the label text during sorting).
  *
  * This widget is similar to SelectionBox, but it has several columns for each
  * item (each row). If just one column is desired, consider using SelectionBox
@@ -52,6 +52,9 @@ class YTablePrivate;
  * (*) Not all UIs (in particular not text-based UIs) support displaying icons,
  * so an icon should never be an exclusive means to display any kind of
  * information.
+ *
+ * See also
+ * https://github.com/libyui/libyui-ncurses/blob/master/doc/nctable-and-nctree.md
  **/
 class YTable : public YSelectionWidget
 {
@@ -181,7 +184,7 @@ public:
      * 'false' if that value requires special handling (not in error cases:
      * those are covered by exceptions).
      **/
-    virtual bool setProperty( const std::string & propertyName,
+    virtual bool setProperty( const std::string    & propertyName,
 			      const YPropertyValue & val );
 
     /**
