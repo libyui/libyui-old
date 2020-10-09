@@ -42,6 +42,7 @@ class YShortcut
 public:
     /**
      * Constructor
+     * @param shortcut_widget (not owned, not nullptr)
      **/
     YShortcut( YWidget *shortcut_widget );
 
@@ -91,23 +92,26 @@ public:
     /**
      * Returns the shortcut string ( from the widget's shortcut property )
      * without any "&" markers.
+     *
+     * But an escaped "&&" is preserved.
      **/
     std::string cleanShortcutString();
 
     /**
      * Static version of the above for general use:
      * Returns the specified string without any "&" markers.
+     * But an escaped "&&" is preserved.
      **/
     static std::string cleanShortcutString( std::string shortcutString );
 
     /**
      * The preferred shortcut character, i.e. the character that had been
-     * preceded by "&" before checking / resolving conflicts began.
+     * preceded by "&" before checking / resolving conflicts began. 0 if none.
      **/
     char preferred();
 
     /**
-     * The actual shortcut character.
+     * The actual shortcut character. 0 if none.
      *
      * This may be different from preferred() if it is overridden.
      **/
@@ -157,6 +161,8 @@ public:
      * Static function: Find the next occurrence of the shortcut marker ('&')
      * in a string, beginning at starting position start_pos.
      *
+     * An escaped "&&" does not count.
+     *
      * Returns string::npos if not found or the position of the shortcut marker
      * (not the shortcut character!) if found.
      **/
@@ -200,19 +206,25 @@ protected:
 
     // Data members
 
-    YWidget *	_widget;
-    std::string	_shortcutString;
-    bool	_shortcutStringCached;
+    YWidget *	_widget;               ///< (not owned)
+    std::string	_shortcutString;       ///< @see shortcutString
+    bool	_shortcutStringCached; ///< is _shortcutString initialized
 
     std::string	_cleanShortcutString;
-    bool	_cleanShortcutStringCached;
+    bool	_cleanShortcutStringCached; ///< always false :facepalm:
 
-    int		_preferred;	// int to enable initializing with invalid char (-1)
-    int		_shortcut;	// int to enable initializing with invalid char (-1)
+    /// char or 0 (none found) or -1 (not initialized yet)
+    /// @see preferred
+    int		_preferred;
+    /// char or 0 (none found) or -1 (not initialized yet)
+    /// @see shortcut
+    int		_shortcut;
 
-    bool	_conflict;
-    bool	_isButton;
-    bool	_isWizardButton;
+    bool	_conflict;       ///< @see conflict
+    bool	_isButton;       ///< @see isButton
+    bool	_isWizardButton; ///< @see isWizardButton
+    /// -1 means uninitialized
+    /// @see distinctShortcutChars
     int		_distinctShortcutChars;
 };
 

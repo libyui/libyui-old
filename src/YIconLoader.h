@@ -38,8 +38,8 @@ public:
 
     std::string findIcon( std::string name );
 
-    //FIXME: these two are here for compatibility reasons
-    // deprecate them in due course and treat base path just
+    // FIXME: these two are here for compatibility reasons.
+    // Deprecate them in due course and treat base path just
     // like any other search path
     void setIconBasePath( std::string path );
     std::string iconBasePath() const;
@@ -48,8 +48,8 @@ public:
 
 private:
 
-    std::string		_iconBasePath;
-    std::list <std::string>	icon_dirs;
+    std::string                 _iconBasePath;
+    std::list <std::string>	_iconDirs;
 
     bool fileExists( std::string fname );
 };

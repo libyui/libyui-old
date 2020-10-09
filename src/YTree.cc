@@ -32,6 +32,7 @@
 #include "YTreeItem.h"
 
 using std::string;
+using std::vector;
 
 
 struct YTreePrivate
@@ -44,7 +45,10 @@ struct YTreePrivate
 };
 
 
-YTree::YTree( YWidget * parent, const string & label, bool multiSelection, bool recursiveSelection )
+YTree::YTree( YWidget *      parent,
+              const string & label,
+              bool           multiSelection,
+              bool           recursiveSelection )
     : YSelectionWidget( parent, label,
 			! multiSelection,
 			recursiveSelection )
@@ -172,37 +176,41 @@ YTree::hasMultiSelection() const
 
 
 YTreeItem *
-YTree::findItem( std::vector<std::string> & path ) const
+YTree::findItem( const vector<string> & path ) const
 {
-    return findItem( path.begin(), path.end(), itemsBegin(), itemsEnd());
+    return findItem( path.begin(), path.end(),
+                     itemsBegin(), itemsEnd() );
 }
 
 
 YTreeItem *
-YTree::findItem( std::vector<std::string>::iterator path_begin,
-                       std::vector<std::string>::iterator path_end,
-                       YItemConstIterator begin,
-                       YItemConstIterator end ) const
+YTree::findItem( vector<string>::const_iterator path_begin,
+                 vector<string>::const_iterator path_end,
+                 YItemConstIterator             begin,
+                 YItemConstIterator             end ) const
 {
     for ( YItemConstIterator it = begin; it != end; ++it )
     {
-        YTreeItem * item = dynamic_cast<YTreeItem *>(*it);
-        // Test that dynamic_cast didn't fail
-        if (!item)
-            return nullptr;
+        YTreeItem * item = dynamic_cast<YTreeItem *>( *it );
 
-        if( item->label() == *path_begin )
+        if ( ! item )
+            return 0;
+
+        if ( item->label() == *path_begin )
         {
-            if ( std::next(path_begin) == path_end )
+            if ( std::next( path_begin ) == path_end )
             {
                 return item;
             }
-            // Look in child nodes and return if found one
-            YTreeItem * result = findItem( ++path_begin, path_end, item->childrenBegin(), item->childrenEnd() );
+
+            // Recursively search child items
+            YTreeItem * result = findItem( ++path_begin, path_end,
+                                           item->childrenBegin(), item->childrenEnd() );
+
             if ( result )
                 return result;
         }
     }
 
-    return nullptr;
+    return 0;
 }

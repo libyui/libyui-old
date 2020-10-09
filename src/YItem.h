@@ -27,6 +27,7 @@
 
 #include <string>
 #include <vector>
+#include <iosfwd>
 
 
 class YItem;
@@ -47,6 +48,9 @@ typedef YItemCollection::const_iterator		YItemConstIterator;
 /**
  * Simple item class for SelectionBox, ComboBox, MultiSelectionBox etc. items.
  * This class provides stubs for children management.
+ *
+ * See also
+ * https://github.com/libyui/libyui-ncurses/blob/master/doc/nctable-and-nctree.md
  **/
 class YItem
 {
@@ -54,7 +58,8 @@ public:
     /**
      * Constructor with just the label and optionally the selected state.
      **/
-    YItem( const std::string & label, bool selected = false )
+    YItem( const std::string & label,
+           bool                selected = false )
 	: _label( label )
 	, _status( selected ? 1 : 0 )
 	, _index( -1 )
@@ -64,7 +69,9 @@ public:
     /**
      * Constructor with label and icon name and optionally the selected state.
      **/
-    YItem( const std::string & label, const std::string & iconName, bool selected = false )
+    YItem( const std::string & label,
+           const std::string & iconName,
+           bool                selected = false )
 	: _label( label )
 	, _iconName( iconName )
 	, _status( selected ? 1 : 0 )
@@ -76,6 +83,12 @@ public:
      * Destructor.
      **/
     virtual ~YItem() {}
+
+    /**
+     * Returns a descriptive name of this widget class for logging,
+     * debugging etc.
+     **/
+    virtual const char * itemClass() const { return "YItem"; }
 
     /**
      * Return this item's label. This is what the user sees in a dialog, so
@@ -198,11 +211,23 @@ public:
     virtual YItemConstIterator	childrenEnd() const	{ return _noChildren.end(); }
 
     /**
-     * Returns this item's parent item or 0 if it is a toplevel item.
+     * Return this item's parent item or 0 if it is a toplevel item.
      * This default implementation always returns 0.
      * Derived classes that handle children should reimplement this.
      **/
     virtual YItem * parent() const { return 0; }
+
+    /**
+     * Return a descriptive label of this item instance for debugging.
+     * This might be truncated if the original label is too long.
+     **/
+    virtual std::string debugLabel() const;
+
+    /**
+     * Return a string of maximum 'limit' characters. Add an ellipsis ("...")
+     * if it was truncated.
+     **/
+    std::string limitLength( const std::string & text, int limit ) const;
 
 
 private:
@@ -219,6 +244,9 @@ private:
      **/
     static YItemCollection _noChildren;
 };
+
+
+std::ostream & operator<<( std::ostream & stream, const YItem * item );
 
 
 

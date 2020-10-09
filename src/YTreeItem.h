@@ -69,6 +69,12 @@ public:
     virtual ~YTreeItem();
 
     /**
+     * Returns a descriptive name of this widget class for logging,
+     * debugging etc.
+     **/
+    virtual const char * itemClass() const { return "YTreeItem"; }
+
+    /**
      * Return 'true' if this item has any child items.
      *
      * Reimplemented from YItem.
@@ -117,7 +123,8 @@ public:
     /**
      * Change the 'isOpen' flag.
      **/
-    void setOpen( bool open );
+    void setOpen( bool open = true );
+    void setClosed() { setOpen( false ); }
 
     /**
      * Returns this item's parent item or 0 if it is a toplevel item.

@@ -38,6 +38,9 @@ class YSelectionWidgetPrivate;
  *   - YTable
  *   - YTree
  *   - YDumbTab
+ *
+ * See also
+ * https://github.com/libyui/libyui-ncurses/blob/master/doc/nctable-and-nctree.md
  **/
 class YSelectionWidget : public YWidget
 {
@@ -105,7 +108,7 @@ public:
      **/
     void addItem( const std::string & itemLabel,
 		  const std::string & iconName,
-		  bool  selected = false );
+		  bool                selected = false );
 
     /**
      * Add multiple items. For some UIs, this can be more efficient than
@@ -271,21 +274,6 @@ public:
     YItem * findItem( const std::string & itemLabel ) const;
 
     /**
-     * Get the string of this widget that holds the keyboard shortcut.
-     *
-     * Reimplemented from YWidget.
-     **/
-    virtual std::string shortcutString() const { return label(); }
-
-    /**
-     * Set the string of this widget that holds the keyboard shortcut.
-     *
-     * Reimplemented from YWidget.
-     **/
-    virtual void setShortcutString( const std::string & str )
-	{ setLabel( str ); }
-
-    /**
      * Dump all items and their selection state to the log.
      **/
     void dumpItems() const;
@@ -294,6 +282,41 @@ public:
      * Return 'true' if this base class should enforce single selection.
      **/
     bool enforceSingleSelection() const;
+
+    /**
+     * Notification that any shortcut of any item was changed by the shortcut
+     * conflict manager YShortcutManager.
+     *
+     * Derived classes should reimplement this.
+     **/
+    virtual void shortcutChanged() {}
+
+    /**
+     * Get the string of this widget that holds the keyboard shortcut.
+     *
+     * Notice that some sub-classes (e.g., YDumbTab, YItemSelection, YMenuBar)
+     * has one shortcut for each item. This value is not meaningful for such
+     * widget classes.
+     *
+     * Check YItemShortcut in YShortcut.{cc,h} for more details.
+     *
+     * Reimplemented from YWidget.
+     **/
+    virtual std::string shortcutString() const { return label(); }
+
+    /**
+     * Set the string of this widget that holds the keyboard shortcut.
+     *
+     * Also trigger a shortcutChanged() notification. This is useful for
+     * derived sub-classes to refresh the widget when any shortcut of any item
+     * was changed by the shortcut conflict manager.
+     *
+     * Check YItemShortcut in YShortcut.{cc,h} for more details.
+     *
+     * Reimplemented from YWidget.
+     **/
+    virtual void setShortcutString( const std::string & str );
+
 
 protected:
 

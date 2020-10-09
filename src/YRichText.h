@@ -140,7 +140,7 @@ public:
      * 'false' if that value requires special handling (not in error cases:
      * those are covered by exceptions).
      **/
-    virtual bool setProperty( const std::string & propertyName,
+    virtual bool setProperty( const std::string    & propertyName,
 			      const YPropertyValue & val );
 
     /**
@@ -173,11 +173,10 @@ public:
      *
      * The special values are:
      *
-     * "minimum" Moves the scrollbar to the start.
+     * "minimum": Moves the scrollbar to the start.
+     * "maximum": Moves the scrollbar to the end.
      *
-     * "maximum" Moves the scrollbar to the end.
-     *
-     * Might not be available in all frontends.
+     * This might not be available in all frontends.
      */
     virtual void setVScrollValue( const std::string & newValue );
 
@@ -195,9 +194,8 @@ public:
      *
      * The special values are:
      *
-     * "minimum" Moves the scrollbar to the start.
-     *
-     * "maximum" Moves the scrollbar to the end.
+     * "minimum": Moves the scrollbar to the start.
+     * "maximum": Moves the scrollbar to the end.
      *
      * The meaning of start and end can depend on the text direction
      * (LTR or RTL).

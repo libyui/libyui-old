@@ -211,4 +211,5 @@ SET( EXAMPLES_LIST
   SelectionBox2.cc
   SelectionBox3-many-items.cc
   Table-many-items.cc
+  Table-nested-items.cc
 )

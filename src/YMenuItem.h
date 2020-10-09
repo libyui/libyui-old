@@ -50,6 +50,7 @@ public:
 	       const std::string & 	iconName = "" )
 	: YTreeItem( label, iconName )
         , _enabled( true )
+	, _visible( true )
         , _uiItem( 0 )
 	{}
 
@@ -67,6 +68,7 @@ public:
 	       const std::string & 	iconName = "" )
 	: YTreeItem( parent, label, iconName )
         , _enabled( true )
+	, _visible( true )
         , _uiItem( 0 )
 	{}
 
@@ -132,6 +134,20 @@ public:
     void setEnabled( bool enabled = true ) { _enabled = enabled; }
 
     /**
+     * Return 'true' if this item is visible (which is the default).
+     **/
+    bool isVisible() const { return _visible; }
+
+    /**
+     * Show or hide this item.
+     *
+     * Applications should use YMenuWidget::setItemVisible() instead because
+     * that will also notify the widget so it can update the item's visual
+     * representation.
+     **/
+    void setVisible( bool visible = true ) { _visible = visible; }
+
+    /**
      * Return the UI counterpart of this item (if the UI set any).
      **/
     void * uiItem() const { return _uiItem; }
@@ -154,7 +170,8 @@ private:
 
     // Data members
 
-    bool   _enabled;
+    bool _enabled;
+    bool _visible;
     void * _uiItem;
 };
 

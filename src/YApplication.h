@@ -82,7 +82,10 @@ public:
      **/
     virtual void setIconBasePath( const std::string & newIconBasePath );
 
-    YIconLoader *iconLoader();
+    /**
+     * Return the icon loader.
+     **/
+    YIconLoader * iconLoader();
 
     /**
      * Return the default function key number for a widget with the specified
@@ -180,7 +183,7 @@ public:
      * Derived classes are required to implement this.
      **/
     virtual std::string askForExistingDirectory( const std::string & startDir,
-					    const std::string & headline ) = 0;
+                                                 const std::string & headline ) = 0;
 
     /**
      * Open a file selection box and prompt the user for an existing file.
@@ -199,8 +202,8 @@ public:
      * Derived classes are required to implement this.
      **/
     virtual std::string askForExistingFile( const std::string & startWith,
-				       const std::string & filter,
-				       const std::string & headline ) = 0;
+                                            const std::string & filter,
+                                            const std::string & headline ) = 0;
 
     /**
      * Open a file selection box and prompt the user for a file to save data
@@ -221,8 +224,8 @@ public:
      * Derived classes are required to implement this.
      **/
     virtual std::string askForSaveFileName( const std::string & startWith,
-				       const std::string & filter,
-				       const std::string & headline ) = 0;
+                                            const std::string & filter,
+                                            const std::string & headline ) = 0;
 
     /**
      * Open a context menu for a widget

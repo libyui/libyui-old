@@ -36,8 +36,11 @@ public:
      * Constructor
      * @param  widget the target widget
      */
-    YPropertyEditor(YWidget * widget);
+    YPropertyEditor( YWidget * widget );
 
+    /**
+     * Destructor
+     **/
     virtual ~YPropertyEditor();
 
     /**
@@ -45,7 +48,7 @@ public:
      * @param  property name of the property to edit
      * @return true if the property has been changed, false otherwise
      */
-    bool edit(const std::string &property);
+    bool edit( const std::string & property );
 
 private:
 

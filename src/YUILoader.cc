@@ -57,9 +57,9 @@ void YUILoader::loadUI( bool withThreads )
 
     string wantedGUI;
 
-    yuiMilestone () << "DISPLAY: \""              << envDisplay << "\"" << endl;
-    yuiMilestone () << "XDG_CURRENT_DESKTOP: \""  << envDesktop << "\"" << endl;
-    yuiMilestone () << "YUI_PREFERED_BACKEND: \"" << envPreset  << "\"" << endl;
+    yuiMilestone() << "DISPLAY: \""              << envDisplay << "\"" << endl;
+    yuiMilestone() << "XDG_CURRENT_DESKTOP: \""  << envDesktop << "\"" << endl;
+    yuiMilestone() << "YUI_PREFERED_BACKEND: \"" << envPreset  << "\"" << endl;
 
     // Taken from: https://specifications.freedesktop.org/menu-spec/menu-spec-1.1.html#onlyshowin-registry
     isGtk = ( ( strstr( envDesktop, "Cinnamon" ) != NULL ) || isGtk );

@@ -30,6 +30,8 @@
 #include "YShortcut.h"
 #include "YMenuWidget.h"
 
+#define VERBOSE_SHORTCUTS       0
+
 
 using std::string;
 
@@ -113,6 +115,14 @@ YMenuWidget::setItemEnabled( YMenuItem * item, bool enabled )
 }
 
 
+void
+YMenuWidget::setItemVisible( YMenuItem * item, bool visible )
+{
+    if ( item )
+        item->setVisible( visible );
+}
+
+
 YMenuItem *
 YMenuWidget::findMenuItem( int index )
 {
@@ -155,6 +165,7 @@ YMenuWidget::resolveShortcutConflicts( YItemConstIterator begin,
                                        YItemConstIterator end )
 {
 #define USED_SIZE ((int) sizeof( char ) << 8)
+
     bool used[ USED_SIZE ];
 
     for ( int i = 0; i < USED_SIZE; i++ )
@@ -181,17 +192,21 @@ YMenuWidget::resolveShortcutConflicts( YItemConstIterator begin,
             if ( shortcut == 0 )
             {
                 conflicts.push_back(item);
+
+#if VERBOSE_SHORTCUTS
                 yuiMilestone() << "No or invalid shortcut found: \""
                                << item->label() << "\""
                                << endl;
+#endif
             }
             else if ( used[ (unsigned) shortcut ] )
             {
                 conflicts.push_back(item);
-
+#if VERBOSE_SHORTCUTS
                 yuiWarning() << "Conflicting shortcut found: \""
                              << item->label() << "\""
                              << endl;
+#endif
             }
             else
             {
@@ -230,7 +245,10 @@ YMenuWidget::resolveShortcutConflicts( YItemConstIterator begin,
         if ( new_c != 0 )
         {
             clean.insert( index, 1, YShortcut::shortcutMarker() );
-            yuiMilestone() << "New label used: " << clean << endl;
+
+#if VERBOSE_SHORTCUTS
+            yuiDebug() << "New label used: " << clean << endl;
+#endif
         }
 
         i->setLabel( clean );
@@ -271,11 +289,11 @@ YMenuWidget::findItem( std::vector<std::string>::iterator path_begin,
 
         if ( item->label() == *path_begin )
         {
-            if ( std::next(path_begin) == path_end )
+            if ( std::next( path_begin ) == path_end )
             {
                 // Only return items which can trigger an action.
                 // Intermediate items only open a submenu, so continue looking.
-                if( item->hasChildren() )
+                if ( item->hasChildren() )
                     continue;
 
                 return item;

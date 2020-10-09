@@ -42,9 +42,9 @@ protected:
      * Constructor.
      **/
     YBusyIndicator( YWidget * 		parent,
-		  const std::string &	label,
-		  int			timeout = 1000,
-		  bool 			alive = true );
+                    const std::string &	label,
+                    int			timeout = 1000,
+                    bool 		alive = true );
 
 public:
     /**
@@ -111,7 +111,7 @@ public:
      * 'false' if that value requires special handling (not in error cases:
      * those are covered by exceptions).
      **/
-    virtual bool setProperty( const std::string & propertyName,
+    virtual bool setProperty( const std::string    & propertyName,
 			      const YPropertyValue & val );
 
     /**

@@ -215,7 +215,7 @@ public:
      * currently has the keyboard focus.
      **/
     YKeyEvent( const std::string &	keySymbol,
-	       YWidget *	focusWidget = 0 );
+	       YWidget *                focusWidget = 0 );
 
     /**
      * Returns the key symbol - a text describing the
