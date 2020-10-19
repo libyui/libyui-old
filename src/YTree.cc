@@ -106,8 +106,12 @@ YTree::propertySet()
 	 * @property itemList		Items		All items
 	 * @property string             Label		Caption above the tree
 	 * @property string             IconPath	Base path for icons
-	 * @property map<ItemID>	OpenItems 	Map of IDs of all open items (read-only)
          * @property bool               MultiSelection  Flag: User can select multiple items (read-only)
+         *
+	 * @property map<ItemID, string> OpenItems 	Map of IDs of all open items (read-only)
+         *                                              to either "ID" or "Text":
+         *                                              { "myFirstItemID": "ID",
+         *                                                "myThirdItem":   "Text" }
 	 */
 	propSet.add( YProperty( YUIProperty_Value,		YOtherProperty	 ) );
 	propSet.add( YProperty( YUIProperty_CurrentItem,	YOtherProperty	 ) );

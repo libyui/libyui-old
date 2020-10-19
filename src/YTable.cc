@@ -194,7 +194,11 @@ YTable::propertySet()
 	 * @property string	Item		QueryWidget only: Return one complete item
 	 * @property string	IconPath	Base path for icons
 	 * @property bool	MultiSelection	Flag: User can select multiple items (read-only)
-	 * @property map<ItemID> OpenItems 	Map of IDs of all open items (read-only)
+         *
+	 * @property map<ItemID, string> OpenItems 	Map of IDs of all open items (read-only)
+         *                                              to either "ID" or "Text":
+         *                                              { "myFirstItemID": "ID",
+         *                                                "myThirdItem":   "Text" }
 	 */
 	propSet.add( YProperty( YUIProperty_Value,		YOtherProperty	 ) );
 	propSet.add( YProperty( YUIProperty_CurrentItem,	YOtherProperty	 ) );
@@ -203,8 +207,8 @@ YTable::propertySet()
 	propSet.add( YProperty( YUIProperty_Cell,		YOtherProperty	 ) );
 	propSet.add( YProperty( YUIProperty_Item,		YOtherProperty	 ) );
 	propSet.add( YProperty( YUIProperty_IconPath,		YStringProperty	 ) );
-	propSet.add( YProperty( YUIProperty_OpenItems,		YOtherProperty,  true ) ); // read-only
 	propSet.add( YProperty( YUIProperty_MultiSelection,	YBoolProperty,   true ) ); // read-only
+	propSet.add( YProperty( YUIProperty_OpenItems,		YOtherProperty,  true ) ); // read-only
 	propSet.add( YWidget::propertySet() );
     }
 
