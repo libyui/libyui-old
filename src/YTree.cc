@@ -104,22 +104,25 @@ YTree::propertySet()
 	 * @property itemID  		CurrentItem	The currently selected item
 	 * @property list<itemID>  	CurrentBranch	List of IDs of current branch from root to current item
 	 * @property itemList		Items		All items
-	 * @property map<ItemID>	OpenItems 	Map of IDs of all open items - can only be queried, not set
 	 * @property string             Label		Caption above the tree
 	 * @property string             IconPath	Base path for icons
          * @property bool               MultiSelection  Flag: User can select multiple items (read-only)
+         *
+	 * @property map<ItemID, string> OpenItems 	Map of IDs of all open items (read-only)
+         *                                              to either "ID" or "Text":
+         *                                              { "myFirstItemID": "ID",
+         *                                                "myThirdItem":   "Text" }
 	 */
 	propSet.add( YProperty( YUIProperty_Value,		YOtherProperty	 ) );
 	propSet.add( YProperty( YUIProperty_CurrentItem,	YOtherProperty	 ) );
 	propSet.add( YProperty( YUIProperty_CurrentBranch,	YOtherProperty	 ) );
 	propSet.add( YProperty( YUIProperty_Items,		YOtherProperty	 ) );
-	propSet.add( YProperty( YUIProperty_OpenItems,		YOtherProperty	 ) );
 	propSet.add( YProperty( YUIProperty_Label,		YStringProperty	 ) );
 	propSet.add( YProperty( YUIProperty_IconPath,		YStringProperty	 ) );
         propSet.add( YProperty( YUIProperty_SelectedItems,      YOtherProperty   ) );
         propSet.add( YProperty( YUIProperty_MultiSelection,     YBoolProperty,   true ) ); // read-only
+	propSet.add( YProperty( YUIProperty_OpenItems,		YOtherProperty,	 true ) ); // read-only
 	propSet.add( YWidget::propertySet() );
-
     }
 
     return propSet;
@@ -135,7 +138,6 @@ YTree::setProperty( const string & propertyName, const YPropertyValue & val )
     else if ( propertyName == YUIProperty_CurrentItem 	)	return false; // Needs special handling
     else if ( propertyName == YUIProperty_CurrentBranch )	return false; // Needs special handling
     else if ( propertyName == YUIProperty_Items 	)	return false; // Needs special handling
-    else if ( propertyName == YUIProperty_OpenItems 	)	return false; // Needs special handling
     else if ( propertyName == YUIProperty_SelectedItems )       return false; // Needs special handling
     else if ( propertyName == YUIProperty_Label		)	setLabel( val.stringVal() );
     else if ( propertyName == YUIProperty_IconPath 	)	setIconBasePath( val.stringVal() );
@@ -158,10 +160,11 @@ YTree::getProperty( const string & propertyName )
     else if ( propertyName == YUIProperty_CurrentItem 	)	return YPropertyValue( YOtherProperty );
     else if ( propertyName == YUIProperty_CurrentBranch )	return YPropertyValue( YOtherProperty );
     else if ( propertyName == YUIProperty_Items 	)	return YPropertyValue( YOtherProperty );
-    else if ( propertyName == YUIProperty_OpenItems 	)	return YPropertyValue( YOtherProperty );
     else if ( propertyName == YUIProperty_Label		)	return YPropertyValue( label() );
     else if ( propertyName == YUIProperty_IconPath	)	return YPropertyValue( iconBasePath() );
     else if ( propertyName == YUIProperty_SelectedItems )       return YPropertyValue( YOtherProperty );
+    else if ( propertyName == YUIProperty_MultiSelection )      return YPropertyValue( hasMultiSelection() );
+    else if ( propertyName == YUIProperty_OpenItems 	)	return YPropertyValue( YOtherProperty );
     else
     {
 	return YWidget::getProperty( propertyName );
