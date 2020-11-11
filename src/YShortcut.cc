@@ -32,6 +32,7 @@
 #include "YShortcut.h"
 #include "YPushButton.h"
 #include "YDumbTab.h"
+#include "YMenuBar.h"
 
 
 // Return the number of elements of an array of any type
@@ -146,7 +147,7 @@ YShortcut::setShortcut( char newShortcut )
 
     if ( newShortcut != YShortcut::None )
     {
-	char findme[] = { (char)tolower( newShortcut ), (char)toupper( newShortcut ), 0 };
+	char findme[] = { (char) tolower( newShortcut ), (char) toupper( newShortcut ), 0 };
 	string::size_type pos = str.find_first_of( findme );
 
 	if ( pos == string::npos )
@@ -268,7 +269,7 @@ YShortcut::findShortcutPos( const string & str, string::size_type pos )
 	}
 	else
 	{
-	    // A pathological case: The string ends with '& '.
+	    // A pathological case: The string ends with '&'.
 	    // This is invalid anyway, but prevent endless loop even in this case.
 	    return string::npos;
 	}
@@ -308,6 +309,16 @@ YShortcut::normalized( char c )
 
 
 
+
+YItemShortcut::YItemShortcut( YWidget * widget, YItem * item )
+    : YShortcut( widget )
+    , _item( item )
+{
+    YMenuBar * menuBar = dynamic_cast<YMenuBar *>( widget );
+    _isMenuItem = menuBar ? true : false;
+}
+
+
 string
 YItemShortcut::getShortcutString()
 {
@@ -325,7 +336,7 @@ YItemShortcut::setShortcut( char newShortcut )
 
     if ( newShortcut != YShortcut::None )
     {
-	char findme[] = { (char)tolower( newShortcut ), (char)toupper( newShortcut ), 0 };
+	char findme[] = { (char)tolower( newShortcut ), (char) toupper( newShortcut ), 0 };
 	string::size_type pos = str.find_first_of( findme );
 
 	if ( pos == string::npos )
@@ -351,4 +362,26 @@ YItemShortcut::setShortcut( char newShortcut )
     _cleanShortcutStringCached	= false;
     _shortcut = newShortcut;
 
+}
+
+
+
+
+std::ostream & operator<<( std::ostream & stream, const YShortcut * shortcut )
+{
+    if ( shortcut )
+    {
+        stream << shortcut->widgetClass();
+
+        if ( dynamic_cast<const YItemShortcut *>( shortcut ) )
+            stream << " item";
+
+        stream << " \"" << shortcut->debugLabel() << "\"";
+    }
+    else
+    {
+        stream << "<NULL YShortcut>";
+    }
+
+    return stream;
 }

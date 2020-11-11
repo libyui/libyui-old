@@ -125,6 +125,19 @@ protected:
     void resolveConflict( YShortcut * shortcut );
 
     /**
+     * Pick a conflict to resolve from 'conflictList' according to priorities
+     * (menu items, wizard buttons, buttons, other widgets) and return its
+     * index within 'conflictList'.
+     **/
+    int pickConflictToResolve( const YShortcutList & conflictList );
+
+    /**
+     * Find the shortest menu item in 'conflictList', if there is any.
+     * Returns the index of that shortest menu item or -1 if there is none.
+     **/
+    int findShortestMenuItem( const YShortcutList & conflictList );
+
+    /**
      * Find the shortest wizard button in 'conflictList', if there is any.
      * Returns the index of that shortest wizard button or -1 if there is none.
      **/
