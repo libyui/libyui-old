@@ -2,6 +2,7 @@
 Wed Nov 11 17:17:45 UTC 2020 - Stefan Hundhammer <shundhammer@suse.com>
 
 - Higher priority for toplevel menu shortcuts (bsc#1175489)
+- Dropped support for openSUSE 13.2 (or earlier) builds in .spec file
 - 3.12.2
 
 -------------------------------------------------------------------
