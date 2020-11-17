@@ -26,16 +26,21 @@
 #ifndef YShortcut_h
 #define YShortcut_h
 
-#include "YWidget.h"
+#include <iosfwd>
 #include <string>
 #include <vector>
 
-class YItem;
+#include "YWidget.h"
+#include "YItem.h"
 
 
 /**
  * Helper class for shortcut management:
  * This class holds data about the shortcut for one single widget.
+ *
+ * Notice that there is also a derived class YItemShortcut for item-based
+ * widgets that may have multiple shortcuts like YDumbTab, YMenuBar,
+ * YItemSelector.
  **/
 class YShortcut
 {
@@ -78,6 +83,14 @@ public:
      * wizard button (one of the navigation buttons of a wizard).
      **/
     bool isWizardButton() const { return _isWizardButton; }
+
+    /**
+     * Returns 'true' if this is a shortcut for a (toplevel) menu item.
+     *
+     * This default implementation always returns 'false'.
+     * Derived classes like YItemShortcut can choose to overwrite this.
+     **/
+    virtual bool isMenuItem() const { return false; }
 
     /**
      * Returns the complete shortcut string (which may or may not contain "&"),
@@ -152,6 +165,11 @@ public:
     bool hasValidShortcutChar();
 
     /**
+     * Label of this shortcut suitable for debugging
+     **/
+    virtual std::string debugLabel() const { return _widget->debugLabel(); }
+
+    /**
      * Static function: Returns the character used for marking keyboard
      * shortcuts.
      **/
@@ -216,6 +234,7 @@ protected:
     /// char or 0 (none found) or -1 (not initialized yet)
     /// @see preferred
     int		_preferred;
+
     /// char or 0 (none found) or -1 (not initialized yet)
     /// @see shortcut
     int		_shortcut;
@@ -223,6 +242,7 @@ protected:
     bool	_conflict;       ///< @see conflict
     bool	_isButton;       ///< @see isButton
     bool	_isWizardButton; ///< @see isWizardButton
+
     /// -1 means uninitialized
     /// @see distinctShortcutChars
     int		_distinctShortcutChars;
@@ -231,8 +251,13 @@ protected:
 
 
 /**
- * Special case for widgets that can have multiple shortcuts based on items
- * (like YDumbTab)
+ * Special case for item-based widgets that can have multiple shortcuts like
+ * YDumbTab, YMenuBar, YItemSelector. Each instance represents one of those
+ * items.
+ *
+ * For YMenuBar, only the toplevel items are handled here since only their
+ * shortcuts need to be unique within the dialog. Within each menu, shortcut
+ * conflicts are resolved separately in YMenuWidget.
  **/
 class YItemShortcut: public YShortcut
 {
@@ -240,10 +265,7 @@ public:
     /**
      * Constructor.
      **/
-    YItemShortcut( YWidget * widget, YItem * item )
-	: YShortcut( widget )
-	, _item( item )
-	{}
+    YItemShortcut( YWidget * widget, YItem * item );
 
     /**
      * Destructor.
@@ -257,9 +279,25 @@ public:
 
     /**
      * Set (override) the shortcut character.
+     *
+     * Reimplemented from YShortcut.
      * In this subclass, it will change the internally stored item.
      **/
     virtual void setShortcut( char newShortcut );
+
+    /**
+     * Returns 'true' if this is a shortcut for a (toplevel) menu item.
+     *
+     * Reimplemented from YShortcut.
+     **/
+    virtual bool isMenuItem() const { return _isMenuItem; }
+
+    /**
+     * Label of this shortcut suitable for debugging
+     **/
+    virtual std::string debugLabel() const
+        { return cleanShortcutString( _item->debugLabel() ); }
+
 
 protected:
 
@@ -273,7 +311,11 @@ protected:
 private:
 
     YItem * _item;
+    bool    _isMenuItem;
 };
+
+
+std::ostream & operator<<( std::ostream & stream, const YShortcut * shortcut );
 
 
 typedef std::vector<YShortcut *>	YShortcutList;

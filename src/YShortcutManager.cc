@@ -42,7 +42,7 @@ using std::string;
 #define MIN_VALID_PERCENT	50
 
 // Return the number of elements of an array of any type
-#define DIM( ARRAY )	( (int) ( sizeof( ARRAY)/( sizeof( ARRAY[0] ) ) ) )
+#define DIM( ARRAY )	( (int) ( sizeof( ARRAY) / ( sizeof( ARRAY[0] ) ) ) )
 
 
 YShortcutManager::YShortcutManager( YDialog *dialog )
@@ -121,8 +121,7 @@ YShortcutManager::checkShortcuts( bool autoResolve )
 		_conflictCount++;
 
 		yuiDebug() << "Shortcut conflict: '" << shortcut->preferred()
-			   << "' used for " << shortcut->widget()
-			   << endl;
+			   << "' used for " << shortcut << endl;
 	    }
 	}
 	else	// No or invalid shortcut
@@ -134,7 +133,7 @@ YShortcutManager::checkShortcuts( bool autoResolve )
 
 		if ( ! shortcut->widget()->autoShortcut() )
 		{
-		    yuiDebug() << "No valid shortcut for " << shortcut->widget() << endl;
+		    yuiDebug() << "No valid shortcut for " << shortcut << endl;
 		}
 	    }
 	}
@@ -194,20 +193,10 @@ YShortcutManager::resolveAllConflicts()
 
     while ( ! conflictList.empty() )
     {
-	//
-	// Pick a conflict widget to resolve.
-	//
-
-	// Wizard buttons have priority - check any of them first.
-	int prioIndex = findShortestWizardButton( conflictList );
-
-	if ( prioIndex < 0 )
-	    prioIndex = findShortestWidget( conflictList); // Find the shortest widget. Buttons have priority.
-
-
-	// Pick a new shortcut for this widget.
-
+        int prioIndex        = pickConflictToResolve( conflictList );
 	YShortcut * shortcut = conflictList[ prioIndex ];
+        // yuiDebug() << "Picked " << shortcut << endl;
+
 	resolveConflict( shortcut );
 
 	if ( shortcut->conflict() )
@@ -215,8 +204,8 @@ YShortcutManager::resolveAllConflicts()
 	    yuiWarning() << "Couldn't resolve shortcut conflict for " << shortcut->widget() << endl;
 	}
 
-
-	// Mark this particular conflict as resolved.
+	// Mark this particular conflict as resolved:
+        // Remove it from the conflict list.
 
 	conflictList.erase( conflictList.begin() + prioIndex );
     }
@@ -228,11 +217,10 @@ YShortcutManager::resolveAllConflicts()
 }
 
 
-
 void
 YShortcutManager::resolveConflict( YShortcut * shortcut )
 {
-    // yuiDebug() << "Picking shortcut for " << shortcut->widget() << endl;
+    // yuiDebug() << "Picking shortcut for " << shortcut << endl;
 
     char candidate = shortcut->preferred();			// This is always normalized, no need to normalize again.
 
@@ -276,7 +264,7 @@ YShortcutManager::resolveConflict( YShortcut * shortcut )
 	    else
 	    {
 		yuiDebug() << "Reassigning shortcut '" << candidate
-			   << "' to " << shortcut->widget()
+			   << "' to " << shortcut
 			   << endl;
 	    }
 	    shortcut->setShortcut( candidate );
@@ -284,7 +272,7 @@ YShortcutManager::resolveConflict( YShortcut * shortcut )
 	else
 	{
 	    yuiDebug() << "Keeping preferred shortcut '" << candidate
-		       << "' for " << shortcut->widget()
+		       << "' for " << shortcut
 		       << endl;
 	}
 
@@ -306,6 +294,50 @@ YShortcutManager::resolveConflict( YShortcut * shortcut )
 }
 
 
+int
+YShortcutManager::pickConflictToResolve( const YShortcutList & conflictList )
+{
+    int prioIndex = -1;
+
+    // Yes, the first  "if ( prioIndex < 0 )" is redundant, but that makes it
+    // much easier to rearrange priorities without nasty side effects.
+
+    if ( prioIndex < 0 )
+        prioIndex = findShortestMenuItem( conflictList );
+
+    if ( prioIndex < 0 )
+        prioIndex = findShortestWizardButton( conflictList );
+
+    if ( prioIndex < 0 )
+        prioIndex = findShortestWidget( conflictList );
+
+    return prioIndex;
+}
+
+
+int
+YShortcutManager::findShortestMenuItem( const YShortcutList & conflictList )
+{
+    int shortestIndex = -1;
+    int shortestLen   = -1;
+
+    for ( unsigned i=0; i < conflictList.size(); i++ )
+    {
+	if ( conflictList[i]->isMenuItem() )
+	{
+	    if ( shortestLen < 0 ||
+		 conflictList[i]->distinctShortcutChars() < shortestLen )
+	    {
+		shortestIndex = i;
+		shortestLen   = conflictList[i]->distinctShortcutChars();
+	    }
+
+	}
+    }
+
+    return shortestIndex;
+}
+
 
 int
 YShortcutManager::findShortestWizardButton( const YShortcutList & conflictList )
@@ -313,7 +345,7 @@ YShortcutManager::findShortestWizardButton( const YShortcutList & conflictList )
     int shortestIndex = -1;
     int shortestLen   = -1;
 
-    for ( unsigned i=1; i < conflictList.size(); i++ )
+    for ( unsigned i=0; i < conflictList.size(); i++ )
     {
 	if ( conflictList[i]->isWizardButton() )
 	{
@@ -329,7 +361,6 @@ YShortcutManager::findShortestWizardButton( const YShortcutList & conflictList )
 
     return shortestIndex;
 }
-
 
 
 unsigned
@@ -364,7 +395,6 @@ YShortcutManager::findShortestWidget( const YShortcutList & conflictList )
 
     return shortestIndex;
 }
-
 
 
 void
