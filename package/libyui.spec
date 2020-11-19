@@ -16,7 +16,7 @@
 #
 
 Name:           libyui
-Version:        3.12.2
+Version:        3.12.3
 Release:        0
 Source:         %{name}-%{version}.tar.bz2
 
@@ -55,6 +55,7 @@ dependencies.
 
 %package -n %{bin_name}
 
+Provides:       libyui
 Provides:       yast2-libyui = 2.42.0
 Obsoletes:      yast2-libyui < 2.42.0
 Requires:       yui_backend = %{so_version}
