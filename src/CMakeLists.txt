@@ -1,8 +1,13 @@
 # CMakeLists.txt for libyui/src
 
 include( ../VERSION.cmake )
+include( GNUInstallDirs )       # set CMAKE_INSTALL_LIBDIR
 
-set( TARGETLIB libyui )
+set( TARGETLIB          libyui )
+set( TARGETLIB_BASE     yui    )
+
+# CMake will install to /usr/lib, not /usr/lib64
+set( LIB_INSTALL_DIR     /usr/${CMAKE_INSTALL_LIBDIR}    )
 set( HEADERS_INSTALL_DIR ${CMAKE_INSTALL_INCLUDEDIR}/yui )
 
 
@@ -213,12 +218,15 @@ target_link_libraries( ${TARGETLIB} dl pthread )
 set_target_properties( ${TARGETLIB} PROPERTIES
   VERSION       ${SONAME}           # From ../VERSION.cmake
   SOVERSION     ${SONAME_MAJOR}     # From ../VERSION.cmake
-  OUTPUT_NAME   ${TARGETLIB}
-  PUBLIC_HEADER ${HEADERS}
+  OUTPUT_NAME   ${TARGETLIB_BASE}
   )
 
-install( TARGETS ${TARGETLIB}
-  LIBRARY       DESTINATION lib
-  PUBLIC_HEADER DESTINATION ${HEADERS_INSTALL_DIR}
-  )
+install( FILES   ${HEADERS}           DESTINATION ${HEADERS_INSTALL_DIR} )
+install( TARGETS ${TARGETLIB} LIBRARY DESTINATION ${LIB_INSTALL_DIR}     )
 
+
+# Generate Libyui_config.h where some CMake variables are expanded
+# for use in the C++ code
+
+configure_file( Libyui_config.h.in Libyui_config.h )
+include_directories( ${CMAKE_CURRENT_BINARY_DIR} )

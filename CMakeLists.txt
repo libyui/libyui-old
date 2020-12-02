@@ -24,6 +24,9 @@ option( BUILD_EXAMPLES  "Build C++ -based libyui examples"      on  )
 option( BUILD_DOC       "Build class documentation"             off )
 option( WERROR          "Treat all compiler warnings as errors" on  )
 
+# No support for /usr/local as of now
+set( CMAKE_INSTALL_PREFIX /usr )
+
 
 # Initialize compiler flags
 

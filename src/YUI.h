@@ -30,6 +30,8 @@
 
 #include "YTypes.h"
 #include "YSettings.h"
+#include "Libyui_config.h"      // VERSION
+
 
 class YApplication;
 class YWidget;
