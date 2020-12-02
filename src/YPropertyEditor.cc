@@ -14,20 +14,20 @@
   Floor, Boston, MA 02110-1301 USA
 */
 
-#include <YPropertyEditor.h>
+#include "YPropertyEditor.h"
 
-#include <YUI.h>
-#include <YWidgetFactory.h>
-#include <YDialog.h>
-#include <YLayoutBox.h>
-#include <YAlignment.h>
-#include <YButtonBox.h>
-#include <YPushButton.h>
-#include <YEvent.h>
-#include <YPopupInternal.h>
-#include <YComboBox.h>
-#include <YInputField.h>
-#include <YIntField.h>
+#include "YUI.h"
+#include "YWidgetFactory.h"
+#include "YDialog.h"
+#include "YLayoutBox.h"
+#include "YAlignment.h"
+#include "YButtonBox.h"
+#include "YPushButton.h"
+#include "YEvent.h"
+#include "YPopupInternal.h"
+#include "YComboBox.h"
+#include "YInputField.h"
+#include "YIntField.h"
 
 #include <limits>
 

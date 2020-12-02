@@ -348,6 +348,7 @@ void YAlignment::setBackgroundPixmap( const string & pixmapFileName )
     priv->backgroundPixmap = pixmap;
 }
 
+
 const char *
 YAlignment::widgetClass() const
 {

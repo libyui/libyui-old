@@ -14,21 +14,21 @@
   Floor, Boston, MA 02110-1301 USA
 */
 
-#include <YUI.h>
-#include <YWidgetFactory.h>
-#include <YDialog.h>
-#include <YLayoutBox.h>
-#include <YAlignment.h>
-#include <YButtonBox.h>
-#include <YPushButton.h>
-#include <YInputField.h>
-#include <YSpacing.h>
-#include <YEvent.h>
+#include "YUI.h"
+#include "YWidgetFactory.h"
+#include "YDialog.h"
+#include "YLayoutBox.h"
+#include "YAlignment.h"
+#include "YButtonBox.h"
+#include "YPushButton.h"
+#include "YInputField.h"
+#include "YSpacing.h"
+#include "YEvent.h"
 
 #define YUILogComponent "ui-popup"
 #include "YUILog.h"
 
-#include <YPopupInternal.h>
+#include "YPopupInternal.h"
 
 using std::string;
 
