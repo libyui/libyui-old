@@ -39,7 +39,6 @@ Makefile.in
 # CMake
 CMakeCache.txt
 CMakeFiles
-/CMakeLists.txt
 Makefile
 cmake_install.cmake
 install_manifest.txt
