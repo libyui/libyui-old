@@ -1,6 +1,6 @@
 # CMakeLists.txt for libyui/examples
 
-message( "Building libyui/examples" )
+message( "cmake in libyui/examples" )
 
 # FIXME: TO DO
 # FIXME: TO DO

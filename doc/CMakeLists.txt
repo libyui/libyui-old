@@ -1,6 +1,6 @@
 # CMakeLists.txt for libyui/doc
 
-message( "Building libyui/doc" )
+message( "cmake in libyui/doc" )
 
 # FIXME: TO DO
 # FIXME: TO DO

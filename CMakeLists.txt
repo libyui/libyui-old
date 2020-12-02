@@ -12,29 +12,39 @@
 # Restart with a clean build environment:
 #
 #   rm -rf build
-#
-# Following KDE CMake coding conventions:
-# https://community.kde.org/Policies/CMake_Coding_Style
 
 cmake_minimum_required( VERSION 3.10 )
 project( libyui )
 
 # Options usage:
 #
-#   mkdir build
-#   cd build
-#   cmake -Dbuild_doc=on -Dbuild_examples=off ..
+#   cmake -DBUILD_DOC=on -DBUILD_EXAMPLES=off ..
 
-option( build_examples "Build C++ -based libyui examples"       on  )
-option( build_doc      "Build class documentation"              off )
+option( BUILD_EXAMPLES  "Build C++ -based libyui examples"      on  )
+option( BUILD_DOC       "Build class documentation"             off )
+option( WERROR          "Treat all compiler warnings as errors" on  )
+
+
+# Initialize compiler flags
+
+set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall" )
+if ( WERROR )
+  set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror" )
+endif()
+message( "Using CXX_FLAGS: ${CMAKE_CXX_FLAGS}" )
+
+
+#
+# Descend into subdirectories
+#
 
 add_subdirectory( src )
 
-if ( build_examples )
+if ( BUILD_EXAMPLES )
   add_subdirectory( examples )
 endif()
 
-if ( build_doc )
+if ( BUILD_DOC )
   add_subdirectory( doc )
 endif()
 
