@@ -5,14 +5,6 @@
 #ifndef Libyui_config_h
 #define Libyui_config_h
 
-#if 0
-// FIXME: Most of those are probably obsolete by now.
-#define DATADIR		"/usr/share/libyui"
-#define DATAROOTDIR	"/usr/share"
-#define LOCALEDIR	"/usr/share/locale"
-
-#endif
-
 #define THEMEDIR	"/usr/share/libyui/theme"
 
 #define PLUGINDIR	"/usr/@CMAKE_INSTALL_LIBDIR@/yui" // "/usr/lib64/yui"

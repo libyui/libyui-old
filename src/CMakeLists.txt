@@ -1,7 +1,7 @@
 # CMakeLists.txt for libyui/src
 
 include( ../VERSION.cmake )
-include( GNUInstallDirs )       # set CMAKE_INSTALL_INCLUDEDIR
+include( GNUInstallDirs )       # set CMAKE_INSTALL_INCLUDEDIR, ..._LIBDIR
 
 set( TARGETLIB          libyui )
 set( TARGETLIB_BASE     yui    )
