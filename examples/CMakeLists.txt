@@ -14,6 +14,9 @@ function( add_example EXAMPLE )
 
   # Include header files from ../src, not /usr/include/yui
   target_include_directories( ${EXAMPLE} BEFORE PRIVATE ${PROJECT_SOURCE_DIR}/src )
+
+  # TO DO: Use the libyui we just built, not the one from /usr/lib64
+  # (It will still load the UI plug-ins from the system, not the freshly built ones)
   target_link_libraries( ${EXAMPLE} yui )
   install( FILES ${EXAMPLE}.cc DESTINATION ${EXAMPLES_INSTALL_DIR} )
 endfunction()
