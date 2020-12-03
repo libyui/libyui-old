@@ -3,6 +3,9 @@
 include( ../VERSION.cmake )
 include( GNUInstallDirs )       # set CMAKE_INSTALL_INCLUDEDIR, ..._LIBDIR
 
+find_package( Boost REQUIRED )
+
+
 set( TARGETLIB          libyui )
 set( TARGETLIB_BASE     yui    )
 
@@ -206,11 +209,16 @@ set( HEADERS
   )
 
 
+
 # Add shared lib to be built
 add_library( ${TARGETLIB} SHARED ${SOURCES} )
 
 # Libraries that are needed to build this shared lib
-target_link_libraries( ${TARGETLIB} dl pthread )
+#
+# Not sure if we really need to link against Boost::boost;
+# the classes used here may all be in header files only without
+# any binary part that needs linking. But better safe than sorry.
+target_link_libraries( ${TARGETLIB} dl pthread Boost::boost )
 
 # https://cmake.org/cmake/help/latest/manual/cmake-properties.7.html#target-properties
 set_target_properties( ${TARGETLIB} PROPERTIES
