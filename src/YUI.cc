@@ -35,6 +35,8 @@
 
 #include <stack>
 
+#include "Libyui_config.h"      // VERSION
+
 #define YUILogComponent "ui"
 #include "YUILog.h"
 
