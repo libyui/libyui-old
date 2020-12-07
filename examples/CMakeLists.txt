@@ -2,8 +2,23 @@
 
 include( ../VERSION.cmake )
 
-set( PKG_NAME             libyui${SONAME_MAJOR} )
-set( EXAMPLES_INSTALL_DIR /usr/share/doc/packages/${PKG_NAME}/examples )
+set( PKG_NAME                   libyui${SONAME_MAJOR} )
+set( EXAMPLES_INSTALL_DIR       /usr/share/doc/packages/${PKG_NAME}/examples )
+
+set( USE_FRESHLY_BUILT_LIBYUI   on )
+
+if ( USE_FRESHLY_BUILT_LIBYUI )
+  # Use the freshly built libyui from ../src, not the one from /usr/lib64.
+  # (It will still load the UI plug-ins from the system, not the freshly built ones)
+  # This also sets rpath.
+  set( LIBYUI_INCLUDE_DIR       ${PROJECT_SOURCE_DIR}/src )
+  set( LIBYUI                   ${CMAKE_BINARY_DIR}/src/libyui.so )
+else()
+  # Link against the system libyui in /usr/liby64 and use system includes
+  set( LIBYUI_INCLUDE_DIR       /usr/include/yui )
+  set( LIBYUI                   yui )
+endif()
+
 
 
 # Build a simple example named EXAMPLE from one source file EXAMPLE.cc
@@ -11,13 +26,8 @@ set( EXAMPLES_INSTALL_DIR /usr/share/doc/packages/${PKG_NAME}/examples )
 #
 function( add_example EXAMPLE )
   add_executable( ${EXAMPLE} ${EXAMPLE}.cc )
-
-  # Include header files from ../src, not /usr/include/yui
-  target_include_directories( ${EXAMPLE} BEFORE PRIVATE ${PROJECT_SOURCE_DIR}/src )
-
-  # TO DO: Use the libyui we just built, not the one from /usr/lib64
-  # (It will still load the UI plug-ins from the system, not the freshly built ones)
-  target_link_libraries( ${EXAMPLE} yui )
+  target_include_directories( ${EXAMPLE} BEFORE PRIVATE ${LIBYUI_INCLUDE_DIR} )
+  target_link_libraries( ${EXAMPLE} ${LIBYUI} )
   install( FILES ${EXAMPLE}.cc DESTINATION ${EXAMPLES_INSTALL_DIR} )
 endfunction()
 
