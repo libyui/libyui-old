@@ -221,14 +221,17 @@ add_library( ${TARGETLIB} SHARED ${SOURCES} ${HEADERS} )
 target_link_libraries( ${TARGETLIB} dl pthread Boost::boost )
 
 
-# Add more compile options to this target
-# target_compile_options( ${TARGETLIB} PUBLIC "-Dfoo" )
+# Add more compile options to this target.
+#
+# Notice that CMake will automatically add -fPIC etc. where needed,
+# like for this shared lib.
+### target_compile_options( ${TARGETLIB} PUBLIC "-Dfoo" )
 
 # Show the complete compiler commands with all arguments:
 #   make VERBOSE=1
 
 # Add more compile options to an individual source file
-# set_source_files_properties( YUI.cc PROPERTIES COMPILE_OPTIONS "-Dfoo" )
+### set_source_files_properties( YUI.cc PROPERTIES COMPILE_OPTIONS "-Dfoo" )
 
 
 # https://cmake.org/cmake/help/latest/manual/cmake-properties.7.html#target-properties
