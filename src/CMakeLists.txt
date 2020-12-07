@@ -211,7 +211,7 @@ set( HEADERS
 
 
 # Add shared lib to be built
-add_library( ${TARGETLIB} SHARED ${SOURCES} )
+add_library( ${TARGETLIB} SHARED ${SOURCES} ${HEADERS} )
 
 # Libraries that are needed to build this shared lib
 #
@@ -219,6 +219,17 @@ add_library( ${TARGETLIB} SHARED ${SOURCES} )
 # the classes used here may all be in header files only without
 # any binary part that needs linking. But better safe than sorry.
 target_link_libraries( ${TARGETLIB} dl pthread Boost::boost )
+
+
+# Add more compile options to this target
+# target_compile_options( ${TARGETLIB} PUBLIC "-Dfoo" )
+
+# Show the complete compiler commands with all arguments:
+#   make VERBOSE=1
+
+# Add more compile options to an individual source file
+# set_source_files_properties( YUI.cc PROPERTIES COMPILE_OPTIONS "-Dfoo" )
+
 
 # https://cmake.org/cmake/help/latest/manual/cmake-properties.7.html#target-properties
 set_target_properties( ${TARGETLIB} PROPERTIES

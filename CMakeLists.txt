@@ -10,8 +10,10 @@
 #   sudo make install
 #
 # Restart with a clean build environment:
-#
 #   rm -rf build
+#
+# Show the complete compiler commands with all arguments:
+#   make VERBOSE=1
 
 cmake_minimum_required( VERSION 3.10 )
 project( libyui )
@@ -28,13 +30,15 @@ option( WERROR          "Treat all compiler warnings as errors" on  )
 set( CMAKE_INSTALL_PREFIX /usr )
 
 
-# Initialize compiler flags
+# Initialize compiler flags for all targets.
+#
+# Notice that CMake will automatically add -fPIC etc. where needed.
 
-set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall" )
+add_compile_options( "-Wall" )
+
 if ( WERROR )
-  set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror" )
+  add_compile_options( "-Werror" )
 endif()
-message( "Using CXX_FLAGS: ${CMAKE_CXX_FLAGS}" )
 
 
 #
