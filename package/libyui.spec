@@ -29,7 +29,7 @@ Source:         %{name}-%{version}.tar.bz2
 
 BuildRequires:  libboost_headers-devel
 BuildRequires:  libboost_test-devel
-BuildRequires:  cmake >= 2.8
+BuildRequires:  cmake >= 3.10
 BuildRequires:  gcc-c++
 BuildRequires:  pkg-config
 
