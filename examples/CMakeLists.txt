@@ -28,10 +28,17 @@ function( add_example EXAMPLE )
   add_executable( ${EXAMPLE} ${EXAMPLE}.cc )
   target_include_directories( ${EXAMPLE} BEFORE PRIVATE ${LIBYUI_INCLUDE_DIR} )
   target_link_libraries( ${EXAMPLE} ${LIBYUI} )
+
+  if ( USE_FRESHLY_BUILT_LIBYUI )
+    # Add a dependency to the libyui CMake target so ../src/ is built first
+    add_dependencies( ${EXAMPLE} libyui )
+  endif()
+
   install( FILES ${EXAMPLE}.cc DESTINATION ${EXAMPLES_INSTALL_DIR} )
 endfunction()
 
 #----------------------------------------------------------------------
+
 
 add_example( AutoWrap1 )
 add_example( AutoWrap2 )
