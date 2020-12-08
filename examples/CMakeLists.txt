@@ -11,7 +11,7 @@ if ( USE_FRESHLY_BUILT_LIBYUI )
   # Use the freshly built libyui from ../build/src, not the one from /usr/lib64;
   # also set rpath.
   # This will still load the UI plug-ins from the system, not the freshly built ones.
-  set( LIBYUI_INCLUDE_DIR       ${PROJECT_SOURCE_DIR}/src )
+  set( LIBYUI_INCLUDE_DIR       ../src )
   set( LIBYUI                   ${CMAKE_BINARY_DIR}/src/libyui.so )
 else()
   # Use system includes and link against the system libyui in /usr/lib64. No rpath.
@@ -38,7 +38,6 @@ function( add_example EXAMPLE )
 endfunction()
 
 #----------------------------------------------------------------------
-
 
 add_example( AutoWrap1 )
 add_example( AutoWrap2 )
