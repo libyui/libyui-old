@@ -22,10 +22,11 @@ project( libyui )
 #
 #   cmake -DBUILD_DOC=on -DBUILD_EXAMPLES=off ..
 
-option( BUILD_EXAMPLES    "Build C++ -based libyui examples"      on  )
-option( BUILD_DOC         "Build class documentation"             off )
-option( LEGACY_BUILDTOOLS "Install legacy cmake buildtools"       on  )
-option( WERROR            "Treat all compiler warnings as errors" on  )
+option( BUILD_EXAMPLES    "Build C++ -based libyui examples"          on  )
+option( BUILD_DOC         "Build class documentation"                 off )
+option( LEGACY_BUILDTOOLS "Install legacy cmake buildtools"           on  )
+option( WERROR            "Treat all compiler warnings as errors"     on  )
+option( DOC_DESTDIR       "Destination directory for installing docs" ""  )
 
 # No support for /usr/local as of now
 set( CMAKE_INSTALL_PREFIX /usr )

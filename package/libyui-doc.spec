@@ -26,13 +26,12 @@ Source:         %{parent}-%{version}.tar.bz2
 
 BuildArch:      noarch
 
-BuildRequires:  cmake >= 2.8
+BuildRequires:  cmake >= 3.10
 BuildRequires:  doxygen
 BuildRequires:  fdupes
 BuildRequires:  gcc-c++
 BuildRequires:  graphviz-gnome
 BuildRequires:  libyui-devel >= 3.0.4
-BuildRequires:  texlive-latex
 
 Url:            http://github.com/libyui/
 Summary:        Libyui documentation
@@ -57,22 +56,14 @@ This package provides the documentation. (HTML & PDF)
 
 %build
 
-export CFLAGS="$RPM_OPT_FLAGS -DNDEBUG"
-export CXXFLAGS="$RPM_OPT_FLAGS -DNDEBUG"
-
-./bootstrap.sh %{_prefix}
-
 mkdir build
 cd build
-cmake .. \
-        -DDOC_DIR=%{_docdir} \
-        -DDOCS_ONLY=ON
-
-make %{?jobs:-j%jobs} docs
+cmake -DBUILD_DOC=on -DDOC_DESTDIR=$RPM_BUILD_ROOT
+make %{?jobs:-j%jobs} doc
 
 %install
 cd build
-make install DESTDIR="$RPM_BUILD_ROOT"
+make install-doc
 
 %fdupes -s $RPM_BUILD_ROOT/%_docdir/%{parent}%{so_version}
 
