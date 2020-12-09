@@ -34,6 +34,7 @@ set( CMAKE_INSTALL_PREFIX /usr )
 
 # Initialize compiler flags for all targets in all subdirectories
 add_compile_options( "-Wall" )
+add_compile_options( "-Os" )    # Optimize for size
 
 if ( WERROR )
   add_compile_options( "-Werror" )
