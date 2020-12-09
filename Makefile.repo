@@ -1,0 +1,22 @@
+#
+# Makefile.repo
+#
+
+
+all: configure
+
+configure: clean
+	mkdir build ; \
+	cd build ; \
+	cmake ..
+
+install: configure
+	cd build ; \
+	make && make install
+
+reconf:
+	cd build ; \
+	cmake rebuild_cache
+
+clean:
+	rm -rf build
