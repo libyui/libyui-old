@@ -3,7 +3,7 @@
 include( ../VERSION.cmake )
 
 set( PKG_NAME                   libyui${SONAME_MAJOR} )
-set( EXAMPLES_INSTALL_DIR       /usr/share/doc/packages/${PKG_NAME}/examples )
+set( EXAMPLES_INSTALL_DIR       ${DESTDIR}/usr/share/doc/packages/${PKG_NAME}/examples )
 
 set( USE_FRESHLY_BUILT_LIBYUI   on )
 

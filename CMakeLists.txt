@@ -26,15 +26,20 @@ option( BUILD_EXAMPLES    "Build C++ -based libyui examples"          on  )
 option( BUILD_DOC         "Build class documentation"                 off )
 option( LEGACY_BUILDTOOLS "Install legacy cmake buildtools"           on  )
 option( WERROR            "Treat all compiler warnings as errors"     on  )
-option( DOC_DESTDIR       "Destination directory for installing docs" ""  )
 
-# No support for /usr/local as of now
+# Non-boolean options
+set( DOC_DESTDIR "" CACHE STRING "Destination directory prefix for installing docs" )
+
+#----------------------------------------------------------------------
+
+
+# As of now, no support for /usr/local instead of /usr. But CMake DESTDIR works.
 set( CMAKE_INSTALL_PREFIX /usr )
 
 
 # Initialize compiler flags for all targets in all subdirectories
 add_compile_options( "-Wall" )
-add_compile_options( "-Os" )    # Optimize for size
+add_compile_options( "-Os" )    # Optimize for size (overrides CMake's -O3 in RELEASE builds)
 
 if ( WERROR )
   add_compile_options( "-Werror" )

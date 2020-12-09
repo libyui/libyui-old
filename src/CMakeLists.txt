@@ -11,6 +11,16 @@ set( TARGETLIB_BASE     yui    )
 
 set( HEADERS_INSTALL_DIR ${CMAKE_INSTALL_INCLUDEDIR}/yui )
 
+# if DESTDIR is set, CMAKE_INSTALL_INCLUDEDIR already contains it
+# during "make install" (but not for other make targets!):
+#
+#    sudo make install DESTDIR=/work/foo
+# or
+#    DESTDIR=/work/foo sudo make install
+#
+# -> the include files are installed to /work/foo/usr/include/...
+# We need that for RPM builds to install everything to $RPM_BUILD_ROOT.
+
 
 set( SOURCES
   YUI.cc
@@ -221,7 +231,8 @@ add_library( ${TARGETLIB} SHARED ${SOURCES} ${HEADERS} )
 target_link_libraries( ${TARGETLIB} dl pthread Boost::boost )
 
 
-# Add more compile options to this target.
+# Add more compile options to this target in addition to those
+# added in the toplevel CMakeLists.txt.
 #
 # Notice that CMake will automatically add -fPIC etc. where needed,
 # like for this shared lib.
@@ -230,7 +241,7 @@ target_link_libraries( ${TARGETLIB} dl pthread Boost::boost )
 # Show the complete compiler commands with all arguments:
 #   make VERBOSE=1
 
-# Add more compile options to an individual source file
+# Add more compile options to an individual source file:
 ### set_source_files_properties( YUI.cc PROPERTIES COMPILE_OPTIONS "-Dfoo" )
 
 
@@ -248,7 +259,7 @@ install( TARGETS ${TARGETLIB} LIBRARY )
 
 
 # Generate Libyui_config.h where some CMake variables are expanded
-# for use in the C++ code
+# for use in the C++ code. This file is NOT installed upon "make install".
 
 configure_file( Libyui_config.h.in Libyui_config.h )
 include_directories( ${CMAKE_CURRENT_BINARY_DIR} )

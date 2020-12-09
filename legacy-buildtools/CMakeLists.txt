@@ -11,8 +11,10 @@
 #
 #   https://gist.github.com/shundhammer/d96a63a1cab8245d20c2e3556238a114
 #
+# When this is removed, remember to also remove it from the files list in the
+# .spec file!
 
-set( BUILDTOOLS_INSTALL_DIR /usr/share/libyui/buildtools )
+set( BUILDTOOLS_INSTALL_DIR ${DESTDIR}/usr/share/libyui/buildtools )
 
 set( BUILDTOOLS_FILES
   BuildTreeSettings.cmake.in

@@ -22,17 +22,18 @@ endif()
 
 
 file( GLOB DOC_FILES     *.md ) # Don't glob *.txt (CMakeLists.txt!)
-file( GLOB LICENSE_FILES ../COPYING* )
-file( GLOB EXAMPLE_SRC   ../examples/*.h ../examples/*.cc )
+# The license files (../COPYING*) are handled in the .spec file
+
+
+# Define a new custom make target "install-doc".
+# Notice that we can't use DESTDIR here since CMake only sets that
+# for "make install", not for this custom "make install-doc".
 
 add_custom_target( install-doc
   DEPENDS doc
 
-  COMMAND mkdir   -m 755 -p ${DOC_INSTALL_DIR}/examples
   COMMAND mkdir   -m 755 -p ${DOC_INSTALL_DIR}/html
   COMMAND install -m 644 ${DOC_FILES}     ${DOC_INSTALL_DIR}
-  COMMAND install -m 644 ${LICENSE_FILES} ${DOC_INSTALL_DIR}
-  COMMAND install -m 644 ${EXAMPLE_SRC}   ${DOC_INSTALL_DIR}/examples
   COMMAND cp -r ${CMAKE_CURRENT_BINARY_DIR}/html ${DOC_INSTALL_DIR}
 
   COMMENT "Installing documentation to ${DOC_INSTALL_DIR}" )
