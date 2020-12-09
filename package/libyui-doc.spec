@@ -47,7 +47,7 @@ Originally developed for YaST, it can now be used independently of
 YaST for generic (C++) applications. This package has very few
 dependencies.
 
-This package provides the documentation. (HTML & PDF)
+This package provides HTML class documentation.
 
 
 %prep

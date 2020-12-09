@@ -23,21 +23,11 @@ Source:         %{name}-%{version}.tar.bz2
 %define so_version 14
 %define bin_name %{name}%{so_version}
 
-# optionally build with code coverage reporting,
-# this uses debug build, do not use in production!
-%bcond_with coverage
-
 BuildRequires:  libboost_headers-devel
 BuildRequires:  libboost_test-devel
 BuildRequires:  cmake >= 3.10
 BuildRequires:  gcc-c++
 BuildRequires:  pkg-config
-
-%if %{with coverage}
-# normally the coverage feature should not be used out of CI
-# but to be on the safe side...
-BuildRequires: lcov
-%endif
 
 Url:            http://github.com/libyui/
 Summary:        GUI-abstraction library
@@ -85,7 +75,7 @@ Requires:       libstdc++-devel
 Requires:       %{bin_name} = %{version}
 
 Url:            http://github.com/libyui/
-Summary:        Libyui header files
+Summary:        Libyui header files and examples
 Group:          Development/Languages/C and C++
 
 %description devel
@@ -97,49 +87,33 @@ Originally developed for YaST, it can now be used independently of
 YaST for generic (C++) applications. This package has very few
 dependencies.
 
-This can be used independently of YaST for generic (C++) applications.
-This package has very few dependencies.
+This package provides the C++ header files and some C++ examples.
+
 
 %prep
 %setup -q -n %{name}-%{version}
 
 %build
 
-./bootstrap.sh
 mkdir build
 cd build
 
-%if %{with coverage}
-CMAKE_OPTS="-DCMAKE_BUILD_TYPE=DEBUG -DENABLE_CODE_COVERAGE=ON"
-# the debug build type is incompatible with the default $RPM_OPT_FLAGS,
-# do not use them
-export CFLAGS="-DNDEBUG $(getconf LFS_CFLAGS)"
-export CXXFLAGS="-DNDEBUG $(getconf LFS_CFLAGS)"
-%else
 export CFLAGS="$RPM_OPT_FLAGS -DNDEBUG $(getconf LFS_CFLAGS)"
 export CXXFLAGS="$RPM_OPT_FLAGS -DNDEBUG $(getconf LFS_CFLAGS)"
+
 %if %{?_with_debug:1}%{!?_with_debug:0}
 CMAKE_OPTS="-DCMAKE_BUILD_TYPE=RELWITHDEBINFO"
 %else
 CMAKE_OPTS="-DCMAKE_BUILD_TYPE=RELEASE"
 %endif
-%endif
 
 cmake .. \
-        -DYPREFIX=%{_prefix} \
         -DDOC_DIR=%{_docdir} \
         -DLIB_DIR=%{_lib} \
         $CMAKE_OPTS
 
 make %{?jobs:-j%jobs}
 
-%check
-cd build
-make test
-%if %{with coverage}
-# generate code coverage data
-make coverage
-%endif
 
 %install
 cd build
@@ -168,9 +142,9 @@ rm -rf "$RPM_BUILD_ROOT"
 %dir %{_docdir}/%{bin_name}
 %{_libdir}/lib*.so
 %{_prefix}/include/yui
-%{_libdir}/pkgconfig/%{name}.pc
-%{_libdir}/cmake/%{name}
 %{_datadir}/libyui/buildtools
 %doc %{_docdir}/%{bin_name}/examples
+# %{_libdir}/pkgconfig/%{name}.pc
+# %{_libdir}/cmake/%{name}
 
 %changelog
