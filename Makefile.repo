@@ -1,5 +1,5 @@
 #
-# Makefile.repo
+# Makefile.repo for libyui
 #
 
 
@@ -16,7 +16,7 @@ configure: clean
 
 install: configure
 	cd build; \
-	make && make install
+	make -j 8 && make install
 
 reconf:
 	cd build; \
@@ -28,5 +28,24 @@ clean:
 package:
 	rake package
 
+doc:
+	test -d build || mkdir build
+	cd build; \
+	cmake -DBUILD_DOC=on .. ; \
+	make doc
+
+install-doc: doc
+	cd build; \
+	make install-doc
+
 version-bump:
-	rake version-bump
+	rake version:bump
+
+# Just an alias
+bump-version: version-bump
+
+# We need this because we have a subdirectory doc/, a subdirectory package/
+# and possibly a subdirectory build/ here which would be checked for
+# timestamps
+.PHONY: doc package build
+
