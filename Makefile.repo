@@ -3,19 +3,23 @@
 #
 
 
-all: configure
+all: build
+
+build: configure
+	cd build; \
+	make -j 8
 
 configure: clean
-	mkdir build ; \
-	cd build ; \
+	mkdir build; \
+	cd build; \
 	cmake ..
 
 install: configure
-	cd build ; \
+	cd build; \
 	make && make install
 
 reconf:
-	cd build ; \
+	cd build; \
 	cmake rebuild_cache
 
 clean:
