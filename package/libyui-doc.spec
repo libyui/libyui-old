@@ -28,9 +28,9 @@ BuildArch:      noarch
 
 BuildRequires:  cmake >= 3.10
 BuildRequires:  doxygen
+BuildRequires:  graphviz
 BuildRequires:  fdupes
 BuildRequires:  gcc-c++
-BuildRequires:  graphviz-gnome
 BuildRequires:  libyui-devel >= 3.0.4
 
 Url:            http://github.com/libyui/
