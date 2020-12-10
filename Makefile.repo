@@ -24,3 +24,9 @@ reconf:
 
 clean:
 	rm -rf build
+
+package:
+	rake package
+
+version-bump:
+	rake version-bump
