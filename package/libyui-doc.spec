@@ -58,7 +58,11 @@ This package provides HTML class documentation.
 
 mkdir build
 cd build
-cmake -DBUILD_DOC=on -DDOC_DESTDIR=$RPM_BUILD_ROOT
+
+cmake .. \
+  -DBUILD_DOC=on \
+  -DDOC_DESTDIR=$RPM_BUILD_ROOT
+
 make %{?jobs:-j%jobs} doc
 
 %install

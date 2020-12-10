@@ -108,9 +108,9 @@ CMAKE_OPTS="-DCMAKE_BUILD_TYPE=RELEASE"
 %endif
 
 cmake .. \
-        -DDOC_DIR=%{_docdir} \
-        -DLIB_DIR=%{_lib} \
-        $CMAKE_OPTS
+ -DDOC_DIR=%{_docdir} \
+ -DLIB_DIR=%{_lib} \
+ $CMAKE_OPTS
 
 make %{?jobs:-j%jobs}
 
