@@ -2,7 +2,7 @@
 
 include( ../VERSION.cmake )
 
-find_package( Doxygen )
+find_package( Doxygen REQUIRED dot )
 
 
 set( PKG_NAME           libyui${SONAME_MAJOR} )
