@@ -2,6 +2,10 @@
 # Makefile.repo for libyui
 #
 
+# Local Variables:
+#    mode: Makefile
+# End:
+
 
 all: build
 
