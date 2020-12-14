@@ -7,11 +7,19 @@
 # End:
 
 
-all: build
+all: configure build-hint
 
 build: configure
 	cd build; \
 	make -j 8
+
+build-hint:
+	@echo ""
+	@echo "To build:"
+	@echo ""
+	@echo "  cd build"
+	@echo "  make"
+	@echo ""
 
 configure: clean
 	mkdir build; \
