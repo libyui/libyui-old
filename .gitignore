@@ -1,12 +1,3 @@
-# GNU Autotools
-Makefile.in
-/autom4te.cache
-/aclocal.m4
-/compile
-/configure
-/depcomp
-/install-sh
-/missing
 
 # Object files
 *.o
@@ -66,19 +57,7 @@ build*/
 *.iso
 *.tar
 
-# package management formats
-*.dmg
-*.xpi
-*.gem
-*.egg
-*.deb
-*.rpm
 
-# CVS
-/CVS/*
-*/CVS/*
-.cvsignore
-*/.cvsignore*~
 \#*\#
 
 # Emacs
@@ -94,7 +73,6 @@ tramp
 
 # Unix/Linux
 *_archive
-.*
 !.gitignore
 !.travis.*
 *~
@@ -108,11 +86,8 @@ tmp
 .directory
 *.kdev4
 
-# Subversion
-.svn/
-
 # Examples
-/examples/*
+examples/*
 # but keep sources and cmake
 !/examples/*.cc
 !/examples/*.h
