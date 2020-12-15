@@ -64,11 +64,12 @@ cmake .. \
   -DBUILD_DOC=on \
   -DDOC_DESTDIR=$RPM_BUILD_ROOT
 
-make %{?jobs:-j%jobs} doc
+# No "make doc" here: This would only duplicate the doxygen call
 
 %install
 cd build
 make install-doc
+# This implicitly includes "make doc" unconditionally
 
 %fdupes -s $RPM_BUILD_ROOT/%_docdir/%{parent}%{so_version}
 
