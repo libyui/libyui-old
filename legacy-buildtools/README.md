@@ -15,7 +15,7 @@ files from this directory.
 ## Migration Path
 
 We will need this until all the community-supported libyui plugins and
-extensions (libyui-gtk, libyui-mga, libyui-mga-qt, ...) are ported to this
+extensions (libyui-gtk, libyui-mga, libyui-mga-qt, ...) are ported to the
 new cmake environment.
 
 See
