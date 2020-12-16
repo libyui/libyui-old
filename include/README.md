@@ -23,7 +23,7 @@ that: In the plugins' src/CMakefile.txt, add an include path
 
     target_include_directories( ${MYPLUGIN} BEFORE PUBLIC ../../libyui/include )
 
-to prefer the headers from this directory of the headers in /usr/include/yui .
+to prefer the headers from this directory to the headers in /usr/include/yui .
 
 This is safe even if ../../libyui/include is not available. In that case, the
 system includes from /usr/include/yui are used.
