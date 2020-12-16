@@ -21,17 +21,17 @@
 //     g++ -I/usr/include/yui -lyui Table-nested-items.cc -o Table-nested-items
 
 #define YUILogComponent "example"
-#include "YUILog.h"
+#include <yui/YUILog.h>
 
-#include "YUI.h"
-#include "YWidgetFactory.h"
-#include "YDialog.h"
-#include "YTable.h"
-#include "YAlignment.h"
-#include "YLabel.h"
-#include "YLayoutBox.h"
-#include "YPushButton.h"
-#include "YEvent.h"
+#include <yui/YUI.h>
+#include <yui/YWidgetFactory.h>
+#include <yui/YDialog.h>
+#include <yui/YTable.h>
+#include <yui/YAlignment.h>
+#include <yui/YLabel.h>
+#include <yui/YLayoutBox.h>
+#include <yui/YPushButton.h>
+#include <yui/YEvent.h>
 
 
 using std::string;

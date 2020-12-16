@@ -23,24 +23,24 @@
 // For a very simple ItemSelector example, see ItemSelector2-minimalistic.cc.
 
 #define YUILogComponent "example"
-#include "YUILog.h"
+#include <yui/YUILog.h>
 
-#include "YUI.h"
-#include "YWidgetFactory.h"
-#include "YDialog.h"
-#include "YAlignment.h"
-#include "YButtonBox.h"
-#include "YCheckBox.h"
-#include "YFrame.h"
-#include "YIntField.h"
-#include "YItemCustomStatus.h"
-#include "YItemSelector.h"
-#include "YLabel.h"
-#include "YLayoutBox.h"
-#include "YPushButton.h"
-#include "YRadioButton.h"
-#include "YRadioButtonGroup.h"
-#include "YEvent.h"
+#include <yui/YUI.h>
+#include <yui/YWidgetFactory.h>
+#include <yui/YDialog.h>
+#include <yui/YAlignment.h>
+#include <yui/YButtonBox.h>
+#include <yui/YCheckBox.h>
+#include <yui/YFrame.h>
+#include <yui/YIntField.h>
+#include <yui/YItemCustomStatus.h>
+#include <yui/YItemSelector.h>
+#include <yui/YLabel.h>
+#include <yui/YLayoutBox.h>
+#include <yui/YPushButton.h>
+#include <yui/YRadioButton.h>
+#include <yui/YRadioButtonGroup.h>
+#include <yui/YEvent.h>
 
 
 using std::string;

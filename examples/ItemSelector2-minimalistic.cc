@@ -23,16 +23,16 @@
 #include <ostream>
 
 #define YUILogComponent "example"
-#include "YUILog.h"
+#include <yui/YUILog.h>
 
-#include "YUI.h"
-#include "YWidgetFactory.h"
-#include "YDialog.h"
-#include "YLayoutBox.h"
-#include "YItemSelector.h"
-#include "YPushButton.h"
-#include "YAlignment.h"
-#include "YEvent.h"
+#include <yui/YUI.h>
+#include <yui/YWidgetFactory.h>
+#include <yui/YDialog.h>
+#include <yui/YLayoutBox.h>
+#include <yui/YItemSelector.h>
+#include <yui/YPushButton.h>
+#include <yui/YAlignment.h>
+#include <yui/YEvent.h>
 
 
 #define SINGLE_SELECTION        true
