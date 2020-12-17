@@ -145,7 +145,7 @@ rm -rf "$RPM_BUILD_ROOT"
 %{_prefix}/include/yui
 %{_datadir}/libyui/buildtools
 %doc %{_docdir}/%{bin_name}/examples
-# %{_libdir}/pkgconfig/%{name}.pc
+%{_libdir}/pkgconfig/%{name}.pc
 # %{_libdir}/cmake/%{name}
 
 %changelog
