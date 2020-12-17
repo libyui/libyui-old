@@ -12,5 +12,6 @@ Libyui::Tasks.configuration do |conf|
   conf.skip_license_check << /^legacy-buildtools\/.*/
   conf.skip_license_check << /^Makefile\.repo$/
   conf.skip_license_check << /^src\/.*\.h\.in$/
+  conf.skip_license_check << /^pkgconfig\/.*\.pc\.in$/
   conf.skip_license_check << /CMakeLists\.txt$/
 end
