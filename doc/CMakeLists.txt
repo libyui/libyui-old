@@ -8,6 +8,11 @@ find_package( Doxygen REQUIRED dot )
 set( PKG_NAME           libyui${SONAME_MAJOR} )
 set( DOC_INSTALL_DIR    ${DOC_DESTDIR}/usr/share/doc/packages/${PKG_NAME} )
 
+
+#
+# Doxygen-generated autodocs
+#
+
 if ( DOXYGEN_FOUND )
 
   # Enable a HTML frame on the left side for the views tree
@@ -21,8 +26,14 @@ else()
 endif()
 
 
-file( GLOB DOC_FILES     *.md ) # Don't glob *.txt (CMakeLists.txt!)
+#
+# Other (manually written) docs
+#
+
+file( GLOB DOC_FILES *.md ) # Collect all *.md files by wildcard
+# Don't glob *.txt (CMakeLists.txt!)
 # The license files (../COPYING*) are handled in the .spec file
+
 
 
 # Define a new custom make target "install-doc".
@@ -33,7 +44,7 @@ add_custom_target( install-doc
   DEPENDS doc
 
   COMMAND mkdir   -m 755 -p ${DOC_INSTALL_DIR}/html
-  COMMAND install -m 644 ${DOC_FILES}     ${DOC_INSTALL_DIR}
+  COMMAND install -m 644 ${DOC_FILES} ${DOC_INSTALL_DIR}
   COMMAND cp -r ${CMAKE_CURRENT_BINARY_DIR}/html ${DOC_INSTALL_DIR}
 
   COMMENT "Installing documentation to ${DOC_INSTALL_DIR}" )
