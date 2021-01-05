@@ -7,11 +7,7 @@
 # End:
 
 
-all: configure build-hint
-
-build: configure
-	cd build; \
-	make -j 8
+all: clean configure build-hint
 
 build-hint:
 	@echo ""
@@ -21,18 +17,18 @@ build-hint:
 	@echo "  make"
 	@echo ""
 
-configure: clean
+configure:
 	mkdir build; \
 	cd build; \
 	cmake ..
 
+build: clean configure
+	cd build; \
+	make -j 8
+
 install: configure
 	cd build; \
 	make -j 8 && make install
-
-reconf:
-	cd build; \
-	cmake rebuild_cache
 
 clean:
 	rm -rf build
@@ -56,8 +52,11 @@ version-bump:
 # Just an alias
 bump-version: version-bump
 
-# We need this because we have a subdirectory doc/, a subdirectory package/
-# and possibly a subdirectory build/ here which would be checked for
-# timestamps
-.PHONY: doc package build
 
+# Enforce rebuilding some targets unconditionally, even if a file or directory
+# with that name exists; otherwise the timestamp of that file or directory
+# would be checked.
+#
+# We need this because we have a subdirectory doc/, a subdirectory package/
+# and possibly a subdirectory build/ here.
+.PHONY: doc package build
