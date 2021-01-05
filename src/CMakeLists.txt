@@ -223,10 +223,12 @@ add_library( ${TARGETLIB} SHARED ${SOURCES} ${HEADERS} )
 
 # Libraries that are needed to build this shared lib
 #
-# Not sure if we really need to link against Boost::boost;
-# the classes used here may all be in header files only without
-# any binary part that needs linking. But better safe than sorry.
-target_link_libraries( ${TARGETLIB} dl pthread Boost::boost )
+# We only use the parts of Boost that are completely contained in header files
+# without any binary part, so we don't need to link against any Boost lib.
+# Should that become necessary, add Boost::filesystem or whatever lib is
+# needed. See also
+# https://cliutils.gitlab.io/modern-cmake/chapters/packages/Boost.html
+target_link_libraries( ${TARGETLIB} dl pthread )
 
 
 # Add more compile options to this target in addition to those
