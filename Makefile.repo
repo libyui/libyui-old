@@ -24,11 +24,12 @@ configure:
 
 build: clean configure
 	cd build; \
-	make -j 8
+	make -j $$(nproc)
 
+# This needs root privileges, of course
 install: configure
 	cd build; \
-	make -j 8 && make install
+	make -j $$(nproc) && make install
 
 clean:
 	rm -rf build

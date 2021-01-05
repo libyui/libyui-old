@@ -15,8 +15,6 @@ set( HEADERS_INSTALL_DIR ${CMAKE_INSTALL_INCLUDEDIR}/yui )
 # during "make install" (but not for other make targets!):
 #
 #    sudo make install DESTDIR=/work/foo
-# or
-#    DESTDIR=/work/foo sudo make install
 #
 # -> the include files are installed to /work/foo/usr/include/...
 # We need that for RPM builds to install everything to $RPM_BUILD_ROOT.
