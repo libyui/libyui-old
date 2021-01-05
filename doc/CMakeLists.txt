@@ -15,9 +15,10 @@ set( DOC_INSTALL_DIR    ${DOC_DESTDIR}/usr/share/doc/packages/${PKG_NAME} )
 
 if ( DOXYGEN_FOUND )
 
-  # Enable a HTML frame on the left side for the views tree
-  set( DOXYGEN_GENERATE_TREEVIEW yes )
-  # See build/CMakeDoxyfile.in for supported variables
+  set( DOXYGEN_GENERATE_TREEVIEW yes ) # Enable views tree HTML frame
+  set( DOXYGEN_QUIET             yes ) # Less verbose output
+  set( DOXYGEN_WARN_LOGFILE      doxygen-warnings.log )
+  # See build/CMakeDoxyfile.in for more supported variables
 
   doxygen_add_docs( doc ../src )
 
