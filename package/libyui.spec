@@ -2,7 +2,7 @@
 # spec file for package libyui
 #
 # Copyright (c) 2014-2019 SUSE LINUX Products GmbH, Nuernberg, Germany.
-# Copyright (c) 2020 SUSE LLC, Nuernberg, Germany.
+# Copyright (c) 2020-2021 SUSE LLC, Nuernberg, Germany.
 #
 # All modifications and additions to the file contributed by third parties
 # remain the property of their copyright owners, unless otherwise agreed
@@ -24,10 +24,10 @@ Source:         %{name}-%{version}.tar.bz2
 %define so_version 14
 %define bin_name %{name}%{so_version}
 
-BuildRequires:  libboost_headers-devel
-BuildRequires:  libboost_test-devel
 BuildRequires:  cmake >= 3.10
 BuildRequires:  gcc-c++
+BuildRequires:  boost-devel
+BuildRequires:  libboost_test-devel
 BuildRequires:  pkg-config
 
 Url:            http://github.com/libyui/
@@ -65,14 +65,9 @@ dependencies.
 
 %package devel
 
-%if 0%{?suse_version} > 1325
-Requires:       libboost_headers-devel
-Requires:       libboost_test-devel
-%else
-Requires:       boost-devel
-%endif
 Requires:       glibc-devel
 Requires:       libstdc++-devel
+Requires:       boost-devel
 Requires:       %{bin_name} = %{version}
 
 Url:            http://github.com/libyui/
