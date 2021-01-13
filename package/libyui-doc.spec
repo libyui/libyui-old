@@ -72,8 +72,6 @@ make install-doc
 
 %fdupes -s $RPM_BUILD_ROOT/%_docdir/%{parent}%{so_version}
 
-%clean
-rm -rf "$RPM_BUILD_ROOT"
 
 %files
 %defattr(-,root,root)
