@@ -142,7 +142,6 @@ install -m0644 ../COPYING* $RPM_BUILD_ROOT/%{_docdir}/%{bin_name}/
 %{_includedir}/yui
 %dir %{_datadir}/libyui
 %{_datadir}/libyui/buildtools
-%doc %{_docdir}/%{bin_name}/*.md
 %doc %{_docdir}/%{bin_name}/examples
 %{_libdir}/pkgconfig/%{name}.pc
 # %{_libdir}/cmake/%{name}
