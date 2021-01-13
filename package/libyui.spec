@@ -17,23 +17,24 @@
 #
 
 Name:           libyui
+
+# DO NOT manually bump the version here; instead, use   rake version:bump
 Version:        3.12.2
 Release:        0
-Source:         %{name}-%{version}.tar.bz2
 
-%define so_version 14
-%define bin_name %{name}%{so_version}
+%define         so_version 14
+%define         bin_name %{name}%{so_version}
 
 BuildRequires:  cmake >= 3.10
 BuildRequires:  gcc-c++
+BuildRequires:  pkg-config
 BuildRequires:  boost-devel
 BuildRequires:  libboost_test-devel
-BuildRequires:  pkg-config
 
 Url:            http://github.com/libyui/
 Summary:        GUI-abstraction library
 License:        LGPL-2.1 or LGPL-3.0
-Group:          System/Libraries
+Source:         %{name}-%{version}.tar.bz2
 
 %description
 This is the user interface engine that provides the abstraction from
@@ -54,6 +55,7 @@ Url:            http://github.com/libyui/
 Summary:        Libyui - GUI-abstraction library
 Group:          System/Libraries
 
+
 %description -n %{bin_name}
 This is the user interface engine that provides the abstraction from
 graphical user interfaces (Qt, Gtk) and text based user interfaces
@@ -62,6 +64,7 @@ graphical user interfaces (Qt, Gtk) and text based user interfaces
 Originally developed for YaST, it can now be used independently of
 YaST for generic (C++) applications. This package has very few
 dependencies.
+
 
 %package devel
 
@@ -88,6 +91,7 @@ This package provides the C++ header files and some C++ examples.
 
 %prep
 %setup -q -n %{name}-%{version}
+
 
 %build
 
@@ -122,23 +126,25 @@ install -m0644 ../COPYING* $RPM_BUILD_ROOT/%{_docdir}/%{bin_name}/
 rm -rf "$RPM_BUILD_ROOT"
 
 %post -n %{bin_name} -p /sbin/ldconfig
-
 %postun -n %{bin_name} -p /sbin/ldconfig
+
 
 %files -n %{bin_name}
 %defattr(-,root,root)
 %dir %{_libdir}/yui
-%dir %{_datadir}/libyui
 %{_libdir}/lib*.so.*
 %doc %dir %{_docdir}/%{bin_name}
 %license %{_docdir}/%{bin_name}/COPYING*
+
 
 %files devel
 %defattr(-,root,root)
 %dir %{_docdir}/%{bin_name}
 %{_libdir}/lib*.so
-%{_prefix}/include/yui
+%{_includedir}/yui
+%dir %{_datadir}/libyui
 %{_datadir}/libyui/buildtools
+%doc %{_docdir}/%{bin_name}/*.md
 %doc %{_docdir}/%{bin_name}/examples
 %{_libdir}/pkgconfig/%{name}.pc
 # %{_libdir}/cmake/%{name}

@@ -17,14 +17,13 @@
 #
 
 
-%define parent libyui
-%define so_version 14
+%define         parent libyui
+%define         so_version 14
 
 Name:           %{parent}-doc
+# DO NOT manually bump the version here; instead, use   rake version:bump
 Version:        3.12.2
 Release:        0
-Source:         %{parent}-%{version}.tar.bz2
-
 BuildArch:      noarch
 
 BuildRequires:  cmake >= 3.10
@@ -37,7 +36,7 @@ BuildRequires:  libyui-devel >= 3.0.4
 Url:            http://github.com/libyui/
 Summary:        Libyui documentation
 License:        LGPL-2.1 or LGPL-3.0
-Group:          Documentation/HTML
+Source:         %{parent}-%{version}.tar.bz2
 
 %description
 This is the user interface engine that provides the abstraction from
@@ -52,8 +51,8 @@ This package provides HTML class documentation.
 
 
 %prep
-
 %setup -n %{parent}-%{version}
+
 
 %build
 
