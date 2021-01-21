@@ -31,9 +31,9 @@ BuildRequires:  pkg-config
 BuildRequires:  boost-devel
 BuildRequires:  libboost_test-devel
 
-Url:            http://github.com/libyui/
 Summary:        GUI-abstraction library
 License:        LGPL-2.1 or LGPL-3.0
+Url:            http://github.com/libyui/
 Source:         %{name}-%{version}.tar.bz2
 
 %description
