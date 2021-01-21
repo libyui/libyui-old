@@ -217,19 +217,18 @@ set( HEADERS
   )
 
 
-
 # Add shared lib to be built
 add_library( ${TARGETLIB} SHARED ${SOURCES} ${HEADERS} )
 
-# Libraries that are needed to build this shared lib
-#
-# We only use the parts of Boost that are completely contained in header files
-# without any binary part, so we don't need to link against any Boost lib.
-# Should that become necessary, add Boost::filesystem or whatever lib is
-# needed. See also
-# https://cliutils.gitlab.io/modern-cmake/chapters/packages/Boost.html
-target_link_libraries( ${TARGETLIB} dl pthread )
 
+#
+# Include directories and compile options
+#
+
+# Generate Libyui_config.h where some CMake variables are expanded
+# for use in the C++ code. This file is NOT installed upon "make install".
+configure_file( Libyui_config.h.in Libyui_config.h )
+target_include_directories( ${TARGETLIB} PUBLIC ${CMAKE_CURRENT_BINARY_DIR} )
 
 # Add more compile options to this target in addition to those
 # added in the toplevel CMakeLists.txt.
@@ -245,6 +244,23 @@ target_link_libraries( ${TARGETLIB} dl pthread )
 ### set_source_files_properties( YUI.cc PROPERTIES COMPILE_OPTIONS "-Dfoo" )
 
 
+#
+# Linking
+#
+
+# Libraries that are needed to build this shared lib
+#
+# We only use the parts of Boost that are completely contained in header files
+# without any binary part, so we don't need to link against any Boost lib.
+# Should that become necessary, add Boost::filesystem or whatever lib is
+# needed. See also
+# https://cliutils.gitlab.io/modern-cmake/chapters/packages/Boost.html
+target_link_libraries( ${TARGETLIB}
+  dl
+  pthread
+  )
+
+
 # https://cmake.org/cmake/help/latest/manual/cmake-properties.7.html#target-properties
 set_target_properties( ${TARGETLIB} PROPERTIES
   VERSION       ${SONAME}           # From ../VERSION.cmake
@@ -253,13 +269,10 @@ set_target_properties( ${TARGETLIB} PROPERTIES
   )
 
 
+#
+# Install
+#
+
 # Install the headers first so the message about the lib does not scroll away
 install( FILES   ${HEADERS}   DESTINATION ${HEADERS_INSTALL_DIR} )
 install( TARGETS ${TARGETLIB} LIBRARY )
-
-
-# Generate Libyui_config.h where some CMake variables are expanded
-# for use in the C++ code. This file is NOT installed upon "make install".
-
-configure_file( Libyui_config.h.in Libyui_config.h )
-include_directories( ${CMAKE_CURRENT_BINARY_DIR} )
