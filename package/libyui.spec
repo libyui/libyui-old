@@ -53,7 +53,6 @@ Requires:       yui_backend = %{so_version}
 
 Url:            http://github.com/libyui/
 Summary:        Libyui - GUI-abstraction library
-Group:          System/Libraries
 
 
 %description -n %{bin_name}
@@ -75,7 +74,6 @@ Requires:       %{bin_name} = %{version}
 
 Url:            http://github.com/libyui/
 Summary:        Libyui header files and examples
-Group:          Development/Languages/C and C++
 
 %description devel
 This is the user interface engine that provides the abstraction from
