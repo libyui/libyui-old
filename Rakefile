@@ -1,9 +1,11 @@
-# -*- coding: utf-8 -*-
-# make continuous integration using rubygem-packaging_rake_tasks and
-# rubygem-libyui-rake.
-# Copyright © 2014 SUSE LLC
+#--
+# Copyright (c) 2015-2019 SUSE LLC
+# Copyright (c) 2020-2021 SUSE LLC
+#
+# make continuous integration using rubygem-libyui-rake.
+#
 # MIT license
-
+#++
 require "libyui/rake"
 
 Libyui::Tasks.configuration do |conf|
