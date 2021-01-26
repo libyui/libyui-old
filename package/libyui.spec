@@ -31,7 +31,7 @@ BuildRequires:  pkg-config
 BuildRequires:  boost-devel
 BuildRequires:  libboost_test-devel
 
-Summary:        GUI-abstraction library
+Summary:        GUI abstraction library
 License:        LGPL-2.1 or LGPL-3.0
 Url:            http://github.com/libyui/
 Source:         %{name}-%{version}.tar.bz2
@@ -45,13 +45,13 @@ Originally developed for YaST, it can also be used independently of
 YaST for generic (C++) applications. This package has very few
 dependencies.
 
+
 %package -n %{bin_name}
-Summary:        Libyui - GUI-abstraction library
+Summary:        Libyui - GUI abstraction library
 
 Provides:       yast2-libyui = 2.42.0
 Obsoletes:      yast2-libyui < 2.42.0
 Requires:       yui_backend = %{so_version}
-
 
 
 %description -n %{bin_name}
