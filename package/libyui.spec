@@ -41,18 +41,17 @@ This is the user interface engine that provides the abstraction from
 graphical user interfaces (Qt, Gtk) and text based user interfaces
 (ncurses).
 
-Originally developed for YaST, it can now be used independently of
+Originally developed for YaST, it can also be used independently of
 YaST for generic (C++) applications. This package has very few
 dependencies.
 
 %package -n %{bin_name}
+Summary:        Libyui - GUI-abstraction library
 
 Provides:       yast2-libyui = 2.42.0
 Obsoletes:      yast2-libyui < 2.42.0
 Requires:       yui_backend = %{so_version}
 
-Url:            http://github.com/libyui/
-Summary:        Libyui - GUI-abstraction library
 
 
 %description -n %{bin_name}
@@ -60,31 +59,25 @@ This is the user interface engine that provides the abstraction from
 graphical user interfaces (Qt, Gtk) and text based user interfaces
 (ncurses).
 
-Originally developed for YaST, it can now be used independently of
+Originally developed for YaST, it can also be used independently of
 YaST for generic (C++) applications. This package has very few
 dependencies.
 
 
 %package devel
+Summary:        Libyui header files and examples
 
 Requires:       glibc-devel
 Requires:       libstdc++-devel
 Requires:       boost-devel
 Requires:       %{bin_name} = %{version}
 
-Url:            http://github.com/libyui/
-Summary:        Libyui header files and examples
-
 %description devel
-This is the user interface engine that provides the abstraction from
-graphical user interfaces (Qt, Gtk) and text based user interfaces
-(ncurses).
 
-Originally developed for YaST, it can now be used independently of
-YaST for generic (C++) applications. This package has very few
-dependencies.
-
-This package provides the C++ header files and some C++ examples.
+This package contains header files and examples for developing C++
+applications based on libyui, the user interface engine that provides
+the abstraction from graphical user interfaces (Qt, Gtk) and text
+based user interfaces (ncurses).
 
 
 %prep
