@@ -255,6 +255,8 @@ target_include_directories( ${TARGETLIB} PUBLIC ${CMAKE_CURRENT_BINARY_DIR} )
 # Should that become necessary, add Boost::filesystem or whatever lib is
 # needed. See also
 # https://cliutils.gitlab.io/modern-cmake/chapters/packages/Boost.html
+#
+# If in doubt what is really needed, check with "ldd -u" which libs are unused.
 target_link_libraries( ${TARGETLIB}
   dl
   pthread
