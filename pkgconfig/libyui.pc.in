@@ -17,4 +17,5 @@ Name: libyui
 Version: @VERSION@
 Description: libyui - GUI-abstraction library
 Libs: -lyui
+Libs.private: -ldl -lpthread
 Cflags: -I${includedir}
