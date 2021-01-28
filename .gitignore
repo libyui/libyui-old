@@ -1,25 +1,8 @@
 
-# Object files
 *.o
-
-# Libraries
-*.lib
-
-# Compiled Object files
-*.slo
-*.lo
-*.o
-
-# Compiled Dynamic libraries
 *.so
 *.so.*
 
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-
-# CMake
 CMakeCache.txt
 CMakeFiles
 CMakeDoxyfile.in
@@ -28,6 +11,7 @@ Doxygen.warnings
 Makefile
 
 build*/
+package/*.tar.*
 
 *~
 *.bak
