@@ -20,6 +20,15 @@ else()
 endif()
 
 
+set( LOCAL_INCLUDE_DIR ${CMAKE_CURRENT_BINARY_DIR}/include )
+
+# Symlink ../src to build/examples/include/yui
+# so the headers there can be included as <yui/YFoo.h>
+add_custom_target( local-include-dir
+  COMMAND rm -rf ${LOCAL_INCLUDE_DIR}
+  COMMAND mkdir  ${LOCAL_INCLUDE_DIR}
+  COMMAND ln -s  ${CMAKE_CURRENT_SOURCE_DIR}/../src ${LOCAL_INCLUDE_DIR}/yui )
+
 
 # Build a simple example named EXAMPLE from one source file EXAMPLE.cc
 # and install the source to the package's doc directory
@@ -29,11 +38,9 @@ function( add_example EXAMPLE )
   target_link_libraries( ${EXAMPLE} ${LIBYUI} )
 
   if ( USE_FRESHLY_BUILT_LIBYUI )
-    # Enable including headers like <yui/YFoo.h> from ../include
-    # which has a symlink yui -> ../src
-    target_include_directories( ${EXAMPLE} BEFORE PUBLIC ../include )
-    # Add a dependency to the libyui CMake target so ../src/ is built first
-    add_dependencies( ${EXAMPLE} libyui )
+    add_dependencies( ${EXAMPLE} libyui local-include-dir )
+    # Prefer the headers in ../src over those in /usr/include
+    target_include_directories( ${EXAMPLE} BEFORE PUBLIC ${LOCAL_INCLUDE_DIR} )
   endif()
 
   install( FILES ${EXAMPLE}.cc DESTINATION ${EXAMPLES_INSTALL_DIR} )
