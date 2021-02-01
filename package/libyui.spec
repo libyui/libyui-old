@@ -120,7 +120,6 @@ install -m0644 ../COPYING* $RPM_BUILD_ROOT/%{_docdir}/%{bin_name}/
 
 %files -n %{bin_name}
 %defattr(-,root,root)
-%dir %{_libdir}/yui
 %{_libdir}/lib*.so.*
 %doc %dir %{_docdir}/%{bin_name}
 %license %{_docdir}/%{bin_name}/COPYING*
