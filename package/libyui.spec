@@ -19,10 +19,10 @@
 Name:           libyui
 
 # DO NOT manually bump the version here; instead, use   rake version:bump
-Version:        3.12.2
+Version:        4.0.0
 Release:        0
 
-%define         so_version 14
+%define         so_version 15
 %define         bin_name %{name}%{so_version}
 
 BuildRequires:  cmake >= 3.10
