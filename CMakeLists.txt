@@ -38,6 +38,8 @@ set( DOC_DESTDIR "" CACHE STRING "Destination directory prefix for installing do
 # As of now, no support for /usr/local instead of /usr. But CMake DESTDIR works.
 set( CMAKE_INSTALL_PREFIX /usr )
 
+set( CMAKE_INSTALL_MESSAGE LAZY ) # Suppress "up-to-date" messages during "make install"
+
 
 # Initialize compiler flags for all targets in all subdirectories
 add_compile_options( "-Wall" )
