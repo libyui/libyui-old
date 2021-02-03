@@ -3,7 +3,7 @@
 The contents of this directory are installed to /usr/share/libyui/buildtools to
 support existing community-supported libyui plugins and extensions.
 
-This used to be the starting point of the prevous libyui build system where a
+This used to be the starting point of the previous libyui build system where a
 toplevel _bootstrap.h_ script created a symlink
 
     CMakeLists.txt -> /usr/share/libyui/buildtools/CMakeLists.common
