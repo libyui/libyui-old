@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon Feb  1 14:59:12 UTC 2021 - Stefan Hundhammer <shundhammer@suse.com>
+
+- New CMake build environment (bsc#1181653)
+- Bumped SO version to 15
+- 4.0.0
+
+-------------------------------------------------------------------
 Thu May 31 09:45:00 CEST 2012 - bjoern.esser@gmail.com
 
 - initial package

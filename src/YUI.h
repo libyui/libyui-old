@@ -31,6 +31,7 @@
 #include "YTypes.h"
 #include "YSettings.h"
 
+
 class YApplication;
 class YWidget;
 class YWidgetFactory;

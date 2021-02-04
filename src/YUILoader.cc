@@ -71,9 +71,9 @@ void YUILoader::loadUI( bool withThreads )
     isGtk = ( ( strstr( envDesktop, "Unity"    ) != NULL ) || isGtk );
     isGtk = ( ( strstr( envDesktop, "XFCE"     ) != NULL ) || isGtk );
 
-    if ( isGtk ) yuiMilestone () << "Detected a Gtk-based desktop environment." << endl
-                                 << "Prefering Gtk-UI if available and no" << endl
-                                 << "user-selected override is present." << endl;
+    if ( isGtk ) yuiMilestone() << "Detected a Gtk-based desktop environment." << endl
+                                << "Prefering Gtk-UI if available and no" << endl
+                                << "user-selected override is present." << endl;
 
     YCommandLine cmdline;
 
@@ -93,7 +93,7 @@ void YUILoader::loadUI( bool withThreads )
     if ( wantNcurses ) wantedGUI = YUIPlugin_NCurses;
     if ( wantQt )      wantedGUI = YUIPlugin_Qt;
 
-    yuiMilestone () << "User-selected UI-plugin: \"" << wantedGUI << "\"" << endl;
+    yuiMilestone() << "User-selected UI-plugin: \"" << wantedGUI << "\"" << endl;
 
     bool haveGtk     = pluginExists( YUIPlugin_Gtk );
     bool haveNcurses = pluginExists( YUIPlugin_NCurses );
@@ -177,11 +177,12 @@ void YUILoader::loadUI( bool withThreads )
     }
 }
 
+
 void YUILoader::loadRestAPIPlugin( const string & wantedGUI, bool withThreads )
 {
     // Do not try to load if variable is not set
     yuiMilestone () << "Requested to start http server to control UI." << endl;
-    
+
     if ( pluginExists( YUIPlugin_RestAPI ) )
     {
         YUIPlugin uiRestPlugin( YUIPlugin_RestAPI );
@@ -227,6 +228,7 @@ void YUILoader::loadRestAPIPlugin( const string & wantedGUI, bool withThreads )
     YUI_THROW ( YUIPluginException ( YUIPlugin_RestAPI ) );
 }
 
+
 void YUILoader::deleteUI()
 {
     if ( YUI::_ui )
@@ -237,6 +239,7 @@ void YUILoader::deleteUI()
         YUI::_ui = 0;
     }
 }
+
 
 void YUILoader::loadPlugin( const string & name, bool withThreads )
 {
@@ -272,6 +275,7 @@ void YUILoader::loadPlugin( const string & name, bool withThreads )
     YUI_THROW( YUIPluginException( name ) );
 }
 
+
 void YUILoader::loadExternalWidgetsPlugin ( const string& name, const string& plugin_name, const string& symbol )
 {
   YUIPlugin uiPlugin ( plugin_name.c_str() );
@@ -291,6 +295,7 @@ void YUILoader::loadExternalWidgetsPlugin ( const string& name, const string& pl
 
   YUI_THROW ( YUIPluginException ( plugin_name ) );
 }
+
 
 void YUILoader::loadExternalWidgets ( const string& name, const string& symbol )
 {
@@ -320,6 +325,7 @@ void YUILoader::loadExternalWidgets ( const string& name, const string& symbol )
     }
 }
 
+
 bool YUILoader::pluginExists( const string & pluginBaseName )
 {
     struct stat fileinfo;
@@ -328,8 +334,11 @@ bool YUILoader::pluginExists( const string & pluginBaseName )
     pluginName.append( pluginBaseName );
     pluginName.append( PLUGIN_SUFFIX );
 
-    YPath plugin ( PLUGINDIR, pluginName );
+    YPath plugin( PLUGINDIR, pluginName );
+    bool success = stat( plugin.path().c_str(), &fileinfo) == 0;
 
-    return stat( plugin.path().c_str(), &fileinfo) == 0;
+    yuiDebug() << "UI plugin " << PLUGINDIR << "/" << pluginName
+               << ( success ? " exists" : " does not exist" ) << endl;
 
+    return success;
 }

@@ -29,6 +29,14 @@
 #include "YStringTree.h"
 
 
+// This has been declared obsolete quite some time ago (2/2020), but it is
+// still used in libyui-gtk-pkg.
+//
+// Once it is no longer used there, remove this class and also YStringTree and
+// YTransText.
+//
+// -- shundhammer 2020-02-03
+
 
 /**
  * This was an efficient storage for RPM group tags.

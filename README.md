@@ -1,9 +1,6 @@
 # LibYUI - The Base Library
 
 [![Build Status](https://travis-ci.org/libyui/libyui.svg?branch=master)](https://travis-ci.org/libyui/libyui)
-[![Coverage Status](
-https://coveralls.io/repos/github/libyui/libyui/badge.svg?branch=master)](
-https://coveralls.io/github/libyui/libyui?branch=master)
 
 Libyui is a widget abstraction library providing Qt, GTK and ncurses
 frontends. Originally it was developed for [YaST](https://yast.github.io/)
@@ -53,11 +50,25 @@ UI-plugin will be chosen by the above criteria.
 
 ### Building
 
-Libyui uses CMake, driven by a slightly complex set of
-[CMakefiles](https://github.com/libyui/libyui/tree/master/buildtools). For
-reproducible builds it is best to use the [libyui-rake](
-https://github.com/libyui/libyui-rake) Ruby gem like the [Jenkins CI](
-https://ci.opensuse.org/view/libyui/) jobs do.
+Libyui uses CMake. Most operations are available from the toplevel
+_Makefile.repo_:
+
+```
+make -f Makefile.repo
+cd build
+make
+```
+
+or
+
+```
+make -f Makefile.repo build
+```
+
+
+For reproducible builds it is best to use the
+[libyui-rake](https://github.com/libyui/libyui-rake)
+Ruby gem like the [Jenkins CI](https://ci.opensuse.org/view/libyui/) jobs do.
 
 It can be installed from [rubygems.org](https://rubygems.org/gems/libyui-rake/)
 using this command (Ruby needs to be installed in the system):
@@ -72,11 +83,12 @@ Then to build the package run:
 rake osc:build
 ```
 
+
 ### Versioning
 
 Changing `SONAME_MAJOR` in VERSION.cmake currently means that you must also
 change `so_version` in libyui.spec *and also in **all** other* libyui-*.spec
-files in the other repositories. Yes, such a design is suboptimal.
+files in the other repositories.
 
 This is because the program-libyui API is not distinct
 from the libyui-plugin API.

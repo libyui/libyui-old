@@ -26,15 +26,15 @@
 
 
 #define YUILogComponent "example"
-#include "YUILog.h"
+#include <yui/YUILog.h>
 
-#include "YUI.h"
-#include "YWidgetFactory.h"
-#include "YDialog.h"
-#include "YLayoutBox.h"
-#include "YLabel.h"
-#include "YPushButton.h"
-#include "YEvent.h"
+#include <yui/YUI.h>
+#include <yui/YWidgetFactory.h>
+#include <yui/YDialog.h>
+#include <yui/YLayoutBox.h>
+#include <yui/YLabel.h>
+#include <yui/YPushButton.h>
+#include <yui/YEvent.h>
 
 int main( int argc, char **argv )
 {

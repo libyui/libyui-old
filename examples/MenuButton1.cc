@@ -29,15 +29,15 @@
 //     g++ -I/usr/include/yui -lyui MenuButton1.cc -o MenuButton1
 
 #define YUILogComponent "example"
-#include "YUILog.h"
+#include <yui/YUILog.h>
 
-#include "YUI.h"
-#include "YWidgetFactory.h"
-#include "YDialog.h"
-#include "YLayoutBox.h"
-#include "YEvent.h"
-#include "YMenuButton.h"
-#include "YMenuItem.h"
+#include <yui/YUI.h>
+#include <yui/YWidgetFactory.h>
+#include <yui/YDialog.h>
+#include <yui/YLayoutBox.h>
+#include <yui/YEvent.h>
+#include <yui/YMenuButton.h>
+#include <yui/YMenuItem.h>
 
 int main( int argc, char **argv )
 {

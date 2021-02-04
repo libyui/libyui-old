@@ -21,20 +21,20 @@
 //     g++ -I/usr/include/yui -lyui MenuBar1.cc -o MenuBar1
 
 #define YUILogComponent "example"
-#include "YUILog.h"
+#include <yui/YUILog.h>
 
-#include "YUI.h"
-#include "YAlignment.h"
-#include "YDialog.h"
-#include "YLabel.h"
-#include "YCheckBox.h"
-#include "YLayoutBox.h"
-#include "YMenuBar.h"
-#include "YSquash.h"
-#include "YWidgetFactory.h"
-#include "YShortcut.h"
-#include "YEvent.h"
-#include "YPushButton.h"
+#include <yui/YUI.h>
+#include <yui/YAlignment.h>
+#include <yui/YDialog.h>
+#include <yui/YLabel.h>
+#include <yui/YCheckBox.h>
+#include <yui/YLayoutBox.h>
+#include <yui/YMenuBar.h>
+#include <yui/YSquash.h>
+#include <yui/YWidgetFactory.h>
+#include <yui/YShortcut.h>
+#include <yui/YEvent.h>
+#include <yui/YPushButton.h>
 
 
 using std::string;

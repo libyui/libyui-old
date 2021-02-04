@@ -28,11 +28,11 @@
 //
 //     g++ -I/usr/include/yui -lyui HelloWorld.cc -o HelloWorld
 
-#include "YUI.h"
-#include "YWidgetFactory.h"
-#include "YDialog.h"
-#include "YLayoutBox.h"
-#include "YEvent.h"
+#include <yui/YUI.h>
+#include <yui/YWidgetFactory.h>
+#include <yui/YDialog.h>
+#include <yui/YLayoutBox.h>
+#include <yui/YEvent.h>
 
 int main( int argc, char **argv )
 {

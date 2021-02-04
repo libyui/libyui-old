@@ -33,17 +33,17 @@
 // for an editable ComboBox.
 
 #define YUILogComponent "example"
-#include "YUILog.h"
+#include <yui/YUILog.h>
 
-#include "YUI.h"
-#include "YWidgetFactory.h"
-#include "YDialog.h"
-#include "YLayoutBox.h"
-#include "YComboBox.h"
-#include "YLabel.h"
-#include "YPushButton.h"
-#include "YAlignment.h"
-#include "YEvent.h"
+#include <yui/YUI.h>
+#include <yui/YWidgetFactory.h>
+#include <yui/YDialog.h>
+#include <yui/YLayoutBox.h>
+#include <yui/YComboBox.h>
+#include <yui/YLabel.h>
+#include <yui/YPushButton.h>
+#include <yui/YAlignment.h>
+#include <yui/YEvent.h>
 
 
 #ifdef EDITABLE

@@ -30,7 +30,7 @@
 #define YUILogComponent "ui"
 #include "YUILog.h"
 
-#include <YEnvVar.h>
+#include "YEnvVar.h"
 
 using std::string;
 

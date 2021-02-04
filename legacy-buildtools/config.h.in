@@ -33,15 +33,17 @@
 #ifndef @PROJECTNAME_UC@_CONFIG_H
 #define @PROJECTNAME_UC@_CONFIG_H
 
+// FIXME: Most of those are probably obsolete by now.
 #define DATADIR		"@YPREFIX@/@FULL_DATA_DIR@"
 #define DATAROOTDIR	"@YPREFIX@/@DATAROOTDIR@"
-#define HELP_ICONS_DIR	"@YPREFIX@/@FULL_DATA_DIR@/images"
-#define LANG_FONTS_FILE	"@YPREFIX@/@FULL_DATA_DIR@/data/lang_fonts"
 #define LOCALEDIR	"@YPREFIX@/@DATAROOTDIR@/locale"
-#define PLUGINDIR	"@YPREFIX@/@LIB_DIR_PLAIN@/@BASELIB@"
 #define THEMEDIR	"@YPREFIX@/@THEME_DIR@"
+// END_FIXME
+
+#define PLUGINDIR	"@YPREFIX@/@LIB_DIR_PLAIN@/@BASELIB@"
 #define PLUGIN_PREFIX	"lib@BASELIB@-"
 #define PLUGIN_SUFFIX	".so.@SONAME_MAJOR@"
+
 #define LIBYUI_VERSION_NUM (((@VERSION_MAJOR@) << 16) | ((@VERSION_MINOR@) << 8) | (@VERSION_PATCH@))
 #define LIBYUI_VERSION_AT_LEAST(M,N,O) LIBYUI_VERSION_NUM >= (((M) << 16) | ((N) << 8) | (O))
 

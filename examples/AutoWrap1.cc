@@ -23,15 +23,15 @@
 // End:
 
 #define YUILogComponent "example"
-#include "YUILog.h"
+#include <yui/YUILog.h>
 
-#include "YUI.h"
-#include "YWidgetFactory.h"
-#include "YDialog.h"
-#include "YLayoutBox.h"
-#include "YAlignment.h"
-#include "YLabel.h"
-#include "YEvent.h"
+#include <yui/YUI.h>
+#include <yui/YWidgetFactory.h>
+#include <yui/YDialog.h>
+#include <yui/YLayoutBox.h>
+#include <yui/YAlignment.h>
+#include <yui/YLabel.h>
+#include <yui/YEvent.h>
 
 #include "LoremIpsum.h"
 
