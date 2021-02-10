@@ -25,7 +25,7 @@ Release:        0
 %define         so_version 15
 %define         bin_name %{name}%{so_version}
 
-BuildRequires:  cmake >= 3.10
+BuildRequires:  cmake >= 3.17
 BuildRequires:  gcc-c++
 BuildRequires:  pkg-config
 BuildRequires:  boost-devel

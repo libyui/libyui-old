@@ -15,7 +15,7 @@
 # Show the complete compiler commands with all arguments:
 #   make VERBOSE=1
 
-cmake_minimum_required( VERSION 3.10 )
+cmake_minimum_required( VERSION 3.17 )
 project( libyui )
 
 # Options usage:

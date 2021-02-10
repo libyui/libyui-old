@@ -26,7 +26,7 @@ Version:        4.0.0
 Release:        0
 BuildArch:      noarch
 
-BuildRequires:  cmake >= 3.10
+BuildRequires:  cmake >= 3.17
 BuildRequires:  doxygen
 BuildRequires:  graphviz
 BuildRequires:  fdupes
