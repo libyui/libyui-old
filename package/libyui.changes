@@ -1,7 +1,7 @@
 -------------------------------------------------------------------
 Wed Feb 10 15:29:10 UTC 2021 - Ladislav Slezák <lslezak@suse.cz>
 
-- Added YConfigEvent to allow sending a special keyboard shortcut
+- Added YSpecialKeyEvent to allow sending a special keyboard shortcut
   for configuring the application (jsc#PM-1895, jsc#SLE-16263)
 - Added File->Close menu item in the dialog inspector
   (it was not possible to close the inspector when opened during

@@ -78,7 +78,7 @@ YEvent::toString( EventType eventType )
 	case CancelEvent:		return "CancelEvent";
 	case TimeoutEvent:		return "TimeoutEvent";
 	case DebugEvent:		return "DebugEvent";
-	case ConfigEvent:		return "ConfigEvent";
+	case SpecialKeyEvent:		return "SpecialKeyEvent";
 	case InvalidEvent:		return "InvalidEvent";
 
 	// Intentionally omitting "default" branch so the compiler can

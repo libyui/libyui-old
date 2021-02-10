@@ -54,7 +54,7 @@ public:
 	CancelEvent,
 	TimeoutEvent,
 	DebugEvent,
-	ConfigEvent,
+	SpecialKeyEvent,
 	InvalidEvent = 0x4242
     };
 
@@ -340,14 +340,19 @@ protected:
 };
 
 /**
- * Event to be returned when pressing a special keyboard shortcut
- * for starting a configuration dialog.
+ * Event to be returned when pressing a special keyboard shortcut.
  **/
-class YConfigEvent: public YEvent
+class YSpecialKeyEvent: public YEvent
 {
 public:
 
-    YConfigEvent() : YEvent( ConfigEvent ) {}
+    YSpecialKeyEvent( const char *id )        : YEvent( SpecialKeyEvent ), _id( id ) {}
+    YSpecialKeyEvent( const std::string &id ) : YEvent( SpecialKeyEvent ), _id( id ) {}
+
+    /**
+     * Return the string ID of this event.
+     **/
+    std::string id() const { return _id; }
 
 protected:
     /**
@@ -355,7 +360,9 @@ protected:
      * YDialog::deleteEvent(). The associated dialog will take care of this
      * event and delete it when appropriate.
      **/
-    virtual ~YConfigEvent() {}
+    virtual ~YSpecialKeyEvent() {}
+
+    std::string	_id;
 };
 
 /**
