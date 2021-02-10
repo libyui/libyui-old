@@ -54,6 +54,7 @@ public:
 	CancelEvent,
 	TimeoutEvent,
 	DebugEvent,
+	ConfigEvent,
 	InvalidEvent = 0x4242
     };
 
@@ -320,8 +321,8 @@ protected:
 
 
 /**
- * Event to be returned upon closing a dialog with the window manager close
- * button (or Alt-F4)
+ * Event to be returned when pressing a special keyboard shortcut
+ * for starting a debugger.
  **/
 class YDebugEvent: public YEvent
 {
@@ -338,6 +339,24 @@ protected:
     virtual ~YDebugEvent() {}
 };
 
+/**
+ * Event to be returned when pressing a special keyboard shortcut
+ * for starting a configuration dialog.
+ **/
+class YConfigEvent: public YEvent
+{
+public:
+
+    YConfigEvent() : YEvent( ConfigEvent ) {}
+
+protected:
+    /**
+     * Protected destructor - events can only be deleted via
+     * YDialog::deleteEvent(). The associated dialog will take care of this
+     * event and delete it when appropriate.
+     **/
+    virtual ~YConfigEvent() {}
+};
 
 /**
  * Event to be returned upon timeout
