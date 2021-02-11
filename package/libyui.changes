@@ -1,4 +1,15 @@
 -------------------------------------------------------------------
+Wed Feb 10 15:29:10 UTC 2021 - Ladislav Slezák <lslezak@suse.cz>
+
+- Added YSpecialKeyEvent to allow sending a special keyboard shortcut
+  for configuring the application (jsc#PM-1895, jsc#SLE-16263)
+- Added File->Close menu item in the dialog inspector
+  (it was not possible to close the inspector when opened during
+  installation)
+- Require newer cmake (3.17+, version 3.10 is not enough)
+- 4.0.1
+
+-------------------------------------------------------------------
 Mon Feb  1 14:59:11 UTC 2021 - Stefan Hundhammer <shundhammer@suse.com>
 
 - New CMake build environment (bsc#1181653)

@@ -22,11 +22,11 @@
 
 Name:           %{parent}-doc
 # DO NOT manually bump the version here; instead, use   rake version:bump
-Version:        4.0.0
+Version:        4.0.1
 Release:        0
 BuildArch:      noarch
 
-BuildRequires:  cmake >= 3.10
+BuildRequires:  cmake >= 3.17
 BuildRequires:  doxygen
 BuildRequires:  graphviz
 BuildRequires:  fdupes

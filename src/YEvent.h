@@ -54,6 +54,7 @@ public:
 	CancelEvent,
 	TimeoutEvent,
 	DebugEvent,
+	SpecialKeyEvent,
 	InvalidEvent = 0x4242
     };
 
@@ -320,8 +321,8 @@ protected:
 
 
 /**
- * Event to be returned upon closing a dialog with the window manager close
- * button (or Alt-F4)
+ * Event to be returned when pressing a special keyboard shortcut
+ * for starting a debugger.
  **/
 class YDebugEvent: public YEvent
 {
@@ -338,6 +339,31 @@ protected:
     virtual ~YDebugEvent() {}
 };
 
+/**
+ * Event to be returned when pressing a special keyboard shortcut.
+ **/
+class YSpecialKeyEvent: public YEvent
+{
+public:
+
+    YSpecialKeyEvent( const char *id )        : YEvent( SpecialKeyEvent ), _id( id ) {}
+    YSpecialKeyEvent( const std::string &id ) : YEvent( SpecialKeyEvent ), _id( id ) {}
+
+    /**
+     * Return the string ID of this event.
+     **/
+    std::string id() const { return _id; }
+
+protected:
+    /**
+     * Protected destructor - events can only be deleted via
+     * YDialog::deleteEvent(). The associated dialog will take care of this
+     * event and delete it when appropriate.
+     **/
+    virtual ~YSpecialKeyEvent() {}
+
+    std::string	_id;
+};
 
 /**
  * Event to be returned upon timeout

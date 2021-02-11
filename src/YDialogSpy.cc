@@ -156,7 +156,8 @@ public:
     YPushButton *	downButton;
     YReplacePoint *	propReplacePoint;
     YTable *		propTable;
-    YMenuItem *		exportMenu;
+    // YMenuItem *		exportMenu;
+    YMenuItem *		closeItem;
 
 
     YWidget * selectedWidget();
@@ -233,8 +234,10 @@ YDialogSpy::YDialogSpy( YDialog * targetDialog )
     auto fileMenu  = fac->createMenuButton( alignment, "&File" );
 
     YItemCollection items;
-    priv->exportMenu = new YMenuItem( "Export (TODO)" );
-    items.push_back( priv->exportMenu );
+    // priv->exportMenu = new YMenuItem( "Export (TODO)" );
+    // items.push_back( priv->exportMenu );
+    priv->closeItem =  new YMenuItem( "Close" );
+    items.push_back( priv->closeItem );
     fileMenu->addItems( items );
 
     auto minSize = fac->createMinSize( vbox, TREE_WIDTH, TREE_HEIGHT );
@@ -518,7 +521,10 @@ void YDialogSpy::exec()
 	    YMenuItem * menu_item = dynamic_cast<YMenuItem *>(event->item());
 
 	    // TODO: handle the export menu item
-	    if (menu_item == priv->exportMenu) continue;
+	    // if (menu_item == priv->exportMenu) continue;
+
+	    // closing from menu
+	    if (menu_item == priv->closeItem) break;
 
 	    // handle all unhandled menu items as "Add" menu items, this is much
 	    // simpler than comparing it with the huge amount of menu item pointers
